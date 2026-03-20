@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "pomodoro",
+    "title": "25 Minute Pomodoro Timer — Focus & Productivity",
+    "description": "Set a 25 minute Pomodoro timer. Boost your productivity with the classic focus block. Free online timer with alarm.",
+    "content": "Boost your productivity using our 25-minute Pomodoro timer. This specific duration is scientifically proven to help maintain high focus levels while preventing burnout. Combine it with a 5-minute break for the best results."
+  },
+  {
+    "slug": "1-minute",
+    "title": "1 Minute Timer — Quick Online Countdown",
+    "description": "Set a 1 minute timer instantly. Free online countdown with alarm. Perfect for quick breaks, boiling eggs, or short tasks.",
+    "content": "Need exactly 60 seconds? Our 1-minute timer is the fastest way to set a short countdown. It features a high-volume alarm and a clear full-screen display. Ideal for productivity techniques like Micro-pauses or as a simple classroom tool."
+  },
+  {
+    "slug": "5-minute",
+    "title": "5 Minute Timer — Set a Five Minute Countdown",
+    "description": "Start a 5 minute timer now. Free, reliable online countdown for meditation, cooking, or study breaks. Full screen supported.",
+    "content": "A 5-minute timer is perfect for quick meditation sessions, boiling a soft-boiled egg, or a rapid focus burst. This online tool works on all mobile and desktop browsers with no download required."
+  },
+  {
+    "slug": "10-minute",
+    "title": "10 Minute Timer — Free Online Countdown",
+    "description": "Run a 10 minute countdown with alarm. Secure and reliable browser-based timer for exercises, meetings, and kitchen use.",
+    "content": "Whether you're following the '10-minute rule' to beat procrastination or simply need to time a quick break, this 10-minute timer is your reliable companion. Includes loud alarm sounds and wake-lock to keep your screen on."
+  },
+  {
+    "slug": "15-minute",
+    "title": "15 Minute Timer — Professional Countdown Tool",
+    "description": "Start a 15 minute timer now. Perfect for yoga, study blocks, and quick work sprints. Free full-screen online timer.",
+    "content": "The 15-minute timer is a staple for the 'Power Hour' technique and yoga flows. Our version is optimized for zero layout shift (CLS) and works in the background even if you switch tabs."
+  },
+  {
+    "slug": "2-minute",
+    "title": "2 Minute Timer — Quick Online Countdown",
+    "description": "Set a 2 minute timer instantly. Free online countdown with alarm. Perfect for two-minute tasks or brush your teeth.",
+    "content": "A 2-minute timer is most commonly used for oral hygiene (brushing teeth) or quick meditation. Start it now with a high-volume alarm."
+  },
+  {
+    "slug": "3-minute",
+    "title": "3 Minute Timer — Set for 3 Minutes",
+    "description": "Start a 3 minute countdown timer. Perfect for tea brewing and classroom activities.",
+    "content": "A 3-minute timer is perfect for brewing a cup of light oolong tea or a quick reflection exercise. Includes full screen toggle."
+  },
+  {
+    "slug": "20-minute",
+    "title": "20 Minute Timer — Free Countdown Online",
+    "description": "Set a 20 minute timer with alarm. Ideal for a power nap or deep focus work blocks.",
+    "content": "Whether it's the 20-20-20 rule for eye health or a short focus block, this 20-minute timer will give you the precise alert you need."
+  },
+  {
+    "slug": "30-minute",
+    "title": "30 Minute Timer — Online Countdown & Alarm",
+    "description": "Run a 30 minute timer on any browser. Great for workouts, yoga, or study lunch breaks.",
+    "content": "Half an hour is a classic block for HIIT workouts, yoga sessions, or reading. This 30-minute timer acts as a reliable reminder for your busy schedule."
+  },
+  {
+    "slug": "45-minute",
+    "title": "45 Minute Timer — Academic Focus Block",
+    "description": "Set a 45 minute timer. The standard duration for study sessions and school lessons.",
+    "content": "Optimized for students, this 45-minute countdown matches the standard lesson block. Perfect for deep study without distractions."
+  },
+  {
+    "slug": "60-minute",
+    "title": "60 Minute Timer — 1 Hour Countdown",
+    "description": "Set a 1 hour timer instantly. Full-screen countdown with loud alarm sound.",
+    "content": "One full hour of focus. Use this for deep work, long tasks, or as a reliable kitchen timer for baking. Reliable and free."
+  }
+]

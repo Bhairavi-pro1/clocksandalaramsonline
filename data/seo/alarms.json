@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "7-am",
+    "title": "Set Alarm for 7:00 AM — Free Online Wake Up Call",
+    "description": "Wake up at 7 AM with our free online alarm clock. Choose loud sounds and ensure you start your day on time. Works on mobile & PC.",
+    "content": "Waking up at 7:00 AM? Ensure you never oversleep with our reliable online alarm. We recommend keeping your browser tab open and volume at 80% for the best results. Our alarm uses high-frequency sounds designed to wake even heavy sleepers."
+  },
+  {
+    "slug": "8-am",
+    "title": "8 AM Alarm Clock — Online & Easy to Use",
+    "description": "Never miss an 8 AM start again. Set your online alarm clock here for free. Multiple sounds and full-screen ring display.",
+    "content": "Set your alarm for 8 AM and join the early morning productivity club. This tool is perfect for students, professionals, and anyone with a busy morning schedule."
+  },
+  {
+    "slug": "6-am",
+    "title": "Set Alarm for 6 AM — Early Morning Wake Up",
+    "description": "Start your day early at 6:00 AM. Free online alarm clock for early risers.",
+    "content": "A 6:00 AM alarm is the hallmark of the '5 AM Club' adjacent high performers. Ensure your day starts with precision using our reliable browser-based alarm."
+  },
+  {
+    "slug": "9-am",
+    "title": "9 AM Online Alarm — Perfect for Work & Meetings",
+    "description": "Start your workday right with a 9 AM alarm. Free online tool with recurring alarm support and custom sound selection.",
+    "content": "9:00 AM is the standard start for millions worldwide. Use this pre-set alarm to prepare for your first meeting or as a gentle reminder to get your day moving."
+  },
+  {
+    "slug": "10-am",
+    "title": "10 AM Alarm — Late Morning Reminder",
+    "description": "Set a 10:00 AM alarm for mid-morning meetings or reminders.",
+    "content": "10:00 AM is a common time for team syncs. Set this alarm to ensure you're prepared for your mid-morning responsibilities."
+  },
+  {
+    "slug": "12-pm",
+    "title": "Set Alarm for 12 PM — Midday Reminder",
+    "description": "Set a noon alarm for lunch or mid-day breaks.",
+    "content": "Don't skip lunch! Set a 12:00 PM alarm as a healthy reminder to take a break and refuel."
+  },
+  {
+    "slug": "6-pm",
+    "title": "6 PM Alarm — Work Day End Reminder",
+    "description": "Set an alarm for 6:00 PM. Perfect for marking the end of the workday.",
+    "content": "Use this 6:00 PM alarm to signal the transition from work to personal time. Balance is key to productivity."
+  },
+  {
+    "slug": "12-am",
+    "title": "Midnight Alarm — Online Reminder for 12 AM",
+    "description": "Set a midnight alarm instantly. Free online clock for late-night tasks.",
+    "content": "Whether it's for a late-night release or a personal goal, our midnight alarm will alert you precisely when the day changes."
+  }
+]

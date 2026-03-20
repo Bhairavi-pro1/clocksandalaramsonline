@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "new-year",
+    "name": "New Year's Day",
+    "title": "New Year's Day Countdown - Track the Start of 2027",
+    "description": "Counting down to New Year's Day? Our high-precision global tracker shows exactly how many days, hours, and minutes remain until the world celebrates the start of the next year.",
+    "content": "New Year's Day is a celebration of new beginnings, marked by festivities, resolutions, and global countdowns. Whether you're planning a party or tracking the ball drop, our precise holiday timer ensures you never miss a second of the transition to the new year."
+  },
+  {
+    "slug": "christmas",
+    "name": "Christmas Day",
+    "title": "Christmas Countdown - How Many Days Until Christmas?",
+    "description": "Stay updated with our Christmas countdown. Track the precisely calculated time remaining until the most wonderful time of the year with our high-tech holiday tracker.",
+    "content": "Christmas Day is widely observed as both a cultural holiday and a significant spiritual event for billions of people around the world. From gift-giving and festive meals to peaceful reflection, our countdown helps you prepare for the magic of the holiday season."
+  },
+  {
+    "slug": "halloween",
+    "name": "Halloween",
+    "title": "Halloween Countdown - Track the Spooky Season",
+    "description": "Count down to Halloween with our real-time tracker. Perfect for planning your costumes, parties, and haunted events with precision.",
+    "content": "Halloween is a time for creativity, spookiness, and community fun. Whether you're gearing up for trick-or-treating or a horror movie marathon, stay perfectly on schedule with our high-tech countdown."
+  },
+  {
+    "slug": "thanksgiving-day",
+    "name": "Thanksgiving Day",
+    "title": "Thanksgiving Countdown - Prepare for the Feast",
+    "description": "Track the time until Thanksgiving Day with our festive countdown. Ensure your holiday preparations are perfectly timed for the big day.",
+    "content": "Thanksgiving is a national holiday in many countries, dedicated to expressing gratitude and sharing a harvest feast with loved ones. Keep track of the days remaining to coordinate your dinner and travel plans."
+  },
+  {
+    "slug": "independence-day",
+    "name": "Independence Day",
+    "title": "Independence Day Countdown - Celebrate Liberty",
+    "description": "How long until the 4th of July? Track the precisely calculated time remaining until the next Independence Day celebration with our high-tech tracker.",
+    "content": "Independence Day is a major national holiday celebrating the birth of freedom and democracy. From fireworks and parades to backyard barbecues, stay perfectly on schedule with our high-precision countdown."
+  }
+]
