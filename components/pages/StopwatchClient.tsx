@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react'
 import { useStopwatch } from '@/hooks/useStopwatch'
 import { Timer as StopwatchIcon, Maximize2, Minimize2, RotateCcw, Clock, X, Flag } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import InternalLinks from '@/components/ui/InternalLinks'
 import AdBanner from '@/components/ui/AdBanner'
 
 export default function StopwatchClient() {
@@ -71,16 +70,7 @@ export default function StopwatchClient() {
   }, [])
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10 md:py-16 space-y-12">
-      {/* Sub-Header */}
-      {!isFullscreen && (
-        <div className="text-center animate-in fade-in duration-700">
-          <h1 className="text-primary font-black tracking-[0.3em] uppercase text-xs md:text-sm mb-4">
-            Online Stopwatch – High-Precision Lap Timer
-          </h1>
-        </div>
-      )}
-
+    <div className="max-w-7xl mx-auto px-6 space-y-12">
       <div className={cn("grid grid-cols-1 gap-8", !isFullscreen ? "lg:grid-cols-12" : "grid-cols-1")}>
         {/* Main Column */}
         <div className={cn(!isFullscreen ? "lg:col-span-8" : "col-span-1", "space-y-8")}>
@@ -230,19 +220,19 @@ export default function StopwatchClient() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {[...laps].reverse().map((lTime, index, reversedArr) => (
+                    {laps.map((lTime, index) => (
                       <div 
                         key={index} 
                         className="group flex justify-between items-center p-5 bg-white/5 hover:bg-primary/10 rounded-2xl border border-white/5 hover:border-primary/20 transition-all animate-in slide-in-from-left-3 duration-300"
                       >
                         <div className="flex flex-col">
-                          <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Lap {reversedArr.length - index}</span>
+                          <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Lap {index + 1}</span>
                           <span className="font-mono font-bold text-xl text-white tabular-nums">{formatTime(lTime)}</span>
                         </div>
                         <div className="text-right">
                           <span className="text-[10px] text-white/40 block uppercase tracking-tighter mb-1">Difference</span>
                           <span className="text-xs font-bold text-white/60">
-                             {index < reversedArr.length - 1 ? `+${formatTime(lTime - reversedArr[index + 1])}` : '---'}
+                             {index > 0 ? `+${formatTime(lTime - laps[index - 1])}` : '---'}
                           </span>
                         </div>
                       </div>
@@ -260,67 +250,6 @@ export default function StopwatchClient() {
           </div>
         )}
       </div>
-
-      {/* Extended SEO Content & How to Use (Bottom of page) */}
-      {!isFullscreen && (
-        <div className="space-y-24 pt-20">
-          {/* Detailed Description */}
-          <section className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-1000">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
-              Professional Grade Timing
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold font-display text-white tracking-tight leading-tight">
-              A High-Precision Stopwatch <br />
-              <span className="text-primary/80">for Every Second That Counts</span>
-            </h2>
-            <p className="text-lg text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90">
-              The Clocks and Alarms Online stopwatch is engineered for performance. Unlike standard 
-              web timers, our tool utilizes high-frequency system performance counters to ensure that the 
-              displayed time never lags, even during intense CPU usage. Whether you're an athlete timing 
-              splits or a professional developer tracking work cycles, our tool provides the stability you need.
-            </p>
-          </section>
-
-          {/* How to Use Section */}
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-            <div className="group p-8 rounded-[2.5rem] bg-[#1a0b2e]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                <span className="text-xl font-black text-white">1</span>
-              </div>
-              <h4 className="text-lg font-bold text-white mb-3">Start the Clock</h4>
-              <p className="text-sm text-muted/80 leading-relaxed font-medium">Click the Start button to begin tracking time in real-time with millisecond-accuracy.</p>
-            </div>
-
-            <div className="group p-8 rounded-[2.5rem] bg-[#1a0b2e]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                <span className="text-xl font-black text-white">2</span>
-              </div>
-              <h4 className="text-lg font-bold text-white mb-3">Record Splits</h4>
-              <p className="text-sm text-muted/80 leading-relaxed font-medium">Hit 'Lap' to freeze the current time without stopping the stopwatch to compare your splits.</p>
-            </div>
-
-            <div className="group p-8 rounded-[2.5rem] bg-[#1a0b2e]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                <span className="text-xl font-black text-white">3</span>
-              </div>
-              <h4 className="text-lg font-bold text-white mb-3">Full Screen</h4>
-              <p className="text-sm text-muted/80 leading-relaxed font-medium">Expand the timer to fill your entire display—perfect for athletics or gym environments.</p>
-            </div>
-
-            <div className="group p-8 rounded-[2.5rem] bg-[#1a0b2e]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                <span className="text-xl font-black text-white">4</span>
-              </div>
-              <h4 className="text-lg font-bold text-white mb-3">Reset Anytime</h4>
-              <p className="text-sm text-muted/80 leading-relaxed font-medium">Clear your current time and lap history instantly by hitting the magenta Reset button.</p>
-            </div>
-          </section>
-          
-          <AdBanner />
-        </div>
-      )}
-
-      {!isFullscreen && <InternalLinks />}
     </div>
   )
 }

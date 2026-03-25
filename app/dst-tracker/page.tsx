@@ -1,10 +1,10 @@
 import DstTrackerClient from '@/components/pages/DstTrackerClient'
-import InternalLinks from '@/components/ui/InternalLinks'
 import { Metadata } from 'next'
-import { List, Search, Clock, Zap, CalendarDays } from 'lucide-react'
+import { List, Search, Clock, Zap, CalendarDays, HelpCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
 import { getUpcomingDSTChanges } from '@/lib/dst'
+import StructuredData from '@/components/seo/StructuredData'
 
 export const metadata: Metadata = {
   title: 'Global Daylight Saving Time (DST) Tracker — Live Clock Changes',
@@ -22,8 +22,48 @@ export const metadata: Metadata = {
 export default function DSTTrackerPage() {
   const initialChanges = getUpcomingDSTChanges()
 
+  const softwareSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Global DST Tracker",
+    "description": "Real-time tracking of daylight saving time transitions and clock changes worldwide.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How accurate is the global DST transition data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our tracker uses the IANA Time Zone Database, which is the world standard for timezone and DST information. We monitor over 7,000 cities twice daily to ensure every transition is correctly accounted for."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between 'Spring Forward' and 'Fall Back'?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Spring Forward refers to the start of Daylight Saving Time where clocks move ahead by one hour (+1h), typically in the spring. Fall Back refers to the end of DST where clocks move back by one hour (-1h), usually in autumn."
+        }
+      }
+    ]
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20">
+    <div className="max-w-7xl mx-auto px-4 py-20 animate-in fade-in duration-1000">
+      <StructuredData data={softwareSchema} />
+      <StructuredData data={faqSchema} />
+
       <div className="text-center mb-16 space-y-4">
         <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter decoration-primary decoration-8 underline-offset-8">
           Daylight Saving <span className="text-primary italic">Time</span> Tracker
@@ -36,6 +76,10 @@ export default function DSTTrackerPage() {
 
       <DstTrackerClient initialChanges={initialChanges} />
       
+      <div className="mt-16 max-w-7xl mx-auto px-4">
+        <AdBanner />
+      </div>
+
       {/* Content Outside the Main Card */}
       <div className="w-full max-w-6xl mx-auto space-y-32 mt-32">
         {/* Premium SEO Content & User Guide */}
@@ -75,7 +119,7 @@ export default function DSTTrackerPage() {
                     {item.step}
                   </span>
                 </div>
-                <h4 className="text-2xl font-black text-white mb-4 tracking-tight">{item.title}</h4>
+                <h3 className="text-2xl font-black text-white mb-4 tracking-tight">{item.title}</h3>
                 <p className="text-base text-white/40 leading-relaxed font-medium">
                   {item.text}
                 </p>
@@ -83,7 +127,45 @@ export default function DSTTrackerPage() {
             ))}
           </section>
 
-          <AdBanner />
+          {/* Detailed FAQ Section for SEO */}
+          <section className="space-y-16">
+            <div className="text-center space-y-4">
+               <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">Daylight Saving <span className="text-primary italic">Insights</span></h2>
+               <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               {[
+                 { 
+                   q: "How accurate is the global DST transition data?", 
+                   a: "Our tracker uses the IANA Time Zone Database, which is the world standard for timezone and DST information. We monitor over 7,000 cities to ensure every transition is correctly accounted for."
+                 },
+                 {
+                   q: "Why do some countries change clocks at different times?",
+                   a: "Daylight saving time is managed by national or regional governments, meaning transitions aren't synchronized globally. For example, Europe and North America typically transition on different weekends."
+                 },
+                 {
+                   q: "Does the tracker include rare timezone shifts?",
+                   a: "Yes. Our engine detects unique cases like 30-minute DST shifts and permanent historical changes (like Mexico's recent move to permanent time) to provide usable, real-world data."
+                 },
+                 {
+                   q: "How can I prepare for a 'Fall Back' change?",
+                   a: "During 'Fall Back', you'll gain an hour. We recommend adjusting your clocks before bed and checking our 'Days Remaining' counter to plan your week ahead of time."
+                 }
+               ].map((faq, i) => (
+                 <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] hover:bg-white/[0.08] transition-all group">
+                    <div className="flex gap-4 mb-4">
+                       <HelpCircle className="text-primary group-hover:scale-110 transition-transform" />
+                       <h4 className="text-lg font-bold text-white tracking-tight">{faq.q}</h4>
+                    </div>
+                    <p className="text-sm text-muted/70 leading-relaxed font-medium pl-10">
+                       {faq.a}
+                    </p>
+                 </div>
+               ))}
+            </div>
+          </section>
+
 
           {/* Value Prop Section */}
           <section className="bg-gradient-to-r from-primary/10 to-transparent p-8 md:p-12 rounded-[2.5rem] border border-white/5 pb-16">
@@ -92,21 +174,21 @@ export default function DSTTrackerPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                    <div className="w-2 h-2 rounded-full bg-primary" />
-                   <h5 className="text-white font-black uppercase text-xs tracking-widest">Global Coverage</h5>
+                   <h4 className="text-white font-black uppercase text-xs tracking-widest">Global Coverage</h4>
                 </div>
                 <p className="text-sm text-white/40 leading-relaxed font-medium">We monitor over 150 timezones using the latest IANA database to ensure accurate transition data for every corner of the globe.</p>
               </div>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                    <div className="w-2 h-2 rounded-full bg-primary" />
-                   <h5 className="text-white font-black uppercase text-xs tracking-widest">Rare Anomaly Detection</h5>
+                   <h4 className="text-white font-black uppercase text-xs tracking-widest">Rare Anomaly Detection</h4>
                 </div>
                 <p className="text-sm text-white/40 leading-relaxed font-medium">Special highlighting for unique 30-minute shifts like Lord Howe Island and permanent historical timezone changes.</p>
               </div>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                    <div className="w-2 h-2 rounded-full bg-primary" />
-                   <h5 className="text-white font-black uppercase text-xs tracking-widest">Precision Timing</h5>
+                   <h4 className="text-white font-black uppercase text-xs tracking-widest">Precision Timing</h4>
                 </div>
                 <p className="text-sm text-white/40 leading-relaxed font-medium">Our tool pinpoints the exact hour and minute of the change, going beyond just the date to provide usable scheduling data.</p>
               </div>
@@ -114,8 +196,9 @@ export default function DSTTrackerPage() {
           </section>
         </div>
       </div>
-
-      <InternalLinks />
+      <div className="mt-16 max-w-7xl mx-auto px-4">
+        <AdBanner />
+      </div>
     </div>
   )
 }

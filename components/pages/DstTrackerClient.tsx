@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DSTChange } from '@/lib/dst'
+import AdBanner from '../ui/AdBanner'
 
 interface Props {
   initialChanges: DSTChange[]
@@ -103,6 +104,10 @@ export default function DstTrackerClient({ initialChanges }: Props) {
          </div>
       </div>
 
+      <div className="mt-8 max-w-7xl mx-auto px-4">
+        <AdBanner />
+      </div>
+
       {/* Changes Timeline */}
       <div className="space-y-12">
         {groupedChanges.map((group, gIdx) => (
@@ -180,9 +185,9 @@ export default function DstTrackerClient({ initialChanges }: Props) {
                       </div>
                    </div>
 
-                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                   {/* <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowUpRight className="text-primary/40 w-5 h-5" />
-                   </div>
+                   </div> */}
                 </div>
               ))}
             </div>

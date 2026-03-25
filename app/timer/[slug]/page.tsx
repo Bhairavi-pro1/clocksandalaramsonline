@@ -1,6 +1,5 @@
 import CountdownTimer from '@/components/tools/CountdownTimer'
 import StructuredData from '@/components/seo/StructuredData'
-import InternalLinks from '@/components/ui/InternalLinks'
 import { Metadata } from 'next'
 import timerData from '@/data/seo/timers.json'
 
@@ -60,7 +59,6 @@ export default async function DynamicTimerPage({ params }: Props) {
         </p>
       </div>
 
-      <InternalLinks />
     </div>
   )
 }

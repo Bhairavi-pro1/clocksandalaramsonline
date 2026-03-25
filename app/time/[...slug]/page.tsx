@@ -2,7 +2,6 @@ import { Metadata } from 'next'
 import CityClockDisplay from '@/components/tools/CityClockDisplay'
 import StructuredData from '@/components/seo/StructuredData'
 import TimeInfoPanel from '@/components/tools/TimeInfoPanel'
-import InternalLinks from '@/components/ui/InternalLinks'
 import AdBanner from '@/components/ui/AdBanner'
 import { MapPin, Clock, Globe, Bell, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -133,7 +132,6 @@ export default async function DynamicTimePage(props: PageProps) {
         </section>
       </div>
 
-      <InternalLinks />
       <AdBanner />
     </div>
   )

@@ -11,7 +11,7 @@ const TOOLS = [
 
 export default function InternalLinks() {
   return (
-    <div className="mt-20 py-12 border-t border-card-border">
+    <div className="py-12 border-t border-card-border">
       <h3 className="text-xl font-bold mb-6 text-accent">Explore More Tools</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {TOOLS.map((tool) => (

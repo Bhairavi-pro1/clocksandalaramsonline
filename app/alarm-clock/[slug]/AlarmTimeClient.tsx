@@ -4,7 +4,6 @@ import AlarmCard from '@/components/tools/AlarmCard'
 import AddAlarmModal from '@/components/tools/AddAlarmModal'
 import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
 import LocalTimeBox from '@/components/ui/LocalTimeBox'
-import InternalLinks from '@/components/ui/InternalLinks'
 import { useStore } from '@/hooks/useStore'
 import { useAlarm } from '@/hooks/useAlarm'
 import AdBanner from '@/components/ui/AdBanner'
@@ -210,7 +209,7 @@ export default function AlarmTimeClient({ params }: Props) {
         </div>
 
         {/* Ad Space - Full Width like other pages */}
-        <div className="w-full">
+        <div className="mt-16 max-w-7xl mx-auto px-4">
           <AdBanner />
         </div>
       </div>
@@ -228,7 +227,6 @@ export default function AlarmTimeClient({ params }: Props) {
         type="alarm"
         timeText={activeAlarm?.time}
       />
-      <InternalLinks />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { Play, Pause, Maximize2, Minimize2, Trash2, RotateCcw } from 'lucide-rea
 import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
 import { useTimer } from '@/hooks/useTimer'
 import { cn } from '@/lib/utils'
+import AdBanner from '@/components/ui/AdBanner'
 
 interface CountdownTimerProps {
   id: string
@@ -158,16 +159,7 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
         {/* Fullscreen Ad Slot */}
         {isFullscreen && (
           <div className="w-full max-w-4xl flex flex-col items-center justify-center mt-12 animate-in fade-in slide-in-from-bottom-5 duration-700 delay-500">
-            <p className="text-[10px] text-primary/40 tracking-[0.4em] uppercase mb-4 font-black">SPONSORED CONTENT</p>
-            <div className="w-full h-32 bg-white/5 rounded-[2rem] flex items-center justify-center border border-dashed border-primary/20 hover:border-primary/40 transition-all cursor-pointer group/ad">
-              <div className="flex items-center space-x-8 opacity-60 group-hover/ad:opacity-100 transition-opacity">
-                <div className="w-16 h-16 bg-primary/30 rounded-full animate-pulse shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
-                <div className="text-left">
-                  <p className="font-bold text-xl text-white tracking-tight uppercase">Premium Fullscreen Ad</p>
-                  <p className="text-sm text-primary/50 font-medium tracking-wide">Boost your focus with our meditation partner</p>
-                </div>
-              </div>
-            </div>
+            <AdBanner />
           </div>
         )}
       </div>

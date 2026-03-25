@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Share2, Maximize2, Minimize2, Info, Check } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
-import InternalLinks from '@/components/ui/InternalLinks'
 import { cn } from '@/lib/utils'
 import { Holiday } from '@/lib/holidays'
 
@@ -83,25 +82,13 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 animate-in fade-in duration-1000">
       <div className="flex flex-col gap-10">
-        {/* Header Section - Hide in fullscreen */}
-        {!isFullscreen && (
-          <div className="text-center space-y-4">
-            <div className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest mb-1">
-              Holiday Countdown 
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-              {seoInfo?.title || `Countdown to ${holiday.name}`}
-            </h2>
-          </div>
-        )}
-
         {/* Digital Countdown Hero Component */}
         <div 
           ref={cardRef}
           onMouseMove={handleMouseMove}
           className={cn(
             "bg-card border border-card-border/60 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group shadow-2xl transition-all duration-700",
-            isFullscreen ? "fixed inset-0 z-[100] rounded-none border-none bg-[#05010a] flex flex-col items-center justify-center pointer-events-auto" : "relative"
+            isFullscreen ? "fixed inset-0 z-[100] rounded-none border-none bg-[#05010a] flex flex-col items-center justify-center pointer-events-auto" : "relative min-h-[400px]"
           )}
         >
           {/* Background Glows (Always present, but subtle) */}
@@ -140,7 +127,7 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
 
           <div className={cn(
             "relative z-10 flex flex-col items-center text-center",
-            isFullscreen ? "space-y-2 md:space-y-4 mb-4" : "space-y-6"
+            isFullscreen ? "space-y-2 md:space-y-4 mb-4" : "space-y-6 pt-10"
           )}>
             {/* Main Digital Stack */}
             <div className={cn(
@@ -151,23 +138,23 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
               <div className="flex flex-col items-center">
                 <span className={cn(
                   "font-black leading-none tracking-tighter tabular-nums text-white transition-all duration-700",
-                  isFullscreen ? "text-[max(6rem,10vw)]" : "text-6xl md:text-7xl"
+                  isFullscreen ? "text-[max(6rem,10vw)]" : "text-6xl md:text-8xl"
                 )}>
                   {timeLeft.days.toString().padStart(3, '0')}
                 </span>
                 <span className={cn(
                   "font-bold uppercase tracking-[0.4em] opacity-70 transition-all",
-                  isFullscreen ? "text-xs mt-0" : "text-[8px] mt-1"
+                  isFullscreen ? "text-xs mt-0" : "text-[10px] mt-2"
                 )}>
                   Days Remaining
                 </span>
               </div>
 
               {/* HMS Display */}
-              <div className="flex flex-col items-center pt-2">
+              <div className="flex flex-col items-center pt-6">
                 <div className={cn(
                   "font-black leading-none tracking-tighter tabular-nums drop-shadow-[0_0_20px_rgba(124,58,237,0.2)] transition-all duration-700",
-                  isFullscreen ? "text-[max(4.5rem,4vw)]" : "text-3xl md:text-5xl"
+                  isFullscreen ? "text-[max(4.5rem,4vw)]" : "text-4xl md:text-6xl"
                 )}>
                   {timeLeft.hours.toString().padStart(2, '0')+" "}: 
                   {" "+ timeLeft.minutes.toString().padStart(2, '0') +" "}: 
@@ -175,7 +162,7 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
                 </div>
                 <div className={cn(
                   "flex font-bold uppercase tracking-[0.3em] opacity-70 transition-all",
-                  isFullscreen ? "gap-12 text-xs mt-0" : "gap-6 text-[8px] mt-2"
+                  isFullscreen ? "gap-12 text-xs mt-0" : "gap-10 text-[10px] mt-3"
                 )}>
                   <span>Hours</span>
                   <span>Min</span>
@@ -187,12 +174,12 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
             {/* Target Date Box */}
             <div className={cn(
               "border-t border-white/5 w-full flex flex-col items-center gap-1 transition-all",
-              isFullscreen ? "pt-4 mt-2 max-w-sm" : "pt-4 max-w-[240px]"
+              isFullscreen ? "pt-4 mt-2 max-w-sm" : "pt-8 mt-4 max-w-[280px]"
             )}>
-              <p className="text-[8px] font-black tracking-[0.3em] text-white/40 uppercase mb-0.5">Target Date</p>
+              <p className="text-[10px] font-black tracking-[0.3em] text-white/40 uppercase mb-1">Target Date</p>
               <div className={cn(
                 "rounded-lg bg-white/5 border border-white/5 font-black tracking-[0.05em] text-white/80 transition-all",
-                isFullscreen ? "px-6 py-3 text-base md:text-xl" : "px-3 py-1.5 text-xs md:text-sm"
+                isFullscreen ? "px-6 py-3 text-base md:text-xl" : "px-4 py-2 text-sm md:text-base"
               )}>
                 {targetDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, ' -')}
               </div>
@@ -210,60 +197,7 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
             </div>
           )}
         </div>
-
-        {/* Ad Space (Standard) */}
-        {!isFullscreen && (
-          <div className="w-full">
-            <AdBanner />
-          </div>
-        )}
-
-        {/* Explanation & SEO Content Section */}
-        {!isFullscreen && (
-          <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10">
-              {/* Main Info */}
-              <section className="lg:col-span-2 space-y-6">
-                <div className="flex items-center gap-4 bg-primary/5 p-5 rounded-2xl border border-primary/10">
-                  <div className="min-w-[40px] h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
-                    <Info size={20} />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">About the {holiday.name} Tracker</h3>
-                </div>
-                
-                <div className="prose prose-invert max-w-none space-y-4 text-muted/80 text-sm font-medium leading-relaxed">
-                  <p>
-                    {seoInfo?.content || `This high-precision countdown is set specifically for ${holiday.name}. Whether you are coordinating travel, preparing gifts, or planning a celebratory event, our reliable global tracker ensures you never miss a second of the holiday season.`}
-                  </p>
-                  <p>
-                    Our platform uses high-precision millisecond tracking synchronized with global atomic time to provide the most accurate countdown on the web. Stay perfectly on schedule with our high-precision countdown.
-                  </p>
-                </div>
-              </section>
-
-              {/* Side Card */}
-              <aside className="space-y-6">
-                <div className="bg-[#1a0b36]/40 p-6 rounded-2xl border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500 shadow-xl">
-                  <h4 className="text-base font-bold text-white mb-2">Atomic Precision</h4>
-                  <p className="text-[13px] text-muted/60 leading-relaxed font-medium">
-                    Every second matters. Our trackers are synchronized with precision time sources for unmatched reliability.
-                  </p>
-                </div>
-              </aside>
-            </div>
-
-            {/* Explore Other Tools */}
-            <div className="pt-20 border-t border-white/5">
-              <header className="text-center mb-12">
-                <h3 className="text-2xl font-black text-white mb-3">Explore More Tools</h3>
-                <div className="h-1 w-12 bg-primary mx-auto rounded-full" />
-              </header>
-              <InternalLinks />
-            </div>
-          </>
-        )}
       </div>
-      <AdBanner />
     </div>
   )
 }
