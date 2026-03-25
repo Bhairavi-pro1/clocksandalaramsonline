@@ -22,15 +22,17 @@ export default function SmallClockCard({ country, city, timezone, onRemove }: Sm
     return () => clearInterval(interval)
   }, [timezone])
 
-  if (!time) return null
-
   const countrySlug = (country || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-')
   const citySlug = (city || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-')
-  const year = time.toFormat('yyyy')
-  const month = time.toFormat('MMMM').toLowerCase()
-  const day = time.toFormat('dd')
   
   // Standard SEO optimized nested route: /time/country/city/year/month/day
+  // Use a stable fixed date for placeholders to avoid hydration mismatch
+  // DateTime.now() changes between server and client.
+  const placeholderDate = DateTime.fromISO('2024-01-01T00:00:00Z');
+  const currentTime = time || placeholderDate;
+  const year = currentTime.toFormat('yyyy')
+  const month = currentTime.toFormat('MMMM').toLowerCase()
+  const day = currentTime.toFormat('dd')
   const href = `/time/${countrySlug}/${citySlug}/${year}/${month}/${day}?timezone=${encodeURIComponent(timezone)}`
 
   return (
@@ -39,6 +41,7 @@ export default function SmallClockCard({ country, city, timezone, onRemove }: Sm
       <div className="flex justify-between items-center w-full mb-6 relative z-10">
         <span className="text-[10px] font-bold tracking-[0.2em] text-primary uppercase drop-shadow-sm">{country}</span>
         <button 
+          type="button"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -57,11 +60,11 @@ export default function SmallClockCard({ country, city, timezone, onRemove }: Sm
         <h4 className="text-xl font-bold text-white tracking-tight">{city}</h4>
         
         <div className="text-[2.65rem] font-bold tracking-tight text-white leading-none py-2 font-tabular drop-shadow-[0_0_20px_rgba(124,58,237,0.3)]">
-          {time.toFormat('HH:mm:ss')}
+          {time ? time.toFormat('HH:mm:ss') : '00:00:00'}
         </div>
 
         <div className="flex flex-col items-center space-y-1">
-          <p className="text-[11px] font-semibold text-white/70">{time.toFormat('cccc, LLLL d, yyyy')}</p>
+          <p className="text-[11px] font-semibold text-white/70">{time ? time.toFormat('cccc, LLLL d, yyyy') : 'Loading...'}</p>
           <p className="text-[10px] text-primary font-black uppercase tracking-[0.15em] drop-shadow-[0_0_8px_rgba(124,58,237,0.4)]">{timezone}</p>
         </div>
       </div>

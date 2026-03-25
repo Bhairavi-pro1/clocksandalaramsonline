@@ -17,36 +17,59 @@ export default function ConsentManager() {
     setIsVisible(false)
   }
 
+  const handleDecline = () => {
+    localStorage.setItem('consent-accepted', 'false')
+    setIsVisible(false)
+  }
+
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-0 md:bottom-6 left-0 md:left-6 z-[60] p-6 w-full md:max-w-md">
-      <div className="bg-card/95 backdrop-blur-2xl border border-card-border p-6 rounded-3xl shadow-3xl animate-in fade-in slide-in-from-left duration-700">
-        <div className="flex gap-4 items-start">
-          <div className="p-3 bg-accent/20 rounded-2xl text-accent shrink-0">
-            <Cookie size={24} />
+    <div className="fixed bottom-0 md:bottom-8 left-0 md:left-8 z-[100] p-6 w-full md:max-w-md animate-in slide-in-from-bottom-5 duration-700">
+      <div className="bg-card/95 backdrop-blur-3xl border border-white/10 p-8 rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+        
+        {/* Decorative corner accent */}
+        <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+          <Cookie size={120} />
+        </div>
+
+        <button 
+          type="button"
+          onClick={() => setIsVisible(false)}
+          className="absolute top-6 right-6 p-2 text-white/30 hover:text-white transition-colors"
+        >
+          <X size={20} />
+        </button>
+
+        <div className="flex flex-col space-y-6 relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary shadow-inner">
+              <Cookie size={24} />
+            </div>
+            <h3 className="text-xl font-black uppercase tracking-tight text-white">Trust & Cookies</h3>
           </div>
           
-          <div className="flex-1">
-            <h3 className="text-lg font-black uppercase tracking-tight mb-2">Cookie Privacy</h3>
-            <p className="text-sm text-muted font-bold leading-relaxed mb-6">
-              We use cookies to personalize content and ads, to provide social media features and to analyze our traffic. By clicking accept, you're helping us keep these tools free.
-            </p>
-            <div className="flex gap-3">
-              <button 
-                onClick={handleAccept}
-                className="flex-1 bg-accent text-background text-sm font-black py-3 rounded-xl hover:scale-105 transition-transform"
-              >
-                ACCEPT ALL
-              </button>
-              <button 
-                onClick={() => setIsVisible(false)}
-                className="px-6 bg-secondary text-muted text-sm font-bold rounded-xl hover:text-foreground transition-colors"
-                title="Decline Non-Essential"
-              >
-                SETTINGS
-              </button>
-            </div>
+          <p className="text-sm text-muted font-medium leading-relaxed">
+            We use high-precision tools to deliver your world time and alarms. 
+            By clicking accept, you're helping us keep these tools free and high-performing. 
+            We use cookies to personalize content and analyze traffic.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button 
+              type="button"
+              onClick={handleAccept}
+              className="flex-1 bg-primary text-white text-sm font-black py-4 rounded-2xl hover:scale-[1.03] transition-all hover:shadow-xl hover:shadow-primary/20"
+            >
+              ACCEPT ALL
+            </button>
+            <button 
+              type="button"
+              onClick={handleDecline}
+              className="px-8 bg-white/5 border border-white/10 text-white/70 text-sm font-black py-4 rounded-2xl hover:bg-white/10 transition-all hover:text-white"
+            >
+              DECLINE
+            </button>
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export default function Home() {
     city: 'Local Time',
     timezone: 'local'
   })
-  const [nextTransition, setNextTransition] = useState<{ date: string; type: string; city: string } | null>(null)
+  const [nextTransition, setNextTransition] = useState<{ date: string; type: string; country: string } | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 
   // Load from LocalStorage & Detect User Location
@@ -75,34 +75,38 @@ export default function Home() {
     // 3. Calculate the absolute next DST Transition globally
     const calculateTransition = () => {
       const now = DateTime.now()
-      let earliest: { timestamp: number; date: string; type: string; city: string } | null = null
+      let earliest: { timestamp: number; date: string; type: string; country: string } | null = null
 
-      // Collection of unique zones and their most prominent city info
-      const uniqueZones: Record<string, string> = {}
-      for (const c of cityTimezones.cityMapping) {
-        if (!uniqueZones[c.timezone]) {
-          uniqueZones[c.timezone] = c.city
-        }
-      }
+      // Get unique timezones only. Iterating over all 7000+ cities is too heavy.
+      const uniqueZones = new Set<string>();
+      cityTimezones.cityMapping.forEach(c => uniqueZones.add(c.timezone));
 
       // Check each unique zone for its next transition
-      for (const [zone, cityName] of Object.entries(uniqueZones)) {
+      for (const zone of uniqueZones) {
         try {
           const dt = now.setZone(zone)
           if (!dt.isValid) continue
           const currentOffset = dt.offset
 
-          // Check for next 366 days
-          for (let i = 1; i <= 366; i++) {
-            const check = dt.plus({ days: i }).endOf('day')
-            if (check.offset !== currentOffset) {
-              const timestamp = check.toMillis()
-              if (!earliest || timestamp < earliest.timestamp) {
-                earliest = {
-                  timestamp,
-                  date: check.toFormat('cccc, LLLL d'),
-                  type: check.offset > currentOffset ? "Spring Forward +1 Hour" : "Fall Back -1 Hour",
-                  city: cityName
+          // Optimization: Check months first to find the month of transition
+          for (let m = 1; m <= 12; m++) {
+            const monthCheck = dt.plus({ months: m })
+            if (monthCheck.offset !== currentOffset) {
+              // Found the month, now find the day
+              for (let d = (m > 1 ? (m - 1) * 28 : 1); d <= m * 31; d++) {
+                const dayCheck = dt.plus({ days: d }).endOf('day')
+                if (dayCheck.offset !== currentOffset) {
+                  const timestamp = dayCheck.toMillis()
+                  if (!earliest || timestamp < earliest.timestamp) {
+                    const cityEntry = cityTimezones.cityMapping.find(c => c.timezone === zone);
+                    earliest = {
+                      timestamp,
+                      date: dayCheck.toFormat('cccc, LLLL d'),
+                      type: dayCheck.offset > currentOffset ? "Spring Forward +1 Hour" : "Fall Back -1 Hour",
+                      country: cityEntry?.country || zone
+                    }
+                  }
+                  break
                 }
               }
               break
@@ -115,7 +119,7 @@ export default function Home() {
         setNextTransition({
           date: earliest.date,
           type: earliest.type,
-          city: earliest.city
+          country: earliest.country
         })
       }
     }
@@ -155,7 +159,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col space-y-12 pb-4 animate-in fade-in slide-in-from-bottom-5 duration-1000 w-full overflow-hidden">
+    <div className="flex flex-col space-y-12 pb-4 w-full overflow-hidden">
       <StructuredData data={schema} />
       
       {/* 1. Header Text */}
@@ -285,7 +289,7 @@ export default function Home() {
                  <div className="bg-[#1a0b2e]/60 backdrop-blur-md border border-white/5 p-6 rounded-3xl space-y-4 shadow-2xl skew-y-3 hover:skew-y-0 transition-all duration-700">
                     <div className="flex items-center justify-between border-b border-white/5 pb-4">
                        <span className="text-xs font-bold text-white/40">Upcoming Transition</span>
-                       <span className="text-[10px] font-black text-accent uppercase bg-accent/10 px-2 py-1 rounded">{nextTransition?.city || 'London'}</span>
+                       <span className="text-[10px] font-black text-accent uppercase bg-accent/10 px-2 py-1 rounded">{nextTransition?.country || 'United Kingdom'}</span>
                     </div>
                     {nextTransition ? (
                       <div className="py-2 animate-in fade-in duration-500">

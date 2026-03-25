@@ -47,7 +47,8 @@ export default function MainClockCard({
     return () => document.removeEventListener('fullscreenchange', handleFsChange)
   }, [])
 
-  if (!time) return null
+  // Remove the null check to prevent CLS
+  // if (!time) return null
 
   return (
     <div 
@@ -66,6 +67,7 @@ export default function MainClockCard({
       )}
 
       <button 
+        type="button"
         onClick={toggleFullscreen}
         className="absolute top-8 right-8 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10 group-hover:border-primary/40 z-20"
       >
@@ -89,7 +91,7 @@ export default function MainClockCard({
         "font-bold tracking-tight text-white drop-shadow-[0_0_50px_rgba(124,58,237,0.5)] font-display flex items-center justify-center tabular-nums leading-none w-full relative z-10",
         isFullscreen ? "flex-1 text-[min(16rem,22vw)]" : "text-6xl md:text-[8rem] xl:text-[9.5rem] py-12"
       )}>
-        {time.toFormat('HH:mm:ss').split('').map((char, i) => (
+        {(time?.toFormat('HH:mm:ss') || '00:00:00').split('').map((char, i) => (
           <span key={i} className={cn(char === ':' ? "mx-1 opacity-60" : "w-[0.6em] md:w-[0.65em] inline-block text-center")}>
             {char}
           </span>
@@ -105,11 +107,11 @@ export default function MainClockCard({
           <p className={cn(
             "font-bold text-white/95",
             isFullscreen ? "text-2xl md:text-4xl" : "text-lg md:text-2xl"
-          )}>{time.toFormat('cccc, LLLL d, yyyy')}</p>
+          )}>{time ? time.toFormat('cccc, LLLL d, yyyy') : 'Loading Date...'}</p>
           <p className={cn(
             "text-primary/70 font-bold tracking-[0.2em] uppercase",
             isFullscreen ? "text-sm md:text-base" : "text-[10px] md:text-xs"
-          )}>{timezone === 'local' ? DateTime.local().zoneName : timezone}</p>
+          )}>{timezone === 'local' ? 'Local Timezone' : timezone}</p>
         </div>
 
         {/* Ad Slot */}

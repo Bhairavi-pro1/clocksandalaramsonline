@@ -23,9 +23,7 @@ const navItems = [
   { label: 'Countdown', icon: Hourglass, href: '/timer' },
   { label: 'Alarm', icon: Bell, href: '/alarm-clock' },
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner' },
-  { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' },
-  { label: 'About Us', icon: Info, href: '/about' },
-  { label: 'Contact Us', icon: Mail, href: '/contact' },
+  { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' }
 ]
 
 export default function Sidebar() {
@@ -106,6 +104,7 @@ export default function Sidebar() {
           <span className="text-sm font-black tracking-tighter text-white uppercase leading-tight">Clocks and Alarms <br/><span className="text-primary text-[10px] tracking-[0.4em]">Online</span></span>
         </Link>
         <button 
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           className="p-2.5 bg-white/5 border border-white/10 rounded-xl shadow-inner hover:bg-white/10 transition-all active:scale-90"
         >
@@ -133,6 +132,7 @@ export default function Sidebar() {
       )}>
         <div className="flex justify-end p-6">
            <button 
+            type="button"
             onClick={() => setIsOpen(false)}
             className="p-3 bg-white/5 rounded-xl border border-white/10 hover:bg-red-500/20 hover:border-red-500/40 transition-all active:scale-90"
            >

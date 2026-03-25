@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 interface ClockState {
   hours: string
@@ -24,7 +24,14 @@ export function useClock(is24Hour = false): ClockState {
     }
   }
   
-  const [clock, setClock] = useState<ClockState>(getTime)
+  const [clock, setClock] = useState<ClockState>({
+    hours: '--',
+    minutes: '--',
+    seconds: '--',
+    period: '--',
+    date: 'Syncing...',
+    timezone: 'UTC',
+  })
   
   useEffect(() => {
     // Initial sync

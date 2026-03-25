@@ -64,6 +64,7 @@ export default function TimezoneSearch({ onAdd }: TimezoneSearchProps) {
           value={searchTerm}
           onChange={handleSearchChange}
           placeholder="Search time zone by country & add clock"
+          autoComplete="off"
           className="w-full bg-[#1a0b2e]/40 border border-violet-500/20 text-foreground px-5 py-2.5 rounded-xl focus:outline-none focus:ring-1 focus:ring-violet-500/40 focus:border-violet-500/40 transition-all placeholder:text-muted/60 text-[13px] tracking-tight"
         />
         <datalist id="timezone-options">
