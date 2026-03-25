@@ -29,7 +29,7 @@ export default function Footer() {
           <div className="md:col-span-3 space-y-6">
             <h6 className="text-[10px] uppercase font-bold text-white tracking-[0.2em]">Tools</h6>
             <ul className="flex flex-col gap-3 text-sm">
-              <li><Link href="/" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Globe className="w-3.5 h-3.5" /> World Clock</Link></li>
+              <li><Link href="/world-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Globe className="w-3.5 h-3.5" /> World Clock</Link></li>
               <li><Link href="/stopwatch" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Timer className="w-3.5 h-3.5" /> Stopwatch</Link></li>
               <li><Link href="/timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Hourglass className="w-3.5 h-3.5" /> Countdown</Link></li>
               <li><Link href="/alarm-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Bell className="w-3.5 h-3.5" /> Alarms</Link></li>

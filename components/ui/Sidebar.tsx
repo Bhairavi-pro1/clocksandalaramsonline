@@ -18,7 +18,7 @@ import {
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { label: 'World Clock', icon: Globe, href: '/' },
+  { label: 'World Clock', icon: Globe, href: '/world-clock' },
   { label: 'Stopwatch', icon: Timer, href: '/stopwatch' },
   { label: 'Countdown', icon: Hourglass, href: '/timer' },
   { label: 'Alarm', icon: Bell, href: '/alarm-clock' },
@@ -48,9 +48,7 @@ export default function Sidebar() {
 
       <nav className="flex-1 px-4 space-y-3">
         {navItems.map((item) => {
-          const isActive = 
-            (item.href === '/' && (pathname === '/' || pathname === '/world-clock')) || 
-            (item.href !== '/' && pathname.startsWith(item.href))
+          const isActive = pathname.startsWith(item.href) && (item.href !== '/' || pathname === '/')
           return (
             <Link
               key={item.href}

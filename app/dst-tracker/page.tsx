@@ -1,16 +1,27 @@
-import DSTTracker from '@/components/tools/DSTTracker'
+import DstTrackerClient from '@/components/pages/DstTrackerClient'
 import InternalLinks from '@/components/ui/InternalLinks'
 import { Metadata } from 'next'
 import { List, Search, Clock, Zap, CalendarDays } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
+import { getUpcomingDSTChanges } from '@/lib/dst'
 
 export const metadata: Metadata = {
-  title: 'Daylight Saving Time (DST) Tracker - Global Clock Changes',
-  description: 'Track upcoming daylight saving time changes worldwide. Find out when clocks change in your city or any location globally with our high-precision DST tracker.',
+  title: 'Global Daylight Saving Time (DST) Tracker — Live Clock Changes',
+  description: 'Track upcoming daylight saving time changes worldwide. Definitive chronological timeline of every scheduled clock change for the next 12 months with high precision.',
+  alternates: {
+    canonical: 'https://clocksandalarmsonline.com/dst-tracker',
+  },
+  openGraph: {
+    title: 'Global Daylight Saving Time (DST) Tracker — Live Clock Changes',
+    description: 'Never get confused by clock changes again. Our real-time tracker monitors over 150 timezones globally.',
+    type: 'website',
+  }
 }
 
 export default function DSTTrackerPage() {
+  const initialChanges = getUpcomingDSTChanges()
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
       <div className="text-center mb-16 space-y-4">
@@ -23,7 +34,7 @@ export default function DSTTrackerPage() {
         </p>
       </div>
 
-      <DSTTracker />
+      <DstTrackerClient initialChanges={initialChanges} />
       
       {/* Content Outside the Main Card */}
       <div className="w-full max-w-6xl mx-auto space-y-32 mt-32">
@@ -39,7 +50,7 @@ export default function DSTTrackerPage() {
               <span className="text-primary/80">Our Real-Time Global Tracker</span>
             </h2>
             <p className="text-lg md:text-xl text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90">
-              Navigating the complexities of Daylight Saving Time (DST) can be a challenge, especially when coordinating across multiple continents. Some countries spring forward, others fall back, and many don't change at all. Our Global DST Tracker is designed to provide you with a definitive, chronological timeline of every upcoming clock change worldwide.
+              Navigating the complexities of Daylight Saving Time (DST) can be a challenge, especially when coordinating across multiple continents. Some countries spring forward, others fall back, and many don&apos;t change at all. Our Global DST Tracker is designed to provide you with a definitive, chronological timeline of every upcoming clock change worldwide.
             </p>
           </section>
 
@@ -54,7 +65,7 @@ export default function DSTTrackerPage() {
             ].map((item, i) => (
               <div key={i} className={cn(
                 "group p-10 rounded-[3rem] bg-[#1a0b2e]/40 border border-white/5 hover:border-primary/30 transition-all duration-500 shadow-xl",
-                i >= 3 && "lg:col-span-1" // Just standard grid wrap for 5 items
+                i >= 3 && "lg:col-span-1"
               )}>
                 <div className="flex items-start justify-between mb-8">
                   <div className="w-16 h-16 bg-primary/10 rounded-[1.5rem] flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
