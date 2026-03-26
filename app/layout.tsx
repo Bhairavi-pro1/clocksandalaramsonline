@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     template: '%s | Clocks and Alarms Online'
   },
   description: 'Track world time, set alarms, and use timers with high precision. Beautiful full-screen clock for productivity.',
+  icons: {
+    icon: '/assets/clock_site_logo.png',
+    shortcut: '/assets/clock_site_logo.png',
+    apple: '/assets/clock_site_logo.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
