@@ -99,50 +99,41 @@ export default function HomeClient() {
     <div className="flex flex-col space-y-32 pb-32 w-full overflow-hidden">
       
       {/* 🚀 Cinematic Hero Section */}
-      <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 pt-32">
+      <section className="relative min-h-[75vh] flex flex-col items-center justify-center text-center px-6 pt-24 pb-12">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/20 blur-[180px] rounded-full animate-pulse duration-[10s]" />
           <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-accent/20 blur-[150px] rounded-full" />
           <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 blur-[140px] rounded-full" />
         </div>
 
-        <div className="max-w-5xl space-y-12 animate-in fade-in slide-in-from-bottom-12 duration-1200">
+        <div className="max-w-5xl space-y-8 animate-in fade-in slide-in-from-bottom-12 duration-1200">
           <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-primary text-[10px] md:text-xs font-black uppercase tracking-widest backdrop-blur-md shadow-2xl">
             <Zap size={16} className="fill-current animate-pulse text-yellow-500" /> 
             Engineering Precision Since 2025
           </div>
           
-          <h1 className="text-6xl md:text-9xl font-black text-white tracking-tighter leading-[0.85] drop-shadow-[0_0_80px_rgba(124,58,237,0.3)]">
+          <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.85] drop-shadow-[0_0_80px_rgba(124,58,237,0.3)]">
             World Class <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-pink-500 animate-gradient font-display italic tracking-tight">Timekeeping</span>
           </h1>
 
-          <p className="text-2xl md:text-3xl text-muted/70 max-w-3xl mx-auto font-medium leading-tight">
+          <p className="text-xl md:text-2xl text-muted/70 max-w-2xl mx-auto font-medium leading-tight">
             The gold standard in professional-grade timekeeping. 
             Track global pulse, set bulletproof alerts, and master your schedule with millisecond-exact precision.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-4">
             <Link 
               href="/world-clock" 
-              className="group flex items-center gap-4 bg-primary text-white px-12 py-6 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:scale-105 transition-all shadow-3xl shadow-primary/40"
+              className="group flex items-center gap-4 bg-primary text-white px-10 py-5 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:scale-105 transition-all shadow-3xl shadow-primary/40"
             >
               Enter Dashboard <ArrowRight size={20} className="transition-transform group-hover:translate-x-2" />
             </Link>
-            {/* <div className="flex -space-x-3 opacity-60">
-               {[1,2,3,4].map(i => <div key={i} className="w-10 h-10 rounded-full border-2 border-background bg-zinc-800" />)}
-               <div className="pl-6 flex flex-col items-start gap-1">
-                  <div className="flex gap-1 text-yellow-500">
-                     {[1,2,3,4,5].map(i => <Star key={i} size={12} fill="currentColor" />)}
-                  </div>
-                  <span className="text-[10px] font-black text-white/40 uppercase tracking-tighter">1M+ Active Users Monthly</span>
-               </div>
-            </div> */}
           </div>
         </div>
 
         {/* Dynamic Wave Element */}
-        <div className="mt-32 w-full max-w-6xl mx-auto px-4 opacity-20">
+        <div className="mt-20 w-full max-w-6xl mx-auto px-4 opacity-20">
            <div className="h-px w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
         </div>
       </section>
@@ -364,7 +355,7 @@ export default function HomeClient() {
       </section>
 
       {/* ❓ FAQ Section with Premium Design */}
-      <section className="bg-gradient-to-t from-primary/10 via-background to-background py-4 flex flex-col items-center">
+      <section id="expert-insights" className="bg-gradient-to-t from-primary/10 via-background to-background py-4 flex flex-col items-center">
          <div className="max-w-4xl w-full px-6 space-y-16">
             <div className="text-center space-y-4">
                <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight">Expert Insights</h2>

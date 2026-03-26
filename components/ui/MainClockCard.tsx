@@ -55,7 +55,7 @@ export default function MainClockCard({
       ref={cardRef}
       className={cn(
         "relative w-full rounded-[2.5rem] bg-card border border-card-border/40 p-6 md:p-10 xl:p-12 shadow-2xl backdrop-blur-xl group overflow-hidden transition-all duration-500 flex flex-col items-center",
-        isFullscreen ? "h-screen justify-between rounded-none border-none py-20 px-12 bg-[#09090b]" : "max-w-7xl mx-auto min-h-[500px] justify-center"
+        isFullscreen ? "h-screen justify-between rounded-none border-none py-20 px-12 bg-[#09090b]" : "max-w-7xl mx-auto min-h-[380px] justify-center"
       )}
     >
       {/* Decorative background glow */}
@@ -89,7 +89,7 @@ export default function MainClockCard({
       {/* Main Time Display - Responsive Scaling */}
       <div className={cn(
         "font-bold tracking-tight text-white drop-shadow-[0_0_50px_rgba(124,58,237,0.5)] font-display flex items-center justify-center tabular-nums leading-none w-full relative z-10",
-        isFullscreen ? "flex-1 text-[min(16rem,22vw)]" : "text-6xl md:text-[8rem] xl:text-[9.5rem] py-12"
+        isFullscreen ? "flex-1 text-[min(16rem,22vw)]" : "text-6xl md:text-[8rem] xl:text-[8.5rem] py-8"
       )}>
         {(time?.toFormat('HH:mm:ss') || '00:00:00').split('').map((char, i) => (
           <span key={i} className={cn(char === ':' ? "mx-1 opacity-60" : "w-[0.6em] md:w-[0.65em] inline-block text-center")}>

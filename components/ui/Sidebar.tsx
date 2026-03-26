@@ -37,8 +37,12 @@ export default function Sidebar() {
         onClick={() => setIsOpen(false)}
         className="p-8 pb-12 flex items-center space-x-3 group cursor-pointer"
       >
-        <div className="w-11 h-11 bg-primary/20 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/30 group-hover:rotate-6 shadow-lg shadow-primary/10">
-          <Clock className="text-primary w-6 h-6 animate-pulse" />
+        <div className="w-11 h-11 bg-primary/20 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/30 group-hover:rotate-6 shadow-lg shadow-primary/10 overflow-hidden p-2">
+          <img 
+            src="/assets/clock_site_logo.png" 
+            alt="Logo" 
+            className="w-full h-full object-contain filter invert brightness-200 animate-pulse"
+          />
         </div>
         <div className="flex flex-col">
           <span className="text-xl font-black tracking-tighter text-white font-display leading-none">Clocks and Alarms</span>
@@ -96,8 +100,12 @@ export default function Sidebar() {
           onClick={() => setIsOpen(false)}
           className="flex items-center space-x-3 group"
         >
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/5">
-            <Clock className="text-primary w-5 h-5" />
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/5 overflow-hidden p-1.5">
+            <img 
+              src="/assets/clock_site_logo.png" 
+              alt="Logo" 
+              className="w-full h-full object-contain filter invert brightness-200"
+            />
           </div>
           <span className="text-sm font-black tracking-tighter text-white uppercase leading-tight">Clocks and Alarms <br/><span className="text-primary text-[10px] tracking-[0.4em]">Online</span></span>
         </Link>

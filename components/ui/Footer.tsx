@@ -11,8 +11,12 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="md:col-span-6 space-y-6">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                <Clock className="text-primary w-5 h-5" />
+              <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center overflow-hidden p-1.5">
+                <img 
+                  src="/assets/clock_site_logo.png" 
+                  alt="Logo" 
+                  className="w-full h-full object-contain filter invert brightness-200"
+                />
               </div>
               <h4 className="text-xl font-extrabold font-display text-white tracking-tight">
                 Clocks and Alarms <span className="text-primary/70">Online</span>

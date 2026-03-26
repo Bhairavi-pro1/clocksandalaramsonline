@@ -99,7 +99,7 @@ export default function WorldClockClient() {
       </div>
 
       {/* 3. Global Time Zones Section */}
-      <div className="max-w-7xl mx-auto w-full px-4 md:px-0 mt-20">
+      <div className="max-w-7xl mx-auto w-full px-4 md:px-0 mt-8">
         <TimezoneSearch onAdd={addClock} />
         
         <p className="text-muted/80 text-sm md:text-base font-medium mb-8 max-w-4xl mx-auto text-center">
