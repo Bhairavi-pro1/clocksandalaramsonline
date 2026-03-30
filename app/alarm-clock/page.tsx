@@ -5,14 +5,14 @@ import { HelpCircle, Bell, Clock, Zap, Shield } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
 
 export const metadata: Metadata = {
-  title: 'Online Alarm Clock – Professional High-Precision Alert System',
-  description: 'A sophisticated yet simple-to-use online alarm clock. Manage multiple alarms with custom labels, high-fidelity sounds, and persistent browser notifications.',
+  title: 'Free Online Alarm Clock - Set Alarms & Timers | Wake Up On Time',
+  description: 'Set free online alarms and timers instantly. Our alarm clock works in your browser with custom sounds, multiple alarms, and a beautiful interface.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/alarm-clock',
   },
   openGraph: {
-    title: 'Online Alarm Clock – Professional High-Precision Alert System',
-    description: 'Never miss a beat with our persistent, high-fidelity online alarm system. Custom sounds and labels included.',
+    title: 'Free Online Alarm Clock - Set Alarms & Timers | Wake Up On Time',
+    description: 'Set free online alarms and timers instantly. Multiple sounds, custom labels, and a beautiful interface.',
     type: 'website',
   }
 }

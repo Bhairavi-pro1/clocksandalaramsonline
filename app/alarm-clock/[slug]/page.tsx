@@ -1,8 +1,15 @@
 import { Metadata } from 'next'
 import AlarmTimeClient from './AlarmTimeClient'
+import alarmData from '@/data/seo/alarms.json'
 
 interface Props {
   params: Promise<{ slug: string }>
+}
+
+export async function generateStaticParams() {
+  return alarmData.map((item) => ({ 
+    slug: item.slug 
+  }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

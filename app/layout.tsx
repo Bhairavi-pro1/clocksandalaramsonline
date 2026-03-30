@@ -26,10 +26,10 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   metadataBase: new URL('https://clocksandalarmsonline.com'),
   title: {
-    default: 'Clocks and Alarms Online - World Clock & High-Precision Global Tracker',
+    default: 'Free Online Alarm Clock & World Clock | Clocks and Alarms Online',
     template: '%s | Clocks and Alarms Online'
   },
-  description: 'Track world time, set alarms, and use timers with high precision. Beautiful full-screen clock for productivity.',
+  description: 'Set free online alarms, timers, and track world time for any city worldwide. Professional-grade high-precision tools with a premium design.',
   icons: {
     icon: '/assets/clock_site_logo.png',
     shortcut: '/assets/clock_site_logo.png',
