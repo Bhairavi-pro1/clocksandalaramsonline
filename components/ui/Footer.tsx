@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar } from 'lucide-react'
+import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar, Share2 } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -39,6 +39,7 @@ export default function Footer() {
               <li><Link href="/alarm-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Bell className="w-3.5 h-3.5" /> Alarms</Link></li>
               <li><Link href="/meeting-planner" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><CalendarRange className="w-3.5 h-3.5" /> Meeting Planner</Link></li>
               <li><Link href="/dst-tracker" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Calendar className="w-3.5 h-3.5" /> DST Tracker</Link></li>
+              <li><Link href="/shared-alarm" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Share2 className="w-3.5 h-3.5" /> Shared Alarm</Link></li>
             </ul>
           </div>
 

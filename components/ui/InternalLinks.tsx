@@ -7,6 +7,7 @@ const TOOLS = [
   { name: 'World Clock', href: '/world-clock' },
   { name: 'Meeting Planner', href: '/meeting-planner' },
   { name: 'DST Tracker', href: '/dst-tracker' },
+  { name: 'Shared Alarm', href: '/shared-alarm' },
 ]
 
 export default function InternalLinks() {

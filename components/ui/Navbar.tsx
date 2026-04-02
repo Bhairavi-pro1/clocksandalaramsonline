@@ -18,6 +18,7 @@ export default function Navbar() {
             <Link href="/stopwatch" className="text-sm font-medium hover:text-accent transition-colors">Stopwatch</Link>
             <Link href="/world-clock" className="text-sm font-medium hover:text-accent transition-colors">World Clock</Link>
             <Link href="/dst-tracker" className="text-sm font-medium hover:text-accent transition-colors">DST Tracker</Link>
+            <Link href="/shared-alarm" className="text-sm font-medium hover:text-accent transition-colors">Shared Alarm</Link>
           </div>
         </div>
       </div>

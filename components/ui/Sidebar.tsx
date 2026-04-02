@@ -13,7 +13,8 @@ import {
   Info, 
   Mail,
   Menu,
-  X
+  X,
+  Share2
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -23,7 +24,8 @@ const navItems = [
   { label: 'Countdown', icon: Hourglass, href: '/timer' },
   { label: 'Alarm', icon: Bell, href: '/alarm-clock' },
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner' },
-  { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' }
+  { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' },
+  { label: 'Shared Alarm', icon: Share2, href: '/shared-alarm' }
 ]
 
 export default function Sidebar() {

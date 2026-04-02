@@ -1,0 +1,1 @@
+lib/sharedAlarmLogic.ts(4,39): error TS2724: '"firebase/firestore"' has no exported member named 'querySnapshot'. Did you mean 'QuerySnapshot'?
