@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Plus } from 'lucide-react'
 import { useSession } from '@/hooks/useSession'
 import { 
@@ -13,6 +13,18 @@ import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import SharedAlarmCard from '@/components/tools/SharedAlarmCard'
 import SharedAlarmModal from '@/components/tools/SharedAlarmModal'
+import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
+import { Howl } from 'howler'
+
+const SOUNDS: Record<string, string> = {
+  vibe: '/sounds/vibe.mp3',
+  editorial: '/sounds/editorial.mp3',
+  guitar: '/sounds/guitar.mp3',
+  riser: '/sounds/riser.mp3',
+  birds: '/sounds/birds.mp3',
+  fun: '/sounds/fun.mp3',
+  synthwave: '/sounds/synthwave.mp3',
+}
 
 export default function SharedAlarmDashboard() {
   const { sessionId } = useSession()
@@ -22,6 +34,9 @@ export default function SharedAlarmDashboard() {
   const [editingAlarm, setEditingAlarm] = useState<SharedAlarm | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  const [ringingAlarm, setRingingAlarm] = useState<SharedAlarm | null>(null)
+  const howlRef = useRef<Howl | null>(null)
+
   const loadAlarms = async () => {
     if (!sessionId) return;
     
@@ -30,9 +45,13 @@ export default function SharedAlarmDashboard() {
     const receivedIds = getMyReceivedAlarms();
 
     const fetchAlarm = async (id: string) => {
-      const snap = await getDoc(doc(db, 'sharedAlarms', id));
-      if (snap.exists()) {
-        return snap.data() as SharedAlarm;
+      try {
+        const snap = await getDoc(doc(db, 'sharedAlarms', id));
+        if (snap.exists()) {
+          return snap.data() as SharedAlarm;
+        }
+      } catch (err) {
+        console.warn("Error fetching alarm doc:", err);
       }
       return null;
     };
@@ -51,13 +70,13 @@ export default function SharedAlarmDashboard() {
     }
   }, [sessionId]);
 
-  const handleSaveAlarm = async (data: {title: string, description: string, alarmDateTime: string}) => {
+  const handleSaveAlarm = async (data: {title: string, description: string, alarmDateTime: string, sound: string}) => {
     if (!sessionId) return;
     
     if (editingAlarm) {
-       await updateSharedAlarm(editingAlarm.alarmId, data.title, data.description, data.alarmDateTime);
+       await updateSharedAlarm(editingAlarm.alarmId, data.title, data.description, data.alarmDateTime, data.sound);
     } else {
-       await createSharedAlarm(data.title, data.description, data.alarmDateTime, sessionId);
+       await createSharedAlarm(data.title, data.description, data.alarmDateTime, data.sound, sessionId);
     }
     
     setEditingAlarm(null);
@@ -77,6 +96,34 @@ export default function SharedAlarmDashboard() {
        localStorage.setItem('myReceivedAlarms', JSON.stringify(filtered));
     }
   };
+
+  const handleAlarmRing = (alarm: SharedAlarm) => {
+    if (howlRef.current) howlRef.current.stop()
+
+    howlRef.current = new Howl({
+      src: [SOUNDS[alarm.sound] || SOUNDS.vibe],
+      loop: true,
+      volume: 0.8,
+    })
+
+    howlRef.current.play()
+    setRingingAlarm(alarm)
+
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+      new Notification('⏰ Shared Alarm!', { 
+        body: alarm.title || `Your shared alarm is ringing.`,
+        icon: '/icons/icon-192.png'
+      })
+    }
+  };
+
+  const stopRinging = () => {
+    if (howlRef.current) {
+      howlRef.current.stop()
+      howlRef.current = null
+    }
+    setRingingAlarm(null)
+  }
 
   if (isLoading) {
     return (
@@ -122,6 +169,7 @@ export default function SharedAlarmDashboard() {
                         setIsModalOpen(true);
                      }}
                      onRemoveFromUI={handleRemoveCreatedUI}
+                     onAlarmRinging={handleAlarmRing}
                   />
                ))}
             </div>
@@ -149,6 +197,7 @@ export default function SharedAlarmDashboard() {
                      alarm={alarm}
                      isCreator={false}
                      onRemoveFromUI={handleRemoveReceivedUI}
+                     onAlarmRinging={handleAlarmRing}
                   />
                ))}
             </div>
@@ -163,6 +212,14 @@ export default function SharedAlarmDashboard() {
         }}
         onSave={handleSaveAlarm}
         initialData={editingAlarm}
+      />
+
+      <AlarmTriggerModal 
+        isOpen={!!ringingAlarm}
+        onClose={stopRinging}
+        label={ringingAlarm?.title || 'Shared Alarm Ringing!'}
+        type="alarm"
+        timeText={ringingAlarm ? new Date(ringingAlarm.alarmDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
       />
     </div>
   )

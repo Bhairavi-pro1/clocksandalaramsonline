@@ -8,6 +8,7 @@ const TOOLS = [
   { name: 'Meeting Planner', href: '/meeting-planner' },
   { name: 'DST Tracker', href: '/dst-tracker' },
   { name: 'Shared Alarm', href: '/shared-alarm' },
+  { name: 'Egg Timer', href: '/egg-timer' },
 ]
 
 export default function InternalLinks() {

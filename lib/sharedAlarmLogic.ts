@@ -9,6 +9,7 @@ export interface SharedAlarm {
   title: string;
   description: string;
   alarmDateTime: string; // ISO 8601
+  sound: string;
   createdBy: string;
   createdAt: string;
   isActive: boolean;
@@ -60,6 +61,7 @@ export async function createSharedAlarm(
   title: string, 
   description: string, 
   alarmDateTime: string, 
+  sound: string,
   sessionId: string
 ): Promise<string> {
   const alarmId = generateRandomId();
@@ -68,6 +70,7 @@ export async function createSharedAlarm(
     title,
     description,
     alarmDateTime,
+    sound,
     createdBy: sessionId,
     createdAt: new Date().toISOString(),
     isActive: true
@@ -89,13 +92,15 @@ export async function updateSharedAlarm(
   alarmId: string,
   title: string,
   description: string,
-  alarmDateTime: string
+  alarmDateTime: string,
+  sound: string
 ) {
   const alarmDocRef = doc(db, 'sharedAlarms', alarmId);
   await updateDoc(alarmDocRef, {
     title,
     description,
-    alarmDateTime
+    alarmDateTime,
+    sound
   });
 }
 

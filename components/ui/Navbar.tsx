@@ -19,6 +19,7 @@ export default function Navbar() {
             <Link href="/world-clock" className="text-sm font-medium hover:text-accent transition-colors">World Clock</Link>
             <Link href="/dst-tracker" className="text-sm font-medium hover:text-accent transition-colors">DST Tracker</Link>
             <Link href="/shared-alarm" className="text-sm font-medium hover:text-accent transition-colors">Shared Alarm</Link>
+            <Link href="/egg-timer" className="text-sm font-medium hover:text-accent transition-colors">Egg Timer</Link>
           </div>
         </div>
       </div>

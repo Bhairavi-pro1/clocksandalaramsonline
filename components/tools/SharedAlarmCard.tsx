@@ -11,9 +11,10 @@ interface SharedAlarmCardProps {
   isCreator: boolean
   onEdit?: (alarm: SharedAlarm) => void
   onRemoveFromUI: (id: string) => void
+  onAlarmRinging?: (alarm: SharedAlarm) => void
 }
 
-export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFromUI }: SharedAlarmCardProps) {
+export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFromUI, onAlarmRinging }: SharedAlarmCardProps) {
   const [responses, setResponses] = useState<SharedAlarmResponse[]>([])
   const [copying, setCopying] = useState(false)
   const [currentAlarm, setCurrentAlarm] = useState<SharedAlarm>(alarm)
@@ -28,13 +29,18 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
     if (!isCreator || !alarm.alarmId) return;
     
     const responsesRef = collection(db, 'sharedAlarms', alarm.alarmId, 'responses');
-    const unsub = onSnapshot(responsesRef, (snap) => {
-      const res: SharedAlarmResponse[] = [];
-      snap.forEach(doc => {
-        res.push(doc.data() as SharedAlarmResponse);
-      });
-      setResponses(res);
-    });
+    const unsub = onSnapshot(responsesRef, 
+      (snap) => {
+        const res: SharedAlarmResponse[] = [];
+        snap.forEach(doc => {
+          res.push(doc.data() as SharedAlarmResponse);
+        });
+        setResponses(res);
+      },
+      (err) => {
+        console.warn("Could not load responses (rules or permission):", err.message);
+      }
+    );
     
     return () => unsub();
   }, [alarm.alarmId, isCreator]);
@@ -44,13 +50,18 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
     if (!alarm.alarmId) return;
 
     const docRef = doc(db, 'sharedAlarms', alarm.alarmId);
-    const unsub = onSnapshot(docRef, (snap) => {
-      if (!snap.exists()) {
-        onRemoveFromUI(alarm.alarmId);
-      } else {
-        setCurrentAlarm(snap.data() as SharedAlarm);
+    const unsub = onSnapshot(docRef, 
+      (snap) => {
+        if (!snap.exists()) {
+          onRemoveFromUI(alarm.alarmId);
+        } else {
+          setCurrentAlarm(snap.data() as SharedAlarm);
+        }
+      },
+      (err) => {
+        console.warn("Could not sync alarm updates:", err.message);
       }
-    });
+    );
 
     return () => unsub();
   }, [alarm.alarmId, onRemoveFromUI]);
@@ -61,22 +72,28 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
       const now = new Date();
       const alarmTime = new Date(currentAlarm.alarmDateTime);
       if (now > alarmTime) {
+        
+        // Trigger ringing if the expiration was recent (within 60s)
+        if (now.getTime() - alarmTime.getTime() < 60000) {
+           onAlarmRinging?.(currentAlarm)
+        }
+
         if (isCreator) {
           deleteSharedAlarm(currentAlarm.alarmId);
         } else {
           onRemoveFromUI(currentAlarm.alarmId);
         }
       }
-    }, 60000); // Check every minute
+    }, 1000); // Check every second for exact trigger
     
-    // Initial check
+    // Initial check (prevent old alarms from ringing if user opens page late)
     if (new Date() > new Date(currentAlarm.alarmDateTime)) {
        if (isCreator) deleteSharedAlarm(currentAlarm.alarmId);
        else onRemoveFromUI(currentAlarm.alarmId);
     }
     
     return () => clearInterval(checkExpiration);
-  }, [currentAlarm, isCreator, onRemoveFromUI]);
+  }, [currentAlarm, isCreator, onRemoveFromUI, onAlarmRinging]);
 
   const handleCopyLink = () => {
     setCopying(true)

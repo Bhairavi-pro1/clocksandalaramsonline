@@ -9,6 +9,8 @@ interface AlarmTriggerModalProps {
   timeText?: string
 }
 
+import { useEffect, useRef } from 'react'
+
 export default function AlarmTriggerModal({ 
   isOpen, 
   onClose, 
@@ -16,6 +18,26 @@ export default function AlarmTriggerModal({
   type = 'timer',
   timeText 
 }: AlarmTriggerModalProps) {
+  
+  // Tab blinking logic
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+    const originalTitle = document.title
+    
+    if (isOpen) {
+      let isBlinking = false
+      interval = setInterval(() => {
+        document.title = isBlinking ? (type === 'alarm' ? "⏰ ALARM RINGING!" : "⏳ TIMER UP!") : originalTitle
+        isBlinking = !isBlinking
+      }, 1000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+      document.title = originalTitle // Reset on close/unmount
+    }
+  }, [isOpen, type])
+
   if (!isOpen) return null
 
   return (
