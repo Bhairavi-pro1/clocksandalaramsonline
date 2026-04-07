@@ -29,7 +29,7 @@ export default function AlarmCard({ id, label, time, isActive, onToggle, onRemov
         <button 
           type="button"
           onClick={() => onRemove(id)}
-          className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 transition-colors text-red-500/60"
+          className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 transition-colors text-red-500/60 cursor-pointer"
         >
           <Trash2 size={16} />
         </button>

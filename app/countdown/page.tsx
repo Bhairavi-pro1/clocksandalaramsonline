@@ -130,7 +130,7 @@ export default function HolidayCountdownIndexPage() {
             Our holiday countdown engine is designed for high-precision timekeeping. We utilize sub-millisecond 
             system performance counters to ensure that the time you see is perfectly synchronized with the true 
             movement of the earth. From office celebrations to personal milestones, Clocks and Alarms Online 
-            provides the most reliable trackers on the web.
+            provides the most reliable trackers on the web. Experience it beautifully with our countdown timer full screen feature.
           </p>
         </section>
 

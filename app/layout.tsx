@@ -29,12 +29,7 @@ export const metadata: Metadata = {
     default: 'Free Online Alarm Clock & World Clock | Clocks and Alarms Online',
     template: '%s | Clocks and Alarms Online'
   },
-  description: 'Set free online alarms, timers, and track world time for any city worldwide. Professional-grade high-precision tools with a premium design.',
-  icons: {
-    icon: '/assets/clock_site_logo.png',
-    shortcut: '/assets/clock_site_logo.png',
-    apple: '/assets/clock_site_logo.png',
-  },
+  description: 'Set a free online alarm clock or track time with our high-precision world clock. Features include a countdown timer full screen, online stopwatch, and loud alarm clock online options.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

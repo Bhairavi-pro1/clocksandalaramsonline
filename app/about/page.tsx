@@ -100,7 +100,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 4. Vision Section */}
+      {/* 4. Expertise & Authorship */}
+      <section className="bg-primary/5 border border-primary/20 p-12 rounded-[3.5rem] mt-16 max-w-4xl mx-auto">
+        <h2 className="text-3xl font-black text-white tracking-tight uppercase italic mb-6 text-center">Developed by Technical Experts</h2>
+        <p className="text-lg text-muted-foreground leading-relaxed font-medium text-center">
+          With over 15 years of experience in utility software and high-precision systems, our senior technical team established Clocks and Alarms Online to set the gold standard in web-based timekeeping. We ensure every clock, timer, and alarm operates with atomic synchronization and uncompromised accuracy.
+        </p>
+      </section>
+
+      {/* 5. Vision Section */}
       <section className="max-w-4xl mx-auto text-center space-y-8">
         <h2 className="text-3xl font-black text-white tracking-tight uppercase italic">Developed for Productivity</h2>
         <p className="text-lg text-muted-foreground leading-relaxed font-medium">

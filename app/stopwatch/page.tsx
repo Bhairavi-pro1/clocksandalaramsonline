@@ -5,14 +5,14 @@ import { HelpCircle, Timer, RotateCcw, List, Maximize2 } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
 
 export const metadata: Metadata = {
-  title: 'Online Stopwatch – High-Precision Lap Timer',
-  description: 'A professional-grade online stopwatch with millisecond accuracy. Features lap timing, history tracking, and full-screen mode for athletics and productivity.',
+  title: 'Free Online Stopwatch – High-Precision Lap Timer',
+  description: 'A professional-grade free online stopwatch with millisecond accuracy. Features lap timing, history tracking, and full-screen mode for athletics and productivity.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/stopwatch',
   },
   openGraph: {
-    title: 'Online Stopwatch – High-Precision Lap Timer',
-    description: 'Professional millisecond-accurate stopwatch for any activity. Lap tracking and full-screen mode included.',
+    title: 'Free Online Stopwatch – High-Precision Lap Timer',
+    description: 'Professional millisecond-accurate free online stopwatch for any activity. Lap tracking and full-screen mode included.',
     type: 'website',
   }
 }
@@ -70,7 +70,7 @@ export default function StopwatchPage() {
       
       <div className="max-w-7xl mx-auto px-6 pt-16">
         <h1 className="text-primary font-black tracking-[0.3em] uppercase text-xs md:text-sm mb-4 text-center animate-in fade-in duration-700">
-          Online Stopwatch – High-Precision Lap Timer
+          Free Online Stopwatch – High-Precision Lap Timer
         </h1>
       </div>
 
@@ -84,7 +84,7 @@ export default function StopwatchPage() {
             Professional Grade Timing
           </div>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-white tracking-tight leading-tight">
-            A High-Precision Stopwatch <br />
+            A Free Online Stopwatch <br />
             <span className="text-primary/80">for Every Second That Counts</span>
           </h2>
           <p className="text-lg text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90">

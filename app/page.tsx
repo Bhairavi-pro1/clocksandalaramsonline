@@ -4,13 +4,13 @@ import StructuredData from '@/components/seo/StructuredData'
 
 export const metadata: Metadata = {
   title: 'Free Online Alarm Clock, World Clock & Timers | Clocks and Alarms Online',
-  description: 'The ultimate online timekeeping suite. Set precise alarms, track global world times, and use high-precision countdown timers. No login required, works in your browser with custom sounds.',
+  description: 'The ultimate free online alarm clock and world clock suite. Set precision alarms, track global time, and use our countdown timer full screen. No login required.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com',
   },
   openGraph: {
-    title: 'Free Online Alarm Clock, World Clock & Timers | Clocks and Alarms Online',
-    description: 'The gold standard in online timekeeping. Precision alarms, world clocks, and timers with a vibrant interface.',
+    title: 'Free Online Alarm Clock & World Clock | Clocks and Alarms Online',
+    description: 'The gold standard in online timekeeping. Loud alarm clock online options, precise world clocks, and timers with a vibrant interface.',
     type: 'website',
   }
 }
@@ -47,16 +47,44 @@ export default function Home() {
         "name": "Do I need an account to use the alarms and clocks?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. All your data, alarms, and world clocks are stored locally in your browser. No login or account is required."
+          "text": "No. All your data, alarms, and world clocks are stored locally in your browser. No login or account is required to use our free alarm."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best online world clock?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The best online world clocks provide high-precision atomic syncing and support thousands of cities like ours, allowing you to track global time without creating an account."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use a free alarm with no account?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, our free online alarm clock works entirely within your browser without requiring an account or login. Your alarms are saved securely using local browser storage."
         }
       }
     ]
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://clocksandalarmsonline.com"
+    }]
   }
 
   return (
     <div className="w-full">
       <StructuredData data={websiteSchema} />
       <StructuredData data={faqSchema} />
+      <StructuredData data={breadcrumbSchema} />
       <HomeClient />
     </div>
   )
