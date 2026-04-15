@@ -26,7 +26,7 @@ export default function CountdownScenarios() {
       seconds,
       sound: 'vibe' 
     })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    document.getElementById('timers-list-section')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const handleAddHolidayCountdown = (holiday: Holiday) => {
@@ -37,7 +37,7 @@ export default function CountdownScenarios() {
       seconds: diffSeconds,
       sound: 'vibe'
     })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    document.getElementById('timers-list-section')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const timerPresets = [

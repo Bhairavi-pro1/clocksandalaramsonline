@@ -3,7 +3,8 @@ import SharedAlarmDashboard from '@/components/pages/SharedAlarmDashboard'
 import SharedAlarmPreview from '@/components/pages/SharedAlarmPreview'
 import StructuredData from '@/components/seo/StructuredData'
 import AdBanner from '@/components/ui/AdBanner'
-import { Share2, Clock, CheckCircle2, Link2, HelpCircle } from 'lucide-react'
+import { Share2, Clock, CheckCircle2, Link2, HelpCircle, GraduationCap, Briefcase, Dumbbell, Utensils, Timer, Globe } from 'lucide-react'
+import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
   title: 'Shared Alarms - Sync Time Together | Clocks and Alarms Online',
@@ -101,87 +102,50 @@ export default async function SharedAlarmPage({
                   <AdBanner />
                 </div>
 
-                {/* High-Precision SEO Content & User Guide (Server Side) */}
-                <div className="max-w-6xl mx-auto mt-32 pb-8 space-y-32">
-                  
-                  {/* Excellent SEO Paragraph */}
-                  <section className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-1000">
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
-                      Seamless Group Coordination
-                    </div>
-                    <h2 className="text-3xl md:text-5xl font-bold font-display text-white tracking-tight leading-tight">
-                      Synchronize Your Schedule <br />
-                      <span className="text-primary/80">With the People Who Matter</span>
-                    </h2>
-                    <p className="text-lg md:text-xl text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90">
-                      Our Shared Alarms feature bridges the gap between personal timekeeping and group coordination. Whether you're reminding a team about an upcoming meeting, waking up friends for an early road trip, or syncing a daily stand-up, you can distribute a live alarm to anyone instantly. Real-time updates ensure that everyone stays perfectly on the same page.
-                    </p>
-                  </section>
-
-                  {/* 📖 How to Use Section */}
-                  <section className="space-y-16">
-                    <div className="text-center space-y-4">
-                      <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight italic">How to <span className="text-primary not-italic">Share an Alarm</span></h2>
-                      <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                      {[
-                        { 
-                          icon: Clock, 
-                          title: "1. Create", 
-                          text: "Set up a new alarm with a specific time, date, and title from your dashboard." 
-                        },
-                        { 
-                          icon: Link2, 
-                          title: "2. Generate Link", 
-                          text: "Click the Share button on your alarm card to instantly copy a unique invite link." 
-                        },
-                        { 
-                          icon: Share2, 
-                          title: "3. Distribute", 
-                          text: "Send the link via WhatsApp, Slack, or email to whoever needs the reminder." 
-                        },
-                        { 
-                          icon: CheckCircle2, 
-                          title: "4. Live Sync", 
-                          text: "Watch in real-time as recipients accept the invite. Edit the time and everyone updates instantly." 
-                        }
-                      ].map((item, i) => (
-                        <div key={i} className="group p-8 rounded-[2.5rem] bg-[#1a0b36]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-                          <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                            <item.icon className="w-6 h-6 text-white" />
-                          </div>
-                          <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
-                          <p className="text-sm text-muted/80 leading-relaxed font-medium">
-                            {item.text}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-
-                  {/* FAQ Section */}
-                  <section className="space-y-16">
-                    <div className="text-center space-y-4">
-                      <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">Shared Alarms <span className="text-primary italic">Help Center</span></h2>
-                      <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {faqSchema.mainEntity.map((faq, i) => (
-                        <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] hover:bg-white/[0.08] transition-all group">
-                          <div className="flex gap-4 mb-4">
-                            <HelpCircle className="text-primary group-hover:scale-110 transition-transform flex-shrink-0 mt-1" />
-                            <h3 className="text-lg font-bold text-white tracking-tight">{faq.name}</h3>
-                          </div>
-                          <p className="text-sm text-muted/70 leading-relaxed font-medium pl-10">
-                            {faq.acceptedAnswer.text}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
+                {/* ToolSEO Integration */}
+                <div className="mt-32">
+                  <ToolSEO
+                    toolName="Shared Alarms"
+                    introTag="Seamless Group Coordination"
+                    introHeading="Synchronize Your Schedule With the People Who Matter"
+                    introParagraph="Our Shared Alarms feature fundamentally bridges the gap between personal timekeeping and complex group coordination. Whether you are reminding a remote team about an upcoming sprint meeting, waking up friends for an early road trip, or syncing a daily medication routine with an elderly parent, you can distribute a live, synchronized alarm to anyone instantly. Real-time websocket updates ensure that everyone stays perfectly on the same page without ever needing to install an app."
+                    howToSteps={[
+                      { title: "Create the Prototype", text: "Set up a new alarm with a specific time, date, and descriptive title from your primary dashboard as you normally would." },
+                      { title: "Generate Share Link", text: "Click the 'Share' icon on your newly created alarm card to instantly generate a secure, unique cryptographic invite link." },
+                      { title: "Distribute Invite", text: "Send the secure URL via WhatsApp, Slack, iMessage, or email to whoever needs to be on your synchronized schedule." },
+                      { title: "Watch Live Sync", text: "Sit back and watch in real-time as recipients click your link and accept the invite. If you edit the time, their dashboards update instantly." }
+                    ]}
+                    proTips={[
+                      "Are you a streamer or content creator? Drop your shared alarm link in your Discord so your community gets a synchronized audio alert exactly when you go live.",
+                      "Use the unified dashboard to track who has accepted your invite so you know exactly who is 'checked in' and ready for the event.",
+                      "The link acts as a persistent channel. Even if you change the alarm from 8 AM to 9 AM, you do not need to send out a new link—the websocket pushes the update to all subscribers."
+                    ]}
+                    useCases={[
+                      { icon: Briefcase, title: "For Remote Managers", text: "A project manager creates a shared 'Standup' alarm for 9:45 AM. The entire team gets a unified chime on their respective laptops, eliminating excuses for being late to the Zoom call." },
+                      { icon: GraduationCap, title: "For Study Groups", text: "College students use shared alarms to synchronize Pomodoro study sessions across different dorm rooms. When the alarm rings, everyone takes a break at the exact same moment." },
+                      { icon: Clock, title: "For Road Trips", text: "Planning to leave at 5 AM? Send the alarm to everyone in the carpool the night before. You control the master clock, ensuring no one oversleeps." },
+                      { icon: Utensils, title: "For Family Dinners", text: "Parents can send a shared 'Dinner Time' alarm to their teenagers' laptops. Once it goes off, it's a non-negotiable unified signal to come downstairs." },
+                      { icon: Timer, title: "For Online Gamers", text: "Raid leaders in MMOs use shared alarms to ensure their 40-person squad logs in at the precise moment a major world boss spawns." }
+                    ]}
+                    whyChooseUs={`Most shared scheduling systems require you to download a clunky app, create an account, verify an email, and add people to a 'family plan' just to share a simple timer.
+                    
+                    Clocks and Alarms Online operates entirely friction-free. Our Shared Alarm infrastructure uses anonymous sessions and secure Supabase real-time websockets. You do not need to log in, and neither do your recipients. The moment you generate a link, the real-time tunnel is established. This allows for massive, spontaneous coordination that standard calendar apps simply cannot compete with.`}
+                    troubleshooting={`Invite link not working or alarms not syncing?
+                    
+                    1. Link Expired: For security and server cleanliness, shared alarms are automatically purged from our database once the set time passes. If your event was yesterday, the link is dead.
+                    2. Disconnected Client: If a recipient loses Wi-Fi, they will drop off the real-time sync. The alarm will still ring on their local machine at the previously synced time, but they won't see any live edits you make while they are offline.
+                    3. Browser Permissions: The recipient has to explicitly click "Accept" when they open your link. Browsers will strictly block audio alarms from playing unless the user has actively clicked the page first.`}
+                    faqs={[
+                      { q: "Do I need to create an account to share an alarm?", a: "No! Our Shared Alarm system is completely and entirely login-free. We use a secure, anonymous browser session to link your alarms to your device so you can share instantly." },
+                      { q: "How does the real-time syncing actually work?", a: "We utilize persistent websockets. When you as the 'admin' edit the time or title, the change packet is broadcasted to all connected participants globally in under 50 milliseconds without anyone needing to refresh the page." },
+                      { q: "What happens when an alarm expires?", a: "For your digital privacy and to keep the global system clean, shared alarms are permanently wiped from our backend servers the moment their scheduled time safely passes." },
+                      { q: "If I cross timezones, does the shared alarm break?", a: "No. The alarm is anchored to an absolute point in time (UTC). If you set an alarm for 3 PM in New York, a friend in California who accepts the link will automatically see it scheduled for 12 PM their time." },
+                      { q: "Can recipients turn the alarm off?", a: "Recipients can 'leave' the shared group or mute the alert on their local device, but they cannot delete the master alarm for everyone else. Only the creator has admin editing privileges." },
+                      { q: "How many people can I share one alarm with?", a: "Currently, our websocket infrastructure supports hundreds of concurrent listeners for a single shared alarm link, making it perfect for both small teams and entire communities." },
+                      { q: "Does the link expire?", a: "The link remains active and secure up until the exact moment the alarm rings. Afterward, it self-destructs to ensure privacy." },
+                      { q: "Can I use this on my mobile phone?", a: "Absolutely. You can create the alarm on your desktop and text the link to someone's phone. As long as they keep the mobile browser tab active, it will sync perfectly." }
+                    ]}
+                  />
                 </div>
 
                 <div className="mt-16 max-w-7xl mx-auto">

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import WorldClockClient from '@/components/pages/WorldClockClient'
 import StructuredData from '@/components/seo/StructuredData'
-import { HelpCircle, Search, Globe, Maximize2, Save } from 'lucide-react'
+import { HelpCircle, Search, Globe, Maximize2, Save, GraduationCap, Briefcase, Dumbbell, Utensils, Timer } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
-
+import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
   title: 'World Clock — Current Local Time Worldwide',
   description: 'Track local time in any city worldwide with high precision. Our world clock supports all major timezones and adjusts automatically for daylight savings time.',
@@ -84,106 +84,48 @@ export default function WorldClockPage() {
 
       <WorldClockClient />
 
-      {/* High-Precision SEO Content & User Guide (Server Side) */}
-      <div className="max-w-6xl mx-auto pb-24 px-6 space-y-32 mt-20">
+      <ToolSEO
+        toolName="World Clock"
+        introTag="Global Time Synchronization"
+        introHeading="High-Precision World Clock & Global Tracker for Unmatched Productivity"
+        introParagraph="Welcome to the World Clock dashboard on Clocks and Alarms Online. Our high-precision world clock is engineered to deliver millisecond-accurate time synchronization across every corner of the globe. Whether you are managing international teams, trading across markets, or simply keeping in touch with loved ones, our vibrant interface ensures you stay in sync with the world. With support for over 7,000 global cities and automatic Daylight Saving Time (DST) adjustments, you never have to manually calculate a timezone difference again."
+        howToSteps={[
+          { title: "Search and Add Cities", text: "Use the intelligent search bar above the grid. Type any major city, country, or timezone code (e.g., 'EST') to add it to your persistent dashboard." },
+          { title: "Rearrange Your Grid", text: "Though currently auto-sorted by timezone, you can easily view all your active cities at a glance. Remove cities by clicking the trash icon." },
+          { title: "Go Full-Screen", text: "Click the expand icon in the corner of any specific clock card. This isolates that specific city's time into a giant, cinematic display mode." },
+          { title: "Trust the Auto-Save", text: "Once you build your perfect global dashboard, you are done. Your selected timezones are automatically saved to your local browser storage forever." }
+        ]}
+        proTips={[
+          "Are you a Forex trader? Add the 'New York', 'London', 'Tokyo', and 'Sydney' clocks to your dashboard to perfectly track when global financial markets open and close.",
+          "Check the small icons beneath the city name—they give you an instant visual of whether it is currently daytime or nighttime in that specific region.",
+          "Keep the dashboard open on a secondary monitor. It serves as an incredibly useful 'Command Center' for remote workers dealing with decentralized teams."
+        ]}
+        useCases={[
+          { icon: Briefcase, title: "For International Business", text: "When scheduling a Zoom call with engineers in India, sales in New York, and management in London, checking the world clock prevents scheduling meetings at 3 AM for a colleague." },
+          { icon: GraduationCap, title: "For Student Travelers", text: "Students studying abroad use the dashboard to know exactly when it's safe to call their parents back home without waking them up in the middle of the night." },
+          { icon: Timer, title: "For Forex & Day Traders", text: "Financial markets operate on strict localized hours. Traders rely on our perfectly synced clocks to know exactly when the London or Tokyo session is opening." },
+          { icon: Globe, title: "For Remote Teams (Asynchronous Work)", text: "Managing an asynchronous team means respecting local hours. Check the dashboard before pinging a coworker to ensure you aren't interrupting their off-hours." },
+          { icon: Utensils, title: "For Coordinating Virtual Events", text: "Planning a global webinar or gaming event? Ensure everyone logs in at the exact same moment by referring to a single source of truth based on Coordinated Universal Time (UTC)." }
+        ]}
+        whyChooseUs={`When checking global timezones, the number one point of failure is Daylight Saving Time (DST). Generic clocks often fail to account for local DST laws, which differ drastically between the US, Europe, and Asia.
         
-        {/* Excellent SEO Paragraph */}
-        <section className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-1000">
-          <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-white tracking-tight leading-tight">
-            High-Precision World Clock & Global Tracker <br />
-            <span className="text-primary/80">for Unmatched Productivity</span>
-          </h2>
-          <p className="text-lg md:text-xl text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90">
-            Welcome to the World Clock dashboard on Clocks and Alarms Online. Our high-precision world clock is engineered 
-            to deliver millisecond-accurate time synchronization across every corner of the globe. 
-            Whether you are managing international teams, trading across markets, or simply keeping in touch 
-            with loved ones, our vibrant interface ensures you stay in sync with the world.
-          </p>
-        </section>
-
-        {/* Comprehensive "How to Use" Guide */}
-        <section className="space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight italic">How to <span className="text-primary">Use</span></h2>
-            <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { 
-                icon: Globe, 
-                title: "View Local Time", 
-                text: "The main dashboard card instantly syncs with your device to show you your local time with high accuracy." 
-              },
-              { 
-                icon: Search, 
-                title: "Add Global Zones", 
-                text: "Use the intelligent search bar above the grid to find cities or countries and add them to your persistent dashboard." 
-              },
-              { 
-                icon: Maximize2, 
-                title: "Go Full-Screen", 
-                text: "Click the expand icon in the corner of any clock to enter a dedicated focus mode, perfect for public displays." 
-              },
-              { 
-                icon: Save, 
-                title: "Auto-Save", 
-                text: "Your selected timezones are automatically saved to your browser and will load every time you return to the site." 
-              }
-            ].map((item, i) => (
-              <div key={i} className="group p-8 rounded-[2.5rem] bg-[#1a0b2e]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-                <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                  <item.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
-                <p className="text-sm text-muted/80 leading-relaxed font-medium">
-                  {item.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Detailed FAQ Section for SEO */}
-        <section className="space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">World Clock <span className="text-primary italic">Expert Insights</span></h2>
-            <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              { 
-                q: "What is UTC and why is it important?", 
-                a: "Coordinated Universal Time (UTC) is the primary time standard by which the world regulates clocks and time. Our system uses UTC as the base for all calculations to ensure perfect synchronization between different global regions."
-              },
-              {
-                q: "How often is the weather updated?",
-                a: "Weather data for each city is refreshed every 30 minutes to provide you with the most current temperature and conditions alongside the local time."
-              },
-              {
-                q: "Can I use the world clock for meeting planning?",
-                a: "Yes! While this dashboard is great for quick checks, we also offer a dedicated Meeting Planner tool that helps you find the perfect time window across multiple zones."
-              },
-              {
-                q: "Is there a limit to how many clocks I can add?",
-                a: "There is no hard limit. You can add as many cities as your browser storage allows, making it ideal for large-scale international coordination."
-              }
-            ].map((faq, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] hover:bg-white/[0.08] transition-all group">
-                <div className="flex gap-4 mb-4">
-                  <HelpCircle className="text-primary group-hover:scale-110 transition-transform" />
-                  <h3 className="text-lg font-bold text-white tracking-tight">{faq.q}</h3>
-                </div>
-                <p className="text-sm text-muted/70 leading-relaxed font-medium pl-10">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+        Our World Clock architecture pulls from the official overarching IANA Time Zone Database. This means the second a country changes its DST policy or shifts its clocks forward, our platform accounts for it instantly without you having to lift a finger. Furthermore, we don't demand you create an account to save your dashboard. Everything is stored instantly right in your local browser profile.`}
+        troubleshooting={`If a clock displays the wrong time or layout breaks:
+        
+        1. VPN Interference: If you are using a corporate VPN, your browser's underlying "local timezone" might be overridden, causing the primary clock to display the VPN server's location instead of yours.
+        2. OS Clock De-sync: Our system calculates global time relative to your computer's internal clock. If your Windows or Mac clock is set incorrectly, ALL world clocks will shift. Turn on "Set Time Automatically" in your OS settings.
+        3. Cache Issues: If a city disappears, your browser may have cleared its LocalStorage. Unfortunately, you must re-add the cities if you clear your browsing data.`}
+        faqs={[
+          { q: "What is UTC and why is it important?", a: "Coordinated Universal Time (UTC) is the primary time standard by which the world regulates clocks. Our system uses UTC under the hood to ensure perfect mathematical synchronization between different regions." },
+          { q: "Does it automatically adjust for Daylight Saving Time?", a: "Yes. Our system uses the latest IANA Time Zone Database to automatically adjust the local time for every city as soon as a local DST transition occurs legally." },
+          { q: "Can I save my favorite cities?", a: "Absolutely. Any city you add to your dashboard is automatically saved to your browser's local storage and will be retained indefinitely unless you manually delete your cache." },
+          { q: "Is there a limit to how many clocks I can add?", a: "There is no hard limit! You can add 50 cities if you like. The CSS grid will dynamically expand to house as many timezones as you require for large-scale coordination." },
+          { q: "How accurately does it pull weather data?", a: "Currently, our primary focus is millisecond time precision. We are integrating live weather conditions soon to display temperatures next to the localized times!" },
+          { q: "Can I use the world clock for meeting planning?", a: "Yes, though this dashboard is best for real-time tracking. We also offer a dedicated 'Meeting Planner' tool explicitly tailored for finding overlapping business hours." },
+          { q: "How do I delete a clock I no longer need?", a: "Hover over the clock card (or tap it on mobile) and a small 'X' or Trash icon will appear. Clicking it instantly removes the zone from your dashboard." },
+          { q: "Does the World Clock drain my battery?", a: "No. Unlike some complex animated tools, our world clock utilizes optimized React renders that update text nodes without heavy graphical repaints, preserving laptop battery life." }
+        ]}
+      />
       <div className="mt-16 max-w-7xl mx-auto px-4">
         <AdBanner />
       </div>

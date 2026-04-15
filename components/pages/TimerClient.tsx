@@ -31,24 +31,26 @@ export default function TimerClient() {
         </div>
 
         {/* Row 3: Countdown Cards Grid */}
-        {countdowns.length === 0 ? (
-          <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border border-dashed border-white/10">
-            <p className="text-white/30 font-bold uppercase tracking-widest">No active countdowns. Click "Add Countdown" to start.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {countdowns.map((c) => (
-              <CountdownTimer 
-                key={c.id}
-                id={c.id}
-                label={c.label}
-                initialSeconds={c.seconds}
-                sound={c.sound}
-                onRemove={removeCountdown}
-              />
-            ))}
-          </div>
-        )}
+        <div id="timers-list-section" className="scroll-mt-8 w-full">
+          {countdowns.length === 0 ? (
+            <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border border-dashed border-white/10">
+              <p className="text-white/30 font-bold uppercase tracking-widest">No active countdowns. Click "Add Countdown" to start.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {countdowns.map((c) => (
+                <CountdownTimer 
+                  key={c.id}
+                  id={c.id}
+                  label={c.label}
+                  initialSeconds={c.seconds}
+                  sound={c.sound}
+                  onRemove={removeCountdown}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <AddCountdownModal 

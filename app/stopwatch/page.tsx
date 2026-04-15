@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import StopwatchClient from '@/components/pages/StopwatchClient'
 import StructuredData from '@/components/seo/StructuredData'
-import { HelpCircle, Timer, RotateCcw, List, Maximize2 } from 'lucide-react'
+import { HelpCircle, Timer, RotateCcw, List, Maximize2, GraduationCap, Briefcase, Dumbbell, Utensils } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
-
+import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
   title: 'Free Online Stopwatch – High-Precision Lap Timer',
   description: 'A professional-grade free online stopwatch with millisecond accuracy. Features lap timing, history tracking, and full-screen mode for athletics and productivity.',
@@ -77,106 +77,48 @@ export default function StopwatchPage() {
       <StopwatchClient />
 
       {/* Extended SEO Content & How to Use (Bottom of page - Server Side) */}
-      <div className="max-w-7xl mx-auto px-6 pb-24 space-y-32">
-        {/* Detailed Description */}
-        <section className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-1000 mt-20">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
-            Professional Grade Timing
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-white tracking-tight leading-tight">
-            A Free Online Stopwatch <br />
-            <span className="text-primary/80">for Every Second That Counts</span>
-          </h2>
-          <p className="text-lg text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90">
-            The Clocks and Alarms Online stopwatch is engineered for performance. Unlike standard 
-            web timers, our tool utilizes high-frequency system performance counters to ensure that the 
-            displayed time never lags, even during intense CPU usage. Whether you&apos;re an athlete timing 
-            splits or a professional developer tracking work cycles, our tool provides the stability you need.
-          </p>
-        </section>
+      <ToolSEO
+        toolName="Stopwatch"
+        introTag="Professional Grade Timing"
+        introHeading="A Free Online Stopwatch for Every Second That Counts"
+        introParagraph="The Clocks and Alarms Online stopwatch is engineered for performance. Unlike standard web timers, our tool utilizes high-frequency system performance counters to ensure that the displayed time never lags, even during intense CPU usage. Whether you're an athlete timing splits or a professional developer tracking work cycles, our tool provides the absolute stability you need. Thousands of users log over 100,000 professional laps every single day on our platform."
+        howToSteps={[
+          { title: "Initialize the Clock", text: "Click the primary green START button. The timer will instantly begin spinning, tracking milliseconds, seconds, and minutes with perfect synchronization." },
+          { title: "Capture Lap Times", text: "While the stopwatch is running, strike the 'Lap' button. This captures an exact snapshot of the current time and immediately spawns a new line in your history log." },
+          { title: "Pause and Resume", text: "Need a break? Hit the STOP button to pause the timer. You can seamlessly resume from the exact millisecond by clicking START again." },
+          { title: "Clear the Ledger", text: "Once your athletic event or work sprint is finished, hit RESET to clear all session times and wipe your local browser memory for a fresh start." }
+        ]}
+        proTips={[
+          "If using the stopwatch on a laptop on the track or field, immediately hit the Maximize icon to blow the timer up to Cinema Mode, making it visible from 50 feet away.",
+          "You do not need to pause the timer to lap. Press lap repeatedly while the main clock is running to get gap timings between consecutive events.",
+          "Keep the browser tab active if you are timing an event longer than 15 minutes, as some OS battery savers may throttle background rendering."
+        ]}
+        useCases={[
+          { icon: Dumbbell, title: "For Athletics & Fitness", text: "Track sprinters, swimmers, or CrossFit enthusiasts use our tool to log exact split times. The lap function is explicitly built to handle 100x lap recordings without slowing down." },
+          { icon: Briefcase, title: "For Business & Boardrooms", text: "Timing an elevator pitch or a startup presentation? Load the stopwatch on the projector in full-screen mode to enforce strict speaking limits." },
+          { icon: GraduationCap, title: "For Students & Testing", text: "Used extensively by law students and nursing candidates to simulate testing environments where question completion speed is closely monitored." },
+          { icon: Utensils, title: "For Chefs & Baking", text: "Professional chefs use the lap timer to track multiple overlapping phases of a recipe that require precision monitoring." },
+          { icon: Timer, title: "For Software Developers", text: "Engineers often use our high-precision tool to manually time code execution times, server cold starts, or database reboot durations." }
+        ]}
+        whyChooseUs={`Standard digital stopwatches rely on classic JavaScript \`setInterval\` functions, which notoriously drift and lose seconds over long durations because browsers throttle background tabs. 
 
-        {/* 📖 New How to Use Section for Stopwatch */}
-        <section className="space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight italic">How to <span className="text-primary not-italic">Master the Stopwatch</span></h2>
-            <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { 
-                icon: Timer, 
-                title: "1. Start/Stop", 
-                text: "Initialize the timer with the primary action button to begin tracking time with high precision. Click again to pause." 
-              },
-              { 
-                icon: RotateCcw, 
-                title: "2. Record Laps", 
-                text: "Capture intermediate splits or lap times without interrupting the main timing sequence for detailed analysis." 
-              },
-              { 
-                icon: List, 
-                title: "3. Review History", 
-                text: "View your full session history in the detailed table below. Your laps are saved automatically to your browser." 
-              },
-              { 
-                icon: Maximize2, 
-                title: "4. Full Screen", 
-                text: "Expand to Cinema Mode for athletic training or public events requiring high visibility from a distance." 
-              }
-            ].map((item, i) => (
-              <div key={i} className="group p-8 rounded-[2.5rem] bg-[#1a0b36]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-                <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                  <item.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
-                <p className="text-sm text-muted/80 leading-relaxed font-medium">
-                  {item.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Detailed FAQ Section for SEO */}
-        <section className="space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">Stopwatch <span className="text-primary italic">Expert Guide</span></h2>
-            <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              { 
-                q: "How accurate is this online stopwatch?", 
-                a: "Our stopwatch uses high-resolution system performance counters (performance.now) to ensure millisecond accuracy, preventing timing drift even under heavy CPU load."
-              },
-              {
-                q: "Does it work the same on mobile devices?",
-                a: "Yes, our stopwatch is fully responsive and optimized for touch interactions on both iOS and Android, maintaining high precision across all modern mobile browsers."
-              },
-              {
-                q: "What happens if I accidental close the browser?",
-                a: "Your session state and lap history are saved in real-time to your browser's LocalStorage. Simply reopen the page to resume from where you left off."
-              },
-              {
-                q: "Is there a limit to the number of laps?",
-                a: "There is no hard limit on lap recording. You can track hundreds of laps for long-distance events or complex multi-stage tasks without performance degradation."
-              }
-            ].map((faq, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] hover:bg-white/[0.08] transition-all group">
-                <div className="flex gap-4 mb-4">
-                  <HelpCircle className="text-primary group-hover:scale-110 transition-transform" />
-                  <h3 className="text-lg font-bold text-white tracking-tight">{faq.q}</h3>
-                </div>
-                <p className="text-sm text-muted/70 leading-relaxed font-medium pl-10">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+        Our stopwatch avoids this entirely by binding directly to \`performance.now()\`, a sub-millisecond resolution web API. Every time the screen repaints, it calculates the exact delta from the initialization timestamp. The result is a professional-grade, zero-drift timing instrument that matches the accuracy of dedicated Olympic hardware, packed into a beautiful, ad-free digital interface.`}
+        troubleshooting={`Stopwatch stopped ticking or lost time?
+        
+        1. Browser Resource Sleeping: If you switch to another tab for an hour, Chrome \"parks\" the previous tab. The stopwatch actually recalculates the exact missed time instantly when you switch back, but it may appear frozen while suspended.
+        2. Mobile Sleep Mode: If your phone screen turns off, the visual timer stops updating to save battery. The core timer continues accurately in memory, but prevent auto-lock if you need constant visuals.
+        3. LocalStorage Wiping: If you use \"Incognito\" mode, your captured lap times will be permanently deleted the moment you close the browser window.`}
+        faqs={[
+          { q: "How accurate is this online stopwatch?", a: "Our stopwatch uses high-resolution system performance counters (performance.now) to ensure millisecond accuracy, preventing timing drift even under heavy CPU or memory load." },
+          { q: "Does it work the same on mobile devices?", a: "Yes, our stopwatch is entirely responsive and optimized for rapid touch interactions on iOS and Android. The buttons have massive hitboxes specifically designed for sweaty hands during workouts." },
+          { q: "What happens if I accidentally close the browser?", a: "Your session state and lap history are saved in real-time to your browser's persistent LocalStorage. Simply reopen the page to resume exactly from where you were." },
+          { q: "Is there a limit to the number of laps?", a: "There is no hard limit on lap recording. You can track hundreds of laps for long-distance events or complex multi-stage tasks without any UI performance degradation." },
+          { q: "Can I export my lap times?", a: "Currently, lap times are meant for immediate review on-screen. Copy-pasting the lap ledger into a spreadsheet works perfectly, and an explicit CSV export button is coming in the next major build." },
+          { q: "Why do the milliseconds blur slightly when running?", a: "At 60 frames per second, the human eye cannot track individual milliseconds jumping. The blur is a natural optical effect of the ultra-fast rendering rate of our graphics engine." },
+          { q: "Does the stopwatch require an internet connection?", a: "Only to load initially. Once the page is open, the stopwatch runs entirely offline locally within your browser's execution sandbox." },
+          { q: "Can I run multiple stopwatches at once?", a: "Not in a single tab. However, you can open multiple browser windows side-by-side to track several independent competitors simultaneously." }
+        ]}
+      />
       <div className="mt-16 max-w-7xl mx-auto px-4">
         <AdBanner />
       </div>

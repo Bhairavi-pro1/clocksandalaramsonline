@@ -5,16 +5,20 @@ import { Maximize2, Minimize2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AdScript } from './AdBanner'
 
+import TimezoneSearch from './TimezoneSearch'
+
 interface MainClockCardProps {
   timezone?: string
   city?: string
   country?: string
+  onAdd?: (zone: { country: string, city: string, timezone: string }) => void
 }
 
 export default function MainClockCard({ 
   timezone = 'local', 
   city = 'Local Time', 
-  country = 'Global' 
+  country = 'Global',
+  onAdd
 }: MainClockCardProps) {
   const [time, setTime] = useState<DateTime | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -103,7 +107,7 @@ export default function MainClockCard({
         "text-center space-y-4 relative z-10 w-full",
         isFullscreen ? "mb-6" : ""
       )}>
-        <div className="space-y-2">
+        <div className="space-y-2 mb-6">
           <p className={cn(
             "font-bold text-white/95",
             isFullscreen ? "text-2xl md:text-4xl" : "text-lg md:text-2xl"
@@ -113,6 +117,13 @@ export default function MainClockCard({
             isFullscreen ? "text-sm md:text-base" : "text-[10px] md:text-xs"
           )}>{timezone === 'local' ? 'Local Timezone' : timezone}</p>
         </div>
+
+        {/* Global Timezone Search (Middle and Bottom of the box) */}
+        {!isFullscreen && onAdd && (
+          <div className="w-full flex justify-center pb-2">
+            <TimezoneSearch onAdd={onAdd} />
+          </div>
+        )}
 
         {/* Ad Slot */}
         <div className={cn(

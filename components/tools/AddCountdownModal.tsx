@@ -1,7 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
 import { X, Play, Music, Volume2, Square, ChevronDown } from 'lucide-react'
-import { Howl } from 'howler'
 
 const SOUNDS: Record<string, string> = {
   vibe: '/sounds/vibe.mp3',
@@ -26,14 +25,15 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
   const [seconds, setSeconds] = useState('0')
   const [selectedSound, setSelectedSound] = useState('vibe')
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false)
-  const previewHowlRef = useRef<Howl | null>(null)
+  const previewAudioRef = useRef<HTMLAudioElement | null>(null)
 
   if (!isOpen) return null
 
   const handleStopPreview = () => {
-    if (previewHowlRef.current) {
-      previewHowlRef.current.stop()
-      previewHowlRef.current = null
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
+      previewAudioRef.current = null
     }
     setIsPreviewPlaying(false)
   }
@@ -44,24 +44,30 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
       return
     }
 
-    if (previewHowlRef.current) {
-      previewHowlRef.current.stop()
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
     }
 
-    previewHowlRef.current = new Howl({
-      src: [SOUNDS[selectedSound] || SOUNDS.vibe],
-      volume: 0.8,
-      onend: () => setIsPreviewPlaying(false),
-      onstop: () => setIsPreviewPlaying(false)
+    const audio = new Audio(SOUNDS[selectedSound] || SOUNDS.vibe)
+    audio.volume = 0.8
+    audio.onended = () => setIsPreviewPlaying(false)
+    
+    audio.play().catch(e => {
+      console.error('Audio preview blocked:', e)
+      setIsPreviewPlaying(false)
     })
     
-    previewHowlRef.current.play()
+    previewAudioRef.current = audio
     setIsPreviewPlaying(true)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const totalSeconds = (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds)
+    const h = parseInt(hours) || 0
+    const m = parseInt(minutes) || 0
+    const s = parseInt(seconds) || 0
+    const totalSeconds = (h * 3600) + (m * 60) + s
     if (totalSeconds <= 0) return
     
     onAdd({
@@ -132,7 +138,7 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
                   max="99"
                   value={hours}
                   onChange={(e) => setHours(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-2 py-4 text-2xl font-bold text-center text-white focus:outline-none focus:border-primary/50"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl h-20 text-2xl font-bold text-center text-white focus:outline-none focus:border-primary/50"
                 />
               </div>
               <div className="space-y-3">
@@ -145,7 +151,7 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
                   max="59"
                   value={minutes}
                   onChange={(e) => setMinutes(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-2 py-4 text-2xl font-bold text-center text-white focus:outline-none focus:border-primary/50"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl h-20 text-2xl font-bold text-center text-white focus:outline-none focus:border-primary/50"
                 />
               </div>
               <div className="space-y-3">
@@ -158,7 +164,7 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
                   max="59"
                   value={seconds}
                   onChange={(e) => setSeconds(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-2 py-4 text-2xl font-bold text-center text-white focus:outline-none focus:border-primary/50"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl h-20 text-2xl font-bold text-center text-white focus:outline-none focus:border-primary/50"
                 />
               </div>
             </div>

@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { DateTime } from 'luxon'
 import MainClockCard from '@/components/ui/MainClockCard'
 import TimezoneSearch from '@/components/ui/TimezoneSearch'
@@ -23,6 +23,7 @@ const DEFAULT_CLOCKS: ClockData[] = [
 ]
 
 export default function WorldClockClient() {
+  const globalSectionRef = useRef<HTMLDivElement>(null)
   const [globalClocks, setGlobalClocks] = useState<ClockData[]>([])
   const [localClock, setLocalClock] = useState<ClockData>({
     country: 'Detecting Location',
@@ -81,6 +82,10 @@ export default function WorldClockClient() {
     if (!globalClocks.find(c => c.timezone === newClock.timezone && c.city === newClock.city)) {
       setGlobalClocks(prev => [...prev, newClock])
     }
+    // Smooth scroll to the global timezone grid
+    setTimeout(() => {
+      globalSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
   }
 
   const removeClock = (index: number) => {
@@ -95,12 +100,13 @@ export default function WorldClockClient() {
           country={localClock.country}
           city={localClock.city}
           timezone={localClock.timezone}
+          onAdd={addClock}
         />
       </div>
 
       {/* 3. Global Time Zones Section */}
-      <div className="max-w-7xl mx-auto w-full px-4 md:px-0 mt-8">
-        <TimezoneSearch onAdd={addClock} />
+      <div ref={globalSectionRef} className="max-w-7xl mx-auto w-full px-4 md:px-0 mt-12 pt-8">
+        <h2 className="text-3xl md:text-4xl font-medium font-display text-white opacity-95 text-center mb-6">Global Time Zones</h2>
         
         <p className="text-muted/80 text-sm md:text-base font-medium mb-8 max-w-4xl mx-auto text-center">
           Click any world clock card for detailed <span className="text-white/90 font-bold">global timezone information</span>, live weather, and <span className="text-white/90 font-bold">local time differences</span>.

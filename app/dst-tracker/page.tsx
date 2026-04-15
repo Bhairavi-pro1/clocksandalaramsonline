@@ -1,10 +1,11 @@
 import DstTrackerClient from '@/components/pages/DstTrackerClient'
 import { Metadata } from 'next'
-import { List, Search, Clock, Zap, CalendarDays, HelpCircle } from 'lucide-react'
+import { List, Search, Clock, Zap, CalendarDays, HelpCircle, GraduationCap, Briefcase, Dumbbell, Utensils, Timer, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
 import { getUpcomingDSTChanges } from '@/lib/dst'
 import StructuredData from '@/components/seo/StructuredData'
+import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
   title: 'Global Daylight Saving Time (DST) Tracker — Live Clock Changes',
@@ -80,121 +81,50 @@ export default function DSTTrackerPage() {
         <AdBanner />
       </div>
 
-      {/* Content Outside the Main Card */}
-      <div className="w-full max-w-6xl mx-auto space-y-32 mt-32">
-        {/* Premium SEO Content & User Guide */}
-        <div className="space-y-32">
-          {/* SEO Optimized Paragraph */}
-          <section className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-1000">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
-              Global Time Synchronization
-            </div>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black font-display text-white tracking-tight leading-[1.1]">
-              Master Daylight Saving Transitions with <br />
-              <span className="text-primary/80">Our Real-Time Global Tracker</span>
-            </h2>
-            <p className="text-lg md:text-xl text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90">
-              Navigating the complexities of Daylight Saving Time (DST) can be a challenge, especially when coordinating across multiple continents. Some countries spring forward, others fall back, and many don&apos;t change at all. Our Global DST Tracker is designed to provide you with a definitive, chronological timeline of every upcoming clock change worldwide.
-            </p>
-          </section>
-
-          {/* Comprehensive "How to Use" Guide */}
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { step: "01", icon: List, title: "Browse List", text: "View the comprehensive list of upcoming global time changes sorted by date and proximity." },
-              { step: "02", icon: Search, title: "Search Country", text: "Use our intelligent filter bar to instantly locate specific countries or cities of interest." },
-              { step: "03", icon: Clock, title: "Check Time", text: "Note the exact time of the transition, whether it's 2 AM or Midnight, to stay ahead." },
-              { step: "04", icon: Zap, title: "Verify Shift", text: "Identify if the location is 'Springing Forward' (+1h) or 'Falling Back' (-1h) with visual cues." },
-              { step: "05", icon: CalendarDays, title: "Plan Ahead", text: "Use the 'Days Remaining' countdown to prepare for upcoming schedule changes and sync." }
-            ].map((item, i) => (
-              <div key={i} className={cn(
-                "group p-10 rounded-[3rem] bg-[#1a0b2e]/40 border border-white/5 hover:border-primary/30 transition-all duration-500 shadow-xl",
-                i >= 3 && "lg:col-span-1"
-              )}>
-                <div className="flex items-start justify-between mb-8">
-                  <div className="w-16 h-16 bg-primary/10 rounded-[1.5rem] flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
-                    <item.icon className="w-8 h-8 text-primary" />
-                  </div>
-                  <span className="text-4xl font-black text-white/5 italic group-hover:text-primary/10 transition-colors">
-                    {item.step}
-                  </span>
-                </div>
-                <h3 className="text-2xl font-black text-white mb-4 tracking-tight">{item.title}</h3>
-                <p className="text-base text-white/40 leading-relaxed font-medium">
-                  {item.text}
-                </p>
-              </div>
-            ))}
-          </section>
-
-          {/* Detailed FAQ Section for SEO */}
-          <section className="space-y-16">
-            <div className="text-center space-y-4">
-               <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">Daylight Saving <span className="text-primary italic">Insights</span></h2>
-               <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               {[
-                 { 
-                   q: "How accurate is the global DST transition data?", 
-                   a: "Our tracker uses the IANA Time Zone Database, which is the world standard for timezone and DST information. We monitor over 7,000 cities to ensure every transition is correctly accounted for."
-                 },
-                 {
-                   q: "Why do some countries change clocks at different times?",
-                   a: "Daylight saving time is managed by national or regional governments, meaning transitions aren't synchronized globally. For example, Europe and North America typically transition on different weekends."
-                 },
-                 {
-                   q: "Does the tracker include rare timezone shifts?",
-                   a: "Yes. Our engine detects unique cases like 30-minute DST shifts and permanent historical changes (like Mexico's recent move to permanent time) to provide usable, real-world data."
-                 },
-                 {
-                   q: "How can I prepare for a 'Fall Back' change?",
-                   a: "During 'Fall Back', you'll gain an hour. We recommend adjusting your clocks before bed and checking our 'Days Remaining' counter to plan your week ahead of time."
-                 }
-               ].map((faq, i) => (
-                 <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] hover:bg-white/[0.08] transition-all group">
-                    <div className="flex gap-4 mb-4">
-                       <HelpCircle className="text-primary group-hover:scale-110 transition-transform" />
-                       <h4 className="text-lg font-bold text-white tracking-tight">{faq.q}</h4>
-                    </div>
-                    <p className="text-sm text-muted/70 leading-relaxed font-medium pl-10">
-                       {faq.a}
-                    </p>
-                 </div>
-               ))}
-            </div>
-          </section>
-
-
-          {/* Value Prop Section */}
-          <section className="bg-gradient-to-r from-primary/10 to-transparent p-8 md:p-12 rounded-[2.5rem] border border-white/5 pb-16">
-            <h2 className="text-2xl font-black text-white mb-8 italic tracking-tight uppercase">Why use our DST Tracker?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                   <div className="w-2 h-2 rounded-full bg-primary" />
-                   <h4 className="text-white font-black uppercase text-xs tracking-widest">Global Coverage</h4>
-                </div>
-                <p className="text-sm text-white/40 leading-relaxed font-medium">We monitor over 150 timezones using the latest IANA database to ensure accurate transition data for every corner of the globe.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                   <div className="w-2 h-2 rounded-full bg-primary" />
-                   <h4 className="text-white font-black uppercase text-xs tracking-widest">Rare Anomaly Detection</h4>
-                </div>
-                <p className="text-sm text-white/40 leading-relaxed font-medium">Special highlighting for unique 30-minute shifts like Lord Howe Island and permanent historical timezone changes.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                   <div className="w-2 h-2 rounded-full bg-primary" />
-                   <h4 className="text-white font-black uppercase text-xs tracking-widest">Precision Timing</h4>
-                </div>
-                <p className="text-sm text-white/40 leading-relaxed font-medium">Our tool pinpoints the exact hour and minute of the change, going beyond just the date to provide usable scheduling data.</p>
-              </div>
-            </div>
-          </section>
-        </div>
+      {/* Content Outside the Main Card via ToolSEO */}
+      <div className="mt-32">
+        <ToolSEO
+          toolName="Global DST Tracker"
+          introTag="Master Time Transitions"
+          introHeading="Master Daylight Saving Transitions with Our Real-Time Global Tracker"
+          introParagraph="Navigating the complexities of Daylight Saving Time (DST) can be an absolute logistical nightmare, especially when coordinating across multiple continents. Some countries spring forward, others fall back, and many don't change at all. Our Global DST Tracker is designed to cut through the confusion, providing you with a definitive, chronological timeline of every upcoming clock change worldwide with unparalleled precision."
+          howToSteps={[
+            { title: "Browse the Chronological Grid", text: "Scroll through the master list of upcoming transitions. We automatically sort them by proximity so the most urgent changes are always at the top." },
+            { title: "Search Specific Regions", text: "Don't care about Europe? Use our intelligent filter bar to instantly locate specific countries like 'Australia' or 'United States'." },
+            { title: "Verify the Shift Direction", text: "Look closely at the transition tags. A 'Spring Forward' (+1h) means you lose an hour of sleep, while 'Fall Back' (-1h) means you gain one." },
+            { title: "Check the Countdowns", text: "Use the 'Days Remaining' countdown embedded in every card to prepare your personal or professional schedule ahead of the actual transition night." }
+          ]}
+          proTips={[
+            "During 'Fall Back' weekends, double-check that your analog wall clocks are manually adjusted before going to bed on Saturday night.",
+            "If you work internationally, bookmark this page in late October/early November, as this is the period of highest global transition volatility.",
+            "Look out for rare anomalies highlighted in our list, such as Lord Howe Island's highly unusual 30-minute DST shift."
+          ]}
+          useCases={[
+            { icon: Briefcase, title: "For Multinational Corporations", text: "HR and operations managers use the DST tracker to inform global teams when the scheduling offset between the New York and London office shifts from 5 hours to 4 hours." },
+            { icon: Timer, title: "For Software Engineers", text: "Developers checking cron jobs and server maintenance windows rely on exact transition times to prevent database duplication errors during the 'Fall Back' overlapping hour." },
+            { icon: Globe, title: "For Airlines & Logistics", text: "Flight schedules are heavily disrupted by changing timezone offsets. Logistics coordinators use our tracker to ensure flight arrival times are accurately quoted." },
+            { icon: GraduationCap, title: "For International Students", text: "Students calling home use the tracker to avoid dialing their parents' house at 4 AM due to a sudden localized clock shift they weren't aware of." },
+            { icon: Zap, title: "For Broadcast Media", text: "Live television planners and Twitch streamers use our timeline to guarantee their advertised 'Global Start Time' remains accurate across all viewing regions." }
+          ]}
+          whyChooseUs={`Generic timezone converters typically fail to provide proactive warnings about impending DST shifts. You only realize the time has changed after you've missed your meeting.
+          
+          Clocks and Alarms Online operates differently. We continually parse the official IANA Time Zone Database specifically scanning for future transition events. We then format these complex geopolitical algorithms into a beautiful, easy-to-read chronological UI. There is no guessing. You are given the exact date, the exact minute, and the exact mathematical offset of the shift weeks before it happens.`}
+          troubleshooting={`Data seems incorrect or missing countries?
+          
+          1. Changing Legislation: Governments frequently alter DST rules with little warning (e.g., Mexico abolishing DST). Rest assured, our database updates continuously to reflect these geopolitical changes as soon as they are signed into law.
+          2. No Shift Displayed: If you search for 'Japan' or 'India' and see no results, it is not a bug! Those countries do not observe Daylight Saving Time, so they logically have zero upcoming transitions.
+          3. Browser Caching: If you suspect you are viewing stale transition data from last year, try clearing your browser cache or performing a hard refresh (Ctrl+F5).`}
+          faqs={[
+            { q: "How accurate is the global DST transition data?", a: "Our tracker uses the IANA Time Zone Database, which is the gold standard for global timezone and DST information. We mathematically calculate every transition to the exact minute." },
+            { q: "Why do some countries change clocks at different times?", a: "Daylight saving time is managed by individual national or regional governments, meaning it is not globally synchronized. For example, Europe and North America consistently transition on different weekends." },
+            { q: "Does the tracker include rare timezone shifts?", a: "Yes. Our engine detects unique cases like 30-minute DST shifts (e.g., Lord Howe Island) and permanent historical changes to provide real-world, usable data." },
+            { q: "How can I prepare for a 'Fall Back' change?", a: "During 'Fall Back', you'll gain an hour. We recommend adjusting any manual clocks before bed and checking our 'Days Remaining' counter to plan your week ahead of time." },
+            { q: "Why did my country suddenly disappear from the list?", a: "If your government recently passed legislation to abolish DST (such as adopting permanent standard time), our system immediately stops generating future transition events for your locale." },
+            { q: "Does the time of the change (e.g., 2:00 AM) refer to my local time?", a: "No. The transition time listed on the card (e.g., 02:00 -> 03:00) is the exact localized time in that specific country when the shift occurs." },
+            { q: "Do the Southern and Northern Hemispheres sync?", a: "Actually, they are inversed! When the Northern Hemisphere 'Springs Forward' into summer, the Southern Hemisphere is typically 'Falling Back' into winter." },
+            { q: "Is the DST Tracker free to use?", a: "Yes, our real-time global transition tracker is 100% free with no login or subscription required." }
+          ]}
+        />
       </div>
       <div className="mt-16 max-w-7xl mx-auto px-4">
         <AdBanner />

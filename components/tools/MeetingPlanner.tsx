@@ -31,12 +31,34 @@ export default function MeetingPlanner() {
     const savedMinute = localStorage.getItem('mp_minute')
     const savedPeriod = localStorage.getItem('mp_period')
 
+    const now = DateTime.now()
+
     if (savedTz1) setTz1(savedTz1)
     if (savedTargetZones) setTargetZones(JSON.parse(savedTargetZones))
-    if (savedDate) setSelectedDate(savedDate)
-    if (savedHour) setInputHour(savedHour)
-    if (savedMinute) setInputMinute(savedMinute)
-    if (savedPeriod) setInputPeriod(savedPeriod)
+    
+    if (savedDate) {
+      setSelectedDate(savedDate)
+    } else {
+      setSelectedDate(now.toISODate() || '')
+    }
+
+    if (savedHour) {
+      setInputHour(savedHour)
+      if (savedPeriod) setInputPeriod(savedPeriod)
+    } else {
+      let h = now.hour
+      const p = h >= 12 ? 'PM' : 'AM'
+      if (h === 0) h = 12
+      else if (h > 12) h -= 12
+      setInputHour(String(h).padStart(2, '0'))
+      setInputPeriod(p)
+    }
+
+    if (savedMinute) {
+      setInputMinute(savedMinute)
+    } else {
+      setInputMinute(String(now.minute).padStart(2, '0'))
+    }
     
     setMounted(true)
   }, [])

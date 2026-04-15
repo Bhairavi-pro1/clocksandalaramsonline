@@ -1,6 +1,4 @@
-'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Howl } from 'howler'
 
 const SOUNDS: Record<string, string> = {
   vibe: '/sounds/vibe.mp3',
@@ -12,73 +10,161 @@ const SOUNDS: Record<string, string> = {
   synthwave: '/sounds/synthwave.mp3',
 }
 
-export function useTimer(initialSeconds: number = 0, soundName: string = 'vibe') {
+export function useTimer(id: string, initialSeconds: number = 0, soundName: string = 'vibe') {
   const [timeLeft, setTimeLeft] = useState(initialSeconds)
   const [isActive, setIsActive] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const howlRef = useRef<Howl | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const endTimeRef = useRef<number | null>(null)
 
   const [isSoundPlaying, setIsSoundPlaying] = useState(false)
 
+  const storageKey = `timer_state_${id}`
+
+  const saveState = useCallback((active: boolean, paused: boolean, remaining: number, end: number | null) => {
+    if (typeof window === 'undefined') return
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({
+        isActive: active,
+        isPaused: paused,
+        remainingTime: remaining,
+        endTime: end
+      }))
+    } catch(e) {}
+  }, [storageKey])
+
+  // Hydrate state from localStorage on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const stored = localStorage.getItem(storageKey)
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (parsed.isActive) {
+          if (!parsed.isPaused && parsed.endTime) {
+            const now = Date.now()
+            const remaining = Math.max(0, Math.ceil((parsed.endTime - now) / 1000))
+            if (remaining > 0) {
+              setTimeLeft(remaining)
+              setIsActive(true)
+              setIsPaused(false)
+              endTimeRef.current = parsed.endTime
+            } else {
+              // Timer finished while page was closed
+              setTimeLeft(0)
+              setIsActive(false)
+              setIsPaused(false)
+              saveState(false, false, 0, null)
+            }
+          } else {
+            // Paused
+            setTimeLeft(parsed.remainingTime ?? initialSeconds)
+            setIsActive(true)
+            setIsPaused(true)
+            endTimeRef.current = null
+          }
+        }
+      }
+    } catch(e) {}
+  }, [storageKey, initialSeconds, saveState])
+
   const start = useCallback((seconds?: number) => {
-    if (seconds !== undefined) setTimeLeft(seconds)
+    const timeToStart = seconds !== undefined ? seconds : timeLeft;
+    const end = Date.now() + timeToStart * 1000
+    
+    setTimeLeft(timeToStart)
     setIsActive(true)
     setIsPaused(false)
     setIsSoundPlaying(false)
-  }, [])
+    endTimeRef.current = end
+    
+    saveState(true, false, timeToStart, end)
+  }, [timeLeft, saveState])
 
   const pause = useCallback(() => {
     setIsPaused(true)
-    if (intervalRef.current) clearInterval(intervalRef.current)
-  }, [])
+    endTimeRef.current = null
+    saveState(true, true, timeLeft, null)
+  }, [timeLeft, saveState])
 
   const resume = useCallback(() => {
+    const end = Date.now() + timeLeft * 1000
     setIsPaused(false)
-  }, [])
+    endTimeRef.current = end
+    saveState(true, false, timeLeft, end)
+  }, [timeLeft, saveState])
 
   const stop = useCallback(() => {
     setIsActive(false)
     setIsPaused(false)
     setIsSoundPlaying(false)
     setTimeLeft(initialSeconds)
+    endTimeRef.current = null
+    
+    saveState(false, false, initialSeconds, null)
+    
     if (intervalRef.current) clearInterval(intervalRef.current)
-    if (howlRef.current) {
-      howlRef.current.stop()
-      howlRef.current = null
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
     }
-  }, [initialSeconds])
+  }, [initialSeconds, saveState])
 
   const reset = useCallback(() => {
     stop()
   }, [stop])
 
+  // Cleanup on unmount or removal
   useEffect(() => {
-    if (isActive && !isPaused && timeLeft > 0) {
-      intervalRef.current = setInterval(() => {
-        setTimeLeft((prev) => prev - 1)
-      }, 1000)
-    } else if (timeLeft === 0 && isActive) {
-      setIsActive(false)
+    return () => {
+      // If the component unmounts but timer is still running, 
+      // the state in localStorage will allow it to resume on next load.
       if (intervalRef.current) clearInterval(intervalRef.current)
-      
-      howlRef.current = new Howl({
-        src: [SOUNDS[soundName] || SOUNDS.vibe],
-        loop: true,
-        volume: 0.8
-      })
-      howlRef.current.play()
-      setIsSoundPlaying(true)
-
-      if (Notification.permission === 'granted') {
-        new Notification('⌛ Time Up!', { body: 'Your timer has finished.' })
+      if (audioRef.current) {
+        audioRef.current.pause()
       }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isActive && !isPaused) {
+      // Use 200ms interval for precision
+      intervalRef.current = setInterval(() => {
+        if (endTimeRef.current) {
+          const now = Date.now()
+          const remaining = Math.max(0, Math.ceil((endTimeRef.current - now) / 1000))
+          
+          setTimeLeft(remaining)
+          
+          if (remaining <= 0) {
+            setIsActive(false)
+            endTimeRef.current = null
+            saveState(false, false, 0, null)
+            
+            if (intervalRef.current) clearInterval(intervalRef.current)
+            
+            const audio = new Audio(SOUNDS[soundName] || SOUNDS.vibe)
+            audio.loop = true
+            audio.volume = 0.8
+            audio.play().catch(e => console.error('Audio play blocked:', e))
+            audioRef.current = audio
+
+            setIsSoundPlaying(true)
+
+            if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+              new Notification('⌛ Time Up!', { body: 'Your timer has finished.' })
+            }
+          }
+        }
+      }, 200)
     }
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
-  }, [isActive, isPaused, timeLeft, soundName])
+  }, [isActive, isPaused, soundName, saveState])
 
   return { 
     timeLeft, 
@@ -91,6 +177,7 @@ export function useTimer(initialSeconds: number = 0, soundName: string = 'vibe')
     stop, 
     reset,
     formatTime: (s: number) => {
+      if (isNaN(s)) return '00:00'
       const h = Math.floor(s / 3600)
       const m = Math.floor((s % 3600) / 60)
       const sec = s % 60

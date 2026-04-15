@@ -55,17 +55,19 @@ export default function TimezoneSearch({ onAdd }: TimezoneSearchProps) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0 w-full">
-      <h2 className="text-2xl md:text-[1.75rem] font-medium font-display text-white opacity-95">Global Time Zones</h2>
-      <div className="relative w-full max-w-sm group">
+    <div className="flex flex-col items-center justify-center w-full max-w-xl mx-auto my-2">
+      <div className="relative w-full group">
+        <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+          <Search className="w-5 h-5 text-muted/60 group-focus-within:text-primary transition-colors" />
+        </div>
         <input 
           type="text" 
           list="timezone-options"
           value={searchTerm}
           onChange={handleSearchChange}
-          placeholder="Search time zone by country & add clock"
+          placeholder="Search time zone by country or city to add..."
           autoComplete="off"
-          className="w-full bg-[#1a0b2e]/40 border border-violet-500/20 text-foreground px-5 py-2.5 rounded-xl focus:outline-none focus:ring-1 focus:ring-violet-500/40 focus:border-violet-500/40 transition-all placeholder:text-muted/60 text-[13px] tracking-tight"
+          className="w-full bg-[#1a0b2e]/60 border-2 border-violet-500/20 text-foreground pl-14 pr-6 py-4 rounded-full focus:outline-none focus:ring-2 focus:ring-violet-500/60 focus:border-violet-500/60 transition-all placeholder:text-muted/60 text-base shadow-xl shadow-primary/5 hover:border-violet-500/40"
         />
         <datalist id="timezone-options">
           {isMounted && suggestions.map(s => (

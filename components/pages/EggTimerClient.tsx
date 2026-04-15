@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Play, Square, Settings2, Info, Pause, Volume2, ChevronDown } from 'lucide-react'
-import { Howl } from 'howler'
 import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
 import AdBanner from '@/components/ui/AdBanner'
 
@@ -53,16 +52,79 @@ export default function EggTimerClient() {
   const [status, setStatus] = useState<'idle' | 'running' | 'paused' | 'finished'>('idle')
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   
-  // Audio state (matches normal Alarm configuration)
+  // Audio state
   const [sound, setSound] = useState('vibe')
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false)
-  const previewHowlRef = useRef<Howl | null>(null)
-  const finalHowlRef = useRef<Howl | null>(null)
+  const previewAudioRef = useRef<HTMLAudioElement | null>(null)
+  const finalAudioRef = useRef<HTMLAudioElement | null>(null)
+  const endTimeRef = useRef<number | null>(null)
+
+  const storageKey = 'egg_timer_state'
+
+  const saveState = (
+    s: typeof status, 
+    tLeft: number | null, 
+    end: number | null,
+    tm: number = targetMinute,
+    es: string = eggSize,
+    et: string = eggTemp
+  ) => {
+    if (typeof window === 'undefined') return
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({
+        status: s,
+        timeLeft: tLeft,
+        endTime: end,
+        targetMinute: tm,
+        eggSize: es,
+        eggTemp: et
+      }))
+    } catch(e) {}
+  }
+
+  // Handle preference changes and save
+  useEffect(() => {
+    if (status === 'idle') {
+      saveState('idle', null, null, targetMinute, eggSize, eggTemp)
+    }
+  }, [targetMinute, eggSize, eggTemp, status])
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const stored = localStorage.getItem(storageKey)
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (parsed.targetMinute) setTargetMinute(parsed.targetMinute)
+        if (parsed.eggSize) setEggSize(parsed.eggSize)
+        if (parsed.eggTemp) setEggTemp(parsed.eggTemp)
+
+        if (parsed.status === 'running' && parsed.endTime) {
+          const now = Date.now()
+          const remaining = Math.max(0, Math.ceil((parsed.endTime - now) / 1000))
+          if (remaining > 0) {
+            setTimeLeft(remaining)
+            setStatus('running')
+            endTimeRef.current = parsed.endTime
+          } else {
+            setTimeLeft(0)
+            setStatus('idle')
+            localStorage.removeItem(storageKey)
+          }
+        } else if (parsed.status === 'paused') {
+          setTimeLeft(parsed.timeLeft)
+          setStatus('paused')
+        }
+      }
+    } catch(e) {}
+  }, [])
 
   const handleStopPreview = () => {
-    if (previewHowlRef.current) {
-      previewHowlRef.current.stop()
-      previewHowlRef.current = null
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
+      previewAudioRef.current = null
     }
     setIsPreviewPlaying(false)
   }
@@ -72,61 +134,92 @@ export default function EggTimerClient() {
       handleStopPreview()
       return
     }
-    if (previewHowlRef.current) previewHowlRef.current.stop()
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
+    }
     
-    previewHowlRef.current = new Howl({
-      src: [SOUNDS[sound] || SOUNDS.vibe],
-      volume: 0.8,
-      onend: () => setIsPreviewPlaying(false),
-      onstop: () => setIsPreviewPlaying(false)
+    const audio = new Audio(SOUNDS[sound] || SOUNDS.vibe)
+    audio.volume = 0.8
+    audio.onended = () => setIsPreviewPlaying(false)
+    
+    audio.play().catch(e => {
+      console.error('Audio preview blocked:', e)
+      setIsPreviewPlaying(false)
     })
-    previewHowlRef.current.play()
+    
+    previewAudioRef.current = audio
     setIsPreviewPlaying(true)
   }
+  
   const calculatedSeconds = Math.max(1, (targetMinute * 60) + SIZE_MODIFIERS[eggSize] + TEMP_MODIFIERS[eggTemp])
 
-  // Timer Countdown tick
+  // Timer Countdown tick (accurate to 200ms)
   useEffect(() => {
     let interval: NodeJS.Timeout
-    if (status === 'running' && timeLeft !== null && timeLeft > 0) {
+    if (status === 'running') {
       interval = setInterval(() => {
-        setTimeLeft((prev) => (prev !== null && prev > 0 ? prev - 1 : 0))
-      }, 1000)
+        if (endTimeRef.current) {
+          const now = Date.now()
+          const remaining = Math.max(0, Math.ceil((endTimeRef.current - now) / 1000))
+          
+          if (remaining !== timeLeft) {
+             setTimeLeft(remaining)
+          }
+          
+          if (remaining <= 0) {
+             setStatus('finished')
+             setIsAlertOpen(true)
+             endTimeRef.current = null
+             localStorage.removeItem(storageKey)
+
+             if (finalAudioRef.current) {
+               finalAudioRef.current.pause()
+               finalAudioRef.current.currentTime = 0
+             }
+             
+             const audio = new Audio(SOUNDS[sound] || SOUNDS.vibe)
+             audio.volume = 1.0
+             audio.loop = true
+             audio.play().catch(e => console.error('Egg timer audio blocked:', e))
+             
+             finalAudioRef.current = audio
+          }
+        }
+      }, 200)
     }
     return () => clearInterval(interval)
-  }, [status, timeLeft])
-
-  // Timer Completion Trigger
-  useEffect(() => {
-    if (status === 'running' && timeLeft === 0) {
-      setStatus('finished')
-      setIsAlertOpen(true)
-      
-      // Stop any rogue sounds just in case
-      if (finalHowlRef.current) finalHowlRef.current.stop()
-      
-      // Trigger Final Sound Loop safely
-      finalHowlRef.current = new Howl({
-        src: [SOUNDS[sound] || SOUNDS.vibe],
-        volume: 1.0,
-        loop: true
-      })
-      finalHowlRef.current.play()
-    }
-  }, [timeLeft, status, sound])
+  }, [status, timeLeft, sound])
 
   const handleStart = () => {
-    handleStopPreview() // stop if preview is running
-    setTimeLeft(calculatedSeconds)
+    handleStopPreview()
+    const timeToStart = status === 'paused' && timeLeft !== null ? timeLeft : calculatedSeconds;
+    const end = Date.now() + timeToStart * 1000
+    
+    setTimeLeft(timeToStart)
     setStatus('running')
+    endTimeRef.current = end
+    saveState('running', timeToStart, end)
   }
 
-  const handlePause = () => setStatus('paused')
-  const handleResume = () => setStatus('running')
+  const handlePause = () => {
+    setStatus('paused')
+    endTimeRef.current = null
+    saveState('paused', timeLeft, null)
+  }
+
+  const handleResume = () => {
+    const end = Date.now() + (timeLeft || 0) * 1000
+    setStatus('running')
+    endTimeRef.current = end
+    saveState('running', timeLeft, end)
+  }
 
   const handleReset = () => {
     setStatus('idle')
     setTimeLeft(null)
+    endTimeRef.current = null
+    saveState('idle', null, null)
   }
 
   const formatTime = (totalSeconds: number) => {
@@ -346,8 +439,10 @@ export default function EggTimerClient() {
          isOpen={isAlertOpen}
          onClose={() => {
             setIsAlertOpen(false)
-            if (finalHowlRef.current) {
-               finalHowlRef.current.stop()
+            if (finalAudioRef.current) {
+               finalAudioRef.current.pause()
+               finalAudioRef.current.currentTime = 0
+               finalAudioRef.current = null
             }
          }}
          label="Eggs are Ready!"

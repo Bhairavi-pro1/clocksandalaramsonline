@@ -1,6 +1,4 @@
-'use client'
 import { useEffect, useRef, useState } from 'react'
-import { Howl } from 'howler'
 import { useStore, Alarm } from './useStore'
 
 const SOUNDS: Record<string, string> = {
@@ -16,7 +14,7 @@ const SOUNDS: Record<string, string> = {
 export function useAlarm() {
   const { alarms, toggleAlarm } = useStore()
   const [activeAlarmId, setActiveAlarmId] = useState<string | null>(null)
-  const howlRef = useRef<Howl | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,15 +39,17 @@ export function useAlarm() {
   }, [alarms])
 
   const triggerAlarm = (alarm: Alarm) => {
-    if (howlRef.current) howlRef.current.stop()
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
 
-    howlRef.current = new Howl({
-      src: [SOUNDS[alarm.sound] || SOUNDS.vibe],
-      loop: true,
-      volume: 0.8,
-    })
+    const audio = new Audio(SOUNDS[alarm.sound] || SOUNDS.vibe)
+    audio.loop = true
+    audio.volume = 0.8
+    audio.play().catch(e => console.error('Alarm audio blocked:', e))
+    audioRef.current = audio
 
-    howlRef.current.play()
     setActiveAlarmId(alarm.id)
 
     if (Notification.permission === 'granted') {
@@ -61,9 +61,10 @@ export function useAlarm() {
   }
 
   const stopAlarm = () => {
-    if (howlRef.current) {
-      howlRef.current.stop()
-      howlRef.current = null
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
     }
     setActiveAlarmId(null)
   }

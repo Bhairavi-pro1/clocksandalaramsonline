@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { X, Clock, Volume2, Square, ChevronDown } from 'lucide-react'
 import { SharedAlarm } from '@/lib/sharedAlarmLogic'
-import { Howl } from 'howler'
 
 const SOUNDS: Record<string, string> = {
   vibe: '/sounds/vibe.mp3',
@@ -36,7 +35,7 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
   const [timeStr, setTimeStr] = useState(`${hours}:${minutes}`)
   
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false)
-  const previewHowlRef = useRef<Howl | null>(null)
+  const previewAudioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     if (initialData && isOpen) {
@@ -58,9 +57,10 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
   }, [initialData, isOpen])
 
   const handleStopPreview = () => {
-    if (previewHowlRef.current) {
-      previewHowlRef.current.stop()
-      previewHowlRef.current = null
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
+      previewAudioRef.current = null
     }
     setIsPreviewPlaying(false)
   }
@@ -71,18 +71,21 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
       return
     }
 
-    if (previewHowlRef.current) {
-      previewHowlRef.current.stop()
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
     }
 
-    previewHowlRef.current = new Howl({
-      src: [SOUNDS[sound] || SOUNDS.vibe],
-      volume: 0.8,
-      onend: () => setIsPreviewPlaying(false),
-      onstop: () => setIsPreviewPlaying(false)
+    const audio = new Audio(SOUNDS[sound] || SOUNDS.vibe)
+    audio.volume = 0.8
+    audio.onended = () => setIsPreviewPlaying(false)
+    
+    audio.play().catch(e => {
+      console.error('Audio preview blocked:', e)
+      setIsPreviewPlaying(false)
     })
     
-    previewHowlRef.current.play()
+    previewAudioRef.current = audio
     setIsPreviewPlaying(true)
   }
 

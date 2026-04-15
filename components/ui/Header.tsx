@@ -12,7 +12,9 @@ import {
   Bell, 
   Calendar,
   CalendarRange,
-  Zap
+  Zap,
+  Users,
+  ChefHat
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -22,7 +24,9 @@ const tools = [
   { label: 'Countdown', icon: Hourglass, href: '/timer', description: 'Productivity timers' },
   { label: 'Alarm', icon: Bell, href: '/alarm-clock', description: 'Bulletproof alerts' },
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner', description: 'Global coordination' },
-  { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker', description: 'Daylight saving updates' }
+  { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker', description: 'Daylight saving updates' },
+  { label: 'Shared Alarm', icon: Users, href: '/shared-alarm', description: 'Synchronized team alarms' },
+  { label: 'Egg Timer', icon: ChefHat, href: '/egg-timer', description: 'Perfectly boiled eggs' }
 ]
 
 export default function Header() {

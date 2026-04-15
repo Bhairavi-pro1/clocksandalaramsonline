@@ -24,8 +24,10 @@ export default function AlarmScenarios() {
       days: []
     })
     
-    // Scroll to top to see the new alarm card
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // Scroll to the alarms list instead of top
+    setTimeout(() => {
+      document.getElementById('alarms-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
   }
 
   const alarmPresets = [

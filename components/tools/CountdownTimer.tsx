@@ -15,7 +15,7 @@ interface CountdownTimerProps {
 }
 
 export default function CountdownTimer({ id, label, initialSeconds, sound, onRemove }: CountdownTimerProps) {
-  const { timeLeft, isActive, isPaused, isSoundPlaying, start, pause, resume, reset, formatTime } = useTimer(initialSeconds, sound)
+  const { timeLeft, isActive, isPaused, isSoundPlaying, start, pause, resume, reset, formatTime } = useTimer(id, initialSeconds, sound)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -91,13 +91,13 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
         </div>
 
         <div className={cn(
-          "flex flex-col items-center w-full",
-          isFullscreen ? "flex-1 justify-center" : ""
+          "flex flex-col items-center w-full relative z-20",
+          isFullscreen ? "flex-1 justify-center space-y-8 md:space-y-16" : ""
         )}>
           {/* Timer Display */}
           <div className={cn(
-            "font-mono font-bold tracking-tighter text-white drop-shadow-[0_0_50px_rgba(168,85,247,0.5)] tabular-nums",
-            isFullscreen ? "text-[max(8rem,15vw)] leading-none mb-12" : "text-7xl md:text-8xl mb-6"
+            "font-mono font-bold tracking-tighter text-white drop-shadow-[0_0_50px_rgba(168,85,247,0.5)] tabular-nums transition-all",
+            isFullscreen ? "text-[max(6rem,12vw)] leading-none" : "text-5xl md:text-6xl mb-6"
           )}>
             {formatTime(timeLeft)}
           </div>
@@ -105,7 +105,7 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
           {/* Progress Bar */}
           <div className={cn(
             "bg-white/5 rounded-full overflow-hidden transition-all",
-            isFullscreen ? "w-full max-w-4xl h-3 mb-16" : "w-full h-1 mb-8"
+            isFullscreen ? "w-full max-w-4xl h-3" : "w-full h-1 mb-6"
           )}>
             <div 
               className="h-full bg-primary transition-all duration-1000 linear shadow-[0_0_20px_rgba(168,85,247,0.5)]"
@@ -115,51 +115,53 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
 
           {/* Controls */}
           <div className={cn(
-            "flex items-center gap-4 w-full",
-            isFullscreen ? "max-w-2xl mb-12" : ""
+            "flex items-center gap-4 w-full justify-center relative z-30",
+            isFullscreen ? "max-w-xl" : ""
           )}>
             {!isActive && !isPaused ? (
               <button 
                 type="button"
-                onClick={() => start(initialSeconds)}
+                onClick={(e) => { e.stopPropagation(); start(initialSeconds); }}
                 className={cn(
                   "w-full bg-primary text-white font-black rounded-2xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-2",
-                  isFullscreen ? "py-6 text-xl" : "py-4"
+                  isFullscreen ? "py-4 text-lg max-w-xs" : "py-4"
                 )}
               >
-                <Play size={isFullscreen ? 28 : 20} fill="currentColor" /> START
+                <Play size={20} fill="currentColor" /> START
               </button>
             ) : (
-              <div className="flex gap-4 w-full">
+              <div className="flex gap-4 w-full justify-center">
                 <button 
                   type="button"
-                  onClick={isPaused ? resume : pause}
+                  onClick={(e) => { e.stopPropagation(); isPaused ? resume() : pause(); }}
                   className={cn(
-                    "flex-1 bg-primary/90 hover:bg-primary text-white rounded-2xl transition-all flex items-center justify-center",
-                    isFullscreen ? "py-6" : "py-4"
+                    "bg-primary/90 hover:bg-primary text-white rounded-2xl transition-all flex items-center justify-center shadow-xl shadow-primary/20",
+                    isFullscreen ? "w-16 h-16" : "flex-1 py-4"
                   )}
                 >
-                  {isPaused ? <Play size={isFullscreen ? 36 : 28} fill="currentColor" /> : <Pause size={isFullscreen ? 36 : 28} fill="currentColor" />}
+                  {isPaused ? <Play size={24} fill="currentColor" /> : <Pause size={24} fill="currentColor" />}
                 </button>
                 <button 
                   type="button"
-                  onClick={reset}
+                  onClick={(e) => { e.stopPropagation(); reset(); }}
                   className={cn(
                     "bg-white/5 hover:bg-white/10 text-white rounded-2xl transition-all flex items-center justify-center",
-                    isFullscreen ? "px-12 py-6" : "px-8 py-4"
+                    isFullscreen ? "w-16 h-16" : "px-8 py-4"
                   )}
                 >
-                  <RotateCcw size={isFullscreen ? 32 : 24} />
+                  <RotateCcw size={20} />
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        {/* Fullscreen Ad Slot */}
+        {/* Fullscreen Ad Slot - Positioning it Absolute so it doesn't push the counter */}
         {isFullscreen && (
-          <div className="w-full max-w-4xl flex flex-col items-center justify-center mt-12 animate-in fade-in slide-in-from-bottom-5 duration-700 delay-500">
-            <AdBanner />
+          <div className="absolute bottom-8 left-0 right-0 w-full flex flex-col items-center justify-center pointer-events-none z-10 animate-in fade-in slide-in-from-bottom-5 duration-700 delay-500">
+            <div className="max-w-4xl w-full px-12 md:px-24 pointer-events-auto">
+              <AdBanner />
+            </div>
           </div>
         )}
       </div>

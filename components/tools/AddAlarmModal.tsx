@@ -1,7 +1,6 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { X, Bell, Volume2, Square, ChevronDown } from 'lucide-react'
-import { Howl } from 'howler'
 import { cn } from '@/lib/utils'
 
 const SOUNDS: Record<string, string> = {
@@ -31,14 +30,30 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
   const [period, setPeriod] = useState('AM')
   const [selectedSound, setSelectedSound] = useState('vibe')
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false)
-  const previewHowlRef = useRef<Howl | null>(null)
+  const previewAudioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      const now = new Date()
+      let h = now.getHours()
+      const m = now.getMinutes()
+      const p = h >= 12 ? 'PM' : 'AM'
+      if (h === 0) h = 12
+      else if (h > 12) h -= 12
+
+      setHour(String(h).padStart(2, '0'))
+      setMinute(String(m).padStart(2, '0'))
+      setPeriod(p)
+    }
+  }, [isOpen])
 
   if (!isOpen) return null
 
   const handleStopPreview = () => {
-    if (previewHowlRef.current) {
-      previewHowlRef.current.stop()
-      previewHowlRef.current = null
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
+      previewAudioRef.current = null
     }
     setIsPreviewPlaying(false)
   }
@@ -49,18 +64,21 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
       return
     }
 
-    if (previewHowlRef.current) {
-      previewHowlRef.current.stop()
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause()
+      previewAudioRef.current.currentTime = 0
     }
 
-    previewHowlRef.current = new Howl({
-      src: [SOUNDS[selectedSound] || SOUNDS.vibe],
-      volume: 0.8,
-      onend: () => setIsPreviewPlaying(false),
-      onstop: () => setIsPreviewPlaying(false)
+    const audio = new Audio(SOUNDS[selectedSound] || SOUNDS.vibe)
+    audio.volume = 0.8
+    audio.onended = () => setIsPreviewPlaying(false)
+    
+    audio.play().catch(e => {
+      console.error('Audio preview blocked:', e)
+      setIsPreviewPlaying(false)
     })
     
-    previewHowlRef.current.play()
+    previewAudioRef.current = audio
     setIsPreviewPlaying(true)
   }
 
@@ -86,9 +104,14 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
 
   const resetForm = () => {
     setLabel('')
-    setHour('07')
-    setMinute('00')
-    setPeriod('AM')
+    const now = new Date()
+    let h = now.getHours()
+    const p = h >= 12 ? 'PM' : 'AM'
+    if (h === 0) h = 12
+    else if (h > 12) h -= 12
+    setHour(String(h).padStart(2, '0'))
+    setMinute(String(now.getMinutes()).padStart(2, '0'))
+    setPeriod(p)
     setSelectedSound('vibe')
   }
 
@@ -142,7 +165,7 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
                   <select 
                     value={hour}
                     onChange={(e) => setHour(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-[1.25rem] px-4 py-5 text-3xl font-bold text-center text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07]"
+                    className="w-full bg-white/5 border border-white/10 rounded-[1.25rem] h-20 text-3xl font-bold text-center text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07]"
                   >
                     {HOURS.map(h => <option key={h} value={h} className="bg-[#1a0b36]">{h}</option>)}
                   </select>
@@ -154,7 +177,7 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
                   <select 
                     value={minute}
                     onChange={(e) => setMinute(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-[1.25rem] px-4 py-5 text-3xl font-bold text-center text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07]"
+                    className="w-full bg-white/5 border border-white/10 rounded-[1.25rem] h-20 text-3xl font-bold text-center text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07]"
                   >
                     {MINUTES.map(m => <option key={m} value={m} className="bg-[#1a0b36]">{m}</option>)}
                   </select>
@@ -166,7 +189,7 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
                   <select 
                     value={period}
                     onChange={(e) => setPeriod(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-[1.25rem] px-4 py-5 text-xl font-black text-center text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07]"
+                    className="w-full bg-white/5 border border-white/10 rounded-[1.25rem] h-20 text-xl font-black text-center text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07]"
                   >
                     {PERIODS.map(p => <option key={p} value={p} className="bg-[#1a0b36]">{p}</option>)}
                   </select>

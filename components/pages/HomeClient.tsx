@@ -16,7 +16,9 @@ import {
   RefreshCw,
   Search,
   Settings,
-  Star
+  Star,
+  Users,
+  ChefHat
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
@@ -72,6 +74,23 @@ const tools = [
     href: '/meeting-planner',
     color: 'from-amber-500/20 to-yellow-500/20',
     iconColor: 'text-amber-400'
+  },
+  {
+    title: 'Shared Alarm',
+    description: 'Create and synchronize alarms simultaneously across multiple devices and users anywhere.',
+    icon: Users,
+    href: '/shared-alarm',
+    color: 'from-pink-500/20 to-rose-500/20',
+    iconColor: 'text-pink-400',
+    badge: 'New'
+  },
+  {
+    title: 'Egg Timer',
+    description: 'Perfectly boil eggs every time with specialized presets for soft, medium, and hard boiled eggs.',
+    icon: ChefHat,
+    href: '/egg-timer',
+    color: 'from-orange-400/20 to-amber-500/20',
+    iconColor: 'text-orange-400'
   }
 ]
 

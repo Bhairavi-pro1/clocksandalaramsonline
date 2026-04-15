@@ -14,7 +14,6 @@ import { doc, getDoc } from 'firebase/firestore'
 import SharedAlarmCard from '@/components/tools/SharedAlarmCard'
 import SharedAlarmModal from '@/components/tools/SharedAlarmModal'
 import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
-import { Howl } from 'howler'
 
 const SOUNDS: Record<string, string> = {
   vibe: '/sounds/vibe.mp3',
@@ -35,7 +34,7 @@ export default function SharedAlarmDashboard() {
   const [isLoading, setIsLoading] = useState(true)
 
   const [ringingAlarm, setRingingAlarm] = useState<SharedAlarm | null>(null)
-  const howlRef = useRef<Howl | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const loadAlarms = async () => {
     if (!sessionId) return;
@@ -98,15 +97,16 @@ export default function SharedAlarmDashboard() {
   };
 
   const handleAlarmRing = (alarm: SharedAlarm) => {
-    if (howlRef.current) howlRef.current.stop()
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
 
-    howlRef.current = new Howl({
-      src: [SOUNDS[alarm.sound] || SOUNDS.vibe],
-      loop: true,
-      volume: 0.8,
-    })
-
-    howlRef.current.play()
+    const audio = new Audio(SOUNDS[alarm.sound] || SOUNDS.vibe)
+    audio.loop = true
+    audio.volume = 0.8
+    audio.play().catch(e => console.error('Alarm audio blocked:', e))
+    audioRef.current = audio
     setRingingAlarm(alarm)
 
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
@@ -118,9 +118,10 @@ export default function SharedAlarmDashboard() {
   };
 
   const stopRinging = () => {
-    if (howlRef.current) {
-      howlRef.current.stop()
-      howlRef.current = null
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
     }
     setRingingAlarm(null)
   }

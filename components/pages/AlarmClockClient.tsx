@@ -26,7 +26,7 @@ export default function AlarmClockClient() {
         </div>
 
         {/* Row 2: Add Alarm Button and Status */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 bg-white/5 p-8 rounded-[2.5rem] border border-white/5">
+        <div id="alarms-list" className="flex flex-col md:flex-row justify-between items-center gap-6 bg-white/5 p-8 rounded-[2.5rem] border border-white/5 scroll-mt-24">
           <div className="space-y-1 text-center md:text-left">
             <h3 className="text-2xl font-black text-white">Active Alarms</h3>
             <p className="text-sm text-muted font-medium">You have {alarms.length} alarm{alarms.length !== 1 ? 's' : ''} configured</p>
