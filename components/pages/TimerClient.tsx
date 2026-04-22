@@ -26,7 +26,7 @@ export default function TimerClient() {
             onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-[1.5rem] font-black hover:scale-105 transition-transform shadow-xl shadow-primary/20"
           >
-            <Plus size={24} /> Add Countdown
+            <Plus size={24} /> Add Timer
           </button>
         </div>
 
@@ -34,7 +34,7 @@ export default function TimerClient() {
         <div id="timers-list-section" className="scroll-mt-8 w-full">
           {countdowns.length === 0 ? (
             <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border border-dashed border-white/10">
-              <p className="text-white/30 font-bold uppercase tracking-widest">No active countdowns. Click "Add Countdown" to start.</p>
+              <p className="text-white/30 font-bold uppercase tracking-widest">No active timers. Click "Add Timer" to start.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

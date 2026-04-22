@@ -64,5 +64,35 @@
     "title": "60 Minute Timer — 1 Hour Countdown",
     "description": "Set a 1 hour timer instantly. Full-screen countdown with loud alarm sound.",
     "content": "One full hour of focus. Use this for deep work, long tasks, or as a reliable kitchen timer for baking. Reliable and free."
+  },
+  {
+    "slug": "4-minute",
+    "title": "4 Minute Timer — Online Countdown & Alarm",
+    "description": "Start a 4 minute timer now. Free, reliable online countdown for speeches, brewing coffee, or quick tasks.",
+    "content": "A 4-minute timer is perfect for brewing a French press coffee or timing a short speech. This online tool works on all mobile and desktop browsers."
+  },
+  {
+    "slug": "7-minute",
+    "title": "7 Minute Timer — Quick Online Countdown",
+    "description": "Set a 7 minute timer instantly. Perfect for the scientific 7-minute workout routine or quick breaks.",
+    "content": "The 7-minute timer is ideal for the popular high-intensity 7-minute workout or boiling the perfect egg. Reliable, free, and easy to use."
+  },
+  {
+    "slug": "12-minute",
+    "title": "12 Minute Timer — Free Countdown Online",
+    "description": "Run a 12 minute countdown with alarm. Secure and reliable browser-based timer for exercises and presentations.",
+    "content": "Whether you are timing a presentation, a quick quiz, or a focused work sprint, this 12-minute timer will give you the precise alert you need."
+  },
+  {
+    "slug": "50-minute",
+    "title": "50 Minute Timer — Deep Work Focus Block",
+    "description": "Set a 50 minute timer for deep work and productivity. Full-screen online timer with alarm.",
+    "content": "The 50-minute timer is perfect for the 50/10 productivity method (50 minutes of work, 10 minutes of break). Stay focused and avoid burnout."
+  },
+  {
+    "slug": "120-minute",
+    "title": "120 Minute Timer — 2 Hour Countdown",
+    "description": "Set a 2 hour (120 minute) timer. Full-screen countdown with loud alarm sound for exams or long tasks.",
+    "content": "Two full hours of focus. Use this for deep work, university exams, movie lengths, or long tasks. Reliable and completely free online."
   }
 ]

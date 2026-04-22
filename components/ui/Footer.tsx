@@ -35,7 +35,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 text-sm">
               <li><Link href="/world-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Globe className="w-3.5 h-3.5" /> World Clock</Link></li>
               <li><Link href="/stopwatch" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Timer className="w-3.5 h-3.5" /> Stopwatch</Link></li>
-              <li><Link href="/timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Hourglass className="w-3.5 h-3.5" /> Countdown</Link></li>
+              <li><Link href="/timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Hourglass className="w-3.5 h-3.5" /> Timer</Link></li>
               <li><Link href="/alarm-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Bell className="w-3.5 h-3.5" /> Alarms</Link></li>
               <li><Link href="/meeting-planner" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><CalendarRange className="w-3.5 h-3.5" /> Meeting Planner</Link></li>
               <li><Link href="/dst-tracker" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Calendar className="w-3.5 h-3.5" /> DST Tracker</Link></li>

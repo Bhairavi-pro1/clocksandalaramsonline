@@ -88,5 +88,65 @@
     "title": "Current Local Time in Mumbai, India",
     "description": "Current time in Mumbai, India's financial capital. Get date, time, and weather.",
     "content": "Mumbai, formerly Bombay, is India's largest city and financial hub. It uses Indian Standard Time (IST) which is UTC +5:30."
+  },
+  {
+    "slug": "los-angeles",
+    "name": "Los Angeles",
+    "timezone": "America/Los_Angeles",
+    "lat": 34.05,
+    "lon": -118.24,
+    "title": "Current Local Time in Los Angeles, USA — Online Clock",
+    "description": "What time is it in Los Angeles? Get the current local time, date, and timezone for Los Angeles. Free online world clock.",
+    "content": "Los Angeles, located in Southern California, is the center of the nation's film and television industry. Its time is governed by Pacific Standard Time (PST) or Pacific Daylight Time (PDT) depending on the season."
+  },
+  {
+    "slug": "toronto",
+    "name": "Toronto",
+    "timezone": "America/Toronto",
+    "lat": 43.70,
+    "lon": -79.42,
+    "title": "Current Local Time in Toronto, Canada",
+    "description": "Get the exact local time in Toronto, Canada. See current date, timezone, and weather for Toronto.",
+    "content": "Toronto is the capital city of the Canadian province of Ontario. It is a major international centre of business and finance, operating on Eastern Standard Time (EST) or Eastern Daylight Time (EDT)."
+  },
+  {
+    "slug": "berlin",
+    "name": "Berlin",
+    "timezone": "Europe/Berlin",
+    "lat": 52.52,
+    "lon": 13.40,
+    "title": "Current Local Time in Berlin, Germany",
+    "description": "What time is it in Berlin? Get the local time, date, and sunny/sunset for Germany's capital city.",
+    "content": "Berlin is the capital and largest city of Germany by both area and population. Known for its art scene and modern landmarks, it uses Central European Time (CET) or Central European Summer Time (CEST)."
+  },
+  {
+    "slug": "beijing",
+    "name": "Beijing",
+    "timezone": "Asia/Shanghai",
+    "lat": 39.90,
+    "lon": 116.40,
+    "title": "Current Local Time in Beijing, China",
+    "description": "The exact current time in Beijing, China. Free online world clock with sunrise/sunset and weather.",
+    "content": "Beijing is the capital of the People's Republic of China. Despite its massive size, the entire country operates on a single time zone, China Standard Time (CST), which is UTC +8:00."
+  },
+  {
+    "slug": "seoul",
+    "name": "Seoul",
+    "timezone": "Asia/Seoul",
+    "lat": 37.56,
+    "lon": 126.97,
+    "title": "Current Local Time in Seoul, South Korea",
+    "description": "Exact current time in Seoul city, date, and weather info.",
+    "content": "Seoul, the capital of South Korea, is a huge metropolis where modern skyscrapers, high-tech subways and pop culture meet Buddhist temples, palaces and street markets. It uses Korea Standard Time (KST)."
+  },
+  {
+    "slug": "mexico-city",
+    "name": "Mexico City",
+    "timezone": "America/Mexico_City",
+    "lat": 19.43,
+    "lon": -99.13,
+    "title": "Current Local Time in Mexico City, Mexico",
+    "description": "What time is it in Mexico City? Get the current local time, date, and timezone for Mexico City.",
+    "content": "Mexico City is the densely populated, high-altitude capital of Mexico. It is known for its Templo Mayor, a 13th-century Aztec temple, and uses Central Standard Time (CST) for most of the year."
   }
 ]

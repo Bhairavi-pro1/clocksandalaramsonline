@@ -70,7 +70,7 @@ export default function TimerPage() {
       
       <div className="max-w-7xl mx-auto px-4 pt-16">
         <h1 className="text-4xl md:text-6xl font-black text-center mb-10 text-white tracking-tighter animate-in fade-in duration-1000">
-          Online <span className="text-primary italic">Countdown</span> Timer
+          Online <span className="text-primary italic">Timer</span>
         </h1>
       </div>
 

@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils'
 const navItems = [
   { label: 'World Clock', icon: Globe, href: '/world-clock' },
   { label: 'Stopwatch', icon: Timer, href: '/stopwatch' },
-  { label: 'Countdown', icon: Hourglass, href: '/timer' },
+  { label: 'Timer', icon: Hourglass, href: '/timer' },
   { label: 'Alarm', icon: Bell, href: '/alarm-clock' },
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner' },
   { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' },

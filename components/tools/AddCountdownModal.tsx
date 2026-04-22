@@ -103,7 +103,7 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
               <span className="p-2 rounded-xl bg-primary/20 text-primary">
                 <Music size={24} />
               </span>
-              New Countdown
+              New Timer
             </h2>
             <button 
               onClick={onClose}
