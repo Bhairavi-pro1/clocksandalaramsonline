@@ -61,28 +61,21 @@ export function getHolidays(): Holiday[] {
   
   const holidayConfigs = [
     { name: 'New Year', type: 'fixed', month: 0, day: 1 },
-    { name: 'Martin Luther King Day', type: 'nth', month: 0, dayOfWeek: 1, n: 3 },
-    { name: 'Groundhog Day', type: 'fixed', month: 1, day: 2 },
     { name: 'Chinese New Year', type: 'special', dates: { 2026: [1, 17], 2027: [1, 6], 2028: [0, 26] } },
     { name: 'Valentine\'s Day', type: 'fixed', month: 1, day: 14 },
-    { name: 'Presidents Day', type: 'nth', month: 1, dayOfWeek: 1, n: 3 },
     { name: 'St. Patrick\'s Day', type: 'fixed', month: 2, day: 17 },
     { name: 'Good Friday', type: 'relative-easter', offset: -2 },
     { name: 'Easter', type: 'relative-easter', offset: 0 },
-    { name: 'Tax Day', type: 'fixed', month: 3, day: 15 },
-    { name: 'Mother\'s Day', type: 'nth', month: 4, dayOfWeek: 0, n: 2 },
-    { name: 'Memorial Day', type: 'nth', month: 4, dayOfWeek: 1, n: -1 },
-    { name: 'Juneteenth', type: 'fixed', month: 5, day: 19 },
-    { name: 'Father\'s Day', type: 'nth', month: 5, dayOfWeek: 0, n: 3 },
-    { name: 'Independence Day', type: 'fixed', month: 6, day: 4 },
-    { name: 'Labor Day', type: 'nth', month: 8, dayOfWeek: 1, n: 1 },
-    { name: 'Columbus Day', type: 'nth', month: 9, dayOfWeek: 1, n: 2 },
+    { name: 'Earth Day', type: 'fixed', month: 3, day: 22 },
+    { name: 'International Workers\' Day', type: 'fixed', month: 4, day: 1 },
+    { name: 'World Environment Day', type: 'fixed', month: 5, day: 5 },
+    { name: 'International Friendship Day', type: 'fixed', month: 6, day: 30 },
+    { name: 'World Teachers\' Day', type: 'fixed', month: 9, day: 5 },
+    { name: 'United Nations Day', type: 'fixed', month: 9, day: 24 },
     { name: 'Halloween', type: 'fixed', month: 9, day: 31 },
-    { name: 'Veterans Day', type: 'fixed', month: 10, day: 11 },
-    { name: 'Thanksgiving Day', type: 'nth', month: 10, dayOfWeek: 4, n: 4 },
-    { name: 'Black Friday', type: 'nth-relative', month: 10, dayOfWeek: 4, n: 4, offsetDays: 1 },
-    { name: 'Cyber Monday', type: 'nth-relative', month: 10, dayOfWeek: 4, n: 4, offsetDays: 4 },
+    { name: 'Christmas Eve', type: 'fixed', month: 11, day: 24 },
     { name: 'Christmas', type: 'fixed', month: 11, day: 25 },
+    { name: 'New Year\'s Eve', type: 'fixed', month: 11, day: 31 },
   ]
 
   return holidayConfigs.map(config => {
@@ -93,15 +86,15 @@ export function getHolidays(): Holiday[] {
       if (config.type === 'fixed') {
         d = new Date(y, config.month!, config.day!)
       } else if (config.type === 'nth') {
-        d = getNthDayOfMonth(y, config.month!, config.dayOfWeek!, config.n!)
+        d = getNthDayOfMonth(y, config.month!, (config as any).dayOfWeek!, (config as any).n!)
       } else if (config.type === 'relative-easter') {
         const easter = getEaster(y)
         d = new Date(easter)
         d.setDate(easter.getDate() + config.offset!)
       } else if (config.type === 'nth-relative') {
-        const base = getNthDayOfMonth(y, config.month!, config.dayOfWeek!, config.n!)
+        const base = getNthDayOfMonth(y, config.month!, (config as any).dayOfWeek!, (config as any).n!)
         d = new Date(base)
-        d.setDate(base.getDate() + config.offsetDays!)
+        d.setDate(base.getDate() + (config as any).offsetDays!)
       } else if (config.type === 'special') {
         const dates = (config as any).dates
         const [m, day] = dates[y] || [0, 1] // Default to Jan 1st if not found

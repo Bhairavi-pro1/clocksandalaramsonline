@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { X, Play, Music, Volume2, Square, ChevronDown } from 'lucide-react'
 
 const SOUNDS: Record<string, string> = {
@@ -26,6 +26,15 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
   const [selectedSound, setSelectedSound] = useState('vibe')
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false)
   const previewAudioRef = useRef<HTMLAudioElement | null>(null)
+  const [currentTime, setCurrentTime] = useState<Date | null>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentTime(new Date())
+      const interval = setInterval(() => setCurrentTime(new Date()), 1000)
+      return () => clearInterval(interval)
+    }
+  }, [isOpen])
 
   if (!isOpen) return null
 
@@ -91,20 +100,26 @@ export default function AddCountdownModal({ isOpen, onClose, onAdd }: AddCountdo
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
       <div 
         className="absolute inset-0 bg-background/60 backdrop-blur-md transition-opacity"
-        onClick={onClose}
       />
       
       <div className="relative w-full max-w-lg bg-[#1a0b36] border border-violet-500/20 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
         <div className="absolute -top-24 -left-24 w-48 h-48 bg-primary/10 blur-[80px] rounded-full" />
         
         <div className="p-8 sm:p-10 relative z-10">
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-2xl font-black text-white flex items-center gap-3">
-              <span className="p-2 rounded-xl bg-primary/20 text-primary">
-                <Music size={24} />
-              </span>
-              New Timer
-            </h2>
+          <div className="flex justify-between items-start mb-10">
+            <div>
+              <h2 className="text-2xl font-black text-white flex items-center gap-3">
+                <span className="p-2 rounded-xl bg-primary/20 text-primary">
+                  <Music size={24} />
+                </span>
+                New Timer
+              </h2>
+              {currentTime && (
+                <p className="text-white/50 text-sm mt-2 ml-[3.25rem] font-medium">
+                  Current Time: {currentTime.toLocaleTimeString()}
+                </p>
+              )}
+            </div>
             <button 
               onClick={onClose}
               className="p-2 rounded-xl hover:bg-white/5 text-white/40 transition-colors"

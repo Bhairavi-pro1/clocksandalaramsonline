@@ -25,8 +25,8 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
   const [description, setDescription] = useState('')
   const [sound, setSound] = useState('vibe')
   
-  // Default to 1 hour from now
-  const defaultDate = new Date(Date.now() + 60 * 60 * 1000)
+  // Default to current time
+  const defaultDate = new Date()
   
   const [dateStr, setDateStr] = useState(defaultDate.toISOString().split('T')[0])
   
@@ -36,6 +36,15 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
   
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false)
   const previewAudioRef = useRef<HTMLAudioElement | null>(null)
+  const [currentTime, setCurrentTime] = useState<Date | null>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentTime(new Date())
+      const interval = setInterval(() => setCurrentTime(new Date()), 1000)
+      return () => clearInterval(interval)
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (initialData && isOpen) {
@@ -50,7 +59,7 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
        setTitle('')
        setDescription('')
        setSound('vibe')
-       const d = new Date(Date.now() + 60 * 60 * 1000)
+       const d = new Date()
        setDateStr(d.toISOString().split('T')[0])
        setTimeStr(`${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`)
     }
@@ -114,7 +123,6 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-background/90 backdrop-blur-sm animate-in fade-in duration-300">
       <div 
         className="absolute inset-0"
-        onClick={onClose}
       />
       
       <div className="relative w-full max-w-lg bg-[#110624] border border-white/10 p-6 sm:p-8 rounded-[2.5rem] shadow-2xl shadow-primary/20 animate-in zoom-in-95 duration-300">
@@ -133,7 +141,17 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
             <h2 className="text-2xl font-black text-white tracking-tight">
               {initialData ? "Edit Shared Alarm" : "New Shared Alarm"}
             </h2>
-            <p className="text-sm text-white/50 font-medium">Configure time and details</p>
+            <div className="flex items-center gap-2">
+              
+              {currentTime && (
+                <>
+                  
+                  <p className="text-sm text-white/50 font-medium">
+                    Current Time: {currentTime.toLocaleTimeString()}
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </div>
 

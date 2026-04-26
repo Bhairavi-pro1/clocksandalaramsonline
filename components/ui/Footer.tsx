@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar, Share2, Thermometer } from 'lucide-react'
+import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar, Share2, Thermometer, PartyPopper } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           {/* Brand Section */}
-          <div className="md:col-span-6 space-y-6">
+          <div className="md:col-span-5 space-y-6">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center overflow-hidden p-1.5">
                 <img 
@@ -30,22 +30,23 @@ export default function Footer() {
           </div>
 
           {/* Tools Links */}
-          <div className="md:col-span-3 space-y-6">
+          <div className="md:col-span-5 space-y-6">
             <h6 className="text-[10px] uppercase font-bold text-white tracking-[0.2em]">Tools</h6>
-            <ul className="flex flex-col gap-3 text-sm">
-              <li><Link href="/world-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Globe className="w-3.5 h-3.5" /> World Clock</Link></li>
-              <li><Link href="/stopwatch" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Timer className="w-3.5 h-3.5" /> Stopwatch</Link></li>
-              <li><Link href="/timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Hourglass className="w-3.5 h-3.5" /> Timer</Link></li>
-              <li><Link href="/alarm-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Bell className="w-3.5 h-3.5" /> Alarms</Link></li>
-              <li><Link href="/meeting-planner" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><CalendarRange className="w-3.5 h-3.5" /> Meeting Planner</Link></li>
-              <li><Link href="/dst-tracker" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Calendar className="w-3.5 h-3.5" /> DST Tracker</Link></li>
-              <li><Link href="/shared-alarm" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Share2 className="w-3.5 h-3.5" /> Shared Alarm</Link></li>
-              <li><Link href="/egg-timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Thermometer className="w-3.5 h-3.5" /> Egg Timer</Link></li>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+              <li><Link href="/world-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Globe className="w-3.5 h-3.5 flex-shrink-0" /> World Clock</Link></li>
+              <li><Link href="/stopwatch" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Timer className="w-3.5 h-3.5 flex-shrink-0" /> Stopwatch</Link></li>
+              <li><Link href="/timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Hourglass className="w-3.5 h-3.5 flex-shrink-0" /> Timer</Link></li>
+              <li><Link href="/alarm-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Bell className="w-3.5 h-3.5 flex-shrink-0" /> Alarms</Link></li>
+              <li><Link href="/meeting-planner" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><CalendarRange className="w-3.5 h-3.5 flex-shrink-0" /> Meeting Planner</Link></li>
+              <li><Link href="/dst-tracker" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Calendar className="w-3.5 h-3.5 flex-shrink-0" /> DST Tracker</Link></li>
+              <li><Link href="/countdown" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><PartyPopper className="w-3.5 h-3.5 flex-shrink-0" /> Holiday Countdown</Link></li>
+              <li><Link href="/shared-alarm" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Share2 className="w-3.5 h-3.5 flex-shrink-0" /> Shared Alarm</Link></li>
+              <li><Link href="/egg-timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Thermometer className="w-3.5 h-3.5 flex-shrink-0" /> Egg Timer</Link></li>
             </ul>
           </div>
 
           {/* Company Links */}
-          <div className="md:col-span-3 space-y-6">
+          <div className="md:col-span-2 space-y-6">
             <h6 className="text-[10px] uppercase font-bold text-white tracking-[0.2em]">Company</h6>
             <ul className="flex flex-col gap-3 text-sm">
               <li><Link href="/about" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Info className="w-3.5 h-3.5" /> About Us</Link></li>

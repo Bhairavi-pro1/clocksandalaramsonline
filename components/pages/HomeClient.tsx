@@ -16,9 +16,9 @@ import {
   RefreshCw,
   Search,
   Settings,
-  Star,
   Users,
-  ChefHat
+  ChefHat,
+  PartyPopper
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
@@ -51,7 +51,7 @@ const tools = [
     iconColor: 'text-purple-400'
   },
   {
-    title: 'Countdown Timer',
+    title: 'Timer',
     description: 'Immersive full-screen timers for Pomodoro focus, fitness intervals, and study sessions.',
     icon: Hourglass,
     href: '/timer',
@@ -91,6 +91,14 @@ const tools = [
     href: '/egg-timer',
     color: 'from-orange-400/20 to-amber-500/20',
     iconColor: 'text-orange-400'
+  },
+  {
+    title: 'Holiday Countdown',
+    description: 'Count down to global holidays, festivals, and major events with millisecond precision.',
+    icon: PartyPopper,
+    href: '/countdown',
+    color: 'from-fuchsia-500/20 to-purple-500/20',
+    iconColor: 'text-fuchsia-400'
   }
 ]
 
@@ -265,37 +273,37 @@ export default function HomeClient() {
             <div className="space-y-12">
                <div className="space-y-4">
                   <div className="px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest inline-block mb-2">
-                     The Standard in Precision
+                     Your Productivity Suite
                   </div>
                   <h2 className="text-4xl md:text-7xl font-black text-white leading-none tracking-tighter">
-                    Built for Accuracy, <br />
-                    <span className="italic text-primary/80">Designed for Scale</span>
+                    Simple, Reliable, <br />
+                    <span className="italic text-primary/80">Everyday Tools</span>
                   </h2>
                </div>
                
                <p className="text-xl text-muted font-medium leading-relaxed">
-                  Most online clocks drift after a few minutes of CPU load. We engineered a core engine 
-                  that checks its own drift against high-precision system counters every 16ms, ensuring 
-                  your alarms and world times remain perfectly synced with the global standard.
+                  Experience seamless time management with our comprehensive suite of online clocks and timers. 
+                  Designed for ease of use and reliability, our tools help you stay on track, whether you're coordinating 
+                  global meetings or managing your daily focus sessions.
                </p>
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <div className="flex gap-5 group">
                      <div className="bg-primary/20 p-4 rounded-2xl h-fit border border-primary/30 group-hover:bg-primary transition-colors duration-500">
-                        <Cpu className="text-white" size={24} />
+                        <Shield className="text-white" size={24} />
                      </div>
                      <div className="space-y-2">
-                        <h4 className="text-lg font-black text-white uppercase tracking-tight">Logic Engine v4</h4>
-                        <p className="text-sm text-muted/60 leading-relaxed font-medium">Proprietary logic minimizes background process drift for high-stakes alarms.</p>
+                        <h4 className="text-lg font-black text-white uppercase tracking-tight">Privacy First</h4>
+                        <p className="text-sm text-muted/60 leading-relaxed font-medium">All settings and timers are saved locally in your browser. No accounts or tracking.</p>
                      </div>
                   </div>
                   <div className="flex gap-5 group">
                      <div className="bg-accent/20 p-4 rounded-2xl h-fit border border-accent/30 group-hover:bg-accent transition-colors duration-500">
-                        <RefreshCw className="text-white" size={24} />
+                        <CheckCircle2 className="text-white" size={24} />
                      </div>
                      <div className="space-y-2">
-                        <h4 className="text-lg font-black text-white uppercase tracking-tight">Atomic Sync</h4>
-                        <p className="text-sm text-muted/60 leading-relaxed font-medium">Synchronized with over 20 global NTP stratums for zero-latency world time.</p>
+                        <h4 className="text-lg font-black text-white uppercase tracking-tight">Reliable Tools</h4>
+                        <p className="text-sm text-muted/60 leading-relaxed font-medium">Enjoy dependable alarms and synchronized timers designed for daily productivity.</p>
                      </div>
                   </div>
                </div>
@@ -313,15 +321,15 @@ export default function HomeClient() {
                      </div>
                      <div className="space-y-6">
                         <div className="flex justify-between items-baseline">
-                           <span className="text-sm font-bold text-white/40 uppercase tracking-tighter">Synchronization Delay</span>
-                           <span className="text-2xl font-black text-white tabular-nums">1.04<span className="text-xs ml-1 opacity-40">ms</span></span>
+                           <span className="text-sm font-bold text-white/40 uppercase tracking-tighter">System Reliability</span>
+                           <span className="text-2xl font-black text-white tabular-nums">100<span className="text-xs ml-1 opacity-40">%</span></span>
                         </div>
                         <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                           <div className="h-full w-[88%] bg-primary animate-pulse shadow-[0_0_10px_rgba(124,58,237,0.6)]" />
+                           <div className="h-full w-full bg-primary animate-pulse shadow-[0_0_10px_rgba(124,58,237,0.6)]" />
                         </div>
                      </div>
                      <p className="text-xs text-muted/40 font-bold uppercase leading-relaxed text-center group-hover:text-primary/60 transition-colors">
-                        Connecting to stratum-1 NTP servers via WebSockets
+                        Always available, working seamlessly in your browser.
                      </p>
                   </div>
                </div>
@@ -337,11 +345,11 @@ export default function HomeClient() {
       <section className="max-w-6xl mx-auto px-6 space-y-24">
          <div className="text-center space-y-6">
             <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter decoration-primary/50 underline-offset-[12px] underline">
-               The Science of Time
+               Designed for You
             </h2>
             <p className="text-xl md:text-2xl text-muted/60 font-medium max-w-4xl mx-auto italic leading-relaxed pt-4">
-              "We don't just display time; we authenticate it. Our platform serves as a primary reference 
-              for thousands of professional teams managing global deployments and high-stakes transitions."
+              "We built Clocks and Alarms Online to be the only time management tool you need. 
+              It's fast, free, and incredibly easy to use."
             </p>
          </div>
 
@@ -350,24 +358,22 @@ export default function HomeClient() {
                <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
                   <Settings size={32} />
                </div>
-               <h3 className="text-3xl font-black text-white italic">Intelligent Local Persistence</h3>
+               <h3 className="text-3xl font-black text-white italic">Always Ready</h3>
                <p className="text-base text-muted/70 leading-relaxed font-medium">
-                  Your customized dashboard settings, favorite world clocks, and alarm tones are encrypted and saved locally 
-                  in your browser's persistent storage. This means every time you return to Clocks and Alarms Online, 
-                  your mission-critical schedule is ready and waiting, exactly how you left it. No account required, 
-                  preserving your privacy and speed.
+                  Your customized dashboard settings, favorite world clocks, and alarm configurations are saved 
+                  right in your browser. Every time you return, your schedule is exactly how you left it. 
+                  No accounts required, preserving your privacy and speed.
                </p>
             </div>
             <div className="space-y-6 p-12 bg-white/[0.03] rounded-[3rem] border border-white/5 hover:border-accent/20 transition-all duration-700 shadow-2xl">
                <div className="w-16 h-16 bg-accent/20 rounded-2xl flex items-center justify-center text-accent mb-4">
                   <RefreshCw size={32} />
                </div>
-               <h3 className="text-3xl font-black text-white italic">Continuous Synchronization</h3>
+               <h3 className="text-3xl font-black text-white italic">Seamless Performance</h3>
                <p className="text-base text-muted/70 leading-relaxed font-medium">
-                  Using a unique multi-threaded logic approach, our platform maintains internal precision 
-                  even when system performance fluctuates. While standard JavaScript timers can 'pause' during 
-                  UI refreshes or garbage collection, our time engine runs independently to protect the 
-                  integrity of your countdowns and world clock offsets.
+                  Our platform is designed to be lightweight and fast. Set your timers, run your stopwatches, 
+                  and check world times without experiencing slowdowns or annoying lag. It just works, 
+                  so you can focus on what matters.
                </p>
             </div>
          </div>

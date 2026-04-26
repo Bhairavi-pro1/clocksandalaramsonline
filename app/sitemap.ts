@@ -13,7 +13,7 @@ function getAlarmPaths() {
       const hour = h === 0 ? 12 : h
       for (let m = 0; m < 60; m += 1) {
         const minute = m === 0 ? '' : `-${m.toString().padStart(2, '0')}`
-        paths.push(`/alarm-clock/set-alarm-for-${hour}${minute}-${p}`)
+        paths.push(`set-alarm-for-${hour}${minute}-${p}`)
       }
     }
   }
@@ -81,7 +81,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 1440 dynamic alarm paths
   const alarmRoutes = getAlarmPaths().map((route) => ({
-    url: `${baseUrl}${route}`,
+    url: `${baseUrl}/alarm-clock/${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7, // Slightly lower priority than main tools

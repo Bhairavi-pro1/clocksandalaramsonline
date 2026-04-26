@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 import { 
   Clock, 
   Menu, 
@@ -14,17 +15,19 @@ import {
   CalendarRange,
   Zap,
   Users,
-  ChefHat
+  ChefHat,
+  PartyPopper
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const tools = [
   { label: 'World Clock', icon: Globe, href: '/world-clock', description: 'Global time tracking' },
   { label: 'Stopwatch', icon: Timer, href: '/stopwatch', description: 'Precision lap timer' },
-  { label: 'Countdown', icon: Hourglass, href: '/timer', description: 'Productivity timers' },
+  { label: 'Timer', icon: Hourglass, href: '/timer', description: 'Productivity timers' },
   { label: 'Alarm', icon: Bell, href: '/alarm-clock', description: 'Bulletproof alerts' },
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner', description: 'Global coordination' },
   { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker', description: 'Daylight saving updates' },
+  { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown', description: 'Global event tracking' },
   { label: 'Shared Alarm', icon: Users, href: '/shared-alarm', description: 'Synchronized team alarms' },
   { label: 'Egg Timer', icon: ChefHat, href: '/egg-timer', description: 'Perfectly boiled eggs' }
 ]
@@ -33,6 +36,22 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isToolsOpen, setIsToolsOpen] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleInsightsClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (pathname === '/') {
+      const el = document.getElementById('expert-insights')
+      if (el) {
+        // Offset for the fixed header
+        const y = el.getBoundingClientRect().top + window.scrollY - 100
+        window.scrollTo({ top: y, behavior: 'smooth' })
+      }
+    } else {
+      router.push('/#expert-insights')
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -133,9 +152,13 @@ export default function Header() {
               </div>
             </div>
 
-            <Link href="#expert-insights" className="text-sm font-bold uppercase tracking-widest text-white/70 hover:text-primary transition-all">
+            <a 
+              href="/#expert-insights" 
+              onClick={handleInsightsClick}
+              className="text-sm font-bold uppercase tracking-widest text-white/70 hover:text-primary transition-all cursor-pointer"
+            >
               Expert Insights
-            </Link>
+            </a>
           </nav>
 
           {/* Right: CTA & Mobile Toggle */}

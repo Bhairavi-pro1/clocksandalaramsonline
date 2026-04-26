@@ -15,7 +15,8 @@ import {
   Menu,
   X,
   Share2,
-  Thermometer
+  Thermometer,
+  PartyPopper
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -26,6 +27,7 @@ const navItems = [
   { label: 'Alarm', icon: Bell, href: '/alarm-clock' },
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner' },
   { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' },
+  { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown' },
   { label: 'Shared Alarm', icon: Share2, href: '/shared-alarm' },
   { label: 'Egg Timer', icon: Thermometer, href: '/egg-timer' }
 ]
