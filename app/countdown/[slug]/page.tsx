@@ -67,6 +67,7 @@ export default async function HolidayCountdownPage({ params }: Props) {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "name": "Frequently Asked Questions",
     "mainEntity": [
       {
         "@type": "Question",

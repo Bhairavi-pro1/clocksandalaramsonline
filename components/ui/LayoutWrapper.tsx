@@ -9,6 +9,12 @@ import { cn } from '@/lib/utils'
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
+  const isStudio = pathname.startsWith('/studio')
+
+  // Sanity Studio has its own full-page UI — render children only
+  if (isStudio) {
+    return <>{children}</>
+  }
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">

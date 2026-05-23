@@ -16,7 +16,8 @@ import {
   Zap,
   Users,
   ChefHat,
-  PartyPopper
+  PartyPopper,
+  BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -159,6 +160,13 @@ export default function Header() {
             >
               Expert Insights
             </a>
+
+            <Link 
+              href="/blog" 
+              className="text-sm font-bold uppercase tracking-widest text-white/70 hover:text-primary transition-all"
+            >
+              Blog
+            </Link>
           </nav>
 
           {/* Right: CTA & Mobile Toggle */}
@@ -217,6 +225,21 @@ export default function Header() {
                  ))}
               </div>
            </div>
+
+            {/* Blog Link in Mobile */}
+            <div className="space-y-4">
+              <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Knowledge</span>
+              <Link 
+                href="/blog"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-5 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 transition-all font-bold text-white group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                  <BookOpen size={20} />
+                </div>
+                <span className="group-hover:translate-x-1 transition-transform">Blog</span>
+              </Link>
+            </div>
 
            <div className="pt-10 border-t border-white/5 space-y-6 text-center">
               <Link 

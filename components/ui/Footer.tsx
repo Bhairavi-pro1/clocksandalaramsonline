@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar, Share2, Thermometer, PartyPopper } from 'lucide-react'
+import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar, Share2, Thermometer, PartyPopper, BookOpen } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -50,6 +50,7 @@ export default function Footer() {
             <h6 className="text-[10px] uppercase font-bold text-white tracking-[0.2em]">Company</h6>
             <ul className="flex flex-col gap-3 text-sm">
               <li><Link href="/about" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Info className="w-3.5 h-3.5" /> About Us</Link></li>
+              <li><Link href="/blog" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><BookOpen className="w-3.5 h-3.5" /> Blog</Link></li>
               <li><Link href="/contact" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><Mail className="w-3.5 h-3.5" /> Contact Us</Link></li>
               <li><Link href="/privacy" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><ShieldCheck className="w-3.5 h-3.5" /> Privacy Policy</Link></li>
               <li><Link href="/terms" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"><FileText className="w-3.5 h-3.5" /> Terms of Use</Link></li>

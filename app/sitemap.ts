@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import timerData from '@/data/seo/timers.json'
 import cityData from '@/data/seo/cities.json'
 import holidayData from '@/data/seo/holidays.json'
+import { getAllPosts } from '@/lib/sanity'
 
 // Helper function to generate all 1440 paths from 12:00 AM to 11:59 PM
 function getAlarmPaths() {
@@ -20,7 +21,7 @@ function getAlarmPaths() {
   return paths
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://clocksandalarmsonline.com'
   
   // Define high priority pages
@@ -35,6 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/dst-tracker',
     '/egg-timer',
     '/shared-alarm',
+    '/blog',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
@@ -87,9 +89,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7, // Slightly lower priority than main tools
   }))
 
+  // Blog Dynamic Routes (from Sanity CMS)
+  let blogRoutes: MetadataRoute.Sitemap = []
+  try {
+    const posts = await getAllPosts()
+    blogRoutes = posts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug.current}`,
+      lastModified: new Date(post.publishedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
+  } catch {
+    // Sanity fetch may fail during build if no posts exist yet
+  }
+
   return [
     ...routes, 
     ...secondaryRoutes, 
+    ...blogRoutes,
     ...timerRoutes, 
     ...worldClockRoutes, 
     ...countdownRoutes, 

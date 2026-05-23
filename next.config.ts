@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
   
   images: {
     unoptimized: true,  // Required for static export
+    remotePatterns: [
+      {
+        protocol: 'https' as const,
+        hostname: 'cdn.sanity.io',
+      },
+    ],
   },
   
   // Remove X-Powered-By header (minor security + SEO)

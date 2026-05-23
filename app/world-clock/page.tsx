@@ -35,6 +35,7 @@ export default function WorldClockPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "name": "Frequently Asked Questions",
     "mainEntity": [
       {
         "@type": "Question",

@@ -16,7 +16,8 @@ import {
   X,
   Share2,
   Thermometer,
-  PartyPopper
+  PartyPopper,
+  BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -29,7 +30,8 @@ const navItems = [
   { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' },
   { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown' },
   { label: 'Shared Alarm', icon: Share2, href: '/shared-alarm' },
-  { label: 'Egg Timer', icon: Thermometer, href: '/egg-timer' }
+  { label: 'Egg Timer', icon: Thermometer, href: '/egg-timer' },
+  { label: 'Blog', icon: BookOpen, href: '/blog' }
 ]
 
 export default function Sidebar() {
@@ -56,7 +58,7 @@ export default function Sidebar() {
         </div>
       </Link>
 
-      <nav className="flex-1 px-4 space-y-3">
+      <nav className="flex-1 px-4 space-y-3 pb-16">
         {navItems.map((item) => {
           const isActive = pathname.startsWith(item.href) && (item.href !== '/' || pathname === '/')
           return (

@@ -81,6 +81,7 @@ export default async function DynamicTimePage({ params, searchParams }: Props) {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "name": "Frequently Asked Questions",
     "mainEntity": [
       {
         "@type": "Question",

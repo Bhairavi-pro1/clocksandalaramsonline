@@ -44,6 +44,7 @@ export default async function SharedAlarmPage({
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "name": "Frequently Asked Questions",
     "mainEntity": [
       {
         "@type": "Question",
