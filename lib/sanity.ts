@@ -61,7 +61,7 @@ const postFields = `
 export async function getAllPosts(): Promise<Post[]> {
   if (!client) return []
   return client.fetch(
-    `*[_type == "post"] | order(publishedAt desc) {
+    `*[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {
       ${postFields}
     }`,
     {},
@@ -72,7 +72,7 @@ export async function getAllPosts(): Promise<Post[]> {
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   if (!client) return null
   return client.fetch(
-    `*[_type == "post" && slug.current == $slug][0] {
+    `*[_type == "post" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       ${postFields},
       body
     }`,
@@ -84,7 +84,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 export async function getRelatedPosts(category: string, currentSlug: string): Promise<Post[]> {
   if (!client) return []
   return client.fetch(
-    `*[_type == "post" && category == $category && slug.current != $currentSlug] | order(publishedAt desc) [0...3] {
+    `*[_type == "post" && category == $category && slug.current != $currentSlug && !(_id in path("drafts.**"))] | order(publishedAt desc) [0...3] {
       ${postFields}
     }`,
     { category, currentSlug },
