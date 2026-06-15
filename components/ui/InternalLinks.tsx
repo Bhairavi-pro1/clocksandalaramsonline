@@ -10,6 +10,7 @@ const TOOLS = [
   { name: 'Holiday Countdown', href: '/countdown' },
   { name: 'Shared Alarm', href: '/shared-alarm' },
   { name: 'Egg Timer', href: '/egg-timer' },
+  { name: 'Sports Schedule', href: '/sports-schedule' },
 ]
 
 export default function InternalLinks() {

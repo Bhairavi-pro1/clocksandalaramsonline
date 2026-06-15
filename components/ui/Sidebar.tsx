@@ -17,7 +17,8 @@ import {
   Share2,
   Thermometer,
   PartyPopper,
-  BookOpen
+  BookOpen,
+  Trophy
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -31,6 +32,7 @@ const navItems = [
   { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown' },
   { label: 'Shared Alarm', icon: Share2, href: '/shared-alarm' },
   { label: 'Egg Timer', icon: Thermometer, href: '/egg-timer' },
+  { label: 'Sports Schedule', icon: Trophy, href: '/sports-schedule' },
   { label: 'Blog', icon: BookOpen, href: '/blog' }
 ]
 

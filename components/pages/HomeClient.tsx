@@ -18,7 +18,8 @@ import {
   Settings,
   Users,
   ChefHat,
-  PartyPopper
+  PartyPopper,
+  Trophy
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
@@ -99,6 +100,15 @@ const tools = [
     href: '/countdown',
     color: 'from-fuchsia-500/20 to-purple-500/20',
     iconColor: 'text-fuchsia-400'
+  },
+  {
+    title: 'Sports Schedule',
+    description: 'Track global sports timetables translated automatically into the local time of any selected country.',
+    icon: Trophy,
+    href: '/sports-schedule',
+    color: 'from-indigo-500/20 to-purple-500/20',
+    iconColor: 'text-indigo-400',
+    badge: 'FIFA 2026'
   }
 ]
 

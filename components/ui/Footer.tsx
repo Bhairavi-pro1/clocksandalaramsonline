@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar, Share2, Thermometer, PartyPopper, BookOpen } from 'lucide-react'
+import { Clock, Mail, Info, ShieldCheck, FileText, Globe, Timer, Hourglass, Bell, CalendarRange, Calendar, Share2, Thermometer, PartyPopper, BookOpen, Trophy } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -42,6 +42,7 @@ export default function Footer() {
               <li><Link href="/countdown" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><PartyPopper className="w-3.5 h-3.5 flex-shrink-0" /> Holiday Countdown</Link></li>
               <li><Link href="/shared-alarm" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Share2 className="w-3.5 h-3.5 flex-shrink-0" /> Shared Alarm</Link></li>
               <li><Link href="/egg-timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Thermometer className="w-3.5 h-3.5 flex-shrink-0" /> Egg Timer</Link></li>
+              <li><Link href="/sports-schedule" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Trophy className="w-3.5 h-3.5 flex-shrink-0" /> Sports Schedule</Link></li>
             </ul>
           </div>
 
