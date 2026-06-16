@@ -23,6 +23,7 @@ import {
 import { cn } from '@/lib/utils'
 
 const navItems = [
+  { label: 'FIFA World Cup 2026', icon: Trophy, href: '/sports-schedule/fifa-worldcup-2026' },
   { label: 'World Clock', icon: Globe, href: '/world-clock' },
   { label: 'Stopwatch', icon: Timer, href: '/stopwatch' },
   { label: 'Timer', icon: Hourglass, href: '/timer' },
@@ -32,7 +33,6 @@ const navItems = [
   { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown' },
   { label: 'Shared Alarm', icon: Share2, href: '/shared-alarm' },
   { label: 'Egg Timer', icon: Thermometer, href: '/egg-timer' },
-  { label: 'Sports Schedule', icon: Trophy, href: '/sports-schedule' },
   { label: 'Blog', icon: BookOpen, href: '/blog' }
 ]
 

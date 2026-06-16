@@ -102,10 +102,10 @@ const tools = [
     iconColor: 'text-fuchsia-400'
   },
   {
-    title: 'Sports Schedule',
-    description: 'Track global sports timetables translated automatically into the local time of any selected country.',
+    title: 'FIFA World Cup 2026',
+    description: 'Track the complete FIFA World Cup 2026 match schedule and convert kickoff times dynamically to any local timezone.',
     icon: Trophy,
-    href: '/sports-schedule',
+    href: '/sports-schedule/fifa-worldcup-2026',
     color: 'from-indigo-500/20 to-purple-500/20',
     iconColor: 'text-indigo-400',
     badge: 'FIFA 2026'

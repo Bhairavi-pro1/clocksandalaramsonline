@@ -6,18 +6,9 @@ import { Trophy, CalendarDays, MapPin, Clock, Search, Zap, Flame, Bell, Info, Sp
 import LocationSearch from '@/components/ui/LocationSearch'
 import { cn } from '@/lib/utils'
 import { countryToZone } from '@/lib/timezoneData'
-
-interface SportMatch {
-  id: string
-  sport: 'football' | 'football-fifa' | 'basketball' | 'cricket' | 'tennis' | 'formula1'
-  title: string
-  tournament: string
-  utcTime: string
-  venue: string
-  status: 'upcoming' | 'live' | 'finished'
-  homeTeam?: string
-  awayTeam?: string
-}
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { SportMatch, getSportSlug } from '@/lib/sports'
 
 const QUICK_COUNTRIES = [
   { label: 'My Local Time', value: 'local' },
@@ -46,16 +37,23 @@ const SPORT_LABELS: Record<SportMatch['sport'], string> = {
   formula1: 'Formula 1'
 }
 
-export default function SportsScheduleClient() {
-  const [matches, setMatches] = useState<SportMatch[]>([])
+interface SportsScheduleClientProps {
+  initialMatches?: SportMatch[]
+  initialCategory?: string
+}
+
+export default function SportsScheduleClient({ initialMatches = [], initialCategory = 'football-fifa' }: SportsScheduleClientProps) {
+  const router = useRouter()
+  const [matches, setMatches] = useState<SportMatch[]>(initialMatches)
   const [selectedTimezone, setSelectedTimezone] = useState<string>('local')
   const [currentTimeStr, setCurrentTimeStr] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [activeCategory, setActiveCategory] = useState<string>('football-fifa')
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory)
   const [activeStatus, setActiveStatus] = useState<string>('all')
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(initialMatches.length === 0)
   const [updateAlert, setUpdateAlert] = useState<boolean>(false)
   const [resolvedTimezone, setResolvedTimezone] = useState<string>('UTC')
+  const [hasMounted, setHasMounted] = useState<boolean>(false)
 
   // Resolve timezone string display name
   const timezoneDisplayName = useMemo(() => {
@@ -67,6 +65,9 @@ export default function SportsScheduleClient() {
 
   // Get active local offsets
   const localOffsetInfo = useMemo(() => {
+    if (!hasMounted) {
+      return { diffText: 'Loading offset...', offsetText: 'UTC' }
+    }
     const tz = selectedTimezone === 'local' ? resolvedTimezone : selectedTimezone
     const now = DateTime.now()
     const targetTime = now.setZone(tz)
@@ -90,17 +91,18 @@ export default function SportsScheduleClient() {
         offsetText: formattedOffset 
       }
     }
-  }, [selectedTimezone, resolvedTimezone])
+  }, [selectedTimezone, resolvedTimezone, hasMounted])
 
   // 1. Initial Mount: Local Storage Cache and Timezone Detection
   useEffect(() => {
+    setHasMounted(true)
     // Detect system local timezone
     const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
     setResolvedTimezone(localZone)
 
-    // Load from cache first
+    // Load from cache first if no server data was pre-rendered
     const cached = localStorage.getItem('sports_schedule_cached')
-    if (cached) {
+    if (cached && initialMatches.length === 0) {
       try {
         const parsed = JSON.parse(cached)
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -120,15 +122,15 @@ export default function SportsScheduleClient() {
         const data = await res.json()
         
         if (data && Array.isArray(data.matches)) {
-          // Compare with cached to see if changes occurred
+          // Compare with current list to see if changes occurred
           const freshString = JSON.stringify(data.matches)
-          const cachedString = cached || ''
+          const currentString = JSON.stringify(matches)
           
-          if (freshString !== cachedString) {
+          if (freshString !== currentString) {
             setMatches(data.matches)
             localStorage.setItem('sports_schedule_cached', freshString)
-            if (cached) {
-              // Only alert if they already had cached data and it changed
+            if (matches.length > 0) {
+              // Only alert if they already had loaded data and it changed
               setUpdateAlert(true)
               setTimeout(() => setUpdateAlert(false), 5000)
             }
@@ -300,7 +302,10 @@ export default function SportsScheduleClient() {
               return (
                 <button
                   key={sport.id}
-                  onClick={() => setActiveCategory(sport.id)}
+                  onClick={() => {
+                    setActiveCategory(sport.id)
+                    router.push(`/sports-schedule/${getSportSlug(sport.id as SportMatch['sport'])}/`)
+                  }}
                   className={cn(
                     "flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap active:scale-95 shrink-0",
                     isActive
@@ -363,7 +368,7 @@ export default function SportsScheduleClient() {
                 </thead>
                 <tbody className="divide-y divide-white/5 text-xs">
                   {filteredMatches.map((match) => {
-                    const tz = selectedTimezone === 'local' ? resolvedTimezone : selectedTimezone
+                    const tz = !hasMounted ? 'UTC' : (selectedTimezone === 'local' ? resolvedTimezone : selectedTimezone)
                     const matchDT = DateTime.fromISO(match.utcTime).setZone(tz)
                     
                     const matchDateStr = matchDT.toFormat('EEE, MMM dd, yyyy')
@@ -371,62 +376,73 @@ export default function SportsScheduleClient() {
                     const matchZoneStr = matchDT.toFormat('ZZZZ')
                     
                     const sportStyle = SPORT_COLORS[match.sport] || { bg: 'bg-white/5 border-white/10 text-white' }
-                    const isToday = DateTime.now().setZone(tz).hasSame(matchDT, 'day')
+                    const isToday = hasMounted && DateTime.now().setZone(tz).hasSame(matchDT, 'day')
 
                     return (
-                      <tr key={match.id} className="hover:bg-white/[0.03] transition-colors group">
+                      <tr key={match.id} className="hover:bg-white/[0.03] transition-colors group relative cursor-pointer">
                         {/* Sport Badge */}
                         <td className="py-4 px-6 whitespace-nowrap">
-                          <span className={cn("text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border", sportStyle.bg)}>
+                          <span className={cn("text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border relative z-10", sportStyle.bg)}>
                             {SPORT_LABELS[match.sport] || match.sport}
                           </span>
                         </td>
                         
                         {/* Tournament */}
-                        <td className="py-4 px-6 text-[10px] font-black text-primary uppercase tracking-wider whitespace-nowrap max-w-[200px] truncate" title={match.tournament}>
-                          {match.tournament}
+                        <td className="py-4 px-6 max-w-[150px]" title={match.tournament}>
+                          <div className="text-[10px] font-black text-primary uppercase tracking-wider line-clamp-2 leading-relaxed relative z-10">
+                            {match.tournament}
+                          </div>
                         </td>
                         
                         {/* Match Title */}
                         <td className="py-4 px-6 min-w-[200px]">
                           <div className="flex items-center gap-2">
                             {isToday && (
-                              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(239,68,68,0.8)] relative z-10" />
                             )}
-                            <span className="font-bold text-white group-hover:text-primary transition-colors text-sm">
+                            <Link 
+                              href={`/sports-schedule/${getSportSlug(match.sport)}/match/${match.id}/`} 
+                              className="font-bold text-white hover:text-primary transition-colors text-sm hover:underline after:absolute after:inset-0 after:z-0"
+                            >
                               {match.title}
-                            </span>
+                            </Link>
                           </div>
                         </td>
                         
                         {/* Converted Local Time */}
                         <td className="py-4 px-6 whitespace-nowrap">
-                          <div className="font-tabular font-black text-white text-sm">
+                          <div className="font-tabular font-black text-white text-sm relative z-10">
                             {matchTimeStr}
                           </div>
-                          <div className="text-[10px] text-white/40 font-bold mt-0.5">
+                          <div className="text-[10px] text-white/40 font-bold mt-0.5 relative z-10">
                             {matchDateStr} ({matchZoneStr})
                           </div>
                         </td>
                         
                         {/* Venue */}
-                        <td className="py-4 px-6 text-xs text-white/50 font-semibold whitespace-nowrap max-w-[200px] truncate" title={match.venue}>
-                          <div className="flex items-center gap-1.5 truncate">
-                            <MapPin className="w-3.5 h-3.5 shrink-0 text-white/20" />
-                            <span className="truncate">{match.venue}</span>
+                        <td className="py-4 px-6 max-w-[180px]" title={match.venue}>
+                          <div className="flex items-start gap-1.5 text-xs text-white/50 font-semibold leading-relaxed relative z-10">
+                            <MapPin className="w-3.5 h-3.5 shrink-0 text-white/20 mt-0.5" />
+                            <span className="line-clamp-2">{match.venue}</span>
                           </div>
                         </td>
                         
                         {/* Action Button */}
-                        <td className="py-4 px-6 text-center whitespace-nowrap">
-                          <button
-                            type="button"
-                            onClick={() => alert(`Setting a browser alarm alert for: ${match.title} scheduled at ${matchTimeStr} (${selectedCountryLabel} time).`)}
-                            className="p-2 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/30 rounded-xl text-white/50 hover:text-primary transition-all active:scale-90"
-                            title="Set Alert Notification"
-                          >
-                            <Bell className="w-3.5 h-3.5" />
-                          </button>
+                        <td className="py-4 px-6 text-center whitespace-nowrap font-semibold">
+                          {match.status === 'upcoming' ? (
+                            <button
+                              type="button"
+                              onClick={() => alert(`Setting a browser alarm alert for: ${match.title} scheduled at ${matchTimeStr} (${selectedCountryLabel} time).`)}
+                              className="p-2 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/30 rounded-xl text-white/50 hover:text-primary transition-all active:scale-90 relative z-10"
+                              title="Set Alert Notification"
+                            >
+                              <Bell className="w-3.5 h-3.5" />
+                            </button>
+                          ) : (
+                            <span className="text-white/20 text-[10px] font-black uppercase tracking-wider relative z-10">
+                              {match.status}
+                            </span>
+                          )}
                         </td>
                       </tr>
                     )

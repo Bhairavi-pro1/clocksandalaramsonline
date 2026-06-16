@@ -23,6 +23,7 @@ import {
 import { cn } from '@/lib/utils'
 
 const tools = [
+  { label: 'FIFA World Cup 2026', icon: Trophy, href: '/sports-schedule/fifa-worldcup-2026', description: 'Match times in any timezone' },
   { label: 'World Clock', icon: Globe, href: '/world-clock', description: 'Global time tracking' },
   { label: 'Stopwatch', icon: Timer, href: '/stopwatch', description: 'Precision lap timer' },
   { label: 'Timer', icon: Hourglass, href: '/timer', description: 'Productivity timers' },
@@ -31,8 +32,7 @@ const tools = [
   { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker', description: 'Daylight saving updates' },
   { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown', description: 'Global event tracking' },
   { label: 'Shared Alarm', icon: Users, href: '/shared-alarm', description: 'Synchronized team alarms' },
-  { label: 'Egg Timer', icon: ChefHat, href: '/egg-timer', description: 'Perfectly boiled eggs' },
-  { label: 'Sports Schedule', icon: Trophy, href: '/sports-schedule', description: 'Match times in any timezone' }
+  { label: 'Egg Timer', icon: ChefHat, href: '/egg-timer', description: 'Perfectly boiled eggs' }
 ]
 
 export default function Header() {

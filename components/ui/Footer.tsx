@@ -33,6 +33,7 @@ export default function Footer() {
           <div className="md:col-span-5 space-y-6">
             <h6 className="text-[10px] uppercase font-bold text-white tracking-[0.2em]">Tools</h6>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+              <li><Link href="/sports-schedule/fifa-worldcup-2026" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Trophy className="w-3.5 h-3.5 flex-shrink-0" /> FIFA World Cup 2026</Link></li>
               <li><Link href="/world-clock" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Globe className="w-3.5 h-3.5 flex-shrink-0" /> World Clock</Link></li>
               <li><Link href="/stopwatch" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Timer className="w-3.5 h-3.5 flex-shrink-0" /> Stopwatch</Link></li>
               <li><Link href="/timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Hourglass className="w-3.5 h-3.5 flex-shrink-0" /> Timer</Link></li>
@@ -42,7 +43,6 @@ export default function Footer() {
               <li><Link href="/countdown" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><PartyPopper className="w-3.5 h-3.5 flex-shrink-0" /> Holiday Countdown</Link></li>
               <li><Link href="/shared-alarm" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Share2 className="w-3.5 h-3.5 flex-shrink-0" /> Shared Alarm</Link></li>
               <li><Link href="/egg-timer" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Thermometer className="w-3.5 h-3.5 flex-shrink-0" /> Egg Timer</Link></li>
-              <li><Link href="/sports-schedule" className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"><Trophy className="w-3.5 h-3.5 flex-shrink-0" /> Sports Schedule</Link></li>
             </ul>
           </div>
 

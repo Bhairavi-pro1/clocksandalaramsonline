@@ -3,6 +3,7 @@ import timerData from '@/data/seo/timers.json'
 import cityData from '@/data/seo/cities.json'
 import holidayData from '@/data/seo/holidays.json'
 import { getAllPosts } from '@/lib/sanity'
+import { getSportsMatches, getSportSlug } from '@/lib/sports'
 
 // Helper function to generate all 1440 paths from 12:00 AM to 11:59 PM
 function getAlarmPaths() {
@@ -37,7 +38,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/egg-timer',
     '/shared-alarm',
     '/blog',
-    '/sports-schedule',
+    '/sports-schedule/fifa-worldcup-2026',
+    '/sports-schedule/football',
+    '/sports-schedule/basketball',
+    '/sports-schedule/cricket',
+    '/sports-schedule/tennis',
+    '/sports-schedule/formula1',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
@@ -104,6 +110,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Sanity fetch may fail during build if no posts exist yet
   }
 
+  // Sports Match Dynamic Routes
+  let sportsMatchRoutes: MetadataRoute.Sitemap = []
+  try {
+    const matches = await getSportsMatches()
+    sportsMatchRoutes = matches.map((match) => ({
+      url: `${baseUrl}/sports-schedule/${getSportSlug(match.sport)}/match/${match.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
+    }))
+  } catch (error) {
+    console.error('Failed to generate sitemap routes for sports matches:', error)
+  }
+
   return [
     ...routes, 
     ...secondaryRoutes, 
@@ -111,6 +131,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...timerRoutes, 
     ...worldClockRoutes, 
     ...countdownRoutes, 
-    ...alarmRoutes
+    ...alarmRoutes,
+    ...sportsMatchRoutes
   ]
 }
