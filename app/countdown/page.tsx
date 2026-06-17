@@ -7,13 +7,13 @@ import { Metadata } from 'next'
 import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
-  title: 'Holiday Countdown — Track Universal Holidays with Precision',
-  description: 'Stay ahead of the celebrations. Precise, millisecond-accurate countdowns for all major global holidays. Synchronized with atomic time for unmatched reliability.',
+  title: 'Holiday Countdowns',
+  description: 'Precise, millisecond-accurate countdowns for all major global holidays. Sync with atomic time for reliability.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/countdown',
   },
   openGraph: {
-    title: 'Holiday Countdown — Track Universal Holidays with Precision',
+    title: 'Holiday Countdowns',
     description: 'Track the seconds until the next big celebration with our suite of high-precision holiday countdowns.',
     type: 'website',
   }

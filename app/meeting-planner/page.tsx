@@ -7,13 +7,13 @@ import { Metadata } from 'next'
 import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
-  title: 'Global Meeting Planner — Coordinate Team Calls Across Timezones',
-  description: 'Schedule international meetings with ease. Our global meeting planner helps you find the perfect time for team calls across multiple timezones with visual working hour indicators.',
+  title: 'Global Meeting Planner',
+  description: 'Schedule international meetings across timezones. Find the perfect call time with color-coded availability heatmaps.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/meeting-planner',
   },
   openGraph: {
-    title: 'Global Meeting Planner — Coordinate Team Calls Across Timezones',
+    title: 'Global Meeting Planner',
     description: 'Find the perfect meeting time for your global team. Visual timezone coordination made simple.',
     type: 'website',
   }

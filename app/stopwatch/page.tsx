@@ -5,13 +5,13 @@ import { HelpCircle, Timer, RotateCcw, List, Maximize2, GraduationCap, Briefcase
 import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
-  title: 'Free Online Stopwatch – High-Precision Lap Timer',
-  description: 'A professional-grade free online stopwatch with millisecond accuracy. Features lap timing, history tracking, and full-screen mode for athletics and productivity.',
+  title: 'Free Online Stopwatch',
+  description: 'Professional free online stopwatch with millisecond accuracy. Features lap timing, history log, and full-screen focus mode.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/stopwatch',
   },
   openGraph: {
-    title: 'Free Online Stopwatch – High-Precision Lap Timer',
+    title: 'Free Online Stopwatch',
     description: 'Professional millisecond-accurate free online stopwatch for any activity. Lap tracking and full-screen mode included.',
     type: 'website',
   }

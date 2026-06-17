@@ -38,8 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   
   const displayTime = `${hours}:${String(minutes).padStart(2, '0')} ${period}`
-  const title = `Set alarm for ${displayTime}`
-  const description = `In fact, an alarm for minutes past ${hours}:${String(minutes).padStart(2, '0')} ${period} is preset on this page. All you need to do is to enter a custom message (optional) and select the sound you want the alarm to make.`
+  const title = `Set Alarm for ${displayTime}`
+  const description = `Set a free online alarm for ${displayTime} instantly. Choose custom sounds and messages. Works directly in your browser.`
 
   return {
     title,

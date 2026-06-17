@@ -4,11 +4,11 @@ import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 import { Utensils, Timer, Thermometer, ShoppingCart, Info } from 'lucide-react'
 export const metadata: Metadata = {
-  title: 'Interactive Egg Timer Online | Perfect Soft, Medium & Hard Boiled Eggs',
-  description: 'Free interactive egg boiling timer. Adjust for egg size, room or fridge temp, and see precise visual guides for perfectly soft, medium, or hard boiled eggs.',
+  title: 'Interactive Egg Timer',
+  description: 'Free interactive egg boiling timer. Adjust for egg size and starting temp for soft, medium, or hard boiled eggs.',
   keywords: 'egg timer, boiled egg timer, how long to boil eggs, perfect hard boiled eggs, ramen egg timer, soft boiled egg time',
   openGraph: {
-    title: 'Interactive Egg Timer Online | Perfect Boiled Eggs',
+    title: 'Interactive Egg Timer',
     description: 'Calculate the exact time needed for the perfect soft, medium, or hard boiled egg. Adjust for size and temperature with our free visual egg timer.',
     type: 'website',
   }

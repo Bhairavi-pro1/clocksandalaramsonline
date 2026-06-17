@@ -3,13 +3,13 @@ import HomeClient from '@/components/pages/HomeClient'
 import StructuredData from '@/components/seo/StructuredData'
 
 export const metadata: Metadata = {
-  title: 'Free Online Alarm Clock, World Clock & Timers | Clocks and Alarms Online',
-  description: 'The ultimate free online alarm clock and world clock suite. Set precision alarms, track global time, and use our countdown timer full screen. No login required.',
+  title: 'Free Online Alarm Clock & World Clock | Clocks and Alarms',
+  description: 'Free online alarm clock, world clock, and countdown timer. Set precision alarms and track global time. No login required.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com',
   },
   openGraph: {
-    title: 'Free Online Alarm Clock & World Clock | Clocks and Alarms Online',
+    title: 'Free Online Alarm Clock & World Clock | Clocks and Alarms',
     description: 'The gold standard in online timekeeping. Loud alarm clock online options, precise world clocks, and timers with a vibrant interface.',
     type: 'website',
   }

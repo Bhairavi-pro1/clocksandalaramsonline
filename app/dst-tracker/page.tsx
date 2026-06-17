@@ -8,13 +8,13 @@ import StructuredData from '@/components/seo/StructuredData'
 import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
-  title: 'Global Daylight Saving Time (DST) Tracker — Live Clock Changes',
-  description: 'Track upcoming daylight saving time changes worldwide. Definitive chronological timeline of every scheduled clock change for the next 12 months with high precision.',
+  title: 'DST Tracker & Clock Changes',
+  description: 'Track upcoming daylight saving time (DST) changes worldwide. Chronological timeline of scheduled clock changes.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/dst-tracker',
   },
   openGraph: {
-    title: 'Global Daylight Saving Time (DST) Tracker — Live Clock Changes',
+    title: 'DST Tracker & Clock Changes',
     description: 'Never get confused by clock changes again. Our real-time tracker monitors over 150 timezones globally.',
     type: 'website',
   }

@@ -8,14 +8,14 @@ import AdBanner from '@/components/ui/AdBanner'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Blog — Expert Articles on Time, Clocks & Productivity',
+  title: 'Blog & Insights',
   description:
-    'Explore expert insights on the history of timekeeping, clock technology, productivity tips, and guides for our precision tools. Stay informed with Clocks and Alarms Online.',
+    'Explore expert insights on the history of timekeeping, clock technology, productivity tips, and precision tool guides.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/blog',
   },
   openGraph: {
-    title: 'Blog — Expert Articles on Time, Clocks & Productivity',
+    title: 'Blog & Insights',
     description:
       'Deep-dive articles covering the fascinating history of time, modern clock technology, and actionable productivity strategies.',
     type: 'website',

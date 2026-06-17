@@ -18,11 +18,14 @@ export default defineType({
       options: {
         source: 'title',
         maxLength: 96,
-        slugify: input => input
-                         .toLowerCase()
-                         .trim()
-                         .replace(/\s+/g, '-')
-                         .slice(0, 96)
+        slugify: (input) =>
+          input
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .slice(0, 96),
       },
       validation: (Rule) => Rule.required(),
     }),

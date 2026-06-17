@@ -7,14 +7,14 @@ import { Share2, Clock, CheckCircle2, Link2, HelpCircle, GraduationCap, Briefcas
 import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
-  title: 'Shared Alarms - Sync Time Together | Clocks and Alarms Online',
-  description: 'Create and share alarms instantly without an account. Keep yourself and your team on the same schedule with real-time syncing.',
+  title: 'Shared Alarms - Sync Time Together',
+  description: 'Create and share alarms instantly without an account. Keep your team on the same schedule with real-time syncing.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/shared-alarm',
   },
   openGraph: {
-    title: 'Shared Alarms - Sync Time Together | Clocks and Alarms Online',
-    description: 'Create and share alarms instantly without an account. Keep yourself and your team on the same schedule with real-time syncing.',
+    title: 'Shared Alarms - Sync Time Together',
+    description: 'Create and share alarms instantly without an account. Keep your team on the same schedule with real-time syncing.',
     type: 'website',
   }
 }

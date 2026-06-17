@@ -5,13 +5,13 @@ import { HelpCircle, Search, Globe, Maximize2, Save, GraduationCap, Briefcase, D
 import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
-  title: 'World Clock — Current Local Time Worldwide',
-  description: 'Track local time in any city worldwide with high precision. Our world clock supports all major timezones and adjusts automatically for daylight savings time.',
+  title: 'World Clock — Current Local Time',
+  description: 'Track local time in any city worldwide. Our world clock supports major timezones and adjusts for daylight saving time.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/world-clock',
   },
   openGraph: {
-    title: 'World Clock — Current Local Time Worldwide',
+    title: 'World Clock — Current Local Time',
     description: 'Track local time in any city worldwide with high precision. Sync with global atomic time.',
     type: 'website',
   }

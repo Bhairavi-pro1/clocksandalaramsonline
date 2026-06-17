@@ -5,13 +5,13 @@ import { HelpCircle, Hourglass, Play, Bell, Maximize2, GraduationCap, Briefcase,
 import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
-  title: 'Online Countdown Timer – High-Precision Productivity Tool',
-  description: 'A high-precision online countdown timer for students, professionals, and chefs. Features Pomodoro support, fitness intervals, and immersive full-screen focus mode.',
+  title: 'Online Countdown Timer',
+  description: 'High-precision online countdown timer. Perfect for Pomodoro study blocks, fitness intervals, and full-screen focus mode.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/timer',
   },
   openGraph: {
-    title: 'Online Countdown Timer – High-Precision Productivity Tool',
+    title: 'Online Countdown Timer',
     description: 'Boost your focus with our millisecond-accurate countdown timer. Perfect for Pomodoro and heavy-duty productivity.',
     type: 'website',
   }
