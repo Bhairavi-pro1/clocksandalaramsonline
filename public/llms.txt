@@ -1,0 +1,30 @@
+# Clocks and Alarms Online
+
+> Clocks and Alarms Online is a premium, free suite of high-precision web-based timekeeping tools, including alarm clocks, world clocks, stopwatch timers, countdowns, and specialized meeting planners.
+
+## Core Timekeeping Tools
+
+- [Online Alarm Clock](https://clocksandalarmsonline.com/alarm-clock): Configure and customize alarms with multiple sound options, snooze settings, and repeat schedules.
+- [World Clock](https://clocksandalarmsonline.com/world-clock): Track current time, time offsets, and daylight saving schedules across major cities worldwide.
+- [Countdown Timer](https://clocksandalarmsonline.com/countdown): Simple and flexible countdown utility for tracking upcoming deadlines, events, and tasks.
+- [Online Stopwatch](https://clocksandalarmsonline.com/stopwatch): Millisecond-accurate stopwatch featuring lap tracking and clean split-time views.
+- [Interval Timer](https://clocksandalarmsonline.com/timer): Pomodoro-ready timer with interval customization for focus sessions, workouts, and study routines.
+- [World Meeting Planner](https://clocksandalarmsonline.com/meeting-planner): Easy coordination tool to find ideal meeting times across multiple time zones.
+- [DST Tracker](https://clocksandalarmsonline.com/dst-tracker): Comprehensive guide to Daylight Saving Time changes and schedules globally.
+- [Egg Timer](https://clocksandalarmsonline.com/egg-timer): Simple, preset-based cooking timer for kitchen and culinary time management.
+- [Shared Alarm](https://clocksandalarmsonline.com/shared-alarm): Create alarm configurations that can be shared with others via unique URL links.
+- [Sports Schedules](https://clocksandalarmsonline.com/sports-schedule): Tracks schedules, match dates, and local times for multiple sports.
+  - [FIFA World Cup 2026 Schedule](https://clocksandalarmsonline.com/sports-schedule/fifa-worldcup-2026): Dynamic schedule and kickoff time converter for all 104 World Cup matches.
+  - [Club Football Schedule](https://clocksandalarmsonline.com/sports-schedule/football): Kickoff times for Premier League, Champions League, La Liga, and more in any timezone.
+  - [Cricket Schedule](https://clocksandalarmsonline.com/sports-schedule/cricket): IPL and international cricket start time converter with active DST tracking.
+  - [Formula 1 Schedule](https://clocksandalarmsonline.com/sports-schedule/formula1): Grand Prix race schedules, practice, and qualifying session time converter.
+  - [Basketball Schedule](https://clocksandalarmsonline.com/sports-schedule/basketball): NBA and international basketball game timetables in local time.
+  - [Tennis Schedule](https://clocksandalarmsonline.com/sports-schedule/tennis): Wimbledon, US Open, and ATP finals match converter.
+
+## Information & Resources
+
+- [About Clocks and Alarms Online](https://clocksandalarmsonline.com/about): Our commitment to accuracy, precision timekeeping, and system architecture.
+- [Blog / Articles](https://clocksandalarmsonline.com/blog): Articles covering time zones, daylight saving details, efficiency, and scheduling tips.
+- [Contact](https://clocksandalarmsonline.com/contact): Reach out for feedback, support, or partnership inquiries.
+- [Privacy Policy](https://clocksandalarmsonline.com/privacy): Detailed information on how user data and cookies are handled.
+- [Terms of Service](https://clocksandalarmsonline.com/terms): Terms and conditions governing the use of our timekeeping services.

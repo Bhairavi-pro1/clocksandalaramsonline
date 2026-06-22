@@ -4,6 +4,7 @@ import Sidebar from '@/components/ui/Sidebar'
 import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
 import InternalLinks from '@/components/ui/InternalLinks'
+import BookmarkModal from '@/components/ui/BookmarkModal'
 import { cn } from '@/lib/utils'
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -36,6 +37,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
         <Footer />
       </main>
+      <BookmarkModal />
     </div>
   );
 }

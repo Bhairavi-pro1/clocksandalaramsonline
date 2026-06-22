@@ -5,13 +5,13 @@ import { HelpCircle, Bell, Clock, Zap, Shield, GraduationCap, Briefcase, Dumbbel
 import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
-  title: 'Free Online Alarm Clock & Timers',
+  title: 'Online Alarm Clock & Timers',
   description: 'Set free online alarms and timers in your browser. Features custom alarm sounds, multiple alarms, and a beautiful interface.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/alarm-clock',
   },
   openGraph: {
-    title: 'Free Online Alarm Clock & Timers',
+    title: 'Online Alarm Clock & Timers',
     description: 'Set free online alarms and timers instantly. Multiple sounds, custom labels, and a beautiful interface.',
     type: 'website',
   }

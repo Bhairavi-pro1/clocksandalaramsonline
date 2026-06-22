@@ -37,6 +37,42 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${jakarta.variable} ${orbitron.variable} dark`}>
       <head>
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': 'https://clocksandalarmsonline.com/#organization',
+                  'name': 'Clocks and Alarms Online',
+                  'url': 'https://clocksandalarmsonline.com',
+                  'logo': {
+                    '@type': 'ImageObject',
+                    '@id': 'https://clocksandalarmsonline.com/#logo',
+                    'url': 'https://clocksandalarmsonline.com/icon.png',
+                    'caption': 'Clocks and Alarms Online Logo'
+                  },
+                  'description': 'Free online alarm clock, world clock, stopwatch, and timer utility suite. Precision timekeeping tools for international teams and daily productivity.'
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://clocksandalarmsonline.com/#website',
+                  'url': 'https://clocksandalarmsonline.com',
+                  'name': 'Clocks and Alarms Online',
+                  'description': 'Free online alarm clock and world clock suite. High-precision stopwatch, countdown timer, and loud alarm options.',
+                  'publisher': {
+                    '@id': 'https://clocksandalarmsonline.com/#organization'
+                  }
+                }
+              ]
+            })
+          }}
+        />
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen selection:bg-primary/30">
         <LayoutWrapper>
@@ -54,9 +90,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Google Analytics (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-43759W7BVR"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

@@ -32,7 +32,8 @@ const tools = [
     href: '/world-clock',
     color: 'from-blue-500/20 to-cyan-500/20',
     iconColor: 'text-cyan-400',
-    badge: 'Popular'
+    badge: 'Popular',
+    ctaText: 'Launch World Clock'
   },
   {
     title: 'Online Alarm',
@@ -41,7 +42,8 @@ const tools = [
     href: '/alarm-clock',
     color: 'from-orange-500/20 to-red-500/20',
     iconColor: 'text-orange-400',
-    badge: 'Updated'
+    badge: 'Updated',
+    ctaText: 'Set Alarm Clock'
   },
   {
     title: 'Stopwatch',
@@ -49,7 +51,8 @@ const tools = [
     icon: Timer,
     href: '/stopwatch',
     color: 'from-purple-500/20 to-pink-500/20',
-    iconColor: 'text-purple-400'
+    iconColor: 'text-purple-400',
+    ctaText: 'Start Stopwatch'
   },
   {
     title: 'Timer',
@@ -58,7 +61,8 @@ const tools = [
     href: '/timer',
     color: 'from-emerald-500/20 to-teal-500/20',
     iconColor: 'text-emerald-400',
-    badge: 'Best Seller'
+    badge: 'Best Seller',
+    ctaText: 'Start Countdown Timer'
   },
   {
     title: 'DST Tracker',
@@ -66,7 +70,8 @@ const tools = [
     icon: Calendar,
     href: '/dst-tracker',
     color: 'from-indigo-500/20 to-violet-500/20',
-    iconColor: 'text-indigo-400'
+    iconColor: 'text-indigo-400',
+    ctaText: 'Check DST Schedule'
   },
   {
     title: 'Meeting Planner',
@@ -74,7 +79,8 @@ const tools = [
     icon: CalendarRange,
     href: '/meeting-planner',
     color: 'from-amber-500/20 to-yellow-500/20',
-    iconColor: 'text-amber-400'
+    iconColor: 'text-amber-400',
+    ctaText: 'Plan World Meeting'
   },
   {
     title: 'Shared Alarm',
@@ -83,7 +89,8 @@ const tools = [
     href: '/shared-alarm',
     color: 'from-pink-500/20 to-rose-500/20',
     iconColor: 'text-pink-400',
-    badge: 'New'
+    badge: 'New',
+    ctaText: 'Create Shared Alarm'
   },
   {
     title: 'Egg Timer',
@@ -91,7 +98,8 @@ const tools = [
     icon: ChefHat,
     href: '/egg-timer',
     color: 'from-orange-400/20 to-amber-500/20',
-    iconColor: 'text-orange-400'
+    iconColor: 'text-orange-400',
+    ctaText: 'Start Egg Timer'
   },
   {
     title: 'Holiday Countdown',
@@ -99,7 +107,8 @@ const tools = [
     icon: PartyPopper,
     href: '/countdown',
     color: 'from-fuchsia-500/20 to-purple-500/20',
-    iconColor: 'text-fuchsia-400'
+    iconColor: 'text-fuchsia-400',
+    ctaText: 'Launch Holiday Countdown'
   },
   {
     title: 'FIFA World Cup 2026',
@@ -108,7 +117,8 @@ const tools = [
     href: '/sports-schedule/fifa-worldcup-2026',
     color: 'from-indigo-500/20 to-purple-500/20',
     iconColor: 'text-indigo-400',
-    badge: 'FIFA 2026'
+    badge: 'FIFA 2026',
+    ctaText: 'Convert Sports Kickoff'
   }
 ]
 
@@ -143,7 +153,7 @@ export default function HomeClient() {
           <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 blur-[140px] rounded-full" />
         </div>
 
-        <div className="max-w-5xl space-y-8 animate-in fade-in slide-in-from-bottom-12 duration-1200">
+        <div className="max-w-5xl space-y-8">
           <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-primary text-[10px] md:text-xs font-black uppercase tracking-widest backdrop-blur-md shadow-2xl">
             <Zap size={16} className="fill-current animate-pulse text-yellow-500" /> 
             Engineering Precision Since 2025
@@ -155,7 +165,7 @@ export default function HomeClient() {
           </h1>
 
           <p className="text-xl md:text-2xl text-muted/70 max-w-2xl mx-auto font-medium leading-tight">
-            The gold standard in professional-grade timekeeping. 
+            Experience world-class timekeeping with the gold standard in professional-grade tools. 
             Track global pulse, set bulletproof alerts, and master your schedule with millisecond-exact precision.
           </p>
 
@@ -227,7 +237,7 @@ export default function HomeClient() {
               </div>
 
               <div className="pt-6 flex items-center gap-3 text-white font-black uppercase tracking-[0.2em] text-[10px] group-hover:text-primary transition-all">
-                Launch Experience <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+                {tool.ctaText} <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
               </div>
             </Link>
           ))}
