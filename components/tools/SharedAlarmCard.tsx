@@ -125,73 +125,140 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
   }
 
   return (
-    <div className="w-full bg-[#1a0b36]/60 border border-violet-500/20 rounded-[2rem] p-8 relative overflow-hidden group shadow-2xl transition-all duration-300 hover:border-primary/40">
+    <div className="w-full bg-[#1a0b36]/60 border border-violet-500/20 rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-8 relative overflow-hidden group shadow-2xl transition-all duration-300 hover:border-primary/40">
       
       {!isCreator && (
-        <div className="absolute top-0 right-0 bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-bl-xl border-b border-l border-primary/20">
+        <div className="absolute top-0 right-0 bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-bl-xl border-b border-l border-primary/20 hidden md:block">
           📨 Shared Alarm
         </div>
       )}
 
-      <div className="flex justify-between items-start mb-6">
-        <div className="flex flex-col">
-          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">
-            {isCreator ? "My Shared Alarm" : "Received Alarm"}
-          </div>
-          <div className="text-white font-bold text-lg leading-tight break-words pr-2">
-            {currentAlarm.title}
-          </div>
-          {currentAlarm.description && (
-            <div className="text-sm text-white/60 mt-1 mb-2 line-clamp-2">
-              {currentAlarm.description}
+      {/* On mobile: title/desc on top, time below */}
+      <div className="flex md:hidden flex-col gap-2 w-full text-left">
+         {/* Title & Description section */}
+         <div className="min-w-0">
+            <h4 className="text-white font-bold text-base leading-tight break-words">
+               {currentAlarm.title}
+            </h4>
+            {currentAlarm.description && (
+               <p className="text-xs text-white/50 mt-1 break-words">
+                  {currentAlarm.description}
+               </p>
+            )}
+         </div>
+
+         {/* Time section below title & description */}
+         <div className="flex items-center gap-2 mt-1">
+            <div className="font-mono text-xl font-bold tracking-tight text-white tabular-nums flex items-baseline gap-1 drop-shadow-[0_0_10px_rgba(168,85,247,0.3)]">
+               {timeString.replace(/AM|PM/i, '').trim()}
+               <span className="text-[10px] opacity-60 font-bold uppercase">
+                 {timeString.match(/AM|PM/i)?.[0]}
+               </span>
             </div>
-          )}
-        </div>
+            <span className="text-white/20 text-xs">|</span>
+            <div className="text-[10px] text-primary font-bold uppercase tracking-wider">
+               {dateString}
+            </div>
+         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center py-6 mb-6 border-y border-white/5">
-        <div className="font-mono text-5xl md:text-6xl font-bold tracking-tighter text-white tabular-nums transition-all flex items-baseline gap-2 drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]">
-           {timeString.replace(/AM|PM/i, '').trim()}
-           <span className="text-xl md:text-2xl opacity-40 font-black tracking-widest">
-             {timeString.match(/AM|PM/i)?.[0]}
-           </span>
-        </div>
-        <div className="mt-2 text-primary font-bold tracking-widest uppercase text-xs">
-          {dateString}
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between mb-4">
-        {isCreator && (
-          <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-xs font-medium text-white/70">
-            {badgeText}
-          </div>
-        )}
-      </div>
-
+      {/* Action buttons for mobile creators */}
       {isCreator && (
-         <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/5">
+         <div className="flex md:hidden items-center gap-2 mt-3 pt-3 border-t border-white/5 w-full">
             <button 
                onClick={handleCopyLink}
-               className="flex-1 flex items-center justify-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2.5 rounded-xl text-sm font-bold transition-colors relative"
+               className="flex items-center justify-center gap-1.5 bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
             >
-               <Link2 size={16} /> 
+               <Link2 size={12} /> 
                {copying ? "Copied!" : "Share Link"}
             </button>
-            <button 
-               onClick={() => onEdit?.(currentAlarm)}
-               className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-white/70"
-            >
-               <Edit2 size={18} />
-            </button>
-            <button 
-               onClick={handleDelete}
-               className="p-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 transition-colors text-red-500/70"
-            >
-               <Trash2 size={18} />
-            </button>
+
+            {/* accept/decline or waiting symbol next to the share link */}
+            <div className="bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-[10px] font-medium text-white/70 whitespace-nowrap">
+               {badgeText}
+            </div>
+
+            <div className="ml-auto flex items-center gap-2">
+               <button 
+                  onClick={() => onEdit?.(currentAlarm)}
+                  className="p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-white/70"
+                  aria-label="Edit Alarm"
+               >
+                  <Edit2 size={14} />
+               </button>
+               <button 
+                  onClick={handleDelete}
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 transition-colors text-red-500/70"
+                  aria-label="Delete Alarm"
+               >
+                  <Trash2 size={14} />
+               </button>
+            </div>
          </div>
       )}
+
+      {/* On desktop: vertical card layout */}
+      <div className="hidden md:block">
+         <div className="flex justify-between items-start mb-6">
+           <div className="flex flex-col">
+             <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">
+               {isCreator ? "My Shared Alarm" : "Received Alarm"}
+             </div>
+             <div className="text-white font-bold text-lg leading-tight break-words pr-2">
+               {currentAlarm.title}
+             </div>
+             {currentAlarm.description && (
+               <div className="text-sm text-white/60 mt-1 mb-2 line-clamp-2">
+                 {currentAlarm.description}
+               </div>
+             )}
+           </div>
+         </div>
+
+         <div className="flex flex-col items-center justify-center py-6 mb-6 border-y border-white/5">
+           <div className="font-mono text-5xl md:text-6xl font-bold tracking-tighter text-white tabular-nums transition-all flex items-baseline gap-2 drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+              {timeString.replace(/AM|PM/i, '').trim()}
+              <span className="text-xl md:text-2xl opacity-40 font-black tracking-widest">
+                {timeString.match(/AM|PM/i)?.[0]}
+              </span>
+           </div>
+           <div className="mt-2 text-primary font-bold tracking-widest uppercase text-xs">
+             {dateString}
+           </div>
+         </div>
+
+         <div className="flex items-center justify-between mb-4">
+           {isCreator && (
+             <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-xs font-medium text-white/70">
+               {badgeText}
+             </div>
+           )}
+         </div>
+
+         {isCreator && (
+            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/5">
+               <button 
+                  onClick={handleCopyLink}
+                  className="flex-1 flex items-center justify-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2.5 rounded-xl text-sm font-bold transition-colors relative"
+               >
+                  <Link2 size={16} /> 
+                  {copying ? "Copied!" : "Share Link"}
+               </button>
+               <button 
+                  onClick={() => onEdit?.(currentAlarm)}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-white/70"
+               >
+                  <Edit2 size={18} />
+               </button>
+               <button 
+                  onClick={handleDelete}
+                  className="p-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 transition-colors text-red-500/70"
+               >
+                  <Trash2 size={18} />
+               </button>
+            </div>
+         )}
+      </div>
     </div>
   )
 }
