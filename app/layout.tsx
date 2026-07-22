@@ -82,6 +82,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ConsentManager />
 
         <Script
+          id="aclib"
+          src="https://acscdn.com/script/aclib.js"
+          strategy="afterInteractive"
+        />
+
+        <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX"
           strategy="lazyOnload"
           crossOrigin="anonymous"

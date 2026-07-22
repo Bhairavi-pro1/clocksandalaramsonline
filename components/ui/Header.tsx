@@ -17,13 +17,11 @@ import {
   Users,
   ChefHat,
   PartyPopper,
-  BookOpen,
-  Trophy
+  BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const tools = [
-  { label: 'FIFA World Cup 2026', icon: Trophy, href: '/sports-schedule/fifa-worldcup-2026', description: 'Match times in any timezone' },
   { label: 'World Clock', icon: Globe, href: '/world-clock', description: 'Global time tracking' },
   { label: 'Stopwatch', icon: Timer, href: '/stopwatch', description: 'Precision lap timer' },
   { label: 'Timer', icon: Hourglass, href: '/timer', description: 'Productivity timers' },

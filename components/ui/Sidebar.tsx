@@ -17,13 +17,11 @@ import {
   Share2,
   Thermometer,
   PartyPopper,
-  BookOpen,
-  Trophy
+  BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { label: 'FIFA World Cup 2026', icon: Trophy, href: '/sports-schedule/fifa-worldcup-2026' },
   { label: 'World Clock', icon: Globe, href: '/world-clock' },
   { label: 'Stopwatch', icon: Timer, href: '/stopwatch' },
   { label: 'Timer', icon: Hourglass, href: '/timer' },

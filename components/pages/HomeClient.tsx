@@ -18,8 +18,7 @@ import {
   Settings,
   Users,
   ChefHat,
-  PartyPopper,
-  Trophy
+  PartyPopper
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
@@ -109,16 +108,6 @@ const tools = [
     color: 'from-fuchsia-500/20 to-purple-500/20',
     iconColor: 'text-fuchsia-400',
     ctaText: 'Launch Holiday Countdown'
-  },
-  {
-    title: 'FIFA World Cup 2026',
-    description: 'Track the complete FIFA World Cup 2026 match schedule and convert kickoff times dynamically to any local timezone.',
-    icon: Trophy,
-    href: '/sports-schedule/fifa-worldcup-2026',
-    color: 'from-indigo-500/20 to-purple-500/20',
-    iconColor: 'text-indigo-400',
-    badge: 'FIFA 2026',
-    ctaText: 'Convert Sports Kickoff'
   }
 ]
 

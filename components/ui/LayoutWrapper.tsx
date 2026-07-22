@@ -5,6 +5,7 @@ import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
 import InternalLinks from '@/components/ui/InternalLinks'
 import BookmarkModal from '@/components/ui/BookmarkModal'
+import Ad160x600 from '@/components/ads/Ad160x600'
 import { cn } from '@/lib/utils'
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -24,8 +25,11 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         "flex-1 min-w-0 flex flex-col min-h-screen",
         !isHomePage ? "md:ml-72 p-4 lg:p-10 pt-20 md:pt-10" : "w-full"
       )}>
-        <div className="flex-1">
-          {children}
+        <div className="flex-1 flex flex-col xl:flex-row gap-8">
+          <div className="flex-1 min-w-0">
+            {children}
+          </div>
+          {!isHomePage && <Ad160x600 />}
         </div>
         
         <div className={cn(

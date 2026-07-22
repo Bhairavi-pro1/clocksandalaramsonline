@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
 const TOOLS = [
-  { name: 'FIFA World Cup 2026', href: '/sports-schedule/fifa-worldcup-2026' },
   { name: 'Timer', href: '/timer' },
   { name: 'Alarm Clock', href: '/alarm-clock' },
   { name: 'Stopwatch', href: '/stopwatch' },

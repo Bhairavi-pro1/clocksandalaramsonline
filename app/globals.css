@@ -68,3 +68,88 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
+
+/* Ad container styles to prevent layout shift and show labels (Replicating user project design concept) */
+.ad-container-728x90 {
+  position: relative;
+  width: 728px;
+  height: 90px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: rgba(26, 11, 46, 0.4);
+  border: 1px dashed rgba(124, 58, 237, 0.2);
+  border-radius: 12px;
+}
+
+.ad-container-728x90::before {
+  content: "ADVERTISEMENT (728 × 90)";
+  position: absolute;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.25);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ad-container-728x90 > * {
+  position: relative;
+  z-index: 10;
+}
+
+.ad-column {
+  display: none;
+}
+
+@media (min-width: 1280px) { /* xl screens */
+  .ad-column {
+    display: flex;
+    width: 160px;
+    flex-shrink: 0;
+    flex-direction: column;
+  }
+}
+
+.ad-sticky {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.ad-script-container-160x600 {
+  position: relative;
+  width: 160px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: rgba(26, 11, 46, 0.4);
+  border: 1px dashed rgba(124, 58, 237, 0.2);
+  border-radius: 12px;
+}
+
+.ad-script-container-160x600::before {
+  content: "ADVERTISEMENT (160 × 600)";
+  position: absolute;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.25);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ad-script-container-160x600 > * {
+  position: relative;
+  z-index: 10;
+}
+

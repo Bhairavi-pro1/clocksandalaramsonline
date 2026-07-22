@@ -13,13 +13,6 @@
 - [DST Tracker](https://clocksandalarmsonline.com/dst-tracker): Comprehensive guide to Daylight Saving Time changes and schedules globally.
 - [Egg Timer](https://clocksandalarmsonline.com/egg-timer): Simple, preset-based cooking timer for kitchen and culinary time management.
 - [Shared Alarm](https://clocksandalarmsonline.com/shared-alarm): Create alarm configurations that can be shared with others via unique URL links.
-- [Sports Schedules](https://clocksandalarmsonline.com/sports-schedule): Tracks schedules, match dates, and local times for multiple sports.
-  - [FIFA World Cup 2026 Schedule](https://clocksandalarmsonline.com/sports-schedule/fifa-worldcup-2026): Dynamic schedule and kickoff time converter for all 104 World Cup matches.
-  - [Club Football Schedule](https://clocksandalarmsonline.com/sports-schedule/football): Kickoff times for Premier League, Champions League, La Liga, and more in any timezone.
-  - [Cricket Schedule](https://clocksandalarmsonline.com/sports-schedule/cricket): IPL and international cricket start time converter with active DST tracking.
-  - [Formula 1 Schedule](https://clocksandalarmsonline.com/sports-schedule/formula1): Grand Prix race schedules, practice, and qualifying session time converter.
-  - [Basketball Schedule](https://clocksandalarmsonline.com/sports-schedule/basketball): NBA and international basketball game timetables in local time.
-  - [Tennis Schedule](https://clocksandalarmsonline.com/sports-schedule/tennis): Wimbledon, US Open, and ATP finals match converter.
 
 ## Information & Resources
 
