@@ -19,8 +19,14 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   }
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      {!isHomePage ? <Sidebar /> : <Header />}
+    <div className="flex flex-col md:flex-row min-h-screen w-full">
+      {/* Mobile navigation is always Header. Desktop is Header for home, Sidebar for tools. */}
+      <div className="md:hidden w-full">
+        <Header />
+      </div>
+      <div className="hidden md:block">
+        {!isHomePage ? <Sidebar /> : <Header />}
+      </div>
       <main className={cn(
         "flex-1 min-w-0 flex flex-col min-h-screen",
         !isHomePage ? "md:ml-72 p-4 lg:p-10 pt-20 md:pt-10" : "w-full"

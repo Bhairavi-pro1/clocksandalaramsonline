@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import HomeClient from '@/components/pages/HomeClient'
 import StructuredData from '@/components/seo/StructuredData'
+import { getAllPosts } from '@/lib/sanity'
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: {
@@ -17,7 +20,9 @@ export const metadata: Metadata = {
   }
 }
 
-export default function Home() {
+export default async function Home() {
+  const posts = await getAllPosts()
+
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -88,7 +93,7 @@ export default function Home() {
       <StructuredData data={websiteSchema} />
       <StructuredData data={faqSchema} />
       <StructuredData data={breadcrumbSchema} />
-      <HomeClient />
+      <HomeClient posts={posts} />
     </div>
   )
 }

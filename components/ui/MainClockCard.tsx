@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { Maximize2, Minimize2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AdScript } from './AdBanner'
+import { useStore } from '@/hooks/useStore'
 
 import TimezoneSearch from './TimezoneSearch'
 
@@ -20,9 +21,15 @@ export default function MainClockCard({
   country = 'Global',
   onAdd
 }: MainClockCardProps) {
+  const is24Hour = useStore((state) => state.is24Hour)
+  const [mounted, setMounted] = useState(false)
   const [time, setTime] = useState<DateTime | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const tz = timezone === 'local' ? DateTime.local().zoneName : timezone
@@ -95,11 +102,16 @@ export default function MainClockCard({
         "font-bold tracking-tight text-white drop-shadow-[0_0_50px_rgba(124,58,237,0.5)] font-display flex items-center justify-center tabular-nums leading-none w-full relative z-10",
         isFullscreen ? "flex-1 text-[min(16rem,22vw)]" : "text-6xl md:text-[8rem] xl:text-[8.5rem] py-8"
       )}>
-        {(time?.toFormat('HH:mm:ss') || '00:00:00').split('').map((char, i) => (
-          <span key={i} className={cn(char === ':' ? "mx-1 opacity-60" : "w-[0.6em] md:w-[0.65em] inline-block text-center")}>
-            {char}
-          </span>
-        ))}
+        <div className="flex items-baseline">
+          {(time?.toFormat(mounted && is24Hour ? 'HH:mm:ss' : 'hh:mm:ss') || '00:00:00').split('').map((char, i) => (
+            <span key={i} className={cn(char === ':' ? "mx-1 opacity-60" : "w-[0.6em] md:w-[0.65em] inline-block text-center")}>
+              {char}
+            </span>
+          ))}
+          {time && (!mounted || !is24Hour) && (
+            <span className="text-xl md:text-3xl font-black text-primary/80 tracking-tighter uppercase ml-4">{time.toFormat('a')}</span>
+          )}
+        </div>
       </div>
 
       {/* Footer Info & Ad */}

@@ -1,10 +1,19 @@
 'use client'
+import { useState, useEffect } from 'react'
 import { useClock } from '@/hooks/useClock'
 import { Clock } from 'lucide-react'
 import { AdScript } from './AdBanner'
+import { useStore } from '@/hooks/useStore'
 
 export default function LocalTimeBox() {
-  const clock = useClock(false) // 12-hour by default
+  const is24Hour = useStore((state) => state.is24Hour)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const clock = useClock(mounted ? is24Hour : false) // respects global state post-mount
 
   return (
     <div className="bg-[#1a0b36]/40 backdrop-blur-xl border border-white/5 p-8 rounded-[2rem] shadow-2xl flex flex-col items-center justify-center w-full relative overflow-hidden group">
@@ -21,7 +30,9 @@ export default function LocalTimeBox() {
         <span>{clock.hours}</span>
         <span className="text-primary/80 animate-pulse">:</span>
         <span>{clock.minutes}</span>
-        <span className="text-xl font-normal text-white/40 ml-2 tracking-tighter uppercase">{clock.period}</span>
+        {(!mounted || !is24Hour) && (
+          <span className="text-xl font-normal text-white/40 ml-2 tracking-tighter uppercase">{clock.period}</span>
+        )}
       </div>
 
       <div className="mt-6 flex flex-col items-center relative z-10">

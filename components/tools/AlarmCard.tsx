@@ -1,6 +1,8 @@
 'use client'
+import { useState, useEffect } from 'react'
 import { Bell, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useStore } from '@/hooks/useStore'
 
 interface AlarmCardProps {
   id: string
@@ -12,6 +14,12 @@ interface AlarmCardProps {
 }
 
 export default function AlarmCard({ id, label, time, isActive, onToggle, onRemove }: AlarmCardProps) {
+  const is24Hour = useStore((state) => state.is24Hour)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <div className={cn(
       "w-full bg-[#1a0b36]/60 border border-violet-500/20 rounded-[2rem] p-8 relative overflow-hidden group shadow-2xl transition-all duration-300",
@@ -42,6 +50,9 @@ export default function AlarmCard({ id, label, time, isActive, onToggle, onRemov
         )}>
           {(() => {
             const [h, m] = time.split(':')
+            if (mounted && is24Hour) {
+              return <span>{h}:{m}</span>
+            }
             const hours = parseInt(h)
             const ampm = hours >= 12 ? 'PM' : 'AM'
             const h12 = hours % 12 || 12

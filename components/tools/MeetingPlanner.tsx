@@ -5,12 +5,15 @@ import { DateTime } from 'luxon'
 import { cn } from '@/lib/utils'
 import { countryToZone } from '@/lib/timezoneData'
 import LocationSearch from '@/components/ui/LocationSearch'
+import { useStore } from '@/hooks/useStore'
 
 const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'))
 const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'))
 const PERIODS = ['AM', 'PM']
 
 export default function MeetingPlanner() {
+  const is24Hour = useStore((state) => state.is24Hour)
+
   const [tz1, setTz1] = useState('local')
   const [targetZones, setTargetZones] = useState<string[]>(['America/New_York'])
   
@@ -280,11 +283,13 @@ export default function MeetingPlanner() {
                         <div className="flex flex-col">
                           <span className="text-[10px] font-bold text-white/30 uppercase mb-1">{originDateTime.toFormat('ccc, MMM dd')}</span>
                           <span className="text-4xl font-black text-white tracking-tight leading-none mb-2">
-                            {originDateTime.toFormat('hh:mm')}
+                            {originDateTime.toFormat(mounted && is24Hour ? 'HH:mm' : 'hh:mm')}
                           </span>
-                          <span className="text-sm font-bold text-primary uppercase">
-                            {originDateTime.toFormat('a')}
-                          </span>
+                          {(!mounted || !is24Hour) && (
+                            <span className="text-sm font-bold text-primary uppercase">
+                              {originDateTime.toFormat('a')}
+                            </span>
+                          )}
                         </div>
                       </div>
 
@@ -315,14 +320,16 @@ export default function MeetingPlanner() {
                                 isDifferentDay ? "text-accent" : "text-white/30"
                               )}>{dtN.toFormat('ccc, MMM dd')}</span>
                               <span className="text-4xl font-black text-white tracking-tight leading-none mb-2">
-                                {dtN.toFormat('hh:mm')}
+                                {dtN.toFormat(mounted && is24Hour ? 'HH:mm' : 'hh:mm')}
                               </span>
-                              <span className={cn(
-                                "text-sm font-bold uppercase",
-                                isWorking ? "text-emerald-400" : isNight ? "text-red-400/60" : "text-white/40"
-                              )}>
-                                {dtN.toFormat('a')}
-                              </span>
+                              {(!mounted || !is24Hour) && (
+                                <span className={cn(
+                                  "text-sm font-bold uppercase",
+                                  isWorking ? "text-emerald-400" : isNight ? "text-red-400/60" : "text-white/40"
+                                )}>
+                                  {dtN.toFormat('a')}
+                                </span>
+                              )}
                             </div>
                           </div>
                         )

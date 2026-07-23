@@ -50,16 +50,18 @@ export default function ToolSEO({
           <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
           {howToSteps.map((item, i) => (
-            <div key={i} className="group p-8 rounded-[2.5rem] bg-[#1a0b36]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
+            <div key={i} className="group p-8 rounded-[2.5rem] bg-[#1a0b36]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500 flex flex-col md:flex-row items-start gap-6">
+              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30 group-hover:bg-primary/40 transition-colors shrink-0">
                 <span className="text-white font-black text-xl">{i + 1}</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
-              <p className="text-sm text-muted/80 leading-relaxed font-medium">
-                {item.text}
-              </p>
+              <div className="space-y-2">
+                <h3 className="text-lg font-bold text-white">{item.title}</h3>
+                <p className="text-sm text-muted/80 leading-relaxed font-medium">
+                  {item.text}
+                </p>
+              </div>
             </div>
           ))}
         </div>

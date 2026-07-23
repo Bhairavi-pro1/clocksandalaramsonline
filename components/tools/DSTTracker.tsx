@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useMemo } from 'react'
 import { DateTime } from 'luxon'
+import { useStore } from '@/hooks/useStore'
 import { Calendar, ArrowRight, Info, MapPin, Clock, Globe, ArrowUpRight, Timer, Search, X, Sparkles, History } from 'lucide-react'
 import { countryToZone } from '@/lib/timezoneData'
 import { cn } from '@/lib/utils'
@@ -27,6 +28,7 @@ const extendedZones = {
 }
 
 export default function DSTTracker() {
+  const is24Hour = useStore((state) => state.is24Hour)
   const [mounted, setMounted] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -81,7 +83,7 @@ export default function DSTTracker() {
                   country,
                   zone,
                   date: hourSlice.toFormat('MMMM d, yyyy'),
-                  time: hourSlice.toFormat('h:mm a'),
+                  time: hourSlice.toFormat(mounted && is24Hour ? 'HH:mm' : 'h:mm a'),
                   offsetBefore: currentOffset / 60,
                   offsetAfter: hourSlice.offset / 60,
                   type: isNotable || isPermanent ? 'Time Shift' : (hourSlice.offset > currentOffset ? 'Spring Forward' : 'Fall Back'),

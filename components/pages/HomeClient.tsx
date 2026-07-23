@@ -9,24 +9,39 @@ import {
   CalendarRange,
   ArrowRight,
   Zap,
-  Shield,
   Clock as ClockIcon,
-  CheckCircle2,
   Cpu,
   RefreshCw,
   Search,
   Settings,
   Users,
   ChefHat,
-  PartyPopper
+  PartyPopper,
+  BookOpen,
+  Laptop,
+  Smartphone,
+  CheckCircle,
+  HelpCircle,
+  ShieldAlert,
+  ArrowUpRight
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
+import { Post, urlFor } from '@/lib/sanity'
+
+const categoryLabels: Record<string, string> = {
+  'time-history': 'Time History',
+  'clock-technology': 'Clock Technology',
+  'productivity-tips': 'Productivity Tips',
+  'tool-guides': 'Tool Guides',
+  'time-zones-dst': 'Time Zones & DST',
+  'fun-facts': 'Fun Facts',
+}
 
 const tools = [
   {
     title: 'World Clock',
-    description: 'Track high-precision local time across thousands of cities globally. Millisecond-accurate sync.',
+    description: 'Track high-precision local time across thousands of cities globally. Perfect for international business coordination and remote team scheduling. Includes automatic calculations for daylight saving transitions in real-time.',
     icon: Globe,
     href: '/world-clock',
     color: 'from-blue-500/20 to-cyan-500/20',
@@ -36,7 +51,7 @@ const tools = [
   },
   {
     title: 'Online Alarm',
-    description: 'Set custom alarms with high-fidelity tones and persistent alerts that ring even if you are offline.',
+    description: 'Set custom alarms with high-fidelity tones, snooze timers, and persistent audio notifications. Works seamlessly in your background browser tab to ensure you never miss a critical meeting or daily routine.',
     icon: Bell,
     href: '/alarm-clock',
     color: 'from-orange-500/20 to-red-500/20',
@@ -46,7 +61,7 @@ const tools = [
   },
   {
     title: 'Stopwatch',
-    description: 'Professional-grade lap timer with millisecond resolution and session history tracking.',
+    description: 'A professional-grade lap timer with millisecond resolution and session history tracking. Perfect for workouts, cooking, laboratory experiments, or programming sprint intervals with download options.',
     icon: Timer,
     href: '/stopwatch',
     color: 'from-purple-500/20 to-pink-500/20',
@@ -54,8 +69,8 @@ const tools = [
     ctaText: 'Start Stopwatch'
   },
   {
-    title: 'Timer',
-    description: 'Immersive full-screen timers for Pomodoro focus, fitness intervals, and study sessions.',
+    title: 'Countdown Timer',
+    description: 'An immersive full-screen timer designed for Pomodoro study intervals, training sessions, and productivity tracking. Features highly customizable sound alarms and clean visual progress bars.',
     icon: Hourglass,
     href: '/timer',
     color: 'from-emerald-500/20 to-teal-500/20',
@@ -65,7 +80,7 @@ const tools = [
   },
   {
     title: 'DST Tracker',
-    description: 'Expert-curated schedule of upcoming daylight saving time transitions for every timezone.',
+    description: 'An expert-curated database tracking daylight saving time transitions worldwide. Stay informed about when clocks turn forward or backward in each timezone, helping you prevent scheduling mix-ups.',
     icon: Calendar,
     href: '/dst-tracker',
     color: 'from-indigo-500/20 to-violet-500/20',
@@ -74,7 +89,7 @@ const tools = [
   },
   {
     title: 'Meeting Planner',
-    description: 'Visually coordinate global team calls across multiple timezones without calculation errors.',
+    description: 'Visually coordinate international team conferences across multiple timezone grids simultaneously. Find the overlapping green zone of working hours automatically without complex mental math.',
     icon: CalendarRange,
     href: '/meeting-planner',
     color: 'from-amber-500/20 to-yellow-500/20',
@@ -83,7 +98,7 @@ const tools = [
   },
   {
     title: 'Shared Alarm',
-    description: 'Create and synchronize alarms simultaneously across multiple devices and users anywhere.',
+    description: 'Create, schedule, and broadcast custom synchronized alarms across multiple remote devices simultaneously. Great for morning standups, study cohorts, or multiplayer time coordination.',
     icon: Users,
     href: '/shared-alarm',
     color: 'from-pink-500/20 to-rose-500/20',
@@ -93,7 +108,7 @@ const tools = [
   },
   {
     title: 'Egg Timer',
-    description: 'Perfectly boil eggs every time with specialized presets for soft, medium, and hard boiled eggs.',
+    description: 'Perfectly boil soft, medium, or hard-boiled eggs every single time. Offers precise cooking intervals adjusted for culinary consistency. Say goodbye to overcooked breakfasts.',
     icon: ChefHat,
     href: '/egg-timer',
     color: 'from-orange-400/20 to-amber-500/20',
@@ -102,7 +117,7 @@ const tools = [
   },
   {
     title: 'Holiday Countdown',
-    description: 'Count down to global holidays, festivals, and major events with millisecond precision.',
+    description: 'Count down the exact days, hours, minutes, and seconds until global holidays, seasonal celebrations, and major public events with high precision visual counters.',
     icon: PartyPopper,
     href: '/countdown',
     color: 'from-fuchsia-500/20 to-purple-500/20',
@@ -113,29 +128,40 @@ const tools = [
 
 const faqs = [
   {
-    q: "Can I save multiple world clocks on my dashboard?",
-    a: "Yes. Use the intelligent search bar on the World Clock page to find and add any of our 7,000+ available cities. Your dashboard automatically saves these selections to your browser so they are ready every time you return."
+    q: "How does the World Clock handle daylight saving changes?",
+    a: "Our World Clock is directly integrated with the latest IANA Time Zone Database updates. Whenever a country shifts its clock due to Daylight Saving Time (DST) changes, the system automatically detects it and displays the exact time without requiring any manual adjustments. You can always trust it to stay current."
   },
   {
-    q: "Do I need to create an account to use these tools?",
-    a: "No. We believe in speed and privacy. All your preferences, active alarms, and custom world clocks are stored locally in your browser (LocalStorage), meaning you get a personalized experience without needing to log in."
+    q: "Will my alarms go off if I close the browser tab?",
+    a: "For your alarms and timers to sound, the browser tab must remain open. However, because our application runs entirely on your device client-side, the timers will keep running in the background even if you switch tabs or minimize the window. We recommend keeping the tab pinned for critical alarms."
   },
   {
-    q: "How accurate are the alarms and timers?",
-    a: "Our timing engine uses high-resolution system performance counters to ensure millisecond accuracy. This prevents the 'drift' often found in standard web-based timers, even when your device is under heavy load."
+    q: "How do you guarantee the accuracy of your stopwatch and timers?",
+    a: "Standard web timers built with simple JavaScript intervals often drift under heavy browser or CPU usage. Clocks and Alarms Online solves this by using high-resolution performance counters ('performance.now()' web API). This matches calculations against your device's physical CPU crystal clock, ensuring zero timer drift."
   },
   {
-    q: "Does the DST Tracker cover all global time changes?",
-    a: "Yes. We monitor the official IANA Time Zone Database to provide real-time updates on daylight saving time transitions for every country in the world, including rare 30-minute shifts."
+    q: "Do I need to sign up or pay to use the tools?",
+    a: "No. The entire suite of tools is 100% free and open to everyone. You do not need to register an account, input an email address, or pay subscription fees. We believe in providing instant utility without hurdles, supported transparently by safe, standard web advertising partners."
+  },
+  {
+    q: "Can I save my personalized world clock dashboard?",
+    a: "Absolutely. Any cities you add to your dashboard or custom configuration settings are stored locally in your browser's LocalStorage memory. They will load instantly whenever you return to the site, even if you are offline, without uploading any personal profile data to external servers."
+  },
+  {
+    q: "Are these tools friendly for smartphones and tablets?",
+    a: "Yes. Our interface uses a responsive, mobile-first design system. Whether you are using a smartphone (iOS and Android), tablet, desktop computer, laptop, or even a smart TV web browser, the controls dynamically adapt to provide clear readability and quick finger-tap access."
   }
 ]
 
-export default function HomeClient() {
+export default function HomeClient({ posts }: { posts: Post[] }) {
+  // Slicing to get the latest 3 posts
+  const latestPosts = posts?.slice(0, 3) || []
+
   return (
     <div className="flex flex-col space-y-32 pb-32 w-full overflow-hidden">
       
       {/* 🚀 Cinematic Hero Section */}
-      <section className="relative min-h-[75vh] flex flex-col items-center justify-center text-center px-6 pt-24 pb-12">
+      <section className="relative min-h-[80vh] flex flex-col items-center justify-center text-center px-6 pt-28 pb-16">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/20 blur-[180px] rounded-full animate-pulse duration-[10s]" />
           <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-accent/20 blur-[150px] rounded-full" />
@@ -145,17 +171,16 @@ export default function HomeClient() {
         <div className="max-w-5xl space-y-8">
           <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-primary text-[10px] md:text-xs font-black uppercase tracking-widest backdrop-blur-md shadow-2xl">
             <Zap size={16} className="fill-current animate-pulse text-yellow-500" /> 
-            Engineering Precision Since 2025
+            Professional Time & Productivity Suite
           </div>
           
           <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.85] drop-shadow-[0_0_80px_rgba(124,58,237,0.3)]">
-            World Class <br />
+            High Precision <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-pink-500 animate-gradient font-display italic tracking-tight">Timekeeping</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-muted/70 max-w-2xl mx-auto font-medium leading-tight">
-            Experience world-class timekeeping with the gold standard in professional-grade tools. 
-            Track global pulse, set bulletproof alerts, and master your schedule with millisecond-exact precision.
+          <p className="text-xl md:text-2xl text-muted/70 max-w-3xl mx-auto font-medium leading-normal">
+            Your free, high-performance portal for global world clocks, loud online alarms, high-fidelity stopwatches, and focus timers. No accounts, no installs, instant load.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-4">
@@ -163,7 +188,7 @@ export default function HomeClient() {
               href="/world-clock" 
               className="group flex items-center gap-4 bg-primary text-white px-10 py-5 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:scale-105 transition-all shadow-3xl shadow-primary/40"
             >
-              Enter Dashboard <ArrowRight size={20} className="transition-transform group-hover:translate-x-2" />
+              Open Time Dashboard <ArrowRight size={20} className="transition-transform group-hover:translate-x-2" />
             </Link>
           </div>
         </div>
@@ -174,16 +199,51 @@ export default function HomeClient() {
         </div>
       </section>
 
-      {/* 🛠️ Tool Showcase Grid */}
-      <section className="max-w-7xl mx-auto w-full px-6 space-y-20 relative">
+      {/* 📘 Section 1: What is Clocks and Alarms Online */}
+      <section id="overview" className="max-w-6xl mx-auto px-6 space-y-6">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
+          Overview & Utility
+        </div>
+        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
+          What is Clocks and <span className="text-primary">Alarms Online?</span>
+        </h2>
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+          <p>
+            Clocks and Alarms Online is a professional, comprehensive web-based platform offering a suite of precision utility tools designed to make time management simple and accessible for everyone. We provide an integrated interface featuring world clocks, stopwatch lap trackers, countdown timers, daylight saving databases, and shared alarm grids.
+          </p>
+          <p>
+            Unlike default software programs bundled with desktop operating systems or mobile phones, our tools require absolutely no software installation, register zero background battery strain, and load instantly on any web-enabled platform. We ensure that you can coordinate worldwide schedules, set alarms, time activities, and track global time shifts directly from your browser.
+          </p>
+        </div>
+      </section>
+
+      {/* 📘 Section 2: Why Does This Platform Exist? */}
+      <section id="mission" className="max-w-6xl mx-auto px-6 space-y-6 border-t border-white/5 pt-16">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest mb-2">
+          Our Core Mission
+        </div>
+        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
+          Why Does This <span className="text-accent">Platform Exist?</span>
+        </h2>
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+          <p>
+            In our increasingly interconnected remote-work world, timezone synchronization and task execution timing have become absolute necessities. Team members are distributed across multiple continents, daylight saving shifts happen unexpectedly, and task-switching costs are higher than ever. Standard tools are scattered, bloated with advertisements, or lock key features behind subscription walls.
+          </p>
+          <p>
+            We built this platform to unify time utility workflows into a single dashboard. By providing high-precision tools for free in a privacy-first web model, we enable cross-border teams to align, developers to benchmark, athletes to track cycles, and users to set loud alarms without sharing personal data, registering accounts, or worrying about software bloat.
+          </p>
+        </div>
+      </section>
+
+      {/* 🛠️ Section 3: Tool Showcase Grid */}
+      <section id="features" className="max-w-7xl mx-auto w-full px-6 space-y-20 relative">
         <div className="absolute -top-40 left-0 w-64 h-64 bg-primary/5 blur-3xl -z-10" />
         
         <div className="flex flex-col md:flex-row items-end justify-between gap-8">
           <div className="space-y-4 text-left max-w-2xl">
-            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight italic">Global Timekeeping <span className="text-primary not-italic">Suite</span></h2>
+            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight italic">Our Utility <span className="text-primary not-italic">Features</span></h2>
             <p className="text-muted/60 font-medium text-lg leading-relaxed">
-              We provide the most comprehensive directory of time-oriented tools on the web, 
-              built with high-performance engines and intuitive user interfaces.
+              Explore our range of high-performance tools, built with zero-drift engines and visually rich interfaces to boost your productivity.
             </p>
           </div>
           <div className="h-px flex-1 bg-white/5 mx-12 hidden md:block mb-6" />
@@ -231,216 +291,254 @@ export default function HomeClient() {
             </Link>
           ))}
         </div>
+      </section>
 
-        {/* 📖 New How to Use Section for Home */}
-        <div className="space-y-16 pt-20">
-          <div className="text-center space-y-4">
-             <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight italic">How to <span className="text-primary not-italic">Master the Platform</span></h2>
-             <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
+      {/* 🚀 Section 4 & 5: Benefits & Supported Devices */}
+      <section className="max-w-6xl mx-auto px-6 space-y-16">
+        {/* Benefits Card */}
+        <div id="benefits" className="p-12 bg-white/[0.02] border border-white/5 rounded-[3rem] space-y-8 flex flex-col hover:border-primary/25 transition-all duration-500 shadow-2xl">
+          <div className="space-y-6">
+            <div className="w-14 h-14 bg-primary/20 rounded-2xl flex items-center justify-center text-primary border border-primary/20">
+              <CheckCircle size={28} />
+            </div>
+            <h3 className="text-3xl font-black text-white">Why Choose Clocks and Alarms Online?</h3>
+            <div className="space-y-4">
+              <p className="text-sm text-muted/70 leading-relaxed font-medium">
+                Our suite offers distinct benefits tailored to modern digital workflows. By running directly in the browser's execution thread with hardware optimization, we consume fewer system resources than electron-based desktop utility apps.
+              </p>
+              <ul className="space-y-3 text-sm text-muted font-medium">
+                <li className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                  <span><strong>Zero Cost:</strong> Access all pro features like world meeting planner and shared alarms at absolutely no expense.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                  <span><strong>Instant Launch:</strong> No registration, sign-up forms, or emails required. Enter the site and start timing in one click.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                  <span><strong>Persistent Memory:</strong> All added cities, alarm tones, and configuration presets save automatically to local storage.</span>
+                </li>
+              </ul>
+            </div>
           </div>
+          <Link href="/world-clock" className="text-xs font-black uppercase tracking-wider text-primary flex items-center gap-2 hover:translate-x-1.5 transition-transform pt-4 w-fit">
+            Try the benefits yourself <ArrowRight size={14} />
+          </Link>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { 
-                icon: Globe, 
-                title: "1. Sync Dashboard", 
-                text: "Visit the World Clock to add cities and build your personal global time dashboard. Everything saves automatically." 
-              },
-              { 
-                icon: Bell, 
-                title: "2. Set Precision Alarms", 
-                text: "Use the Alarm Clock for high-stakes wake-ups or reminders. Our engine ensures zero-drift performance." 
-              },
-              { 
-                icon: Timer, 
-                title: "3. Track In-Real-Time", 
-                text: "Launch the Stopwatch or Countdown Timer for focus sessions, lap tracking, or interval training." 
-              },
-              { 
-                icon: Settings, 
-                title: "4. Personalize Setup", 
-                text: "Customize tones, display modes, and notification settings to suit your professional environment." 
-              }
-            ].map((item, i) => (
-              <div key={i} className="group p-8 rounded-[2.5rem] bg-[#1a0b36]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500">
-                <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 border border-primary/30 group-hover:bg-primary/40 transition-colors">
-                  <item.icon className="w-6 h-6 text-white" />
+        {/* Supported Devices Card */}
+        <div id="devices" className="p-12 bg-white/[0.02] border border-white/5 rounded-[3rem] space-y-8 flex flex-col hover:border-accent/25 transition-all duration-500 shadow-2xl">
+          <div className="space-y-6">
+            <div className="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center text-accent border border-accent/20">
+              <Laptop size={28} />
+            </div>
+            <h3 className="text-3xl font-black text-white">Universal Supported Devices</h3>
+            <div className="space-y-4">
+              <p className="text-sm text-muted/70 leading-relaxed font-medium">
+                We designed our platform with responsiveness at its core. It is cross-platform compatible and functions smoothly across all devices without needing downloads.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+                <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5">
+                  <Laptop className="text-accent" size={20} />
+                  <div className="text-xs font-bold text-white uppercase tracking-wider">Computers</div>
                 </div>
-                <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
-                <p className="text-sm text-muted/80 leading-relaxed font-medium">
-                  {item.text}
-                </p>
+                <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5">
+                  <Smartphone className="text-accent" size={20} />
+                  <div className="text-xs font-bold text-white uppercase tracking-wider">Mobiles</div>
+                </div>
+                <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5">
+                  <Globe className="text-accent" size={20} />
+                  <div className="text-xs font-bold text-white uppercase tracking-wider">Smart TVs</div>
+                </div>
+                <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5">
+                  <Users className="text-accent" size={20} />
+                  <div className="text-xs font-bold text-white uppercase tracking-wider">Tablets</div>
+                </div>
               </div>
-            ))}
+              <p className="text-xs text-muted/50 leading-relaxed font-medium pt-2">
+                Compatible with Google Chrome, Apple Safari, Mozilla Firefox, Microsoft Edge, Opera, and other WebKit/Chromium browsers on Windows, macOS, Linux, ChromeOS, iOS, and Android.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 🧠 Core Values / Why Us */}
-      <section className="bg-white/[0.02] border-y border-white/5 py-40 relative">
-         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-            <div className="space-y-12">
-               <div className="space-y-4">
-                  <div className="px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest inline-block mb-2">
-                     Your Productivity Suite
-                  </div>
-                  <h2 className="text-4xl md:text-7xl font-black text-white leading-none tracking-tighter">
-                    Simple, Reliable, <br />
-                    <span className="italic text-primary/80">Everyday Tools</span>
-                  </h2>
-               </div>
-               
-               <p className="text-xl text-muted font-medium leading-relaxed">
-                  Experience seamless time management with our comprehensive suite of online clocks and timers. 
-                  Designed for ease of use and reliability, our tools help you stay on track, whether you're coordinating 
-                  global meetings or managing your daily focus sessions.
-               </p>
-
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="flex gap-5 group">
-                     <div className="bg-primary/20 p-4 rounded-2xl h-fit border border-primary/30 group-hover:bg-primary transition-colors duration-500">
-                        <Shield className="text-white" size={24} />
-                     </div>
-                     <div className="space-y-2">
-                        <h4 className="text-lg font-black text-white uppercase tracking-tight">Privacy First</h4>
-                        <p className="text-sm text-muted/60 leading-relaxed font-medium">All settings and timers are saved locally in your browser. No accounts or tracking.</p>
-                     </div>
-                  </div>
-                  <div className="flex gap-5 group">
-                     <div className="bg-accent/20 p-4 rounded-2xl h-fit border border-accent/30 group-hover:bg-accent transition-colors duration-500">
-                        <CheckCircle2 className="text-white" size={24} />
-                     </div>
-                     <div className="space-y-2">
-                        <h4 className="text-lg font-black text-white uppercase tracking-tight">Reliable Tools</h4>
-                        <p className="text-sm text-muted/60 leading-relaxed font-medium">Enjoy dependable alarms and synchronized timers designed for daily productivity.</p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-            <div className="relative">
-               <div className="bg-gradient-to-br from-[#1a0b36] to-black p-2 rounded-[3.5rem] border border-white/10 shadow-[0_0_80px_rgba(124,58,237,0.2)] overflow-hidden group">
-                  <div className="bg-black/60 p-12 rounded-[3rem] space-y-10">
-                     <div className="flex justify-between items-center pb-8 border-b border-white/5">
-                        <span className="text-[10px] font-black uppercase text-primary tracking-[0.3em]">System Status</span>
-                        <div className="flex items-center gap-2">
-                           <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-                           <span className="text-[10px] font-bold text-emerald-500">Live & Synchronized</span>
-                        </div>
-                     </div>
-                     <div className="space-y-6">
-                        <div className="flex justify-between items-baseline">
-                           <span className="text-sm font-bold text-white/40 uppercase tracking-tighter">System Reliability</span>
-                           <span className="text-2xl font-black text-white tabular-nums">100<span className="text-xs ml-1 opacity-40">%</span></span>
-                        </div>
-                        <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                           <div className="h-full w-full bg-primary animate-pulse shadow-[0_0_10px_rgba(124,58,237,0.6)]" />
-                        </div>
-                     </div>
-                     <p className="text-xs text-muted/40 font-bold uppercase leading-relaxed text-center group-hover:text-primary/60 transition-colors">
-                        Always available, working seamlessly in your browser.
-                     </p>
-                  </div>
-               </div>
-               {/* Decorative floating elements */}
-               <div className="absolute -top-12 -right-12 p-8 bg-white/5 rounded-3xl backdrop-blur-3xl border border-white/10 -rotate-6 animate-bounce duration-[4s]">
-                  <Globe className="text-primary" size={32} />
-               </div>
-            </div>
-         </div>
+      {/* 🔬 Section 6: Accuracy */}
+      <section id="accuracy" className="max-w-6xl mx-auto px-6 space-y-6">
+        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-widest">
+          <Cpu size={14} /> Zero-Drift Engineering
+        </div>
+        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
+          How Do We Guarantee <span className="text-emerald-400">Atomic Time Accuracy?</span>
+        </h2>
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+          <p>
+            Timer drift is a major issue on the web. Standard JavaScript timers created using `setInterval` or `setTimeout` run on the main browser thread. If the system undergoes CPU spikes, handles heavy layouts, or goes inactive, these functions delay, accumulating seconds of drift over minutes.
+          </p>
+          <p>
+            Clocks and Alarms Online avoids this entirely. Our timing engine operates on a hardware-precision loop. It uses the `performance.now()` web API to fetch high-resolution millisecond timestamps directly matching physical CPU crystal counters. Additionally, our alarms and world clocks synchronize continuously with NTP standards and local browser operating system checks to compensate for background state changes. This ensures your alarms sound exactly when scheduled, and stopwatch records stay accurate to the millisecond.
+          </p>
+        </div>
       </section>
 
-      {/* 🚀 Feature Deep Dive Narrative Section */}
-      <section className="max-w-6xl mx-auto px-6 space-y-24">
-         <div className="text-center space-y-6">
-            <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter decoration-primary/50 underline-offset-[12px] underline">
-               Designed for You
-            </h2>
-            <p className="text-xl md:text-2xl text-muted/60 font-medium max-w-4xl mx-auto italic leading-relaxed pt-4">
-              "We built Clocks and Alarms Online to be the only time management tool you need. 
-              It's fast, free, and incredibly easy to use."
-            </p>
-         </div>
-
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div className="space-y-6 p-12 bg-white/[0.03] rounded-[3rem] border border-white/5 hover:border-primary/20 transition-all duration-700 shadow-2xl">
-               <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
-                  <Settings size={32} />
-               </div>
-               <h3 className="text-3xl font-black text-white italic">Always Ready</h3>
-               <p className="text-base text-muted/70 leading-relaxed font-medium">
-                  Your customized dashboard settings, favorite world clocks, and alarm configurations are saved 
-                  right in your browser. Every time you return, your schedule is exactly how you left it. 
-                  No accounts required, preserving your privacy and speed.
-               </p>
-            </div>
-            <div className="space-y-6 p-12 bg-white/[0.03] rounded-[3rem] border border-white/5 hover:border-accent/20 transition-all duration-700 shadow-2xl">
-               <div className="w-16 h-16 bg-accent/20 rounded-2xl flex items-center justify-center text-accent mb-4">
-                  <RefreshCw size={32} />
-               </div>
-               <h3 className="text-3xl font-black text-white italic">Seamless Performance</h3>
-               <p className="text-base text-muted/70 leading-relaxed font-medium">
-                  Our platform is designed to be lightweight and fast. Set your timers, run your stopwatches, 
-                  and check world times without experiencing slowdowns or annoying lag. It just works, 
-                  so you can focus on what matters.
-               </p>
-            </div>
-         </div>
+      {/* 🔬 Section 7: Privacy First */}
+      <section id="privacy" className="max-w-6xl mx-auto px-6 space-y-6 border-t border-white/5 pt-16">
+        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-[10px] font-black uppercase tracking-widest">
+          <ShieldAlert size={14} /> 100% Privacy-First Architecture
+        </div>
+        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
+          Your Time data remains <span className="text-violet-400">Completely Yours</span>
+        </h2>
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+          <p>
+            Your privacy is our core priority. Unlike typical time tools that require accounts or save your alarms on a remote cloud database, our site stores all data client-side. The dashboard configuration, world clocks, alarms, and settings save exclusively inside your browser's LocalStorage memory cache.
+          </p>
+          <p>
+            We have no back-end registration databases, meaning we cannot store, read, or track your routines, alarms, or geographical selections. Your dashboard runs entirely locally on your device. To keep this high-performance site free for everyone, we work with transparent ad providers like TrafficStars. These providers utilize standard, non-personally identifiable browser cookies to display clean, contextually relevant advertisements. You can check how these cookies are managed at any time in our [Privacy Policy](/privacy).
+          </p>
+        </div>
       </section>
 
-      {/* ❓ FAQ Section with Premium Design */}
-      <section id="expert-insights" className="bg-gradient-to-t from-primary/10 via-background to-background py-4 flex flex-col items-center">
-         <div className="max-w-4xl w-full px-6 space-y-16">
-            <div className="text-center space-y-4">
-               <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight">Expert Insights</h2>
-               <p className="text-muted/60 font-bold uppercase tracking-widest text-[11px]">Frequently Asked Questions</p>
-            </div>
+      {/* ❓ Section 8: FAQ Section */}
+      <section id="faq" className="max-w-6xl mx-auto px-6 space-y-16">
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
+            <HelpCircle size={14} /> Frequently Asked Questions
+          </div>
+          <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight">
+            Got Questions? We Have <span className="text-primary italic">Answers</span>
+          </h2>
+          <p className="text-lg text-muted/60 max-w-2xl mx-auto font-medium">
+            Find simple, straightforward answers to the questions our global community asks most.
+          </p>
+        </div>
 
-            <div className="space-y-4">
-               {faqs.map((faq, i) => (
-                  <div key={i} className="group bg-white/5 hover:bg-white/[0.08] border border-white/5 hover:border-white/10 rounded-[2rem] p-8 md:p-10 transition-all duration-500 shadow-xl cursor-help">
-                     <div className="flex items-start gap-6">
-                        <div className="w-10 h-10 min-w-[40px] bg-primary/20 rounded-xl flex items-center justify-center text-primary font-black group-hover:bg-primary group-hover:text-white transition-all">
-                           ?
-                        </div>
-                        <div className="space-y-4">
-                           <h4 className="text-xl font-black text-white italic tracking-tight group-hover:text-primary transition-colors">{faq.q}</h4>
-                           <p className="text-base text-muted/60 leading-relaxed font-medium group-hover:text-muted transition-colors">
-                              {faq.a}
-                           </p>
-                        </div>
-                     </div>
+        <div className="max-w-4xl mx-auto flex flex-col gap-6 pt-8 w-full">
+          {faqs.map((faq, i) => (
+            <div key={i} className="p-8 rounded-[2.5rem] bg-[#1a0b36]/30 border border-white/5 hover:border-primary/20 transition-all duration-500 space-y-4 shadow-2xl flex flex-col justify-start w-full">
+              <h4 className="text-lg font-black text-white flex items-start gap-3 leading-snug">
+                <span className="text-primary font-bold text-lg">Q.</span>
+                <span>{faq.q}</span>
+              </h4>
+              <p className="text-sm text-muted/70 leading-relaxed font-medium pl-6">
+                {faq.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 📰 Section 10: Latest Blogs Section */}
+      {latestPosts.length > 0 && (
+        <section id="blogs" className="max-w-6xl mx-auto px-6 space-y-16">
+          <div className="flex flex-col md:flex-row items-end justify-between gap-8">
+            <div className="space-y-4 text-left max-w-2xl">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
+                <BookOpen size={14} /> Insights & Articles
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight">
+                Read Our Latest <span className="text-primary italic">Blogs</span>
+              </h2>
+              <p className="text-muted/60 font-medium text-lg leading-relaxed">
+                Stay updated with expert time-management guides, historical insights, and productivity tips.
+              </p>
+            </div>
+            <Link 
+              href="/blog" 
+              className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2 border border-primary/20 bg-primary/5 hover:bg-primary hover:text-white transition-all px-6 py-3.5 rounded-full whitespace-nowrap mb-2"
+            >
+              View All Articles <ArrowUpRight size={14} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
+            {latestPosts.map((post) => (
+              <Link
+                key={post._id}
+                href={`/blog/${post.slug.current}`}
+                className="group relative bg-[#1a0b2e]/40 border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-primary/40 transition-all duration-500 flex flex-col justify-between shadow-2xl hover:-translate-y-1.5"
+              >
+                <div>
+                  {post.mainImage?.asset && (
+                    <div className="relative h-48 w-full overflow-hidden">
+                      <img
+                        src={urlFor(post.mainImage)
+                          .width(600)
+                          .height(380)
+                          .quality(80)
+                          .url()}
+                        alt={post.mainImage.alt || post.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1a0b2e] via-transparent to-transparent" />
+                    </div>
+                  )}
+
+                  <div className="p-8 space-y-4 relative z-10">
+                    <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-primary/20 text-primary border border-primary/20 inline-block">
+                      {categoryLabels[post.category] || post.category}
+                    </span>
+                    <h3 className="text-xl font-black text-white group-hover:text-primary transition-colors leading-tight line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-sm text-muted/60 font-medium line-clamp-2 leading-relaxed">
+                      {post.excerpt}
+                    </p>
                   </div>
-               ))}
-            </div>
-         </div>
+                </div>
+
+                <div className="p-8 pt-0">
+                  <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <ClockIcon size={14} className="text-primary" />
+                      <span className="text-xs font-bold text-white/40">
+                        {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                    {post.estimatedReadingTime && (
+                      <span className="text-xs font-bold text-white/30">
+                        {post.estimatedReadingTime} min read
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 🔗 Section 9: Related Tools Quick Access Footer */}
+      <section className="max-w-6xl mx-auto px-6 py-16 border-t border-white/5">
+        <div className="text-center space-y-6">
+          <h3 className="text-2xl font-black text-white">Related Timekeeping Utilities</h3>
+          <p className="text-sm text-muted/50 max-w-lg mx-auto font-medium">
+            Jump directly to any other page in our network. These tools operate on the same zero-drift performance engine.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <Link href="/world-clock" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">World Clock</Link>
+            <Link href="/alarm-clock" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Alarm Clock</Link>
+            <Link href="/stopwatch" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Stopwatch</Link>
+            <Link href="/timer" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Countdown Timer</Link>
+            <Link href="/dst-tracker" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">DST Tracker</Link>
+            <Link href="/meeting-planner" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Meeting Planner</Link>
+            <Link href="/shared-alarm" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Shared Alarm</Link>
+            <Link href="/egg-timer" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Egg Timer</Link>
+            <Link href="/countdown" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Holiday Countdown</Link>
+          </div>
+        </div>
       </section>
 
-      {/* 🚢 Final CTA Segment */}
-      <section className="max-w-7xl mx-auto px-6 w-full">
-         <div className="bg-primary/10 rounded-[4rem] p-16 md:p-32 border border-primary/20 text-center space-y-12 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" />
-            
-            <div className="space-y-6 relative z-10 max-w-4xl mx-auto">
-               <h2 className="text-5xl md:text-8xl font-black text-white leading-none tracking-tighter">
-                 Ready to Sync <br />
-                 <span className="text-white/40 italic">with the World?</span>
-               </h2>
-               <p className="text-xl md:text-2xl text-muted font-black uppercase tracking-[0.2em] opacity-60">
-                 Precision is the new currency. Join millions of global users.
-               </p>
-            </div>
-
-            <div className="flex justify-center relative z-10">
-               <Link 
-                  href="/world-clock" 
-                  className="flex items-center gap-4 bg-white text-black px-12 py-6 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:scale-110 active:scale-95 transition-all shadow-3xl shadow-white/20"
-               >
-                  Get Started for Free <Zap size={20} fill="currentColor" />
-               </Link>
-            </div>
-         </div>
-      </section>
+      {/* Static Ad Placement Anchor */}
+      <div className="max-w-7xl mx-auto px-6 w-full">
+        <AdBanner />
+      </div>
 
     </div>
   )

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { DateTime } from 'luxon'
 import SunCalc from 'suncalc'
 import { Sun, Moon, Wind, CloudRain, Thermometer } from 'lucide-react'
+import { useStore } from '@/hooks/useStore'
 
 interface CityClockProps {
   name: string
@@ -12,6 +13,7 @@ interface CityClockProps {
 }
 
 export default function CityClockDisplay({ name, timezone, lat, lon }: CityClockProps) {
+  const is24Hour = useStore((state) => state.is24Hour)
   const [mounted, setMounted] = useState(false)
   const [now, setNow] = useState(DateTime.now().setZone(timezone))
   const [weather, setWeather] = useState<any>(null)
@@ -64,8 +66,10 @@ export default function CityClockDisplay({ name, timezone, lat, lon }: CityClock
         <div className="text-center lg:text-left">
           <h2 className="text-2xl md:text-3xl font-black text-accent mb-6 uppercase tracking-[0.2em]">{name}</h2>
           <div className="flex items-baseline justify-center lg:justify-start font-mono text-[4.5rem] md:text-8xl xl:text-[6.5rem] font-black font-tabular tracking-tighter tabular-nums mb-6 leading-none drop-shadow-[0_0_20px_rgba(124,58,237,0.3)] text-white">
-            <span>{now.toFormat('HH:mm:ss')}</span>
-            <span className="text-primary/70 text-2xl md:text-4xl ml-4 font-bold tracking-normal">{now.toFormat('a')}</span>
+            <span>{now.toFormat(is24Hour ? 'HH:mm:ss' : 'hh:mm:ss')}</span>
+            {!is24Hour && (
+              <span className="text-primary/70 text-2xl md:text-4xl ml-4 font-bold tracking-normal">{now.toFormat('a')}</span>
+            )}
           </div>
           <div className="text-xl md:text-2xl font-bold text-white/90">{now.toLocaleString(DateTime.DATE_FULL)}</div>
           <p className="text-white/40 mt-2 font-bold uppercase tracking-widest text-xs">{timezone} (GMT {now.toFormat('ZZ')})</p>
@@ -76,12 +80,12 @@ export default function CityClockDisplay({ name, timezone, lat, lon }: CityClock
           <div className="p-6 bg-[#1a0b2e]/60 rounded-[1.5rem] border border-violet-500/10 flex flex-col items-center justify-center hover:border-violet-500/30 transition-all">
             <Sun size={28} className="text-amber-500 mb-3" />
             <span className="text-[10px] text-white/50 uppercase font-black tracking-[0.2em] mb-1">Sunrise</span>
-            <span className="text-xl font-bold text-white">{sunrise.toFormat('HH:mm')}</span>
+            <span className="text-xl font-bold text-white">{sunrise.toFormat(is24Hour ? 'HH:mm' : 'hh:mm a')}</span>
           </div>
           <div className="p-6 bg-[#1a0b2e]/60 rounded-[1.5rem] border border-violet-500/10 flex flex-col items-center justify-center hover:border-violet-500/30 transition-all">
             <Moon size={28} className="text-violet-400 mb-3" />
             <span className="text-[10px] text-white/50 uppercase font-black tracking-[0.2em] mb-1">Sunset</span>
-            <span className="text-xl font-bold text-white">{sunset.toFormat('HH:mm')}</span>
+            <span className="text-xl font-bold text-white">{sunset.toFormat(is24Hour ? 'HH:mm' : 'hh:mm a')}</span>
           </div>
           
           {weather && (

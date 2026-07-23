@@ -29,6 +29,10 @@ interface AppState {
   countdowns: Countdown[]
   addCountdown: (countdown: Omit<Countdown, 'id'>) => void
   removeCountdown: (id: string) => void
+
+  // Preferences
+  is24Hour: boolean
+  toggleTimeFormat: () => void
 }
 
 export const useStore = create<AppState>()(
@@ -55,6 +59,9 @@ export const useStore = create<AppState>()(
       removeCountdown: (id) => set((state) => ({
         countdowns: state.countdowns.filter((c) => c.id !== id)
       })),
+
+      is24Hour: false,
+      toggleTimeFormat: () => set((state) => ({ is24Hour: !state.is24Hour })),
     }),
     {
       name: 'clocks-and-alarms-storage',

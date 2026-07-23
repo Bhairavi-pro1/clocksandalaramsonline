@@ -20,6 +20,7 @@ import {
   BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useStore } from '@/hooks/useStore'
 
 const tools = [
   { label: 'World Clock', icon: Globe, href: '/world-clock', description: 'Global time tracking' },
@@ -33,25 +34,44 @@ const tools = [
   { label: 'Egg Timer', icon: ChefHat, href: '/egg-timer', description: 'Perfectly boiled eggs' }
 ]
 
+const homeSections = [
+  { label: 'Overview', href: '/#overview' },
+  { label: 'Our Mission', href: '/#mission' },
+  { label: 'Features', href: '/#features' },
+  { label: 'Why Choose Us', href: '/#benefits' },
+  { label: 'Supported Devices', href: '/#devices' },
+  { label: 'Zero-Drift Engine', href: '/#accuracy' },
+  { label: 'Privacy First', href: '/#privacy' },
+  { label: 'FAQs', href: '/#faq' },
+  { label: 'Blog & Insights', href: '/#blogs' },
+]
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isToolsOpen, setIsToolsOpen] = useState(false)
+  const [isSectionsOpen, setIsSectionsOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
 
-  const handleInsightsClick = (e: React.MouseEvent) => {
-    e.preventDefault()
+  const { is24Hour, toggleTimeFormat } = useStore()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const hash = href.split('#')[1]
     if (pathname === '/') {
-      const el = document.getElementById('expert-insights')
+      e.preventDefault()
+      const el = document.getElementById(hash)
       if (el) {
-        // Offset for the fixed header
         const y = el.getBoundingClientRect().top + window.scrollY - 100
         window.scrollTo({ top: y, behavior: 'smooth' })
       }
-    } else {
-      router.push('/#expert-insights')
     }
+    setIsSectionsOpen(false)
   }
 
   useEffect(() => {
@@ -153,13 +173,42 @@ export default function Header() {
               </div>
             </div>
 
-            <a 
-              href="/#expert-insights" 
-              onClick={handleInsightsClick}
-              className="text-sm font-bold uppercase tracking-widest text-white/70 hover:text-primary transition-all cursor-pointer"
-            >
-              Expert Insights
-            </a>
+            {/* Sections Dropdown */}
+            <div className="relative group">
+              <button 
+                onMouseEnter={() => setIsSectionsOpen(true)}
+                onMouseLeave={() => setIsSectionsOpen(false)}
+                className={cn(
+                  "flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-all hover:text-primary",
+                  isSectionsOpen ? "text-primary" : "text-white/70"
+                )}
+              >
+                Sections <ChevronDown size={14} className={cn("transition-transform duration-300", isSectionsOpen && "rotate-180")} />
+              </button>
+
+              {/* Sections Dropdown Menu */}
+              <div 
+                onMouseEnter={() => setIsSectionsOpen(true)}
+                onMouseLeave={() => setIsSectionsOpen(false)}
+                className={cn(
+                  "absolute top-full -left-10 mt-4 w-[240px] bg-[#0f041e] border border-white/10 rounded-[2rem] p-4 shadow-[0_20px_80px_rgba(0,0,0,0.6)] transition-all duration-500 origin-top z-50",
+                  isSectionsOpen ? "opacity-100 scale-100 translate-y-0 visible" : "opacity-0 scale-95 -translate-y-4 invisible"
+                )}
+              >
+                <div className="flex flex-col gap-1">
+                  {homeSections.map((section) => (
+                    <Link 
+                      key={section.href} 
+                      href={section.href}
+                      onClick={(e) => handleSectionClick(e, section.href)}
+                      className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-white/70 hover:text-primary hover:bg-white/5 rounded-xl transition-all block text-left"
+                    >
+                      {section.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             <Link 
               href="/blog" 
@@ -226,6 +275,36 @@ export default function Header() {
               </div>
            </div>
 
+            {/* Sections in Mobile */}
+            <div className="space-y-4">
+              <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Sections</span>
+              <div className="grid grid-cols-1 gap-2">
+                 {homeSections.map((section) => (
+                    <Link 
+                      key={section.href} 
+                      href={section.href}
+                      onClick={(e) => {
+                        setIsOpen(false)
+                        const hash = section.href.split('#')[1]
+                        if (pathname === '/') {
+                          e.preventDefault()
+                          setTimeout(() => {
+                            const el = document.getElementById(hash)
+                            if (el) {
+                              const y = el.getBoundingClientRect().top + window.scrollY - 100
+                              window.scrollTo({ top: y, behavior: 'smooth' })
+                            }
+                          }, 100)
+                        }
+                      }}
+                      className="px-4 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 transition-all font-bold text-white text-xs uppercase tracking-wider block"
+                    >
+                       {section.label}
+                    </Link>
+                 ))}
+              </div>
+            </div>
+
             {/* Blog Link in Mobile */}
             <div className="space-y-4">
               <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Knowledge</span>
@@ -241,7 +320,39 @@ export default function Header() {
               </Link>
             </div>
 
-           <div className="pt-10 border-t border-white/5 space-y-6 text-center">
+            {/* Settings in Mobile */}
+            <div className="space-y-4">
+              <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Settings</span>
+              <div className="p-6 rounded-[2rem] bg-white/5 border border-white/5 space-y-4">
+                <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Time Format Preference</div>
+                <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
+                  <button
+                    onClick={() => is24Hour && toggleTimeFormat()}
+                    className={cn(
+                      "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
+                      mounted && !is24Hour 
+                        ? "bg-primary text-white shadow-md shadow-primary/20" 
+                        : "bg-transparent text-white/50 hover:text-white"
+                    )}
+                  >
+                    12-Hour
+                  </button>
+                  <button
+                    onClick={() => !is24Hour && toggleTimeFormat()}
+                    className={cn(
+                      "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
+                      mounted && is24Hour 
+                        ? "bg-primary text-white shadow-md shadow-primary/20" 
+                        : "bg-transparent text-white/50 hover:text-white"
+                    )}
+                  >
+                    24-Hour
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-10 border-t border-white/5 space-y-6 text-center">
               <Link 
                 href="/world-clock"
                 onClick={() => setIsOpen(false)}

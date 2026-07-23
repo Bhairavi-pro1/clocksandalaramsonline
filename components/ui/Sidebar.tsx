@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
@@ -20,6 +20,7 @@ import {
   BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useStore } from '@/hooks/useStore'
 
 const navItems = [
   { label: 'World Clock', icon: Globe, href: '/world-clock' },
@@ -37,6 +38,13 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+
+  const { is24Hour, toggleTimeFormat } = useStore()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
@@ -96,33 +104,74 @@ export default function Sidebar() {
           )
         })}
       </nav>
+
+      {/* Settings / Format Toggle */}
+      <div className="px-8 pt-4 pb-8 border-t border-white/5 mt-auto space-y-4">
+        <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] block">Settings</span>
+        <div className="space-y-3">
+          <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Time Format</div>
+          <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
+            <button
+              type="button"
+              onClick={() => is24Hour && toggleTimeFormat()}
+              className={cn(
+                "flex-1 text-center py-2 text-[10px] font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
+                mounted && !is24Hour 
+                  ? "bg-primary text-white shadow-md shadow-primary/20" 
+                  : "bg-transparent text-white/50 hover:text-white"
+              )}
+            >
+              12H
+            </button>
+            <button
+              type="button"
+              onClick={() => !is24Hour && toggleTimeFormat()}
+              className={cn(
+                "flex-1 text-center py-2 text-[10px] font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
+                mounted && is24Hour 
+                  ? "bg-primary text-white shadow-md shadow-primary/20" 
+                  : "bg-transparent text-white/50 hover:text-white"
+              )}
+            >
+              24H
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 
   return (
     <>
       {/* Mobile Top Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-sidebar/80 backdrop-blur-2xl border-b border-white/5 z-[60] flex items-center justify-between px-5 shadow-lg">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-[60] bg-[#0a0118]/80 backdrop-blur-2xl border-b border-white/10 py-3 px-6 shadow-2xl flex items-center justify-between">
         <Link 
           href="/" 
           onClick={() => setIsOpen(false)}
-          className="flex items-center space-x-3 group"
+          className="flex items-center space-x-3 group outline-none"
         >
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/5 overflow-hidden p-1.5">
+          <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/30 group-hover:rotate-6 shadow-lg shadow-primary/10 border border-primary/20 overflow-hidden p-2">
             <img 
               src="/assets/clock_site_logo.png" 
               alt="Logo" 
-              className="w-full h-full object-contain filter invert brightness-200"
+              className="w-full h-full object-contain filter invert brightness-200 transition-all duration-500 group-hover:brightness-250 animate-pulse"
             />
           </div>
-          <span className="text-sm font-black tracking-tighter text-white uppercase leading-tight">Clocks and Alarms <br/><span className="text-primary text-[10px] tracking-[0.4em]">Online</span></span>
+          <div className="flex flex-col">
+            <span className="text-lg font-black tracking-tighter text-white font-display leading-[0.8] transition-colors group-hover:text-primary">
+              Clocks and Alarms
+            </span>
+            <span className="text-primary font-black text-[10px] uppercase tracking-[0.4em] mt-1 ml-0.5 opacity-80">
+              Online
+            </span>
+          </div>
         </Link>
         <button 
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="p-2.5 bg-white/5 border border-white/10 rounded-xl shadow-inner hover:bg-white/10 transition-all active:scale-90"
+          className="p-3 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all active:scale-90"
         >
-          <Menu className="text-white w-5 h-5" />
+          {isOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
         </button>
       </div>
 

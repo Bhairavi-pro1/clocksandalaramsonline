@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans, Orbitron } from 'next/font/google'
 import './globals.css'
 import LayoutWrapper from '@/components/ui/LayoutWrapper'
-import ConsentManager from '@/components/ui/ConsentManager'
 import Script from 'next/script'
 
 const inter = Inter({ 
@@ -78,8 +77,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LayoutWrapper>
           {children}
         </LayoutWrapper>
-        
-        <ConsentManager />
 
         <Script
           id="aclib"

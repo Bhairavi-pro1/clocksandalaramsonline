@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { DateTime } from 'luxon'
 import { X } from 'lucide-react'
 import Link from 'next/link'
+import { useStore } from '@/hooks/useStore'
 
 interface SmallClockCardProps {
   country: string
@@ -12,7 +13,13 @@ interface SmallClockCardProps {
 }
 
 export default function SmallClockCard({ country, city, timezone, onRemove }: SmallClockCardProps) {
+  const is24Hour = useStore((state) => state.is24Hour)
+  const [mounted, setMounted] = useState(false)
   const [time, setTime] = useState<DateTime | null>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     setTime(DateTime.now().setZone(timezone))
@@ -60,7 +67,10 @@ export default function SmallClockCard({ country, city, timezone, onRemove }: Sm
         <h4 className="text-xl font-bold text-white tracking-tight">{city}</h4>
         
         <div className="text-[2.65rem] font-bold tracking-tight text-white leading-none py-2 font-tabular drop-shadow-[0_0_20px_rgba(124,58,237,0.3)]">
-          {time ? time.toFormat('HH:mm:ss') : '00:00:00'}
+          {time ? time.toFormat(mounted && is24Hour ? 'HH:mm:ss' : 'hh:mm:ss') : '00:00:00'}
+          {time && (!mounted || !is24Hour) && (
+            <span className="text-sm font-normal text-white/40 ml-1.5 uppercase tracking-tighter">{time.toFormat('a')}</span>
+          )}
         </div>
 
         <div className="flex flex-col items-center space-y-1">

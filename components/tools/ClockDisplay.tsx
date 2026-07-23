@@ -1,13 +1,20 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useClock } from '@/hooks/useClock'
 import { useWakeLock } from '@/hooks/useWakeLock'
 import { useFullscreen } from '@/hooks/useFullscreen'
 import { Maximize2, Minimize2 } from 'lucide-react'
+import { useStore } from '@/hooks/useStore'
 
 export default function ClockDisplay() {
-  const [is24Hour, setIs24Hour] = useState(false)
-  const clock = useClock(is24Hour)
+  const { is24Hour, toggleTimeFormat } = useStore()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const clock = useClock(mounted ? is24Hour : false)
   const { isFullscreen, toggleFullscreen } = useFullscreen()
   
   // Prevent dimming when clock is visible
@@ -30,7 +37,7 @@ export default function ClockDisplay() {
             <span className="text-primary/70 text-2xl md:text-4xl w-[1ch] inline-block text-center">{clock.seconds[0]}</span>
             <span className="text-primary/70 text-2xl md:text-4xl w-[1ch] inline-block text-center">{clock.seconds[1]}</span>
           </div>
-          {!is24Hour && (
+          {(!mounted || !is24Hour) && (
             <span className="text-xl md:text-3xl font-black text-primary/80 tracking-tighter leading-none mt-1">{clock.period}</span>
           )}
         </div>
@@ -44,10 +51,10 @@ export default function ClockDisplay() {
       {/* Controls */}
       <div className="flex gap-4 mt-12 opacity-0 group-hover:opacity-100 transition-opacity">
         <button 
-          onClick={() => setIs24Hour(!is24Hour)}
+          onClick={toggleTimeFormat}
           className="px-6 py-2 rounded-full bg-secondary hover:bg-primary transition-colors text-sm font-bold border border-white/5"
         >
-          {is24Hour ? '12-Hour' : '24-Hour'}
+          {mounted && is24Hour ? '12-Hour' : '24-Hour'}
         </button>
         <button 
           onClick={toggleFullscreen}
