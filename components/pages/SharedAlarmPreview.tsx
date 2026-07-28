@@ -6,6 +6,7 @@ import { SharedAlarm, SharedAlarmResponse, respondToAlarm } from '@/lib/sharedAl
 import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { useSession } from '@/hooks/useSession'
+import { useStore } from '@/hooks/useStore'
 
 interface SharedAlarmPreviewProps {
   alarmId: string
@@ -14,6 +15,12 @@ interface SharedAlarmPreviewProps {
 export default function SharedAlarmPreview({ alarmId }: SharedAlarmPreviewProps) {
   const { sessionId } = useSession()
   const router = useRouter()
+  const is24Hour = useStore((state) => state.is24Hour)
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   
   const [alarm, setAlarm] = useState<SharedAlarm | null>(null)
   const [loading, setLoading] = useState(true)
@@ -113,7 +120,12 @@ export default function SharedAlarmPreview({ alarmId }: SharedAlarmPreviewProps)
   if (!alarm) return null;
 
   const alarmDate = new Date(alarm.alarmDateTime);
-  const timeString = alarmDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const use24 = mounted && is24Hour;
+  const timeString = alarmDate.toLocaleTimeString([], { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: !use24
+  });
   const dateString = alarmDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
 
   return (

@@ -26,17 +26,18 @@ export function getUpcomingDSTChanges(): DSTChange[] {
   const changes: DSTChange[] = []
   const now = DateTime.now()
 
-  // Helper to find next change for a zone
-  const findNextChange = (zone: string, country: string): DSTChange | null => {
+  // Helper to find all changes for a zone in next 12 months
+  const findDSTChanges = (zone: string, country: string): DSTChange[] => {
+    const zoneChanges: DSTChange[] = []
     try {
       const dt = now.setZone(zone)
-      if (!dt.isValid) return null
-      const currentOffset = dt.offset
+      if (!dt.isValid) return []
+      let currentOffset = dt.offset
 
       for (let i = 1; i <= 366; i++) {
         const checkTime = dt.plus({ days: i }).endOf('day')
         if (checkTime.offset !== currentOffset) {
-          let transitionMoment = dt.plus({ days: i }).startOf('day')
+          const transitionMoment = dt.plus({ days: i }).startOf('day')
           for (let h = 0; h <= 24; h++) {
             const hourSlice = transitionMoment.plus({ hours: h })
             if (hourSlice.offset !== currentOffset) {
@@ -62,7 +63,7 @@ export function getUpcomingDSTChanges(): DSTChange[] {
                   description = `Notable Transition: A unique ${Math.abs(offsetDiff)} minute shift in local time.`
               }
 
-              return {
+              zoneChanges.push({
                 country,
                 zone,
                 date: hourSlice.toFormat('MMMM d, yyyy'),
@@ -76,22 +77,23 @@ export function getUpcomingDSTChanges(): DSTChange[] {
                 isLordHowe,
                 isHistorical,
                 description
-              }
+              })
+
+              currentOffset = hourSlice.offset
+              break
             }
           }
         }
       }
     } catch (e) {
-      return null
+      return []
     }
-    return null
+    return zoneChanges
   }
 
   Object.entries(extendedZones).forEach(([country, zone]) => {
-    const change = findNextChange(zone, country)
-    if (change) {
-      changes.push(change)
-    }
+    const zoneChanges = findDSTChanges(zone, country)
+    changes.push(...zoneChanges)
   })
 
   // Sort by date then country

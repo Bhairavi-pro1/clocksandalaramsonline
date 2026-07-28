@@ -33,6 +33,9 @@ interface AppState {
   // Preferences
   is24Hour: boolean
   toggleTimeFormat: () => void
+  theme: 'light' | 'dark'
+  toggleTheme: () => void
+  setTheme: (theme: 'light' | 'dark') => void
 }
 
 export const useStore = create<AppState>()(
@@ -62,6 +65,28 @@ export const useStore = create<AppState>()(
 
       is24Hour: false,
       toggleTimeFormat: () => set((state) => ({ is24Hour: !state.is24Hour })),
+      theme: 'dark',
+      toggleTheme: () => set((state) => {
+        const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
+        if (typeof window !== 'undefined') {
+          if (nextTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else {
+            document.documentElement.classList.add('dark');
+          }
+        }
+        return { theme: nextTheme };
+      }),
+      setTheme: (theme) => set(() => {
+        if (typeof window !== 'undefined') {
+          if (theme === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else {
+            document.documentElement.classList.add('dark');
+          }
+        }
+        return { theme };
+      }),
     }),
     {
       name: 'clocks-and-alarms-storage',

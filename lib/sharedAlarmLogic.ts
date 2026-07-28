@@ -1,7 +1,7 @@
 import { db } from './firebase';
 import { 
   collection, doc, setDoc, updateDoc, deleteDoc, 
-  getDoc, getDocs, onSnapshot, query, QuerySnapshot 
+  getDoc, getDocs, onSnapshot, query
 } from 'firebase/firestore';
 
 export interface SharedAlarm {

@@ -14,6 +14,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import SharedAlarmCard from '@/components/tools/SharedAlarmCard'
 import SharedAlarmModal from '@/components/tools/SharedAlarmModal'
 import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
+import { useStore } from '@/hooks/useStore'
 
 const SOUNDS: Record<string, string> = {
   vibe: '/sounds/vibe.mp3',
@@ -27,6 +28,12 @@ const SOUNDS: Record<string, string> = {
 
 export default function SharedAlarmDashboard() {
   const { sessionId } = useSession()
+  const is24Hour = useStore((state) => state.is24Hour)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const [createdAlarms, setCreatedAlarms] = useState<SharedAlarm[]>([])
   const [receivedAlarms, setReceivedAlarms] = useState<SharedAlarm[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -224,7 +231,15 @@ export default function SharedAlarmDashboard() {
         onClose={stopRinging}
         label={ringingAlarm?.title || 'Shared Alarm Ringing!'}
         type="alarm"
-        timeText={ringingAlarm ? new Date(ringingAlarm.alarmDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+        timeText={
+          ringingAlarm 
+            ? new Date(ringingAlarm.alarmDateTime).toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: !(mounted && is24Hour)
+              }) 
+            : ''
+        }
       />
     </div>
   )

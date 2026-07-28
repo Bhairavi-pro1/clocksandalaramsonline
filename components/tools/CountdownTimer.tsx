@@ -45,7 +45,7 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
         ref={cardRef}
         className={cn(
           "w-full bg-[#1a0b36]/60 border border-violet-500/20 rounded-[2rem] p-8 relative overflow-hidden group shadow-2xl transition-all duration-500",
-          isFullscreen ? "h-screen fixed inset-0 z-[150] rounded-none border-none bg-[#09090b] flex flex-col items-center justify-center p-12 md:p-24" : "relative"
+          isFullscreen ? "h-screen fixed inset-0 z-[150] rounded-none border-none bg-background flex flex-col items-center justify-center p-12 md:p-24" : "relative"
         )}
       >
         {/* Background Glows for Fullscreen */}

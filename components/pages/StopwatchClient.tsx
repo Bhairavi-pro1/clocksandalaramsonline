@@ -183,14 +183,14 @@ export default function StopwatchClient() {
                           {/* Circle Remove Button - Always Visible */}
                           <button 
                             onClick={(e) => removeSession(e, session.id)}
-                            className="w-10 h-10 rounded-full bg-white/5 hover:bg-danger/20 flex items-center justify-center border border-white/10 hover:border-danger/30 transition-all z-20"
+                            className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-danger/10 dark:hover:bg-danger/20 flex items-center justify-center border border-slate-200 dark:border-white/10 hover:border-danger/30 transition-all z-20"
                             title="Remove session"
                           >
-                            <X className="w-5 h-5 text-white/40 group-hover:text-danger" />
+                            <X className="w-5 h-5 text-slate-400 dark:text-white/40 group-hover:text-danger" />
                           </button>
 
-                          <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-primary group-hover:border-primary/50 transition-all">
-                             <Clock className="w-5 h-5 text-white/50 group-hover:text-white" />
+                          <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center border border-slate-200 dark:border-white/10 group-hover:bg-primary group-hover:border-primary/50 transition-all">
+                             <Clock className="w-5 h-5 text-slate-500 dark:text-white/50 group-hover:text-white" />
                           </div>
                         </div>
                       </div>
@@ -226,13 +226,13 @@ export default function StopwatchClient() {
                         className="group flex justify-between items-center p-5 bg-white/5 hover:bg-primary/10 rounded-2xl border border-white/5 hover:border-primary/20 transition-all animate-in slide-in-from-left-3 duration-300"
                       >
                         <div className="flex flex-col">
-                          <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Lap {index + 1}</span>
+                          <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Lap {laps.length - index}</span>
                           <span className="font-mono font-bold text-xl text-white tabular-nums">{formatTime(lTime)}</span>
                         </div>
                         <div className="text-right">
                           <span className="text-[10px] text-white/40 block uppercase tracking-tighter mb-1">Difference</span>
                           <span className="text-xs font-bold text-white/60">
-                             {index > 0 ? `+${formatTime(lTime - laps[index - 1])}` : '---'}
+                             {index < laps.length - 1 ? `+${formatTime(lTime - laps[index + 1])}` : formatTime(lTime)}
                           </span>
                         </div>
                       </div>

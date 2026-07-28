@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { 
   ArrowRight, 
   Info, 
@@ -12,7 +12,7 @@ import {
   History 
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { DSTChange } from '@/lib/dst'
+import { DSTChange, getUpcomingDSTChanges } from '@/lib/dst'
 import AdBanner from '../ui/AdBanner'
 
 interface Props {
@@ -21,8 +21,11 @@ interface Props {
 
 export default function DstTrackerClient({ initialChanges }: Props) {
   const [searchTerm, setSearchTerm] = useState('')
+  const [allChanges, setAllChanges] = useState<DSTChange[]>(initialChanges)
 
-  const allChanges = initialChanges
+  useEffect(() => {
+    setAllChanges(getUpcomingDSTChanges())
+  }, [])
 
   const filteredChanges = useMemo(() => {
     if (!searchTerm) return allChanges
@@ -49,7 +52,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
   return (
     <div className="w-full max-w-6xl mx-auto space-y-16">
       {/* Hero Summary Section */}
-      <div className="relative p-10 md:p-16 rounded-[3rem] bg-gradient-to-br from-[#1a0b36] via-[#120227] to-black border border-white/10 overflow-hidden shadow-2xl">
+      <div className="relative p-10 md:p-16 rounded-[3rem] bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a0b36] dark:via-[#120227] dark:to-black border border-slate-200 dark:border-white/10 overflow-hidden shadow-2xl">
          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] -mr-32 -mt-32" />
          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] -ml-20 -mb-20" />
          
@@ -85,18 +88,18 @@ export default function DstTrackerClient({ initialChanges }: Props) {
             {/* Filter Search Bar */}
             <div className="relative max-w-2xl mx-auto w-full group">
                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity" />
-               <div className="relative flex items-center bg-white/5 border border-white/10 rounded-2xl px-6 py-4 backdrop-blur-xl focus-within:border-primary/50 transition-all">
-                  <Search className="w-5 h-5 text-white/20 mr-4" />
+               <div className="relative flex items-center bg-slate-200/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-6 py-4 backdrop-blur-xl focus-within:border-primary/50 transition-all">
+                  <Search className="w-5 h-5 text-slate-400 dark:text-white/20 mr-4" />
                   <input 
                     type="text"
                     placeholder="Search by country or city name..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="flex-1 bg-transparent border-none outline-none text-white font-bold placeholder:text-white/20"
+                    className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-white font-bold placeholder:text-slate-400 dark:placeholder:text-white/20"
                   />
                   {searchTerm && (
-                    <button onClick={() => setSearchTerm('')} className="p-1 hover:bg-white/10 rounded-full transition-colors">
-                      <X className="w-4 h-4 text-white/40" />
+                    <button onClick={() => setSearchTerm('')} className="p-1 hover:bg-slate-300/50 dark:hover:bg-white/10 rounded-full transition-colors">
+                      <X className="w-4 h-4 text-slate-400 dark:text-white/40" />
                     </button>
                   )}
                </div>

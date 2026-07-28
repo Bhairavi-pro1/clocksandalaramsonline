@@ -33,8 +33,30 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable} ${orbitron.variable} dark`}>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable} ${orbitron.variable} dark`} suppressHydrationWarning>
       <head>
+        <script
+          id="theme-initializer"
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var store = localStorage.getItem('clocks-and-alarms-storage');
+                var theme = 'dark';
+                if (store) {
+                  var parsed = JSON.parse(store);
+                  if (parsed && parsed.state && parsed.state.theme) {
+                    theme = parsed.state.theme;
+                  }
+                }
+                if (theme === 'light') {
+                  document.documentElement.classList.remove('dark');
+                } else {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch (e) {}
+            `
+          }}
+        />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />

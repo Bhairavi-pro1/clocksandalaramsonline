@@ -24,10 +24,10 @@ export default function CityClockDisplay({ name, timezone, lat, lon }: CityClock
       setNow(DateTime.now().setZone(timezone))
     }, 1000)
     
-    // Fetch weather once from MET Norway (Commercial Use allowed, Open Data under CC BY 4.0)
+    // Fetch weather once from MET Norway via our server proxy to avoid CORS and User-Agent blocks
     const fetchWeather = async () => {
       try {
-        const res = await fetch(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`)
+        const res = await fetch(`/api/weather?lat=${lat}&lon=${lon}`)
         if (!res.ok) return // Silently fail if rate-limited or invalid
         const data = await res.json()
         const currentDetails = data.properties?.timeseries?.[0]?.data?.instant?.details

@@ -66,7 +66,7 @@ export default function MainClockCard({
       ref={cardRef}
       className={cn(
         "relative w-full rounded-[2.5rem] bg-card border border-card-border/40 p-6 md:p-10 xl:p-12 shadow-2xl backdrop-blur-xl group overflow-hidden transition-all duration-500 flex flex-col items-center",
-        isFullscreen ? "h-screen justify-between rounded-none border-none py-20 px-12 bg-[#09090b]" : "max-w-7xl mx-auto min-h-[380px] justify-center"
+        isFullscreen ? "h-screen justify-between rounded-none border-none py-20 px-12 bg-background" : "max-w-7xl mx-auto min-h-[380px] justify-center"
       )}
     >
       {/* Decorative background glow */}

@@ -17,7 +17,9 @@ import {
   Users,
   ChefHat,
   PartyPopper,
-  BookOpen
+  BookOpen,
+  Sun,
+  Moon
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useStore } from '@/hooks/useStore'
@@ -54,7 +56,7 @@ export default function Header() {
   const router = useRouter()
   const pathname = usePathname()
 
-  const { is24Hour, toggleTimeFormat } = useStore()
+  const { is24Hour, toggleTimeFormat, theme, toggleTheme } = useStore()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -110,7 +112,7 @@ export default function Header() {
               <img 
                 src="/assets/clock_site_logo.png" 
                 alt="Clocks and Alarms Online Logo" 
-                className="w-full h-full object-contain filter invert brightness-200 transition-all duration-500 group-hover:brightness-250 animate-pulse"
+                className="w-full h-full object-contain dark:invert dark:brightness-200 transition-all duration-500 group-hover:brightness-110 dark:group-hover:brightness-250 animate-pulse"
               />
             </div>
             <div className="flex flex-col">
@@ -220,6 +222,16 @@ export default function Header() {
 
           {/* Right: CTA & Mobile Toggle */}
           <div className="flex items-center gap-6">
+            {/* Theme Toggle (Desktop) */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="hidden md:flex items-center justify-center p-3 w-10 h-10 bg-white/5 dark:bg-white/5 text-white/70 hover:text-white rounded-full border border-white/10 hover:bg-white/10 transition-all cursor-pointer active:scale-95"
+              aria-label="Toggle theme"
+            >
+              {mounted && theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+            </button>
+
             <Link 
               href="/world-clock" 
               className="hidden md:flex items-center gap-3 bg-gradient-to-r from-primary via-accent to-pink-500 text-white px-8 py-3.5 rounded-full font-black uppercase tracking-widest text-[11px] hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20 border border-white/10"
@@ -323,31 +335,61 @@ export default function Header() {
             {/* Settings in Mobile */}
             <div className="space-y-4">
               <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Settings</span>
-              <div className="p-6 rounded-[2rem] bg-white/5 border border-white/5 space-y-4">
-                <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Time Format Preference</div>
-                <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
-                  <button
-                    onClick={() => is24Hour && toggleTimeFormat()}
-                    className={cn(
-                      "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
-                      mounted && !is24Hour 
-                        ? "bg-primary text-white shadow-md shadow-primary/20" 
-                        : "bg-transparent text-white/50 hover:text-white"
-                    )}
-                  >
-                    12-Hour
-                  </button>
-                  <button
-                    onClick={() => !is24Hour && toggleTimeFormat()}
-                    className={cn(
-                      "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
-                      mounted && is24Hour 
-                        ? "bg-primary text-white shadow-md shadow-primary/20" 
-                        : "bg-transparent text-white/50 hover:text-white"
-                    )}
-                  >
-                    24-Hour
-                  </button>
+              <div className="p-6 rounded-[2rem] bg-white/5 border border-white/5 space-y-6">
+                <div className="space-y-3">
+                  <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Time Format Preference</div>
+                  <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
+                    <button
+                      onClick={() => is24Hour && toggleTimeFormat()}
+                      className={cn(
+                        "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
+                        mounted && !is24Hour 
+                          ? "bg-primary text-white shadow-md shadow-primary/20" 
+                          : "bg-transparent text-white/50 hover:text-white"
+                      )}
+                    >
+                      12-Hour
+                    </button>
+                    <button
+                      onClick={() => !is24Hour && toggleTimeFormat()}
+                      className={cn(
+                        "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
+                        mounted && is24Hour 
+                          ? "bg-primary text-white shadow-md shadow-primary/20" 
+                          : "bg-transparent text-white/50 hover:text-white"
+                      )}
+                    >
+                      24-Hour
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Theme Preference</div>
+                  <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
+                    <button
+                      onClick={() => theme !== 'light' && toggleTheme()}
+                      className={cn(
+                        "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-2",
+                        mounted && theme === 'light' 
+                          ? "bg-primary text-white shadow-md shadow-primary/20" 
+                          : "bg-transparent text-white/50 hover:text-white"
+                      )}
+                    >
+                      <Sun size={12} /> Light
+                    </button>
+                    <button
+                      onClick={() => theme !== 'dark' && toggleTheme()}
+                      className={cn(
+                        "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-2",
+                        mounted && theme === 'dark' 
+                          ? "bg-primary text-white shadow-md shadow-primary/20" 
+                          : "bg-transparent text-white/50 hover:text-white"
+                      )}
+                    >
+                      <Moon size={12} /> Dark
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

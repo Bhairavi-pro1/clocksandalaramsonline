@@ -17,7 +17,9 @@ import {
   Share2,
   Thermometer,
   PartyPopper,
-  BookOpen
+  BookOpen,
+  Sun,
+  Moon
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useStore } from '@/hooks/useStore'
@@ -39,7 +41,7 @@ export default function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
-  const { is24Hour, toggleTimeFormat } = useStore()
+  const { is24Hour, toggleTimeFormat, theme, toggleTheme } = useStore()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function Sidebar() {
           <img 
             src="/assets/clock_site_logo.png" 
             alt="Logo" 
-            className="w-full h-full object-contain filter invert brightness-200 animate-pulse"
+            className="w-full h-full object-contain dark:invert dark:brightness-200 animate-pulse"
           />
         </div>
         <div className="flex flex-col">
@@ -108,6 +110,8 @@ export default function Sidebar() {
       {/* Settings / Format Toggle */}
       <div className="px-8 pt-4 pb-8 border-t border-white/5 mt-auto space-y-4">
         <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] block">Settings</span>
+        
+        {/* Time Format */}
         <div className="space-y-3">
           <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Time Format</div>
           <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
@@ -137,6 +141,37 @@ export default function Sidebar() {
             </button>
           </div>
         </div>
+
+        {/* Theme Preference */}
+        <div className="space-y-3">
+          <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Theme</div>
+          <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
+            <button
+              type="button"
+              onClick={() => theme !== 'light' && toggleTheme()}
+              className={cn(
+                "flex-1 text-center py-2 text-[10px] font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5",
+                mounted && theme === 'light' 
+                  ? "bg-primary text-white shadow-md shadow-primary/20" 
+                  : "bg-transparent text-white/50 hover:text-white"
+              )}
+            >
+              <Sun size={10} /> Light
+            </button>
+            <button
+              type="button"
+              onClick={() => theme !== 'dark' && toggleTheme()}
+              className={cn(
+                "flex-1 text-center py-2 text-[10px] font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5",
+                mounted && theme === 'dark' 
+                  ? "bg-primary text-white shadow-md shadow-primary/20" 
+                  : "bg-transparent text-white/50 hover:text-white"
+              )}
+            >
+              <Moon size={10} /> Dark
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -154,7 +189,7 @@ export default function Sidebar() {
             <img 
               src="/assets/clock_site_logo.png" 
               alt="Logo" 
-              className="w-full h-full object-contain filter invert brightness-200 transition-all duration-500 group-hover:brightness-250 animate-pulse"
+              className="w-full h-full object-contain dark:invert dark:brightness-200 transition-all duration-500 group-hover:brightness-110 dark:group-hover:brightness-250 animate-pulse"
             />
           </div>
           <div className="flex flex-col">

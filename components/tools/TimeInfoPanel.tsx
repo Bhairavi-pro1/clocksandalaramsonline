@@ -90,11 +90,11 @@ export default function TimeInfoPanel({ timezone, cityName, lat, lon }: TimeInfo
     setLocalTzShort(localAcronym || stripGmt(localTime.offsetNameShort || '', 'Local'))
     setTargetTzShort(targetAcronym || stripGmt(targetTime.offsetNameShort || '', 'Selected'))
     
-    // Fetch extra weather details if lat/lon provided
+    // Fetch extra weather details if lat/lon provided via our server proxy to avoid CORS and User-Agent blocks
     if (lat !== undefined && lon !== undefined) {
       const fetchWeather = async () => {
         try {
-          const res = await fetch(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`)
+          const res = await fetch(`/api/weather?lat=${lat}&lon=${lon}`)
           if (!res.ok) return
           const data = await res.json()
           const currentDetails = data.properties?.timeseries?.[0]?.data?.instant?.details

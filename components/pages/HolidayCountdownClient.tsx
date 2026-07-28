@@ -88,7 +88,7 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
           onMouseMove={handleMouseMove}
           className={cn(
             "bg-card border border-card-border/60 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group shadow-2xl transition-all duration-700",
-            isFullscreen ? "fixed inset-0 z-[100] rounded-none border-none bg-[#05010a] flex flex-col items-center justify-center pointer-events-auto" : "relative min-h-[400px]"
+            isFullscreen ? "fixed inset-0 z-[100] rounded-none border-none bg-background flex flex-col items-center justify-center pointer-events-auto" : "relative min-h-[400px]"
           )}
         >
           {/* Background Glows (Always present, but subtle) */}

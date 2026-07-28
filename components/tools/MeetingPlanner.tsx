@@ -183,31 +183,31 @@ export default function MeetingPlanner() {
                     type="date" 
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full bg-[#1a0b36]/40 border border-white/10 rounded-2xl px-5 py-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer hover:bg-white/10 [color-scheme:dark]"
+                    className="w-full bg-slate-100 dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm font-bold text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer hover:bg-slate-200/50 dark:hover:bg-white/10 dark:[color-scheme:dark]"
                   />
                 </div>
               </div>
 
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60 ml-1">Set Time</label>
-                <div className="flex bg-[#1a0b36]/40 border border-white/10 rounded-2xl p-1.5 gap-2">
+                <div className="flex bg-slate-100 dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/10 rounded-2xl p-1.5 gap-2">
                   <div className="relative group">
                     <select 
                       value={inputHour}
                       onChange={(e) => setInputHour(e.target.value)}
-                      className="bg-transparent text-xl font-bold text-white px-3 py-2 focus:outline-none appearance-none cursor-pointer"
+                      className="bg-transparent text-xl font-bold text-slate-800 dark:text-white px-3 py-2 focus:outline-none appearance-none cursor-pointer"
                     >
-                      {HOURS.map(h => <option key={h} value={h} className="bg-[#1a0b36]">{h}</option>)}
+                      {HOURS.map(h => <option key={h} value={h} className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">{h}</option>)}
                     </select>
                   </div>
-                  <span className="text-xl font-bold text-white/40 self-center">:</span>
+                  <span className="text-xl font-bold text-slate-800/40 dark:text-white/40 self-center">:</span>
                   <div className="relative group">
                     <select 
                       value={inputMinute}
                       onChange={(e) => setInputMinute(e.target.value)}
-                      className="bg-transparent text-xl font-bold text-white px-3 py-2 focus:outline-none appearance-none cursor-pointer"
+                      className="bg-transparent text-xl font-bold text-slate-800 dark:text-white px-3 py-2 focus:outline-none appearance-none cursor-pointer"
                     >
-                      {MINUTES.map(m => <option key={m} value={m} className="bg-[#1a0b36]">{m}</option>)}
+                      {MINUTES.map(m => <option key={m} value={m} className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">{m}</option>)}
                     </select>
                   </div>
                   <div className="relative group">
@@ -216,7 +216,7 @@ export default function MeetingPlanner() {
                       onChange={(e) => setInputPeriod(e.target.value)}
                       className="bg-primary/20 text-primary text-sm font-black px-4 py-2 rounded-xl focus:outline-none appearance-none cursor-pointer hover:bg-primary/30 transition-colors"
                     >
-                      {PERIODS.map(p => <option key={p} value={p} className="bg-[#1a0b36]">{p}</option>)}
+                      {PERIODS.map(p => <option key={p} value={p} className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">{p}</option>)}
                     </select>
                   </div>
                 </div>
@@ -264,7 +264,7 @@ export default function MeetingPlanner() {
           {/* Results Grid - Always shown now that there's always an input time */}
           <div className="mt-16 overflow-hidden">
             <div className="bg-gradient-to-br from-white/10 to-transparent p-1 rounded-[2.5rem] border border-white/10 animate-in fade-in slide-in-from-bottom-5 duration-700">
-              <div className="bg-slate-900/40 backdrop-blur-3xl rounded-[2.4rem] p-8 md:p-10">
+              <div className="bg-white/5 dark:bg-slate-900/40 backdrop-blur-3xl rounded-[2.4rem] p-8 md:p-10">
                   <div className="flex flex-col gap-10">
                     <div className="flex items-center gap-6">
                       <div className="px-4 py-2 bg-primary/20 text-primary text-[11px] font-black rounded-full uppercase tracking-[0.2em] border border-primary/20 shadow-sm">

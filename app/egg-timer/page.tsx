@@ -94,13 +94,13 @@ export default function EggTimerPage() {
 
           <section className="mt-16 max-w-4xl mx-auto space-y-16">
             <div className="space-y-6">
-              <h2 className="text-3xl font-black text-white">The Ultimate Egg Boiling Times Chart</h2>
-              <p className="text-white/60 leading-relaxed text-lg">
+              <h2 className="text-3xl font-black text-slate-800 dark:text-white">The Ultimate Egg Boiling Times Chart</h2>
+              <p className="text-slate-600 dark:text-white/60 leading-relaxed text-lg">
                 Whether you're making gooey ramen eggs or firm eggs for a salad, keeping track of exactly how long to boil your eggs is crucial. Refer to our reference chart below based on standard large eggs starting in boiling water.
               </p>
               
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse bg-white/5 rounded-2xl overflow-hidden shadow-2xl">
+                <table className="w-full text-left border-collapse bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl">
                   <thead>
                     <tr className="bg-primary/20 text-primary border-b border-primary/20">
                       <th className="p-5 font-black uppercase text-sm tracking-wider">Egg Size</th>
@@ -109,21 +109,21 @@ export default function EggTimerPage() {
                       <th className="p-5 font-black uppercase text-sm tracking-wider">Hard Boiled</th>
                     </tr>
                   </thead>
-                  <tbody className="text-white/80">
-                    <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="p-5 font-bold">Small (S)</td>
+                  <tbody className="text-slate-700 dark:text-white/80">
+                    <tr className="border-b border-slate-200 dark:border-white/5 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors">
+                      <td className="p-5 font-bold text-slate-800 dark:text-white">Small (S)</td>
                       <td className="p-5">3-4 minutes</td>
                       <td className="p-5">5-6 minutes</td>
                       <td className="p-5">8-9 minutes</td>
                     </tr>
-                    <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="p-5 font-bold text-white">Large (L) - Standard</td>
+                    <tr className="border-b border-slate-200 dark:border-white/5 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors">
+                      <td className="p-5 font-bold text-slate-800 dark:text-white">Large (L) - Standard</td>
                       <td className="p-5">5-6 minutes</td>
                       <td className="p-5">7-8 minutes</td>
                       <td className="p-5">10-12 minutes</td>
                     </tr>
-                    <tr className="hover:bg-white/5 transition-colors">
-                      <td className="p-5 font-bold">Extra Large (XL)</td>
+                    <tr className="hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors">
+                      <td className="p-5 font-bold text-slate-800 dark:text-white">Extra Large (XL)</td>
                       <td className="p-5">6-7 minutes</td>
                       <td className="p-5">8-9 minutes</td>
                       <td className="p-5">12-14 minutes</td>

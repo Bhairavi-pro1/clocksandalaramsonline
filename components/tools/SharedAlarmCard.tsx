@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { SharedAlarm, SharedAlarmResponse, deleteSharedAlarm } from '@/lib/sharedAlarmLogic'
 import { db } from '@/lib/firebase'
 import { collection, doc, onSnapshot } from 'firebase/firestore'
+import { useStore } from '@/hooks/useStore'
 
 interface SharedAlarmCardProps {
   alarm: SharedAlarm
@@ -15,6 +16,12 @@ interface SharedAlarmCardProps {
 }
 
 export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFromUI, onAlarmRinging }: SharedAlarmCardProps) {
+  const is24Hour = useStore((state) => state.is24Hour)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const [responses, setResponses] = useState<SharedAlarmResponse[]>([])
   const [copying, setCopying] = useState(false)
   const [currentAlarm, setCurrentAlarm] = useState<SharedAlarm>(alarm)
@@ -110,7 +117,12 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
   }
 
   const alarmDate = new Date(currentAlarm.alarmDateTime);
-  const timeString = alarmDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const use24 = mounted && is24Hour;
+  const timeString = alarmDate.toLocaleTimeString([], { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: !use24
+  });
   const dateString = alarmDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
 
   // Calculate Badge text

@@ -70,7 +70,7 @@ export default function AlarmCard({ id, label, time, isActive, onToggle, onRemov
          <div className="flex items-center gap-3">
             <div className={cn(
                "w-3 h-3 rounded-full animate-pulse",
-               isActive ? "bg-primary" : "bg-white/10"
+               isActive ? "bg-primary" : "bg-slate-300 dark:bg-white/20"
             )} />
             <span className="text-[10px] font-black uppercase tracking-widest text-white/30">
                {isActive ? 'Active' : 'Disabled'}
@@ -81,7 +81,7 @@ export default function AlarmCard({ id, label, time, isActive, onToggle, onRemov
             onClick={() => onToggle(id)}
             className={cn(
                "w-14 h-7 rounded-full transition-all relative",
-               isActive ? "bg-primary" : "bg-white/10"
+               isActive ? "bg-primary" : "bg-slate-200 dark:bg-white/10"
             )}
          >
             <div className={cn(
