@@ -85,29 +85,29 @@ export default function BookmarkModal() {
         onClick={handleClose}
       />
       
-      <div className="relative w-full max-w-md bg-[#1a0b36] border border-primary/30 rounded-[3rem] shadow-[0_0_100px_rgba(124,58,237,0.3)] overflow-hidden animate-in zoom-in-95 duration-300 ring-2 ring-primary/20">
+      <div className="relative w-full max-w-md bg-white dark:bg-[#1a0b36] border border-slate-200 dark:border-primary/30 rounded-[3rem] shadow-[0_0_100px_rgba(124,58,237,0.15)] dark:shadow-[0_0_100px_rgba(124,58,237,0.3)] overflow-hidden animate-in zoom-in-95 duration-300 ring-2 ring-slate-100 dark:ring-primary/20">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
         
         <div className="p-8 sm:p-10 relative z-10 flex flex-col items-center text-center">
           {/* Close icon button top-right */}
           <button 
             onClick={handleClose}
-            className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors cursor-pointer"
+            className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 dark:text-white/50 dark:hover:text-white transition-colors cursor-pointer"
           >
             <X size={20} />
           </button>
 
           <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6 border border-primary/30 shadow-2xl shadow-primary/40 animate-pulse">
-            <Star size={38} className="text-white fill-white animate-bounce" />
+            <Star size={38} className="text-primary fill-primary animate-bounce" />
           </div>
 
           {step === 'intro' ? (
             <>
               <div className="space-y-3 mb-8">
-                <h2 className="text-3xl font-black text-white tracking-tight uppercase italic underline decoration-primary decoration-4 underline-offset-8">
+                <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight uppercase italic underline decoration-primary decoration-4 underline-offset-8">
                   Need these tools later?
                 </h2>
-                <p className="text-white/70 text-sm leading-relaxed mt-4">
+                <p className="text-slate-600 dark:text-white/70 text-sm leading-relaxed mt-4">
                   Save this page to your bookmarks for instant, one-click access to all our clocks, alarms, timers, and stopwatches next time!
                 </p>
               </div>
@@ -115,14 +115,14 @@ export default function BookmarkModal() {
               <div className="w-full flex flex-col gap-3">
                 <button 
                   onClick={() => setStep('instructions')}
-                  className="w-full bg-white text-primary font-black py-4 rounded-[1.2rem] shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 active:scale-95 group cursor-pointer"
+                  className="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-[1.2rem] shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 active:scale-95 group cursor-pointer"
                 >
-                  <Bookmark size={20} className="fill-current text-primary" />
+                  <Bookmark size={20} className="fill-current text-white" />
                   BOOKMARK THIS PAGE
                 </button>
                 <button 
                   onClick={handleClose}
-                  className="w-full text-white/40 hover:text-white/60 font-bold py-2 text-sm tracking-wider uppercase transition-colors cursor-pointer"
+                  className="w-full text-slate-400 hover:text-slate-600 dark:text-white/40 dark:hover:text-white/60 font-bold py-2 text-sm tracking-wider uppercase transition-colors cursor-pointer"
                 >
                   Maybe Later
                 </button>
@@ -131,54 +131,54 @@ export default function BookmarkModal() {
           ) : (
             <>
               <div className="space-y-3 mb-6 w-full">
-                <h2 className="text-2xl font-black text-white tracking-tight uppercase italic underline decoration-primary decoration-4 underline-offset-8">
+                <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase italic underline decoration-primary decoration-4 underline-offset-8">
                   How to Bookmark
                 </h2>
                 
                 {platform === 'mac' && (
                   <div className="py-6 px-4 bg-primary/10 border border-primary/20 rounded-[2rem] my-6 space-y-3">
-                    <p className="text-white/90 font-medium text-sm">Press the keyboard shortcut:</p>
+                    <p className="text-slate-800 dark:text-white/90 font-medium text-sm">Press the keyboard shortcut:</p>
                     <div className="flex justify-center items-center gap-2">
-                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-white font-mono font-bold text-lg border border-white/20">⌘ Cmd</kbd>
-                      <span className="text-white/60 text-2xl font-bold">+</span>
-                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-white font-mono font-bold text-lg border border-white/20">D</kbd>
+                      <kbd className="px-3 py-2 bg-slate-100 dark:bg-white/10 rounded-lg text-slate-800 dark:text-white font-mono font-bold text-lg border border-slate-200 dark:border-white/20">⌘ Cmd</kbd>
+                      <span className="text-slate-400 dark:text-white/60 text-2xl font-bold">+</span>
+                      <kbd className="px-3 py-2 bg-slate-100 dark:bg-white/10 rounded-lg text-slate-800 dark:text-white font-mono font-bold text-lg border border-slate-200 dark:border-white/20">D</kbd>
                     </div>
                   </div>
                 )}
 
                 {platform === 'windows' && (
                   <div className="py-6 px-4 bg-primary/10 border border-primary/20 rounded-[2rem] my-6 space-y-3">
-                    <p className="text-white/90 font-medium text-sm">Press the keyboard shortcut:</p>
+                    <p className="text-slate-800 dark:text-white/90 font-medium text-sm">Press the keyboard shortcut:</p>
                     <div className="flex justify-center items-center gap-2">
-                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-white font-mono font-bold text-lg border border-white/20">Ctrl</kbd>
-                      <span className="text-white/60 text-2xl font-bold">+</span>
-                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-white font-mono font-bold text-lg border border-white/20">D</kbd>
+                      <kbd className="px-3 py-2 bg-slate-100 dark:bg-white/10 rounded-lg text-slate-800 dark:text-white font-mono font-bold text-lg border border-slate-200 dark:border-white/20">Ctrl</kbd>
+                      <span className="text-slate-400 dark:text-white/60 text-2xl font-bold">+</span>
+                      <kbd className="px-3 py-2 bg-slate-100 dark:bg-white/10 rounded-lg text-slate-800 dark:text-white font-mono font-bold text-lg border border-slate-200 dark:border-white/20">D</kbd>
                     </div>
                   </div>
                 )}
 
                 {platform === 'mobile' && (
                   <div className="py-4 px-4 bg-primary/10 border border-primary/20 rounded-[2rem] my-6 text-left">
-                    <p className="text-white/90 font-semibold text-xs text-center uppercase tracking-wider mb-2">Instructions:</p>
-                    <ol className="text-white/70 text-xs space-y-1.5 list-decimal list-inside font-medium">
-                      <li>Tap the menu button (<span className="font-bold">⋮</span> or Safari share icon <span className="font-bold">⎙</span>)</li>
-                      <li>Select <span className="text-white font-semibold">"Add to Bookmarks"</span> or <span className="text-white font-semibold">"Add to Home Screen"</span></li>
+                    <p className="text-slate-800 dark:text-white/90 font-semibold text-xs text-center uppercase tracking-wider mb-2">Instructions:</p>
+                    <ol className="text-slate-600 dark:text-white/70 text-xs space-y-1.5 list-decimal list-inside font-medium">
+                      <li>Tap the menu button (<span className="font-bold text-slate-800 dark:text-white">⋮</span> or Safari share icon <span className="font-bold text-slate-800 dark:text-white">⎙</span>)</li>
+                      <li>Select <span className="text-slate-800 dark:text-white font-semibold">"Add to Bookmarks"</span> or <span className="text-slate-800 dark:text-white font-semibold">"Add to Home Screen"</span></li>
                     </ol>
                   </div>
                 )}
 
                 <div className="space-y-2 text-left w-full mt-4">
-                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-wider">Or copy the bookmark link:</p>
-                  <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl p-2.5">
-                    <span className="text-white/50 text-xs font-mono truncate flex-1 select-all">
+                  <p className="text-slate-400 dark:text-white/40 text-[10px] font-bold uppercase tracking-wider">Or copy the bookmark link:</p>
+                  <div className="flex items-center gap-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-2.5">
+                    <span className="text-slate-500 dark:text-white/50 text-xs font-mono truncate flex-1 select-all">
                       {typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}?ref=bookmark` : ''}
                     </span>
                     <button 
                       onClick={handleCopyLink}
-                      className="p-1.5 hover:bg-white/10 rounded-lg text-white/70 hover:text-white transition-colors cursor-pointer"
+                      className="p-1.5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-500 hover:text-slate-800 dark:text-white/70 dark:hover:text-white transition-colors cursor-pointer"
                       title="Copy URL to clipboard"
                     >
-                      {copied ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
+                      {copied ? <Check size={16} className="text-green-500 dark:text-green-400" /> : <Copy size={16} />}
                     </button>
                   </div>
                 </div>
@@ -187,7 +187,7 @@ export default function BookmarkModal() {
               <div className="w-full flex flex-col gap-3">
                 <button 
                   onClick={handleConfirmBookmark}
-                  className="w-full bg-white text-primary font-black py-4 rounded-[1.2rem] shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                  className="w-full bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-[1.2rem] shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                 >
                   <Check size={20} />
                   DONE, BOOKMARKED!
