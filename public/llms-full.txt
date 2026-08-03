@@ -1,0 +1,114 @@
+# Clocks and Alarms Online — Full Technical Specification
+
+This document provides a comprehensive technical overview and feature description of all nine timekeeping tools available on [Clocks and Alarms Online](https://clocksandalarmsonline.com). It is designed to help AI agents, crawlers, and search engines understand the exact capabilities, use cases, and technical details of our high-precision suite.
+
+---
+
+## Core Architecture and Accuracy
+All tools on Clocks and Alarms Online are built using a high-precision architecture:
+- **Atomic Time Sync:** Clocks and countdowns utilize high-frequency system hardware performance ticks synchronized with global atomic time servers. This prevents local CPU drift and ensures millisecond accuracy.
+- **Client-Side Persistence:** Alarm settings, time zone selections, and stopwatch laps are preserved locally using browser local storage, ensuring configuration is not lost on page refreshes.
+- **Offline Capability:** Once loaded, core timekeeping features run entirely client-side, making them resilient to intermittent network drops.
+- **No Install Required:** Responsive, premium web apps designed for desktop, tablet, and mobile browsers.
+
+---
+
+## Technical Specifications of the 9 Tools
+
+### 1. Online Alarm Clock
+Configure, schedule, and personalize multiple alarms.
+- **URL:** [https://clocksandalarmsonline.com/alarm-clock](https://clocksandalarmsonline.com/alarm-clock)
+- **Primary Use Case:** Morning wakeups, task reminders, and structured schedule management.
+- **Features:**
+  - **Premium Sound Gallery:** Choose from a wide selection of clear alarm tones (including digital beeps, classic bells, gentle chimes, and retro buzzers).
+  - **Custom Snooze:** Adjust snooze durations (e.g., 5 min, 10 min, 15 min) to fit personal preferences.
+  - **Day-of-Week Scheduling:** Configure alarms to repeat on specific days (e.g., weekdays only, weekends, or specific days of the week).
+  - **Tab Title Countdown:** The browser tab title dynamically updates with a real-time countdown to the next active alarm, allowing users to monitor time without keeping the tab active.
+  - **SEO Minute Landing Pages:** Includes pre-rendered canonical paths for every single minute of the day (e.g., `/alarm-clock/set-alarm-for-7-am` or `/alarm-clock/set-alarm-for-10-30-pm`) to allow users to land directly on their desired alarm setup.
+
+### 2. World Clock
+Track and compare current local times, dates, and offsets globally.
+- **URL:** [https://clocksandalarmsonline.com/world-clock](https://clocksandalarmsonline.com/world-clock)
+- **Primary Use Case:** Global coordination, international business operations, and tracking long-distance family/colleague schedules.
+- **Features:**
+  - **Multi-Clock Dashboard:** Add multiple cities to a single comparative dashboard to view their local times simultaneously.
+  - **Timezone Indicators:** Clearly displays official timezone names, standardized codes (e.g., EST, GMT, CET, IST), and exact GMT offsets.
+  - **Daylight Saving Time (DST) Detection:** Automatically flags whether a city is currently observing DST or standard time.
+  - **Interactive Search:** Autocomplete location-search supporting thousands of major cities worldwide.
+
+### 3. Holiday Countdowns
+High-precision, millisecond-accurate countdown timers to major calendar events.
+- **URL:** [https://clocksandalarmsonline.com/countdown](https://clocksandalarmsonline.com/countdown)
+- **Primary Use Case:** Event countdowns, holiday planning, and anticipation tracking.
+- **Features:**
+  - **Dynamic Geolocation Routing:** Automatically detects the user's country code via Vercel edge headers and redirects them to their localized holiday list (e.g., `/countdown/us` for the USA, `/countdown/in` for India).
+  - **Millisecond Precision:** Custom rendering loops run countdown counters with millisecond precision without degrading browser performance.
+  - **Cinematic Full-Screen Mode:** Designed for public event displays, office screens, or home projection systems.
+  - **Global & Local Events:** Coverage of major international holidays (e.g., Christmas, New Year's Day, Lunar New Year, Halloween) as well as country-specific national, religious, and bank holidays.
+
+### 4. Online Stopwatch
+Millisecond-accurate stopwatch for tracking elapsed time and intervals.
+- **URL:** [https://clocksandalarmsonline.com/stopwatch](https://clocksandalarmsonline.com/stopwatch)
+- **Primary Use Case:** Athletics, speed cubing, cooking times, presentations, and developer testing.
+- **Features:**
+  - **High-Frequency Counters:** Uses browser `requestAnimationFrame` hooks to ensure clock renders match actual monitor refresh rates with sub-millisecond precision.
+  - **Lap & Split Tracking:** Record an unlimited number of lap times during execution.
+  - **Statistical Highlights:** The system automatically highlights the fastest and slowest lap times in real-time.
+  - **Full-Screen Focus:** Cinematic view that hides sidebars and headers for distraction-free tracking.
+
+### 5. Interval Timer
+A dual-phase productivity and exercise timer.
+- **URL:** [https://clocksandalarmsonline.com/timer](https://clocksandalarmsonline.com/timer)
+- **Primary Use Case:** Pomodoro study sessions, HIIT (High-Intensity Interval Training) workouts, work sprints, and meditation intervals.
+- **Features:**
+  - **Flexible Sprints:** Configure distinct durations for work focus, short breaks, and long breaks.
+  - **Visual Progress Ring:** SVG circular indicator that shrinks in real-time as the phase progresses.
+  - **Automatic Transitions:** Smooth, automatic handoff between work and break phases with sound notification indicators.
+
+### 6. World Meeting Planner
+Coordinate meetings across multiple timezone differences.
+- **URL:** [https://clocksandalarmsonline.com/meeting-planner](https://clocksandalarmsonline.com/meeting-planner)
+- **Primary Use Case:** Scheduling webinars, international conference calls, and remote team check-ins.
+- **Features:**
+  - **Side-by-Side Timeline:** Add multiple cities to render their 24-hour timelines side-by-side.
+  - **Color-Coded Suitability:** Timeline blocks are color-coded:
+    - **Green:** Business hours (9:00 AM – 5:00 PM local time).
+    - **Yellow:** Off-hours (6:00 AM – 8:00 AM and 5:00 PM – 10:00 PM).
+    - **Red:** Sleeping hours (10:00 PM – 6:00 AM).
+  - **Synchronization Slider:** Drag the slider to easily identify overlapping green windows where all participants are awake.
+
+### 7. DST Tracker
+Comprehensive guide and countdowns for Daylight Saving Time transitions.
+- **URL:** [https://clocksandalarmsonline.com/dst-tracker](https://clocksandalarmsonline.com/dst-tracker)
+- **Primary Use Case:** Keeping track of seasonal time changes and avoiding calendar confusion.
+- **Features:**
+  - **Future Transition Countdowns:** Real-time countdowns showing exactly when the next "spring forward" or "fall back" transition occurs.
+  - **Global Explanations:** Clean, detailed educational text outlining which regions use DST, which have abolished it, and why.
+  - **Historical & Future Logs:** Detailed schedule data showing transition dates and times for the current and upcoming years.
+
+### 8. Egg Timer
+Specialized kitchen and boiling presets.
+- **URL:** [https://clocksandalarmsonline.com/egg-timer](https://clocksandalarmsonline.com/egg-timer)
+- **Primary Use Case:** Culinary timing, egg boiling, and general kitchen scheduling.
+- **Features:**
+  - **Culinary Presets:** Pre-configured countdown intervals for Soft-Boiled, Medium-Boiled, and Hard-Boiled eggs.
+  - **Customizable Conditions:** Dynamic calculations based on egg size (Medium, Large, Extra Large) and starting temperature (refrigerator cold vs. room temperature) to guarantee perfect boiling results.
+  - **Audible Finish Alarm:** High-decibel audio alarm to alert users immediately on completion.
+
+### 9. Shared Alarm
+Create and distribute alarm configurations via custom URLs.
+- **URL:** [https://clocksandalarmsonline.com/shared-alarm](https://clocksandalarmsonline.com/shared-alarm)
+- **Primary Use Case:** Synchronized wakeups, remote class starts, multi-player games, or group presentation scheduling.
+- **Features:**
+  - **URL Import Schema:** Configure the alarm time, sound, description, and repeat rules, then generate a unique link.
+  - **Instant Import Dashboard:** Anyone loading the shared URL immediately imports the configuration into their local client with zero setup.
+  - **Group Sync:** Ensures multiple remote users are synchronized to trigger their alarms at the exact same moment.
+
+---
+
+## Directory of Secondary Pages
+- **About Us:** [https://clocksandalarmsonline.com/about](https://clocksandalarmsonline.com/about) (Architecture, design system, and accuracy values).
+- **Blog:** [https://clocksandalarmsonline.com/blog](https://clocksandalarmsonline.com/blog) (Guides on time zones, Daylight Saving changes, and productivity habits).
+- **Contact:** [https://clocksandalarmsonline.com/contact](https://clocksandalarmsonline.com/contact) (Feedback and partnerships).
+- **Privacy Policy:** [https://clocksandalarmsonline.com/privacy](https://clocksandalarmsonline.com/privacy) (Data protection protocols).
+- **Terms of Service:** [https://clocksandalarmsonline.com/terms](https://clocksandalarmsonline.com/terms) (Terms of use).

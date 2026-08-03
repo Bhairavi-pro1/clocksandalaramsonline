@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import timerData from '@/data/seo/timers.json'
 import cityData from '@/data/seo/cities.json'
 import holidayData from '@/data/seo/holidays.json'
+import countriesData from '@/data/countries.json'
 import { getAllPosts } from '@/lib/sanity'
 
 // Helper function to generate all 1440 paths from 12:00 AM to 11:59 PM
@@ -81,6 +82,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
+  // Country Countdown Landing Pages
+  const countryCountdownRoutes = countriesData.map((country) => ({
+    url: `${baseUrl}/countdown/${country.code.toLowerCase()}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }))
+
+  // Country-Specific Holiday Countdowns
+  const countryHolidayRoutes: MetadataRoute.Sitemap = []
+  for (const country of countriesData) {
+    for (const holiday of holidayData) {
+      countryHolidayRoutes.push({
+        url: `${baseUrl}/countdown/${country.code.toLowerCase()}/${holiday.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      })
+    }
+  }
+
   // 1440 dynamic alarm paths
   const alarmRoutes = getAlarmPaths().map((route) => ({
     url: `${baseUrl}/alarm-clock/${route}`,
@@ -110,6 +132,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...timerRoutes, 
     ...worldClockRoutes, 
     ...countdownRoutes, 
+    ...countryCountdownRoutes,
+    ...countryHolidayRoutes,
     ...alarmRoutes
   ]
 }

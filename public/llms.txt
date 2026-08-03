@@ -6,7 +6,7 @@
 
 - [Online Alarm Clock](https://clocksandalarmsonline.com/alarm-clock): Configure and customize alarms with multiple sound options, snooze settings, and repeat schedules.
 - [World Clock](https://clocksandalarmsonline.com/world-clock): Track current time, time offsets, and daylight saving schedules across major cities worldwide.
-- [Countdown Timer](https://clocksandalarmsonline.com/countdown): Simple and flexible countdown utility for tracking upcoming deadlines, events, and tasks.
+- [Holiday Countdowns](https://clocksandalarmsonline.com/countdown): Precise, millisecond-accurate countdowns for all major global holidays. Track public, national, and religious holidays globally or by country (e.g. United States, India, United Kingdom) synchronized with global atomic time.
 - [Online Stopwatch](https://clocksandalarmsonline.com/stopwatch): Millisecond-accurate stopwatch featuring lap tracking and clean split-time views.
 - [Interval Timer](https://clocksandalarmsonline.com/timer): Pomodoro-ready timer with interval customization for focus sessions, workouts, and study routines.
 - [World Meeting Planner](https://clocksandalarmsonline.com/meeting-planner): Easy coordination tool to find ideal meeting times across multiple time zones.
