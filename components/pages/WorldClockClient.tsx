@@ -112,7 +112,7 @@ export default function WorldClockClient() {
           Click any world clock card for detailed <span className="text-white/90 font-bold">global timezone information</span>, live weather, and <span className="text-white/90 font-bold">local time differences</span>.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-x-6 gap-y-10 pb-20">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-6 gap-y-4 sm:gap-y-10 pb-20">
           {globalClocks.map((clock, index) => (
             <SmallClockCard 
               key={`${clock.timezone}-${clock.city}-${index}`}

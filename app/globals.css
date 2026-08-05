@@ -58,6 +58,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
   line-height: 1.75;
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -91,6 +92,7 @@ h1, h2, h3, h4, h5, h6 {
 .ad-container-728x90 {
   position: relative;
   width: 728px;
+  max-width: 100%;
   height: 90px;
   margin: 0 auto;
   display: flex;
@@ -128,6 +130,9 @@ h1, h2, h3, h4, h5, h6 {
     width: 160px;
     flex-shrink: 0;
     flex-direction: column;
+    position: sticky;
+    top: 96px;
+    align-self: flex-start;
   }
 }
 
@@ -176,6 +181,7 @@ h1, h2, h3, h4, h5, h6 {
    ========================================== */
 html:not(.dark) {
   /* Dynamic Background and Blur Overrides for Glassmorphic Cards & Dropdowns */
+  .bg-\[\#1a0b2e\]\/20,
   .bg-\[\#1a0b2e\]\/40,
   .bg-\[\#1a0b2e\]\/60,
   .bg-\[\#1a0b36\]\/40,
@@ -216,7 +222,7 @@ html:not(.dark) {
   }
 
   /* Typography color scaling (white text translates to dark slate) */
-  h1, h2, h3, h4, h5, h6, p, span, div, a, label, button, svg, input, select, textarea {
+  h1, h2, h3, h4, h5, h6, p, span, div, a, label, button, svg, input, select, textarea, strong, li, ul, ol, em, blockquote, figcaption {
     &.text-white {
       color: var(--foreground);
     }
@@ -317,5 +323,23 @@ html:not(.dark) {
     }
   }
 }
+
+/* Responsive root font-size to reduce text sizes on mobile screens */
+html {
+  font-size: 13.5px; /* Highly compact mobile typography */
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 14.5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 16px; /* Restore standard base font size for large screens */
+  }
+}
+
 
 

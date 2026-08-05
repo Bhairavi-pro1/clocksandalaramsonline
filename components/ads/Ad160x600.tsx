@@ -39,9 +39,7 @@ export default function Ad160x600() {
 
   return (
     <aside className="ad-column">
-      <div className="ad-sticky">
-        <div className="ad-script-container-160x600" ref={containerRef} />
-      </div>
+      <div className="ad-script-container-160x600" ref={containerRef} />
     </aside>
   )
 }

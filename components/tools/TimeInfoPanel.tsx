@@ -94,7 +94,7 @@ export default function TimeInfoPanel({ timezone, cityName, lat, lon }: TimeInfo
     if (lat !== undefined && lon !== undefined) {
       const fetchWeather = async () => {
         try {
-          const res = await fetch(`/api/weather?lat=${lat}&lon=${lon}`)
+          const res = await fetch(`/api/weather/?lat=${lat}&lon=${lon}`)
           if (!res.ok) return
           const data = await res.json()
           const currentDetails = data.properties?.timeseries?.[0]?.data?.instant?.details

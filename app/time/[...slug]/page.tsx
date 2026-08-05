@@ -103,12 +103,12 @@ export default async function DynamicTimePage({ params, searchParams }: Props) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20">
+    <div className="max-w-7xl mx-auto px-4 py-8 sm:py-16 md:py-20">
       <StructuredData data={schema} />
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <h1 className="text-4xl md:text-5xl font-black text-center mb-16 text-white tracking-tighter animate-in fade-in duration-1000">
+      <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-center mb-6 sm:mb-12 md:mb-16 text-white tracking-tighter animate-in fade-in duration-1000">
         Current Local Time in <span className="text-primary">{cityName}</span>
       </h1>
       

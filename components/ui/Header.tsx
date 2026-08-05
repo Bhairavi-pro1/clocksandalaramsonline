@@ -226,7 +226,7 @@ export default function Header() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="hidden md:flex items-center justify-center p-3 w-10 h-10 bg-white/5 dark:bg-white/5 text-white/70 hover:text-white rounded-full border border-white/10 hover:bg-white/10 transition-all cursor-pointer active:scale-95"
+              className="hidden lg:flex items-center justify-center p-3 w-10 h-10 bg-white/5 dark:bg-white/5 text-white/70 hover:text-white rounded-full border border-white/10 hover:bg-white/10 transition-all cursor-pointer active:scale-95"
               aria-label="Toggle theme"
             >
               {mounted && theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
@@ -234,7 +234,7 @@ export default function Header() {
 
             <Link 
               href="/world-clock" 
-              className="hidden md:flex items-center gap-3 bg-gradient-to-r from-primary via-accent to-pink-500 text-white px-8 py-3.5 rounded-full font-black uppercase tracking-widest text-[11px] hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20 border border-white/10"
+              className="hidden lg:flex items-center gap-3 bg-gradient-to-r from-primary via-accent to-pink-500 text-white px-8 py-3.5 rounded-full font-black uppercase tracking-widest text-[11px] hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20 border border-white/10"
             >
               Get Started Free <Zap size={14} fill="currentColor" className="animate-pulse" />
             </Link>

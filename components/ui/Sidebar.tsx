@@ -179,7 +179,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Top Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-[60] bg-[#0a0118]/80 backdrop-blur-2xl border-b border-white/10 py-3 px-6 shadow-2xl flex items-center justify-between">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-[60] bg-[#0a0118]/80 backdrop-blur-2xl border-b border-white/10 py-3 px-6 shadow-2xl flex items-center justify-between">
         <Link 
           href="/" 
           onClick={() => setIsOpen(false)}
@@ -211,21 +211,21 @@ export default function Sidebar() {
       </div>
 
       {/* Desktop Sidebar (Permanent) */}
-      <aside className="fixed left-0 top-0 h-screen w-72 bg-sidebar/40 backdrop-blur-3xl border-r border-white/5 hidden md:flex flex-col z-50 overflow-y-auto shadow-[20px_0_50px_rgba(0,0,0,0.3)]">
+      <aside className="fixed left-0 top-0 h-screen w-72 bg-sidebar/40 backdrop-blur-3xl border-r border-white/5 hidden lg:flex flex-col z-50 overflow-y-auto shadow-[20px_0_50px_rgba(0,0,0,0.3)]">
         <SidebarContent />
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-background/90 backdrop-blur-md z-[65] md:hidden animate-in fade-in duration-300"
+          className="fixed inset-0 bg-background/90 backdrop-blur-md z-[65] lg:hidden animate-in fade-in duration-300"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Mobile Sidebar (Drawer) */}
       <aside className={cn(
-        "fixed left-0 top-0 h-screen w-80 bg-sidebar/80 backdrop-blur-3xl border-r border-white/10 flex flex-col z-[70] transition-transform duration-500 ease-out md:hidden shadow-2xl overflow-y-auto",
+        "fixed left-0 top-0 h-screen w-80 bg-sidebar/80 backdrop-blur-3xl border-r border-white/10 flex flex-col z-[70] transition-transform duration-500 ease-out lg:hidden shadow-2xl overflow-y-auto",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="flex justify-end p-6">

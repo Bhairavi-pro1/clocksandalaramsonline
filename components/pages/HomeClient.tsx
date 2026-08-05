@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 import Link from 'next/link'
 import { 
   Globe, 
@@ -23,7 +24,8 @@ import {
   CheckCircle,
   HelpCircle,
   ShieldAlert,
-  ArrowUpRight
+  ArrowUpRight,
+  ChevronDown
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
@@ -156,16 +158,19 @@ const faqs = [
 export default function HomeClient({ posts }: { posts: Post[] }) {
   // Slicing to get the latest 3 posts
   const latestPosts = posts?.slice(0, 3) || []
+  const [activeMobileFaq, setActiveMobileFaq] = useState<number | null>(null)
 
   return (
-    <div className="flex flex-col space-y-32 pb-32 w-full overflow-hidden">
+    <div className="flex flex-col space-y-16 md:space-y-32 pb-16 md:pb-32 w-full overflow-hidden">
       
       {/* 🚀 Cinematic Hero Section */}
-      <section className="relative min-h-[80vh] flex flex-col items-center justify-center text-center px-6 pt-28 pb-16">
+      <section className="relative min-h-[60vh] md:min-h-[80vh] flex flex-col items-center justify-center text-center px-6 pt-34 md:pt-36 pb-10 md:pb-16">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/20 blur-[180px] rounded-full animate-pulse duration-[10s]" />
           <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-accent/20 blur-[150px] rounded-full" />
           <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 blur-[140px] rounded-full" />
+          {/* Mask to fade out the glows smoothly at the bottom without sharp edges */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent" />
         </div>
 
         <div className="max-w-5xl space-y-8">
@@ -194,7 +199,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </div>
 
         {/* Dynamic Wave Element */}
-        <div className="mt-20 w-full max-w-6xl mx-auto px-4 opacity-20">
+        <div className="mt-10 md:mt-20 w-full max-w-6xl mx-auto px-4 opacity-20">
            <div className="h-px w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
         </div>
       </section>
@@ -207,7 +212,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           What is Clocks and <span className="text-primary">Alarms Online?</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
           <p>
             Clocks and Alarms Online is a professional, comprehensive web-based platform offering a suite of precision utility tools designed to make time management simple and accessible for everyone. We provide an integrated interface featuring world clocks, stopwatch lap trackers, countdown timers, daylight saving databases, and shared alarm grids.
           </p>
@@ -225,7 +230,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           Why Does This <span className="text-accent">Platform Exist?</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
           <p>
             In our increasingly interconnected remote-work world, timezone synchronization and task execution timing have become absolute necessities. Team members are distributed across multiple continents, daylight saving shifts happen unexpectedly, and task-switching costs are higher than ever. Standard tools are scattered, bloated with advertisements, or lock key features behind subscription walls.
           </p>
@@ -241,7 +246,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         
         <div className="flex flex-col md:flex-row items-end justify-between gap-8">
           <div className="space-y-4 text-left max-w-2xl">
-            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight italic">Our Utility <span className="text-primary not-italic">Features</span></h2>
+            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight italic">Our Utility <span className="text-primary not-italic">Features</span></h2>
             <p className="text-muted/60 font-medium text-lg leading-relaxed">
               Explore our range of high-performance tools, built with zero-drift engines and visually rich interfaces to boost your productivity.
             </p>
@@ -255,7 +260,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               key={tool.title} 
               href={tool.href}
               className={cn(
-                "group p-10 rounded-[3rem] bg-[#1a0b2e]/60 border border-white/5 hover:border-white/20 transition-all duration-700 flex flex-col items-start text-left space-y-8 relative overflow-hidden shadow-2xl hover:-translate-y-2",
+                "group p-5 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-[#1a0b2e]/60 border border-white/5 hover:border-white/20 transition-all duration-700 flex flex-row md:flex-col items-start text-left gap-5 md:gap-0 md:space-y-8 relative overflow-hidden shadow-2xl hover:-translate-y-2",
                 `animate-in fade-in slide-in-from-bottom-${(index % 3 + 1) * 8} duration-1000`
               )}
             >
@@ -264,29 +269,37 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                 tool.color
               )} />
               
-              <div className="flex justify-between items-start w-full">
+              {/* Left column on mobile, top row on desktop */}
+              <div className="flex md:flex-row md:justify-between md:items-start shrink-0 w-auto md:w-full">
                 <div className={cn(
-                  "w-20 h-20 rounded-[2rem] bg-white/5 flex items-center justify-center border border-white/10 transition-all duration-1000 group-hover:scale-110 group-hover:rotate-12 shadow-2xl",
+                  "w-14 h-14 md:w-20 md:h-20 rounded-[1.2rem] md:rounded-[2rem] bg-white/5 flex items-center justify-center border border-white/10 transition-all duration-1000 group-hover:scale-110 group-hover:rotate-12 shadow-2xl",
                   tool.iconColor
                 )}>
-                  <tool.icon size={40} />
+                  <tool.icon className="w-7 h-7 md:w-10 md:h-10" />
                 </div>
                 {tool.badge && (
-                  <span className="px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest shadow-inner">
+                  <span className="hidden md:inline-block px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest shadow-inner">
                     {tool.badge}
                   </span>
                 )}
               </div>
 
-              <div className="space-y-3">
-                <h3 className="text-3xl font-black text-white">{tool.title}</h3>
-                <p className="text-base text-muted/60 font-medium leading-relaxed">
+              {/* Right column on mobile, middle/bottom rows on desktop */}
+              <div className="flex-1 min-w-0 space-y-2 md:space-y-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-xl md:text-3xl font-black text-white">{tool.title}</h3>
+                  {tool.badge && (
+                    <span className="inline-block md:hidden px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[8px] font-black uppercase tracking-widest shadow-inner">
+                      {tool.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs md:text-base text-muted/60 font-medium leading-relaxed line-clamp-2 md:line-clamp-none">
                   {tool.description}
                 </p>
-              </div>
-
-              <div className="pt-6 flex items-center gap-3 text-white font-black uppercase tracking-[0.2em] text-[10px] group-hover:text-primary transition-all">
-                {tool.ctaText} <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+                <div className="pt-2 md:pt-6 flex items-center gap-2 md:gap-3 text-white font-black uppercase tracking-[0.2em] text-[8px] md:text-[10px] group-hover:text-primary transition-all">
+                  {tool.ctaText} <ArrowRight className="w-3 h-3 md:w-3.5 md:h-3.5 group-hover:translate-x-2 transition-transform" />
+                </div>
               </div>
             </Link>
           ))}
@@ -296,14 +309,14 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
       {/* 🚀 Section 4 & 5: Benefits & Supported Devices */}
       <section className="max-w-6xl mx-auto px-6 space-y-16">
         {/* Benefits Card */}
-        <div id="benefits" className="p-12 bg-white/[0.02] border border-white/5 rounded-[3rem] space-y-8 flex flex-col hover:border-primary/25 transition-all duration-500 shadow-2xl">
+        <div id="benefits" className="p-0 md:p-12 bg-transparent md:bg-white/[0.02] border-0 md:border border-white/5 rounded-none md:rounded-[3rem] space-y-8 flex flex-col hover:border-primary/25 transition-all duration-500 shadow-none md:shadow-2xl">
           <div className="space-y-6">
             <div className="w-14 h-14 bg-primary/20 rounded-2xl flex items-center justify-center text-primary border border-primary/20">
               <CheckCircle size={28} />
             </div>
-            <h3 className="text-3xl font-black text-white">Why Choose Clocks and Alarms Online?</h3>
+            <h3 className="text-2xl md:text-3xl font-black text-white">Why Choose Clocks and Alarms Online?</h3>
             <div className="space-y-4">
-              <p className="text-sm text-muted/70 leading-relaxed font-medium">
+              <p className="text-sm text-muted/70 leading-relaxed font-medium text-left md:text-justify">
                 Our suite offers distinct benefits tailored to modern digital workflows. By running directly in the browser's execution thread with hardware optimization, we consume fewer system resources than electron-based desktop utility apps.
               </p>
               <ul className="space-y-3 text-sm text-muted font-medium">
@@ -328,14 +341,14 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         </div>
 
         {/* Supported Devices Card */}
-        <div id="devices" className="p-12 bg-white/[0.02] border border-white/5 rounded-[3rem] space-y-8 flex flex-col hover:border-accent/25 transition-all duration-500 shadow-2xl">
+        <div id="devices" className="p-0 md:p-12 bg-transparent md:bg-white/[0.02] border-0 md:border border-white/5 rounded-none md:rounded-[3rem] space-y-8 flex flex-col hover:border-accent/25 transition-all duration-500 shadow-none md:shadow-2xl">
           <div className="space-y-6">
             <div className="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center text-accent border border-accent/20">
               <Laptop size={28} />
             </div>
-            <h3 className="text-3xl font-black text-white">Universal Supported Devices</h3>
+            <h3 className="text-2xl md:text-3xl font-black text-white">Universal Supported Devices</h3>
             <div className="space-y-4">
-              <p className="text-sm text-muted/70 leading-relaxed font-medium">
+              <p className="text-sm text-muted/70 leading-relaxed font-medium text-left md:text-justify">
                 We designed our platform with responsiveness at its core. It is cross-platform compatible and functions smoothly across all devices without needing downloads.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
@@ -372,7 +385,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           How Do We Guarantee <span className="text-emerald-400">Atomic Time Accuracy?</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
           <p>
             Timer drift is a major issue on the web. Standard JavaScript timers created using `setInterval` or `setTimeout` run on the main browser thread. If the system undergoes CPU spikes, handles heavy layouts, or goes inactive, these functions delay, accumulating seconds of drift over minutes.
           </p>
@@ -390,7 +403,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           Your Time data remains <span className="text-violet-400">Completely Yours</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
           <p>
             Your privacy is our core priority. Unlike typical time tools that require accounts or save your alarms on a remote cloud database, our site stores all data client-side. The dashboard configuration, world clocks, alarms, and settings save exclusively inside your browser's LocalStorage memory cache.
           </p>
@@ -402,28 +415,42 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
       {/* ❓ Section 8: FAQ Section */}
       <section id="faq" className="max-w-6xl mx-auto px-6 space-y-16">
-        <div className="text-center space-y-4">
+        <div className="text-left space-y-4">
           <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
             <HelpCircle size={14} /> Frequently Asked Questions
           </div>
-          <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
             Got Questions? We Have <span className="text-primary italic">Answers</span>
           </h2>
-          <p className="text-lg text-muted/60 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-muted/60 max-w-2xl font-medium">
             Find simple, straightforward answers to the questions our global community asks most.
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto flex flex-col gap-6 pt-8 w-full">
           {faqs.map((faq, i) => (
-            <div key={i} className="p-8 rounded-[2.5rem] bg-[#1a0b36]/30 border border-white/5 hover:border-primary/20 transition-all duration-500 space-y-4 shadow-2xl flex flex-col justify-start w-full">
-              <h4 className="text-lg font-black text-white flex items-start gap-3 leading-snug">
-                <span className="text-primary font-bold text-lg">Q.</span>
-                <span>{faq.q}</span>
+            <div key={i} className="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-[#1a0b36]/40 border border-white/5 hover:border-primary/20 transition-all duration-500 shadow-2xl flex flex-col justify-start w-full">
+              <h4 
+                className="text-base md:text-lg font-black text-white flex items-center justify-between gap-3 leading-snug w-full cursor-pointer md:cursor-default select-none"
+                onClick={() => setActiveMobileFaq(activeMobileFaq === i ? null : i)}
+              >
+                <div className="flex items-start gap-3">
+                  <span className="text-primary font-bold text-base md:text-lg">Q.</span>
+                  <span>{faq.q}</span>
+                </div>
+                <ChevronDown className={cn("w-5 h-5 text-muted transition-transform duration-300 md:hidden shrink-0 mt-0.5", activeMobileFaq === i && "rotate-180")} />
               </h4>
-              <p className="text-sm text-muted/70 leading-relaxed font-medium pl-6">
-                {faq.a}
-              </p>
+              
+              <div className={cn(
+                "grid transition-all duration-300 ease-in-out",
+                activeMobileFaq === i ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100 md:mt-4"
+              )}>
+                <div className="overflow-hidden">
+                  <p className="text-sm text-muted/70 leading-relaxed font-medium pl-0 md:pl-6 text-justify">
+                    {faq.a}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -432,12 +459,12 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
       {/* 📰 Section 10: Latest Blogs Section */}
       {latestPosts.length > 0 && (
         <section id="blogs" className="max-w-6xl mx-auto px-6 space-y-16">
-          <div className="flex flex-col md:flex-row items-end justify-between gap-8">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 md:gap-8">
             <div className="space-y-4 text-left max-w-2xl">
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
                 <BookOpen size={14} /> Insights & Articles
               </div>
-              <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight">
+              <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
                 Read Our Latest <span className="text-primary italic">Blogs</span>
               </h2>
               <p className="text-muted/60 font-medium text-lg leading-relaxed">
