@@ -41,13 +41,33 @@ export default function MainClockCard({
   }, [timezone])
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      cardRef.current?.requestFullscreen().catch((err) => {
-        console.error(`Error attempting to enable full-screen mode: ${err.message}`)
-      })
+    if (!isFullscreen) {
+      if (cardRef.current && typeof cardRef.current.requestFullscreen === 'function') {
+        try {
+          const promise = cardRef.current.requestFullscreen()
+          if (promise && typeof promise.catch === 'function') {
+            promise.catch((err) => {
+              console.error(`Error attempting to enable full-screen mode: ${err.message}`)
+            })
+          }
+        } catch (err: any) {
+          console.error(`Error attempting to enable full-screen mode: ${err.message}`)
+        }
+      }
       setIsFullscreen(true)
     } else {
-      document.exitFullscreen()
+      if (typeof document.exitFullscreen === 'function') {
+        try {
+          const promise = document.exitFullscreen()
+          if (promise && typeof promise.catch === 'function') {
+            promise.catch((err) => {
+              console.error(`Error exiting full-screen mode: ${err.message}`)
+            })
+          }
+        } catch (err: any) {
+          console.error(`Error exiting full-screen mode: ${err.message}`)
+        }
+      }
       setIsFullscreen(false)
     }
   }

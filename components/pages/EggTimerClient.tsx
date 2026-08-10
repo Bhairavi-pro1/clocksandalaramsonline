@@ -232,7 +232,7 @@ export default function EggTimerClient() {
     <div className="max-w-6xl mx-auto space-y-8">
 
       {/* FIRST ROW: TIME & BUTTON */}
-      <div className="w-full bg-white dark:bg-[#110624]/60 backdrop-blur-md border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+      <div className="w-auto sm:w-full bg-white dark:bg-[#110624]/60 backdrop-blur-md border border-x-0 sm:border border-slate-200 dark:border-white/5 rounded-none sm:rounded-[2.5rem] p-6 sm:p-12 -mx-4 sm:mx-0 shadow-2xl relative overflow-hidden">
         {/* Decorative glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 blur-[100px] rounded-full pointer-events-none" />
         

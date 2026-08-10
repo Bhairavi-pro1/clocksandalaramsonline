@@ -52,7 +52,7 @@ export default async function DynamicTimerPage({ params }: Props) {
         sound="/sounds/alarm.mp3"
       />
       
-      <div className="mt-20 prose prose-invert max-w-none bg-card/30 p-8 rounded-3xl border border-card-border">
+      <div className="mt-20 prose dark:prose-invert max-w-none bg-card/30 p-8 rounded-3xl border border-card-border">
         <h2>About our {slug.replace(/-/g, ' ')} tool</h2>
         <p className="text-lg text-muted">
           {seo?.content || `This pre-configured timer is set specifically for your convenience. Whether you are timing a workout, a break, or a task, our reliable countdown will alert you precisely when time is up.`}

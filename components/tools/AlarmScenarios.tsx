@@ -64,7 +64,7 @@ export default function AlarmScenarios() {
               <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center opacity-30 group-hover:opacity-100 group-hover:bg-primary/20 transition-all">
                 <Zap size={10} className="text-primary" />
               </div>
-              <span className="text-[13px] font-bold text-sky-400 group-hover:text-primary transition-colors">{time}</span>
+              <span className="text-[13px] font-bold text-primary/95 dark:text-sky-400 group-hover:text-primary transition-colors">{time}</span>
             </div>
             <ArrowRight size={12} className="text-white/10 group-hover:text-primary transition-all" />
           </button>

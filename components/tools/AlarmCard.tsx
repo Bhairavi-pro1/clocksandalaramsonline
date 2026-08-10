@@ -22,7 +22,7 @@ export default function AlarmCard({ id, label, time, isActive, onToggle, onRemov
 
   return (
     <div className={cn(
-      "w-full bg-[#1a0b36]/60 border border-violet-500/20 rounded-[2rem] p-8 relative overflow-hidden group shadow-2xl transition-all duration-300",
+      "w-auto sm:w-full bg-[#1a0b36]/60 border border-x-0 sm:border border-violet-500/20 rounded-none sm:rounded-[2rem] p-6 sm:p-8 -mx-4 sm:mx-0 relative overflow-hidden group shadow-2xl transition-all duration-300",
       isActive ? "border-primary/40" : "opacity-70"
     )}>
       <div className="flex justify-between items-center mb-8">

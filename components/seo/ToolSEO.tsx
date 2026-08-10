@@ -99,7 +99,7 @@ export default function ToolSEO({
             const Icon = uc.icon
             return (
               <div key={i} className="p-4 sm:p-8 rounded-2xl sm:rounded-[2rem] bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-sky-400 mb-4 sm:mb-6" />
+                <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary dark:text-sky-400 mb-4 sm:mb-6" />
                 <h3 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-3">{uc.title}</h3>
                 <p className="text-xs sm:text-base text-muted/80 leading-relaxed text-justify">{uc.text}</p>
               </div>

@@ -5,6 +5,7 @@ import countriesData from '@/data/countries.json';
 import HolidayCountdownClient from '@/components/pages/HolidayCountdownClient';
 import StructuredData from '@/components/seo/StructuredData';
 import AdBanner from '@/components/ui/AdBanner';
+import FAQAccordion from '@/components/seo/FAQAccordion';
 import { HelpCircle, Calendar, Clock, Maximize2, Info } from 'lucide-react';
 
 interface Props {
@@ -166,9 +167,9 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
 
       {/* SEO Content & Dynamic FAQ Section (Server Side) */}
       <div className="max-w-7xl mx-auto px-4 pb-24 space-y-32">
-        <section className="bg-[#1a0b36]/40 p-10 md:p-16 rounded-[3rem] border border-white/5 shadow-2xl space-y-8">
-          <h2 className="text-3xl font-black text-white">About the {matchedHoliday.name} Tracker</h2>
-          <div className="text-lg text-muted/80 font-medium leading-relaxed space-y-6">
+        <section className="w-auto sm:w-full bg-[#1a0b36]/40 p-6 sm:p-10 md:p-16 rounded-none sm:rounded-[3rem] border border-x-0 sm:border border-white/5 shadow-2xl space-y-6 sm:space-y-8 -mx-4 sm:mx-0">
+          <h2 className="text-2xl sm:text-3xl font-black text-white">About the {matchedHoliday.name} Tracker</h2>
+          <div className="text-sm sm:text-base md:text-lg text-muted/80 font-medium leading-relaxed space-y-4 sm:space-y-6">
             <p>
               {seoInfo.content}
             </p>
@@ -179,14 +180,14 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
         </section>
 
         {/* Dynamic FAQ */}
-        <section className="space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">{matchedHoliday.name} <span className="text-primary italic">Countdown FAQ</span></h2>
+        <section className="space-y-8 sm:space-y-16">
+          <div className="text-center space-y-2 sm:space-y-4">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight">{matchedHoliday.name} <span className="text-primary italic">Countdown FAQ</span></h2>
             <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
+          <FAQAccordion 
+            faqs={[
               { 
                 q: `When exactly is ${matchedHoliday.name} in ${countryObj.name}?`, 
                 a: `For this occurrence, ${matchedHoliday.name} falls on ${new Date(matchedHoliday.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}.`
@@ -203,18 +204,8 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
                 q: "Can I share this countdown?",
                 a: "Absolutely. Use the share button in the top right corner to copy the direct link and share the excitement with friends, family, or colleagues."
               }
-            ].map((faq, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] hover:bg-white/[0.08] transition-all group">
-                <div className="flex gap-4 mb-4">
-                  <HelpCircle className="text-primary group-hover:scale-110 transition-transform animate-in fade-in" />
-                  <h3 className="text-lg font-bold text-white tracking-tight">{faq.q}</h3>
-                </div>
-                <p className="text-sm text-muted/70 leading-relaxed font-medium pl-10">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
+            ]} 
+          />
         </section>
       </div>
       

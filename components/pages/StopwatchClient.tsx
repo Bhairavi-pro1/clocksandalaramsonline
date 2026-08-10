@@ -247,13 +247,33 @@ export default function StopwatchClient() {
   }, [history, isLoaded])
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      cardRef.current?.requestFullscreen().catch((err) => {
-        console.error(`Error attempting to enable full-screen mode: ${err.message}`)
-      })
+    if (!isFullscreen) {
+      if (cardRef.current && typeof cardRef.current.requestFullscreen === 'function') {
+        try {
+          const promise = cardRef.current.requestFullscreen()
+          if (promise && typeof promise.catch === 'function') {
+            promise.catch((err) => {
+              console.error(`Error attempting to enable full-screen mode: ${err.message}`)
+            })
+          }
+        } catch (err: any) {
+          console.error(`Error attempting to enable full-screen mode: ${err.message}`)
+        }
+      }
       setIsFullscreen(true)
     } else {
-      document.exitFullscreen()
+      if (typeof document.exitFullscreen === 'function') {
+        try {
+          const promise = document.exitFullscreen()
+          if (promise && typeof promise.catch === 'function') {
+            promise.catch((err) => {
+              console.error(`Error exiting full-screen mode: ${err.message}`)
+            })
+          }
+        } catch (err: any) {
+          console.error(`Error exiting full-screen mode: ${err.message}`)
+        }
+      }
       setIsFullscreen(false)
     }
   }
@@ -292,12 +312,12 @@ export default function StopwatchClient() {
   }, [])
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-8 sm:space-y-12">
+    <div className="max-w-3xl mx-auto px-0 sm:px-6 space-y-8 sm:space-y-12">
       {/* Main Stopwatch Card */}
       <div 
         ref={cardRef}
         className={cn(
-          "bg-[#1a0b2e]/60 border border-violet-500/20 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-2xl relative overflow-hidden group transition-all duration-500 flex flex-col items-center justify-center",
+          "w-auto sm:w-full bg-[#1a0b2e]/60 border border-x-0 sm:border border-violet-500/20 rounded-none sm:rounded-[2.5rem] shadow-2xl relative overflow-hidden group transition-all duration-500 flex flex-col items-center justify-center -mx-4 sm:mx-0",
           isFullscreen ? "h-screen rounded-none border-none p-4 sm:p-0 bg-background" : "p-4 sm:p-6 md:p-8 min-h-[280px] sm:min-h-[350px] md:min-h-[400px]"
         )}
       >
@@ -434,7 +454,7 @@ export default function StopwatchClient() {
 
       {/* Usage History Section */}
       {!isFullscreen && (
-        <div className="bg-[#1a0b2e]/40 border border-violet-500/10 rounded-[1.5rem] sm:rounded-[2.5rem] p-6 sm:p-10 md:p-12 space-y-8 animate-in fade-in slide-in-from-bottom-3 duration-700">
+        <div className="w-auto sm:w-full bg-[#1a0b2e]/40 border border-x-0 sm:border border-violet-500/10 rounded-none sm:rounded-[2.5rem] p-4 sm:p-10 md:p-12 -mx-4 sm:mx-0 space-y-8 animate-in fade-in slide-in-from-bottom-3 duration-700">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-white tracking-tight">Usage History</h2>
             <button 

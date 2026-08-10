@@ -5,14 +5,36 @@ export function useFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   
   const toggleFullscreen = useCallback(async () => {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen()
+    if (!isFullscreen) {
+      if (document.documentElement && typeof document.documentElement.requestFullscreen === 'function') {
+        try {
+          const promise = document.documentElement.requestFullscreen()
+          if (promise && typeof promise.catch === 'function') {
+            promise.catch((err) => {
+              console.error(`Error attempting to enable full-screen mode: ${err.message}`)
+            })
+          }
+        } catch (err: any) {
+          console.error(`Error attempting to enable full-screen mode: ${err.message}`)
+        }
+      }
       setIsFullscreen(true)
     } else {
-      await document.exitFullscreen()
+      if (typeof document.exitFullscreen === 'function') {
+        try {
+          const promise = document.exitFullscreen()
+          if (promise && typeof promise.catch === 'function') {
+            promise.catch((err) => {
+              console.error(`Error exiting full-screen mode: ${err.message}`)
+            })
+          }
+        } catch (err: any) {
+          console.error(`Error exiting full-screen mode: ${err.message}`)
+        }
+      }
       setIsFullscreen(false)
     }
-  }, [])
+  }, [isFullscreen])
   
   useEffect(() => {
     const onFSChange = () => setIsFullscreen(!!document.fullscreenElement)

@@ -222,7 +222,7 @@ html:not(.dark) {
   }
 
   /* Typography color scaling (white text translates to dark slate) */
-  h1, h2, h3, h4, h5, h6, p, span, div, a, label, button, svg, input, select, textarea, strong, li, ul, ol, em, blockquote, figcaption {
+  h1, h2, h3, h4, h5, h6, p, span, div, a, label, button, svg, input, select, textarea, strong, li, ul, ol, em, blockquote, figcaption, th, td {
     &.text-white {
       color: var(--foreground);
     }
@@ -298,7 +298,28 @@ html:not(.dark) {
   .hover\:bg-white\/5:hover {
     background-color: rgba(15, 23, 42, 0.06) !important;
   }
+  .bg-white\/10 {
+    background-color: rgba(15, 23, 42, 0.08) !important;
+  }
+  .hover\:bg-white\/10:hover {
+    background-color: rgba(15, 23, 42, 0.12) !important;
+  }
+  .bg-white\/\[0\.02\] {
+    background-color: rgba(15, 23, 42, 0.02) !important;
+  }
+  .hover\:bg-white\/\[0\.08\]:hover {
+    background-color: rgba(15, 23, 42, 0.09) !important;
+  }
+  .hover\:bg-white\/\[0\.07\]:hover {
+    background-color: rgba(15, 23, 42, 0.08) !important;
+  }
   .border-white\/5, .border-white\/10 {
+    border-color: var(--card-border) !important;
+  }
+  .divide-white\/10 > * + * {
+    border-color: var(--card-border) !important;
+  }
+  .divide-white\/10 > :not([hidden]) ~ :not([hidden]) {
     border-color: var(--card-border) !important;
   }
 

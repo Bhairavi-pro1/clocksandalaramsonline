@@ -429,16 +429,16 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
         <div className="max-w-4xl mx-auto flex flex-col gap-6 pt-8 w-full">
           {faqs.map((faq, i) => (
-            <div key={i} className="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-[#1a0b36]/40 border border-white/5 hover:border-primary/20 transition-all duration-500 shadow-2xl flex flex-col justify-start w-full">
+            <div key={i} className="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-white dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:border-primary/20 transition-all duration-500 shadow-2xl flex flex-col justify-start w-full">
               <h4 
-                className="text-base md:text-lg font-black text-white flex items-center justify-between gap-3 leading-snug w-full cursor-pointer md:cursor-default select-none"
+                className="text-base md:text-lg font-black text-slate-800 dark:text-white flex items-center justify-between gap-3 leading-snug w-full cursor-pointer md:cursor-default select-none"
                 onClick={() => setActiveMobileFaq(activeMobileFaq === i ? null : i)}
               >
                 <div className="flex items-start gap-3">
                   <span className="text-primary font-bold text-base md:text-lg">Q.</span>
                   <span>{faq.q}</span>
                 </div>
-                <ChevronDown className={cn("w-5 h-5 text-muted transition-transform duration-300 md:hidden shrink-0 mt-0.5", activeMobileFaq === i && "rotate-180")} />
+                <ChevronDown className={cn("w-5 h-5 text-slate-400 dark:text-muted transition-transform duration-300 md:hidden shrink-0 mt-0.5", activeMobileFaq === i && "rotate-180")} />
               </h4>
               
               <div className={cn(
@@ -446,7 +446,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                 activeMobileFaq === i ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100 md:mt-4"
               )}>
                 <div className="overflow-hidden">
-                  <p className="text-sm text-muted/70 leading-relaxed font-medium pl-0 md:pl-6 text-justify">
+                  <p className="text-sm text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-6 text-justify">
                     {faq.a}
                   </p>
                 </div>
