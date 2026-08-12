@@ -58,12 +58,12 @@ export default function WorldClockClient() {
           const parts = detectedZone.split('/')
           const cityName = parts[parts.length - 1].replace(/_/g, ' ')
           setLocalClock({
-            country: 'CURRENT LOCATION',
+            country: 'CURRENT TIMEZONE',
             city: cityName,
             timezone: detectedZone
           })
         }
-      }
+      } 
     } catch (err) {
       console.error('Failed to detect location:', err)
     }
@@ -111,6 +111,10 @@ export default function WorldClockClient() {
         <p className="text-muted/80 text-sm md:text-base font-medium mb-8 max-w-4xl mx-auto text-center">
           Click any world clock card for detailed <span className="text-white/90 font-bold">global timezone information</span>, live weather, and <span className="text-white/90 font-bold">local time differences</span>.
         </p>
+
+        <div className="max-w-lg mx-auto mb-10 w-full px-4 sm:px-0">
+          <TimezoneSearch onAdd={addClock} />
+        </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-6 gap-y-4 sm:gap-y-10 pb-20">
           {globalClocks.map((clock, index) => (

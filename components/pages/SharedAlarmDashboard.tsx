@@ -13,18 +13,7 @@ import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import SharedAlarmCard from '@/components/tools/SharedAlarmCard'
 import SharedAlarmModal from '@/components/tools/SharedAlarmModal'
-import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
 import { useStore } from '@/hooks/useStore'
-
-const SOUNDS: Record<string, string> = {
-  vibe: '/sounds/vibe.mp3',
-  editorial: '/sounds/editorial.mp3',
-  guitar: '/sounds/guitar.mp3',
-  riser: '/sounds/riser.mp3',
-  birds: '/sounds/birds.mp3',
-  fun: '/sounds/fun.mp3',
-  synthwave: '/sounds/synthwave.mp3',
-}
 
 export default function SharedAlarmDashboard() {
   const { sessionId } = useSession()
@@ -39,9 +28,6 @@ export default function SharedAlarmDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingAlarm, setEditingAlarm] = useState<SharedAlarm | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-
-  const [ringingAlarm, setRingingAlarm] = useState<SharedAlarm | null>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const loadAlarms = async () => {
     if (!sessionId) return;
@@ -103,35 +89,7 @@ export default function SharedAlarmDashboard() {
     }
   };
 
-  const handleAlarmRing = (alarm: SharedAlarm) => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current.currentTime = 0
-    }
 
-    const audio = new Audio(SOUNDS[alarm.sound] || SOUNDS.vibe)
-    audio.loop = true
-    audio.volume = 0.8
-    audio.play().catch(e => console.error('Alarm audio blocked:', e))
-    audioRef.current = audio
-    setRingingAlarm(alarm)
-
-    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-      new Notification('⏰ Shared Alarm!', { 
-        body: alarm.title || `Your shared alarm is ringing.`,
-        icon: '/icons/icon-192.png'
-      })
-    }
-  };
-
-  const stopRinging = () => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current.currentTime = 0
-      audioRef.current = null
-    }
-    setRingingAlarm(null)
-  }
 
   if (isLoading) {
     return (
@@ -181,7 +139,6 @@ export default function SharedAlarmDashboard() {
                         setIsModalOpen(true);
                       }}
                      onRemoveFromUI={handleRemoveCreatedUI}
-                     onAlarmRinging={handleAlarmRing}
                   />
                ))}
             </div>
@@ -190,10 +147,10 @@ export default function SharedAlarmDashboard() {
 
       {/* SECTION B: Received Alarms */}
       <section className="w-full space-y-6">
-         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-2 border-b border-white/10">
-            <div className="space-y-1 text-center md:text-left">
-               <h3 className="text-2xl font-black text-white">Received Alarms</h3>
-               <p className="text-sm text-muted font-medium">Alarms shared with you that you accepted</p>
+         <div className="flex justify-between items-center gap-4 pb-4 border-b border-white/5 w-full">
+            <div className="space-y-0.5 text-left">
+               <h3 className="text-lg md:text-2xl font-black text-white leading-tight">Received Alarms</h3>
+               <p className="text-[11px] md:text-sm text-muted font-medium">Alarms shared with you that you accepted</p>
             </div>
          </div>
 
@@ -209,7 +166,6 @@ export default function SharedAlarmDashboard() {
                      alarm={alarm}
                      isCreator={false}
                      onRemoveFromUI={handleRemoveReceivedUI}
-                     onAlarmRinging={handleAlarmRing}
                   />
                ))}
             </div>
@@ -224,22 +180,6 @@ export default function SharedAlarmDashboard() {
         }}
         onSave={handleSaveAlarm}
         initialData={editingAlarm}
-      />
-
-      <AlarmTriggerModal 
-        isOpen={!!ringingAlarm}
-        onClose={stopRinging}
-        label={ringingAlarm?.title || 'Shared Alarm Ringing!'}
-        type="alarm"
-        timeText={
-          ringingAlarm 
-            ? new Date(ringingAlarm.alarmDateTime).toLocaleTimeString([], { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                hour12: !(mounted && is24Hour)
-              }) 
-            : ''
-        }
       />
     </div>
   )

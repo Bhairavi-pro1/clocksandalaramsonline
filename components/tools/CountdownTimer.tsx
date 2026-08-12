@@ -185,13 +185,6 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
           </div>
         )}
       </div>
-
-      <AlarmTriggerModal 
-        isOpen={isSoundPlaying}
-        onClose={reset}
-        label={label}
-        type="timer"
-      />
     </>
   )
 }

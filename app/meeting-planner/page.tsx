@@ -67,11 +67,11 @@ export default function MeetingPlannerPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20 animate-in fade-in duration-1000">
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-20 animate-in fade-in duration-1000">
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <h1 className="text-4xl md:text-6xl font-black text-center mb-16 text-white tracking-tighter">
+      <h1 className="text-4xl md:text-6xl font-black text-center mb-6 md:mb-16 text-slate-900 dark:text-white tracking-tighter">
         Global Meeting <span className="text-primary italic">Planner</span>
       </h1>
       

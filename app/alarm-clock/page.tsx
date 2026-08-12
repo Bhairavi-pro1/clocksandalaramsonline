@@ -69,8 +69,8 @@ export default function AlarmPage() {
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <div className="max-w-7xl mx-auto px-4 pt-16">
-        <h1 className="text-4xl md:text-6xl font-black text-center mb-10 text-white tracking-tighter animate-in fade-in duration-1000">
+      <div className="max-w-7xl mx-auto px-4 pt-8 md:pt-16">
+        <h1 className="text-4xl md:text-6xl font-black text-center mb-4 md:mb-8 text-white tracking-tighter animate-in fade-in duration-1000">
           Online <span className="text-primary italic">Alarm</span> Clock
         </h1>
       </div>

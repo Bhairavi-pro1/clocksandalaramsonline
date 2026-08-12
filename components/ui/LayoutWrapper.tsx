@@ -7,11 +7,26 @@ import InternalLinks from '@/components/ui/InternalLinks'
 import BookmarkModal from '@/components/ui/BookmarkModal'
 import Ad160x600 from '@/components/ads/Ad160x600'
 import { cn } from '@/lib/utils'
+import BackgroundTimeService from '@/components/services/BackgroundTimeService'
+import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
+import { useStore } from '@/hooks/useStore'
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const isStudio = pathname.startsWith('/studio')
+
+  const {
+    activeAlarmId,
+    alarms,
+    setRingingAlarmId,
+    countdowns,
+    updateCountdown,
+    ringingSharedAlarm,
+    setRingingSharedAlarm
+  } = useStore()
+
+  const ringingTimer = countdowns.find(c => c.isRinging)
 
   // Sanity Studio has its own full-page UI — render children only
   if (isStudio) {
@@ -20,6 +35,8 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen w-full">
+      <BackgroundTimeService />
+
       {/* Mobile navigation is always Header. Desktop is Header for home, Sidebar for tools. */}
       <div className="lg:hidden w-full">
         <Header />
@@ -47,6 +64,31 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
         <Footer />
       </main>
+      
+      {/* Global Ringing Trigger Modals */}
+      <AlarmTriggerModal
+        isOpen={!!activeAlarmId}
+        onClose={() => setRingingAlarmId(null)}
+        label={alarms.find(a => a.id === activeAlarmId)?.label || 'Alarm Ringing!'}
+        type="alarm"
+        timeText={alarms.find(a => a.id === activeAlarmId)?.time}
+      />
+
+      <AlarmTriggerModal
+        isOpen={!!ringingTimer}
+        onClose={() => ringingTimer && updateCountdown(ringingTimer.id, { isRinging: false })}
+        label={ringingTimer?.label || 'Timer Finished!'}
+        type="timer"
+      />
+
+      <AlarmTriggerModal
+        isOpen={!!ringingSharedAlarm}
+        onClose={() => setRingingSharedAlarm(null)}
+        label={ringingSharedAlarm?.title || 'Shared Alarm Ringing!'}
+        type="alarm"
+        timeText={ringingSharedAlarm ? new Date(ringingSharedAlarm.alarmDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+      />
+
       <BookmarkModal />
     </div>
   );

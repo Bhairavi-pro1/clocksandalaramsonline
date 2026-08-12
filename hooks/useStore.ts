@@ -16,6 +16,11 @@ export interface Countdown {
   label: string
   seconds: number
   sound: string
+  isActive?: boolean
+  isPaused?: boolean
+  timeLeft?: number
+  endTime?: number | null
+  isRinging?: boolean
 }
 
 interface AppState {
@@ -29,6 +34,13 @@ interface AppState {
   countdowns: Countdown[]
   addCountdown: (countdown: Omit<Countdown, 'id'>) => void
   removeCountdown: (id: string) => void
+  updateCountdown: (id: string, updates: Partial<Countdown>) => void
+
+  // Ringing states
+  activeAlarmId: string | null
+  setRingingAlarmId: (id: string | null) => void
+  ringingSharedAlarm: any | null
+  setRingingSharedAlarm: (alarm: any | null) => void
 
   // Preferences
   is24Hour: boolean
@@ -57,11 +69,27 @@ export const useStore = create<AppState>()(
 
       countdowns: [],
       addCountdown: (countdown) => set((state) => ({
-        countdowns: [...state.countdowns, { ...countdown, id: Math.random().toString(36).substring(7) }]
+        countdowns: [...state.countdowns, { 
+          ...countdown, 
+          id: Math.random().toString(36).substring(7),
+          isActive: false,
+          isPaused: false,
+          timeLeft: countdown.seconds,
+          endTime: null,
+          isRinging: false
+        }]
       })),
       removeCountdown: (id) => set((state) => ({
         countdowns: state.countdowns.filter((c) => c.id !== id)
       })),
+      updateCountdown: (id, updates) => set((state) => ({
+        countdowns: state.countdowns.map((c) => c.id === id ? { ...c, ...updates } : c)
+      })),
+
+      activeAlarmId: null,
+      setRingingAlarmId: (id) => set(() => ({ activeAlarmId: id })),
+      ringingSharedAlarm: null,
+      setRingingSharedAlarm: (alarm) => set(() => ({ ringingSharedAlarm: alarm })),
 
       is24Hour: false,
       toggleTimeFormat: () => set((state) => ({ is24Hour: !state.is24Hour })),

@@ -93,9 +93,9 @@ export default function AlarmTimeClient({ params }: Props) {
   )
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pt-12 pb-20 animate-in fade-in duration-1000">
+    <div className="max-w-7xl mx-auto px-4 pt-6 md:pt-12 pb-20 animate-in fade-in duration-1000">
       {/* Dynamic SEO Title Section */}
-      <div className="text-center mb-16 space-y-6">
+      <div className="text-center mb-8 md:mb-16 space-y-6">
         <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-1 shadow-inner">
           Free Online Alarm
         </div>
@@ -107,7 +107,7 @@ export default function AlarmTimeClient({ params }: Props) {
         </p>
       </div>
 
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-6 md:gap-12">
         {/* Row 1: Local Time Box */}
         <LocalTimeBox />
 
@@ -218,14 +218,6 @@ export default function AlarmTimeClient({ params }: Props) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAdd={addAlarm}
-      />
-
-      <AlarmTriggerModal 
-        isOpen={!!activeAlarmId}
-        onClose={stopAlarm}
-        label={activeAlarm?.label || 'Alarm Ringing!'}
-        type="alarm"
-        timeText={activeAlarm?.time}
       />
     </div>
   )

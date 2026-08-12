@@ -40,33 +40,27 @@ export default function AlarmScenarios() {
   ]
 
   return (
-    <section className="bg-card border border-card-border/30 rounded-[1.5rem] p-5 md:p-6 overflow-hidden relative animate-in fade-in duration-700">
+    <section className="bg-[#1a0b36]/60 border border-violet-500/20 rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-8 overflow-hidden relative animate-in fade-in duration-700">
       <div className="absolute -top-12 -right-12 p-24 opacity-[0.015] rotate-12 pointer-events-none transition-opacity duration-700">
         <Bell size={240} />
       </div>
       
-      <header className="mb-5 relative z-10 border-b border-white/5 pb-4">
-        <div className="flex items-center gap-2 mb-1">
-          <Bell className="text-primary" size={18} />
-          <h3 className="text-lg md:text-xl font-black text-white tracking-tight leading-none">Set the alarm for the specified time</h3>
+      <header className="mb-5 relative z-10 border-b border-white/5 pb-4 flex items-start gap-3 w-full">
+        <Bell className="text-primary w-6 h-6 md:w-8 md:h-8 mt-1 flex-shrink-0" />
+        <div className="flex flex-col text-left">
+          <h3 className="text-base md:text-2xl font-black text-white tracking-tight leading-tight">Set the alarm for the specified time</h3>
+          <p className="text-[10px] md:text-sm text-muted font-medium mt-1">One-click setup for common wake-up times and reminders</p>
         </div>
-        <p className="text-[12px] text-muted/60 font-medium ml-6.5">One-click setup for common wake-up times and reminders</p>
       </header>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 relative z-10">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5 relative z-10 w-full">
         {alarmPresets.map((time) => (
           <button
             key={time}
             onClick={() => handleCreateAlarm(time)}
-            className="group flex items-center justify-between p-2.5 px-3.5 rounded-lg bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
+            className="w-full flex items-center justify-center p-3 rounded-xl bg-[#1a0b36]/40 border border-violet-500/20 hover:border-primary/50 hover:bg-primary/5 text-sky-400 font-bold text-[11px] sm:text-xs md:text-sm transition-all duration-300"
           >
-            <div className="flex items-center gap-2.5">
-              <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center opacity-30 group-hover:opacity-100 group-hover:bg-primary/20 transition-all">
-                <Zap size={10} className="text-primary" />
-              </div>
-              <span className="text-[13px] font-bold text-primary/95 dark:text-sky-400 group-hover:text-primary transition-colors">{time}</span>
-            </div>
-            <ArrowRight size={12} className="text-white/10 group-hover:text-primary transition-all" />
+            {time}
           </button>
         ))}
       </div>

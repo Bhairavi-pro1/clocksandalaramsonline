@@ -18,24 +18,25 @@ export default function AlarmClockClient() {
   const activeAlarm = alarms.find(a => a.id === activeAlarmId)
 
   return (
-    <div className="max-w-7xl mx-auto px-0 sm:px-4 pt-12 pb-20">
-      <div className="flex flex-col gap-12">
+    <div className="max-w-7xl mx-auto px-4 pt-0 sm:pt-6 pb-20">
+      <div className="flex flex-col gap-6 md:gap-12">
         {/* Row 1: Local Time Box Fully Occupied */}
         <div className="w-full">
           <LocalTimeBox />
         </div>
 
         {/* Row 2: Add Alarm Button and Status */}
-        <div id="alarms-list" className="flex flex-col md:flex-row justify-between items-center gap-6 bg-white/5 p-8 rounded-[2.5rem] border border-white/5 scroll-mt-24">
-          <div className="space-y-1 text-center md:text-left">
-            <h3 className="text-2xl font-black text-white">Active Alarms</h3>
-            <p className="text-sm text-muted font-medium">You have {alarms.length} alarm{alarms.length !== 1 ? 's' : ''} configured</p>
+        <div id="alarms-list" className="flex flex-row justify-between items-center gap-4 bg-transparent md:bg-white/5 p-0 md:p-8 rounded-none md:rounded-[2.5rem] border-none md:border md:border-white/5 pb-4 md:pb-0 border-b md:border-b-none border-white/5 scroll-mt-24 w-full">
+          <div className="space-y-0.5 text-left">
+            <h3 className="text-lg md:text-2xl font-black text-white leading-tight">Active Alarms</h3>
+            <p className="text-[11px] md:text-sm text-muted font-medium">You have {alarms.length} alarm{alarms.length !== 1 ? 's' : ''} configured</p>
           </div>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-3 bg-primary text-white px-10 py-5 rounded-[1.5rem] font-black hover:scale-[1.03] transition-transform shadow-2xl shadow-primary/30"
+            className="flex items-center justify-center bg-primary text-white p-3 md:px-8 md:py-4 rounded-full md:rounded-[1.25rem] font-black hover:scale-[1.03] transition-transform shadow-lg md:shadow-2xl shadow-primary/20 md:shadow-primary/30"
           >
-            <Plus size={24} /> Add New Alarm
+            <Plus size={20} className="md:w-5 md:h-5" />
+            <span className="hidden md:inline ml-2 text-sm font-black">Add New Alarm</span>
           </button>
         </div>
 
@@ -68,14 +69,6 @@ export default function AlarmClockClient() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAdd={addAlarm}
-      />
-
-      <AlarmTriggerModal 
-        isOpen={!!activeAlarmId}
-        onClose={stopAlarm}
-        label={activeAlarm?.label || 'Alarm Ringing!'}
-        type="alarm"
-        timeText={activeAlarm?.time}
       />
     </div>
   )
