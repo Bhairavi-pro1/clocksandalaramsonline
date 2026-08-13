@@ -34,56 +34,69 @@ export function getUpcomingDSTChanges(): DSTChange[] {
       if (!dt.isValid) return []
       let currentOffset = dt.offset
 
-      for (let i = 1; i <= 366; i++) {
-        const checkTime = dt.plus({ days: i }).endOf('day')
+      let i = 1
+      while (i <= 366) {
+        const step = Math.min(7, 366 - i + 1)
+        const checkTime = dt.plus({ days: i + step - 1 }).endOf('day')
+        
         if (checkTime.offset !== currentOffset) {
-          const transitionMoment = dt.plus({ days: i }).startOf('day')
-          for (let h = 0; h <= 24; h++) {
-            const hourSlice = transitionMoment.plus({ hours: h })
-            if (hourSlice.offset !== currentOffset) {
-              const offsetDiff = hourSlice.offset - currentOffset
-              const isHalfHour = Math.abs(offsetDiff) === 30
-              const isLordHowe = zone.includes('Lord_Howe')
-              
-              let isPermanent = true
-              const futureCheck = hourSlice.plus({ months: 10 })
-              if (futureCheck.setZone(zone).offset === currentOffset) {
-                isPermanent = false
+          // Transition happened in this step block. Iterate day-by-day inside the block.
+          for (let d = 0; d < step; d++) {
+            const dayDT = dt.plus({ days: i + d })
+            const checkDay = dayDT.endOf('day')
+            if (checkDay.offset !== currentOffset) {
+              // Day found! Locate exact hour slice.
+              const transitionMoment = dayDT.startOf('day')
+              for (let h = 0; h <= 24; h++) {
+                const hourSlice = transitionMoment.plus({ hours: h })
+                if (hourSlice.offset !== currentOffset) {
+                  const offsetDiff = hourSlice.offset - currentOffset
+                  const isHalfHour = Math.abs(offsetDiff) === 30
+                  const isLordHowe = zone.includes('Lord_Howe')
+                  
+                  let isPermanent = true
+                  const futureCheck = hourSlice.plus({ months: 10 })
+                  if (futureCheck.setZone(zone).offset === currentOffset) {
+                    isPermanent = false
+                  }
+                  
+                  const isNotable = Math.abs(offsetDiff) !== 60 && Math.abs(offsetDiff) !== 30
+                  const isHistorical = isPermanent || isNotable
+
+                  let description = ""
+                  if (isLordHowe) {
+                      description = "Unique 30-minute shift: Lord Howe Island is the only place in the world that shifts its clocks by exactly 30 minutes for DST."
+                  } else if (isHistorical && isPermanent) {
+                      description = "Historical Shift: This location is implementing a permanent change to its standard time offset."
+                  } else if (isNotable) {
+                      description = `Notable Transition: A unique ${Math.abs(offsetDiff)} minute shift in local time.`
+                  }
+
+                  zoneChanges.push({
+                    country,
+                    zone,
+                    date: hourSlice.toFormat('MMMM d, yyyy'),
+                    time: hourSlice.toFormat('h:mm a'),
+                    offsetBefore: currentOffset / 60,
+                    offsetAfter: hourSlice.offset / 60,
+                    type: isNotable || isPermanent ? 'Time Shift' : (hourSlice.offset > currentOffset ? 'Spring Forward' : 'Fall Back'),
+                    daysRemaining: Math.max(0, Math.floor(hourSlice.diff(now, 'days').days)),
+                    timestamp: hourSlice.toMillis(),
+                    isHalfHourShift: isHalfHour,
+                    isLordHowe,
+                    isHistorical,
+                    description
+                  })
+
+                  currentOffset = hourSlice.offset
+                  break
+                }
               }
-              
-              const isNotable = Math.abs(offsetDiff) !== 60 && Math.abs(offsetDiff) !== 30
-              const isHistorical = isPermanent || isNotable
-
-              let description = ""
-              if (isLordHowe) {
-                  description = "Unique 30-minute shift: Lord Howe Island is the only place in the world that shifts its clocks by exactly 30 minutes for DST."
-              } else if (isHistorical && isPermanent) {
-                  description = "Historical Shift: This location is implementing a permanent change to its standard time offset."
-              } else if (isNotable) {
-                  description = `Notable Transition: A unique ${Math.abs(offsetDiff)} minute shift in local time.`
-              }
-
-              zoneChanges.push({
-                country,
-                zone,
-                date: hourSlice.toFormat('MMMM d, yyyy'),
-                time: hourSlice.toFormat('h:mm a'),
-                offsetBefore: currentOffset / 60,
-                offsetAfter: hourSlice.offset / 60,
-                type: isNotable || isPermanent ? 'Time Shift' : (hourSlice.offset > currentOffset ? 'Spring Forward' : 'Fall Back'),
-                daysRemaining: Math.max(0, Math.floor(hourSlice.diff(now, 'days').days)),
-                timestamp: hourSlice.toMillis(),
-                isHalfHourShift: isHalfHour,
-                isLordHowe,
-                isHistorical,
-                description
-              })
-
-              currentOffset = hourSlice.offset
-              break
+              currentOffset = checkDay.offset
             }
           }
         }
+        i += step
       }
     } catch (e) {
       return []
