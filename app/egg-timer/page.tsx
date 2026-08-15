@@ -29,13 +29,13 @@ export default function EggTimerPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(tableSchema) }}
       />
       <div className="flex flex-col min-h-[calc(100vh-4rem)]">
-        <main className="flex-1 w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
+        <main className="flex-1 w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 py-4 sm:py-8 md:py-12">
           
-          <div className="text-center mb-12 space-y-4">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+          <div className="text-center mb-6 sm:mb-12 space-y-2 sm:space-y-4">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight">
               Perfect <span className="text-primary italic">Egg Timer</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/50 font-medium max-w-2xl mx-auto">
+            <p className="text-sm sm:text-lg md:text-xl text-white/50 font-medium max-w-2xl mx-auto">
               Select your desired doneness with our interactive guide. Adjust for egg size and starting temperature to boil the perfect egg every time.
             </p>
           </div>

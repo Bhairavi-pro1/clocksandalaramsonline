@@ -87,7 +87,7 @@ export default function MainClockCard({
       className={cn(
         "relative shadow-2xl backdrop-blur-xl group overflow-hidden transition-all duration-500 flex flex-col",
         isFullscreen 
-          ? "w-full h-screen justify-between rounded-none border-none py-20 px-12 bg-background items-center" 
+          ? "fixed inset-0 z-[100] w-full h-screen justify-between rounded-none border-none py-8 px-4 sm:py-12 sm:px-8 md:py-20 md:px-12 bg-background items-center" 
           : "w-[calc(100%+2rem)] md:w-full max-w-7xl mx-auto rounded-none md:rounded-[2.5rem] bg-slate-100/50 dark:bg-[#1a0b36]/40 md:bg-card border border-x-0 md:border border-slate-200/60 dark:border-white/5 md:border-card-border/40 py-2.5 px-4 md:p-10 xl:p-12 -mx-4 md:mx-auto min-h-0 md:min-h-[380px] justify-center items-stretch md:items-center gap-0"
       )}
     >
@@ -174,19 +174,19 @@ export default function MainClockCard({
         {/* Header Info */}
         <div className={cn(
           "text-center relative z-10 transition-all",
-          isFullscreen ? "mt-4" : ""
+          isFullscreen ? "mt-2 md:mt-4" : ""
         )}>
           <p className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] md:text-sm drop-shadow-[0_0_10px_rgba(124,58,237,0.3)] mb-1">{country}</p>
           <h3 className={cn(
             "font-bold text-slate-900 dark:text-white tracking-tight drop-shadow-sm",
-            isFullscreen ? "text-4xl md:text-6xl" : "text-2xl md:text-4xl"
+            isFullscreen ? "text-3xl sm:text-4xl md:text-6xl" : "text-2xl md:text-4xl"
           )}>{city}</h3>
         </div>
 
         {/* Main Time Display - Responsive Scaling */}
         <div className={cn(
           "font-bold tracking-tight text-slate-900 dark:text-white drop-shadow-[0_0_50px_rgba(124,58,237,0.5)] font-display flex items-center justify-center tabular-nums leading-none w-full relative z-10",
-          isFullscreen ? "flex-1 text-[min(16rem,22vw)]" : "text-6xl md:text-[8rem] xl:text-[8.5rem] py-8"
+          isFullscreen ? "flex-1 text-[13vw] sm:text-[18vw] md:text-[min(16rem,22vw)]" : "text-6xl md:text-[8rem] xl:text-[8.5rem] py-8"
         )}>
           <div className="flex items-baseline">
             {(time?.toFormat(mounted && is24Hour ? 'HH:mm:ss' : 'hh:mm:ss') || '00:00:00').split('').map((char, i) => (
@@ -195,21 +195,21 @@ export default function MainClockCard({
               </span>
             ))}
             {time && (!mounted || !is24Hour) && (
-              <span className="text-xl md:text-3xl font-black text-primary/80 tracking-tighter uppercase ml-4">{time.toFormat('a')}</span>
+              <span className="text-sm sm:text-xl md:text-3xl font-black text-primary/80 tracking-tighter uppercase ml-2 md:ml-4">{time.toFormat('a')}</span>
             )}
           </div>
         </div>
 
         {/* Footer Info & Ad */}
         <div className="text-center space-y-4 relative z-10 w-full">
-          <div className="space-y-2 mb-6">
+          <div className={cn("space-y-2", isFullscreen ? "mb-2 md:mb-6" : "mb-6")}>
             <p className={cn(
               "font-bold text-slate-800 dark:text-white/95",
-              isFullscreen ? "text-2xl md:text-4xl" : "text-lg md:text-2xl"
+              isFullscreen ? "text-xl sm:text-2xl md:text-4xl" : "text-lg md:text-2xl"
             )}>{time ? time.toFormat('cccc, LLLL d, yyyy') : 'Loading Date...'}</p>
             <p className={cn(
               "text-primary/70 font-bold tracking-[0.2em] uppercase",
-              isFullscreen ? "text-sm md:text-base" : "text-[10px] md:text-xs"
+              isFullscreen ? "text-xs sm:text-sm md:text-base" : "text-[10px] md:text-xs"
             )}>{timezone === 'local' ? 'Local Timezone' : timezone}</p>
           </div>
 
@@ -218,9 +218,9 @@ export default function MainClockCard({
           {/* Ad Slot */}
           <div className={cn(
             "w-full flex flex-col items-center justify-center",
-            isFullscreen ? "pt-6" : "mt-8 pt-6 border-t border-card-border/10"
+            isFullscreen ? "pt-2 md:pt-6" : "mt-8 pt-6 border-t border-card-border/10"
           )}>
-            <p className="text-[9px] text-primary/40 tracking-[0.3em] uppercase mb-4 font-black">ADVERTISEMENT</p>
+            <p className={cn("text-[9px] text-primary/40 tracking-[0.3em] uppercase font-black", isFullscreen ? "mb-2 md:mb-4" : "mb-4")}>ADVERTISEMENT</p>
             <AdScript containerId="ad-mainclock" />
           </div>
         </div>

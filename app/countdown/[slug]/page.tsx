@@ -10,7 +10,8 @@ import HolidayCountdownClient from '@/components/pages/HolidayCountdownClient';
 import StructuredData from '@/components/seo/StructuredData';
 import AdBanner from '@/components/ui/AdBanner';
 import FAQAccordion from '@/components/seo/FAQAccordion';
-import { HelpCircle, Calendar, Clock, Maximize2, Info } from 'lucide-react';
+import { HelpCircle, Calendar, Clock, Maximize2, Info, Briefcase, Users } from 'lucide-react';
+import ToolSEO from '@/components/seo/ToolSEO';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -123,14 +124,14 @@ export default async function CountdownSegmentPage({ params }: Props) {
         <StructuredData data={softwareSchema} />
         <StructuredData data={breadcrumbSchema} />
 
-        <div className="max-w-7xl mx-auto px-4 pt-16 text-center space-y-6 animate-in fade-in duration-1000">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
+        <div className="max-w-7xl mx-auto px-4 pt-8 md:pt-16 text-center space-y-3 md:space-y-6 animate-in fade-in duration-1000">
+          <div className="inline-block px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-1 md:mb-2">
             Universal Celebration Trackers
           </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1]">
+          <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1]">
             {countryName} Holiday <span className="text-primary italic font-serif">Countdowns</span>
           </h1>
-          <p className="text-lg text-muted/60 max-w-3xl mx-auto font-medium">
+          <p className="text-sm md:text-lg text-muted/60 max-w-3xl mx-auto font-medium">
             Track every upcoming public, religious, and federal holiday in {countryName} with millisecond-accurate countdowns synchronized with global atomic time.
           </p>
         </div>
@@ -146,20 +147,38 @@ export default async function CountdownSegmentPage({ params }: Props) {
           <AdBanner />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 pb-24 space-y-20">
-          <section className="bg-[#1a0b36]/40 p-10 md:p-16 rounded-[3rem] border border-white/5 shadow-2xl space-y-8">
-            <h2 className="text-3xl font-black text-white">About {countryName} Celebrations</h2>
-            <div className="text-lg text-muted/80 font-medium leading-relaxed space-y-6">
-              <p>
-                Each country features unique holiday observances reflecting its history, culture, and traditions. 
-                Our real-time tracker keeps you up-to-date with every major event in {countryName}, ensuring you can map out long weekends, prepare for festivals, or schedule business deadlines with absolute precision.
-              </p>
-              <p>
-                The timer calculations use system hardware performance ticks synchronized with global atomic time servers. 
-                This prevents local CPU drift and provides reliability down to the millisecond, whether you are running a countdown display at a public event or tracking the holidays on your mobile screen.
-              </p>
-            </div>
-          </section>
+        <div className="max-w-7xl mx-auto px-4 pb-12 sm:pb-24">
+          <ToolSEO
+            toolName={`${countryName} Holiday Countdown`}
+            introTag="Celebration & Vacation Planner"
+            introHeading={`Track every upcoming holiday in ${countryName} with millisecond accuracy`}
+            introParagraph={`Discover the ultimate ${countryName} holiday countdown dashboard. Whether you need to track federal bank holidays, national public holidays, or cultural religious festivals, our real-time atomic-accurate countdown timers keep you perfectly aligned. Stay ahead of your holiday calendar planning, organize long weekends, and prepare for festivals with absolute precision.`}
+            howToSteps={[
+              { title: "Select Your Target Year", text: "Toggle between 2026 and 2027 to see both current and next year's full schedule of holidays and bank dates." },
+              { title: "Apply High-Density Filters", text: "Filter by upcoming/passed status or category (National, Religious, etc.) to target the specific holidays you want to track." },
+              { title: "Open Live Countdown", text: "Click on any holiday card or list row to launch its high-resolution, millisecond-accurate countdown timer page." },
+              { title: "Activate Full-Screen Mode", text: "Click the maximize icon in the top right to switch the countdown clock into a beautiful, distraction-free display for event boards or screens." }
+            ]}
+            proTips={[
+              "Bookmark the tool to automatically save your last selected target country, year, and category filters for the next visit.",
+              "Use simulated full-screen mode on mobile devices for a clean, distraction-free horizontal dashboard widget style.",
+              "Track regional bank holidays and combine them with weekends to maximize your paid time off (PTO) and plan long vacation trips.",
+              "Coordinate cross-border team schedules by checking holiday dates in advance to avoid calendar clashes."
+            ]}
+            useCases={[
+              { title: "Vacation & Travel Planning", text: "Map out upcoming public bank holidays and school breaks to maximize vacation days and schedule getaways.", icon: Calendar },
+              { title: "Project & Business Schedules", text: "Keep track of international holidays to prevent delays in deliverables and coordinate with cross-border teams.", icon: Briefcase },
+              { title: "Cultural & Family Gatherings", text: "Stay updated on traditional, regional, and religious festivals to prepare celebrations and connect with family.", icon: Users }
+            ]}
+            whyChooseUs={`Our holiday countdown engine is designed for absolute timing precision. By syncing with global atomic time servers, we eliminate hardware CPU drift. The interface supports dynamic categorization, state persistence, responsive mobile row layouts, and cinematic full-screen display modes.`}
+            troubleshooting={`If countdown times appear slightly off, verify that your browser's system clock is set to sync automatically. The countdown fallback ticks keep the timer running smoothly in high-resolution even during temporary network drops.`}
+            faqs={[
+              { q: `How accurate is this ${countryName} holiday countdown?`, a: "The countdown is millisecond-accurate, synchronizing system hardware timers with atomic time servers to prevent device time drift." },
+              { q: "Are all state and national bank holidays included?", a: "Yes, our real-time database covers all major federal, public, and bank holidays, as well as significant cultural and religious observances." },
+              { q: "Does the search function support autocomplete?", a: "Yes, type the country name in the selector input to quickly switch to another country's real-time holiday listing." },
+              { q: "Can I use the tool in dark mode?", a: "Yes, the layout fully supports responsive system dark mode, automatically rendering in a premium deep purple neon space aesthetic or clean glassmorphic light theme." }
+            ]}
+          />
         </div>
       </div>
     );
@@ -233,90 +252,38 @@ export default async function CountdownSegmentPage({ params }: Props) {
           <AdBanner />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 pb-24 space-y-32">
-          <section className="w-auto sm:w-full bg-[#1a0b36]/40 p-6 sm:p-10 md:p-16 rounded-none sm:rounded-[3rem] border border-x-0 sm:border border-white/5 shadow-2xl space-y-6 sm:space-y-8 -mx-4 sm:mx-0">
-            <h2 className="text-2xl sm:text-3xl font-black text-white">About the {holiday.name} Tracker</h2>
-            <div className="text-sm sm:text-base md:text-lg text-muted/80 font-medium leading-relaxed space-y-4 sm:space-y-6">
-              <p>
-                {seoInfo?.content || `This high-precision countdown is set specifically for ${holiday.name}. Whether you are coordinating travel, preparing gifts, or planning a celebratory event, our reliable global tracker ensures you never miss a second of the holiday season.`}
-              </p>
-              <p>
-                Our platform uses high-precision millisecond tracking synchronized with global atomic time to provide the most accurate countdown on the web. Stay perfectly on schedule with our high-precision countdown system, designed for reliability and visual excellence.
-              </p>
-            </div>
-          </section>
-
-          <section className="space-y-8 sm:space-y-16">
-            <div className="text-center space-y-2 sm:space-y-4">
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">How to <span className="text-primary">Master the Countdown</span></h2>
-              <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-            </div>
-
-            <div className="flex flex-col gap-4 sm:gap-6 max-w-4xl mx-auto w-full">
-              {[
-                { 
-                  icon: Calendar, 
-                  title: "1. Global Sync", 
-                  text: "The countdown automatically synchronizes with the official date and global atomic time servers." 
-                },
-                { 
-                  icon: Clock, 
-                  title: "2. Track Seconds", 
-                  text: "Monitor the buildup in real-time with millisecond accuracy, ensuring you're ready for the celebration." 
-                },
-                { 
-                  icon: Maximize2, 
-                  title: "3. Full Screen", 
-                  text: "Use the expansion icon for a cinematic, distraction-free view ideal for public event displays." 
-                },
-                { 
-                  icon: Info, 
-                  title: "4. Holiday Insights", 
-                  text: "Read expert timing insights and historical context curated specifically for this celebration." 
-                }
-              ].map((item, i) => (
-                <div key={i} className="group p-4 sm:p-8 rounded-none sm:rounded-[2.5rem] bg-[#1a0b36]/40 border border-x-0 sm:border border-violet-500/10 hover:border-violet-500/30 hover:bg-[#1a0b36]/60 transition-all duration-500 flex flex-col md:flex-row items-start gap-4 sm:gap-6 w-auto sm:w-full -mx-4 sm:mx-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-primary/30 group-hover:bg-primary/40 transition-colors shrink-0">
-                    <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <div className="space-y-1 sm:space-y-2">
-                    <h3 className="text-base sm:text-lg font-bold text-white">{item.title}</h3>
-                    <p className="text-xs sm:text-sm text-muted/80 leading-relaxed font-medium text-justify">
-                      {item.text}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="space-y-8 sm:space-y-16">
-            <div className="text-center space-y-2 sm:space-y-4">
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight">{holiday.name} <span className="text-primary italic">Countdown FAQ</span></h2>
-              <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-            </div>
-
-            <FAQAccordion 
-              faqs={[
-                { 
-                  q: `When exactly is ${holiday.name}?`, 
-                  a: `For this year, ${holiday.name} falls on ${new Date(holiday.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}.`
-                },
-                {
-                  q: "What makes this countdown different?",
-                  a: "Unlike standard web timers, our countdown utilizes high-frequency system performance counters to ensure that the time remains accurate down to the millisecond, even during intense CPU usage."
-                },
-                {
-                  q: "Does it work on mobile devices?",
-                  a: "Yes, our tool is fully responsive and optimized for both iOS and Android, allowing you to track the holiday buildup on any screen size with a premium interface."
-                },
-                {
-                  q: "Can I share this countdown?",
-                  a: "Absolutely. Use the share button in the top right corner to copy the direct link and share the excitement with friends, family, or colleagues."
-                }
-              ]} 
-            />
-          </section>
+        <div className="max-w-7xl mx-auto px-4 pb-12 sm:pb-24">
+          <ToolSEO
+            toolName={`${holiday.name} Countdown`}
+            introTag="Holiday Live Timer"
+            introHeading={`Track the exact days and seconds remaining until ${holiday.name}`}
+            introParagraph={seoInfo?.content || `Stay perfectly synchronized with the exact countdown to ${holiday.name}. Whether you are planning holiday travel, shopping for gifts, coordinating a corporate party, or getting ready for family getaways, our high-tech live tracking clock shows days, hours, minutes, and seconds left with millisecond precision.`}
+            howToSteps={[
+              { title: "Synchronize the Timer", text: "The countdown automatically retrieves and aligns with the official calendar date for this holiday." },
+              { title: "Monitor the Build-Up", text: "Watch the countdown refresh in real-time, down to the millisecond, keeping the excitement alive." },
+              { title: "Enable Cinematic View", text: "Click the maximize icon in the top right to switch to a stunning, distraction-free full-screen display." },
+              { title: "Share the Buzz", text: "Use the built-in share icon to copy the direct link and countdown timer details for your family and friends." }
+            ]}
+            proTips={[
+              "Display the live timer in full-screen mode on a tablet or second monitor to build seasonal anticipation in your office or home.",
+              "Utilize the sharing feature to align event planning details with coworkers, friends, or holiday guests.",
+              "Adjust your device system time settings to automatically update via network NTP for maximum countdown accuracy.",
+              "Bookmark the specific holiday countdown page to easily check the days remaining without searching again."
+            ]}
+            useCases={[
+              { title: "Travel & Logistical Preparation", text: "Prepare flight bookings, coordinate hotel reservations, and manage holiday schedules to beat the travel rush.", icon: Briefcase },
+              { title: "Gift & Celebration Planning", text: "Keep track of days left to complete your holiday shopping, wrap presents, and prepare local gatherings.", icon: Users },
+              { title: "Seasonal Event Promotion", text: "Utilize the live timer as a background display during corporate seasonal parties or school holiday events.", icon: Calendar }
+            ]}
+            whyChooseUs={`Our countdown system is designed to provide visual excellence and timing accuracy. Powered by client-side hardware performance clocks synced with global atomic servers, it remains perfectly accurate without device CPU lag. It features responsive dark/light modes and cinematic full-screen display layouts.`}
+            troubleshooting={`If the clock looks out of sync, refresh the webpage or check if your operating system's timezone and clock sync are enabled. The offline fallback ensures the countdown continues ticking even during temporary connectivity issues.`}
+            faqs={[
+              { q: `When exactly is ${holiday.name}?`, a: `This occurrence falls on ${new Date(holiday.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}.` },
+              { q: "Is the millisecond calculation accurate?", a: "Yes, our tracker leverages high-frequency system timers aligned with network atomic time to prevent browser delay." },
+              { q: "Can I open the countdown in full-screen mode?", a: "Yes, our interface has a cinematic fullscreen display option. Click the maximize button in the top right to show it distraction-free." },
+              { q: "Is there a share option for this timer?", a: "Yes, click share in the top right to copy the direct page URL to your clipboard for easy distribution." }
+            ]}
+          />
         </div>
         <div className="mt-16 max-w-7xl mx-auto px-4">
           <AdBanner />

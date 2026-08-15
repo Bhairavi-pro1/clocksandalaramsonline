@@ -6,7 +6,8 @@ import HolidayCountdownClient from '@/components/pages/HolidayCountdownClient';
 import StructuredData from '@/components/seo/StructuredData';
 import AdBanner from '@/components/ui/AdBanner';
 import FAQAccordion from '@/components/seo/FAQAccordion';
-import { HelpCircle, Calendar, Clock, Maximize2, Info } from 'lucide-react';
+import { HelpCircle, Calendar, Clock, Maximize2, Info, Briefcase, Users } from 'lucide-react';
+import ToolSEO from '@/components/seo/ToolSEO';
 
 interface Props {
   params: Promise<{ slug: string; holiday: string }>;
@@ -150,11 +151,11 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <div className="max-w-7xl mx-auto px-4 pt-16 text-center space-y-4">
+      <div className="max-w-7xl mx-auto px-4 pt-8 md:pt-16 text-center space-y-2.5 md:space-y-4">
         <div className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest mb-1">
           Holiday Countdown — {countryObj.name}
         </div>
-        <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter animate-in fade-in duration-1000">
+        <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter animate-in fade-in duration-1000">
           {seoInfo.title}
         </h1>
       </div>
@@ -166,47 +167,36 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
       </div>
 
       {/* SEO Content & Dynamic FAQ Section (Server Side) */}
-      <div className="max-w-7xl mx-auto px-4 pb-24 space-y-32">
-        <section className="w-auto sm:w-full bg-[#1a0b36]/40 p-6 sm:p-10 md:p-16 rounded-none sm:rounded-[3rem] border border-x-0 sm:border border-white/5 shadow-2xl space-y-6 sm:space-y-8 -mx-4 sm:mx-0">
-          <h2 className="text-2xl sm:text-3xl font-black text-white">About the {matchedHoliday.name} Tracker</h2>
-          <div className="text-sm sm:text-base md:text-lg text-muted/80 font-medium leading-relaxed space-y-4 sm:space-y-6">
-            <p>
-              {seoInfo.content}
-            </p>
-            <p>
-              Our platform uses high-precision millisecond tracking synchronized with global atomic time to provide the most accurate countdown on the web. Stay perfectly on schedule with our high-precision countdown system, designed for reliability and visual excellence.
-            </p>
-          </div>
-        </section>
-
-        {/* Dynamic FAQ */}
-        <section className="space-y-8 sm:space-y-16">
-          <div className="text-center space-y-2 sm:space-y-4">
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight">{matchedHoliday.name} <span className="text-primary italic">Countdown FAQ</span></h2>
-            <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-          </div>
-
-          <FAQAccordion 
-            faqs={[
-              { 
-                q: `When exactly is ${matchedHoliday.name} in ${countryObj.name}?`, 
-                a: `For this occurrence, ${matchedHoliday.name} falls on ${new Date(matchedHoliday.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}.`
-              },
-              {
-                q: "What makes this countdown different?",
-                a: "Unlike standard web timers, our countdown utilizes high-frequency system performance counters to ensure that the time remains accurate down to the millisecond, even during intense CPU usage."
-              },
-              {
-                q: "Does it work on mobile devices?",
-                a: "Yes, our tool is fully responsive and optimized for both iOS and Android, allowing you to track the holiday buildup on any screen size with a premium interface."
-              },
-              {
-                q: "Can I share this countdown?",
-                a: "Absolutely. Use the share button in the top right corner to copy the direct link and share the excitement with friends, family, or colleagues."
-              }
-            ]} 
-          />
-        </section>
+      <div className="max-w-7xl mx-auto px-4 pb-12 sm:pb-24">
+        <ToolSEO
+          toolName={`${matchedHoliday.name} Countdown`}
+          introTag={`${countryObj.name} Live Timer`}
+          introHeading={`Live Countdown to ${matchedHoliday.name} in ${countryObj.name}`}
+          introParagraph={`${seoInfo.content} Our platform uses high-precision millisecond tracking synchronized with global atomic time to provide the most accurate countdown on the web. Stay perfectly on schedule with our high-precision countdown system, designed for reliability and visual excellence.`}
+          howToSteps={[
+            { title: "Check Time Remaining", text: "Track the live time remaining to the holiday with atomic server precision." },
+            { title: "Access Full Screen", text: "Expand the timer interface for a premium focus view ideal for smart display boards." },
+            { title: "Share the Excitement", text: "Click the share button to copy the timer link and align holiday timing with colleagues or family." }
+          ]}
+          proTips={[
+            "Display the live timer on an external screen using the distraction-free fullscreen mode during holiday events.",
+            "Compare target holiday dates to organize paid time off (PTO) and maximize long holiday weekends.",
+            "Ensure system clock settings are synchronized automatically via network NTP for maximum countdown accuracy."
+          ]}
+          useCases={[
+            { title: "Travel & Logistical Preparation", text: "Organize airline bookings, hotel stays, and vacation timelines to beat the peak holiday rush.", icon: Briefcase },
+            { title: "Gift & Celebration Planning", text: "Track the days remaining to finish shopping, arrange dinners, and coordinate family festivals.", icon: Users },
+            { title: "Event Setup Displays", text: "Display real-time countdown clocks during classroom events, office gatherings, or public countdown screens.", icon: Calendar }
+          ]}
+          whyChooseUs="Our countdown engine is built with high-frequency CPU performance ticks synced with global atomic time servers. This avoids local timezone lag or browser sleep drift, ensuring the absolute correct countdown is rendered on all desktop and mobile devices."
+          troubleshooting="If you notice time sync delays, check your operating system settings to ensure automatic network clock updating is enabled. Local backup calculations ensure the clock keeps ticking even if your connection is lost."
+          faqs={[
+            { q: `When exactly is ${matchedHoliday.name} in ${countryObj.name}?`, a: `For this occurrence, ${matchedHoliday.name} falls on ${new Date(matchedHoliday.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}.` },
+            { q: "Does the countdown work on mobile?", a: "Yes, our web application is fully responsive and optimized for both iOS and Android browsers." },
+            { q: "How can I copy the countdown link?", a: "Click the share button in the top right corner of the countdown card to copy the page URL directly to your clipboard." },
+            { q: "Is the fullscreen mode compatible with all browsers?", a: "Yes, the fullscreen layout falls back to simulated viewport-height overlays on devices that do not support native fullscreen APIs." }
+          ]}
+        />
       </div>
       
       <div className="mt-16 max-w-7xl mx-auto px-4">

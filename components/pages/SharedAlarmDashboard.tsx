@@ -155,8 +155,10 @@ export default function SharedAlarmDashboard() {
          </div>
 
          {receivedAlarms.length === 0 ? (
-            <div className="text-center py-20 bg-[#1a0b36]/20 rounded-[2.5rem] border border-dashed border-white/5">
-               <p className="text-white/20 font-bold uppercase tracking-[0.3em] text-[10px]">No accepted alarms yet</p>
+            <div className="text-center py-12 md:py-20 bg-white/[0.02] rounded-[2rem] border border-dashed border-white/10">
+               <p className="text-white/40 text-xs md:text-sm font-medium">
+                  no accepted alarms yet.
+               </p>
             </div>
          ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

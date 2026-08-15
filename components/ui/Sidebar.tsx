@@ -211,7 +211,7 @@ export default function Sidebar() {
       </div>
 
       {/* Desktop Sidebar (Permanent) */}
-      <aside className="fixed left-0 top-0 h-screen w-72 bg-sidebar/40 backdrop-blur-3xl border-r border-white/5 hidden lg:flex flex-col z-50 overflow-y-auto shadow-[20px_0_50px_rgba(0,0,0,0.3)]">
+      <aside className="fixed left-0 top-0 h-screen w-72 bg-sidebar/40 backdrop-blur-3xl border-r border-white/5 hidden lg:flex flex-col z-50 overflow-y-auto shadow-[2px_0_12px_rgba(0,0,0,0.03)] dark:shadow-[4px_0_30px_rgba(0,0,0,0.25)]">
         <SidebarContent />
       </aside>
 

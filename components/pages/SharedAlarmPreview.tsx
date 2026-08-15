@@ -93,7 +93,7 @@ export default function SharedAlarmPreview({ alarmId }: SharedAlarmPreviewProps)
 
   if (loading || !sessionId) {
      return (
-       <div className="flex justify-center items-center min-h-[50vh]">
+       <div className="fixed inset-0 lg:left-72 z-40 flex items-center justify-center p-4 bg-background/95 backdrop-blur-md overflow-hidden">
           <div className="w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
        </div>
      );
@@ -102,7 +102,7 @@ export default function SharedAlarmPreview({ alarmId }: SharedAlarmPreviewProps)
   // Error state (expired, not found)
   if (!alarm && errorStatus) {
      return (
-        <div className="flex justify-center items-center py-20 px-4">
+        <div className="fixed inset-0 lg:left-72 z-40 flex items-center justify-center p-4 bg-background/95 backdrop-blur-md overflow-hidden">
            <div className="bg-[#1a0b36]/60 border border-red-500/30 rounded-[2rem] p-8 max-w-md w-full text-center shadow-2xl">
               <XCircle className="w-12 h-12 text-red-500/80 mx-auto mb-4" />
               <h2 className="text-xl font-bold text-white tracking-tight">{errorStatus}</h2>
@@ -129,11 +129,11 @@ export default function SharedAlarmPreview({ alarmId }: SharedAlarmPreviewProps)
   const dateString = alarmDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
 
   return (
-    <div className="flex justify-center items-center py-16 px-4">
-      <div className="w-full max-w-md bg-[#110624] border border-violet-500/30 rounded-[2.5rem] p-8 relative shadow-[0_0_50px_rgba(168,85,247,0.15)] animate-in zoom-in-95 duration-500">
+    <div className="fixed inset-0 lg:left-72 z-40 flex items-center justify-center p-4 bg-background/95 backdrop-blur-md overflow-hidden">
+      <div className="w-full max-w-md bg-[#110624] border border-violet-500/30 rounded-[2.5rem] p-8 relative shadow-[0_0_50px_rgba(168,85,247,0.15)]">
          
          <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-primary/30">
-            <Bell className="w-8 h-8 text-primary animate-pulse" />
+            <Bell className="w-8 h-8 text-primary" />
          </div>
 
          <div className="text-center mb-8">

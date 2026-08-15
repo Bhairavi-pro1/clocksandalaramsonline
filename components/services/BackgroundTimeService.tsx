@@ -32,6 +32,9 @@ export default function BackgroundTimeService() {
   // Track Firestore snapshot unsubs
   const unsubsRef = useRef<Record<string, () => void>>({})
 
+  // Track already rung shared alarm IDs to prevent repeated triggers
+  const rungSharedAlarmsRef = useRef<Set<string>>(new Set())
+
   // 1. Sync Shared Alarm Documents from Firestore
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -182,8 +185,9 @@ export default function BackgroundTimeService() {
           const alarmTime = new Date(sa.alarmDateTime).getTime()
           
           if (nowMs >= alarmTime) {
-            // Trigger ring if expiration is recent (within 60 seconds)
-            if (nowMs - alarmTime < 60000 && !ringingSharedAlarm) {
+            // Trigger ring if expiration is recent (within 60 seconds) and not rung yet
+            if (nowMs - alarmTime < 60000 && !ringingSharedAlarm && !rungSharedAlarmsRef.current.has(sa.alarmId)) {
+              rungSharedAlarmsRef.current.add(sa.alarmId)
               setRingingSharedAlarm(sa)
               sendPushNotification('⏰ Shared Alarm!', sa.title || 'A shared group alarm is ringing.')
             }
