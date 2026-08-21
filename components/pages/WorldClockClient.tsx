@@ -105,14 +105,14 @@ export default function WorldClockClient() {
       </div>
 
       {/* 3. Global Time Zones Section */}
-      <div ref={globalSectionRef} className="max-w-7xl mx-auto w-full px-4 md:px-0 mt-12 pt-8">
-        <h2 className="text-3xl md:text-4xl font-medium font-display text-white opacity-95 text-center mb-6">Global Time Zones</h2>
+      <div ref={globalSectionRef} className="max-w-7xl mx-auto w-full px-4 md:px-0 mt-6 sm:mt-8 pt-2 sm:pt-4">
+        <h2 className="text-2xl sm:text-3xl font-bold font-display text-white opacity-95 text-center mb-2 sm:mb-3">Global Time Zones</h2>
         
-        <p className="text-muted/80 text-sm md:text-base font-medium mb-8 max-w-4xl mx-auto text-center">
+        <p className="text-muted/80 text-xs sm:text-sm font-medium mb-5 max-w-2xl mx-auto text-center">
           Click any world clock card for detailed <span className="text-white/90 font-bold">global timezone information</span>, live weather, and <span className="text-white/90 font-bold">local time differences</span>.
         </p>
 
-        <div className="max-w-lg mx-auto mb-10 w-full px-4 sm:px-0">
+        <div className="max-w-lg mx-auto mb-6 sm:mb-8 w-full px-2 sm:px-0">
           <TimezoneSearch onAdd={addClock} />
         </div>
 

@@ -1,4 +1,4 @@
-import { HelpCircle, CheckCircle2, Lightbulb, Wrench, ShieldCheck, Zap, Users, GraduationCap, Briefcase } from 'lucide-react'
+import { HelpCircle, CheckCircle2, Lightbulb, Wrench, ShieldCheck, Zap, Users, GraduationCap, Briefcase, AlertTriangle, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import FAQAccordion from './FAQAccordion'
 
@@ -15,6 +15,44 @@ interface ToolSEOProps {
   faqs: { q: string, a: string }[]
 }
 
+function parseTroubleshooting(rawText: string) {
+  if (!rawText) return { intro: '', items: [] }
+
+  const lines = rawText.trim().split('\n').map(l => l.trim()).filter(Boolean)
+  let intro = ''
+  const items: { number: number; title: string; description: string }[] = []
+  let currentItem: { number: number; title: string; description: string } | null = null
+
+  for (const line of lines) {
+    const match = line.match(/^(\d+)[\.\)]\s*(.+)$/)
+    if (match) {
+      if (currentItem) {
+        items.push(currentItem)
+      }
+      const num = parseInt(match[1], 10)
+      const rest = match[2]
+      const colonIdx = rest.indexOf(':')
+      if (colonIdx > 0 && colonIdx < 50) {
+        const title = rest.substring(0, colonIdx).trim()
+        const desc = rest.substring(colonIdx + 1).trim()
+        currentItem = { number: num, title, description: desc }
+      } else {
+        currentItem = { number: num, title: `Issue ${num}`, description: rest }
+      }
+    } else if (currentItem) {
+      currentItem.description += ' ' + line
+    } else {
+      intro = intro ? `${intro} ${line}` : line
+    }
+  }
+
+  if (currentItem) {
+    items.push(currentItem)
+  }
+
+  return { intro, items }
+}
+
 export default function ToolSEO({
   toolName,
   introTag,
@@ -27,6 +65,7 @@ export default function ToolSEO({
   troubleshooting,
   faqs
 }: ToolSEOProps) {
+  const troubleData = parseTroubleshooting(troubleshooting)
   return (
     <div className="max-w-6xl mx-auto pb-12 sm:pb-24 space-y-16 sm:space-y-32">
       
@@ -122,17 +161,60 @@ export default function ToolSEO({
       </section>
 
       {/* 5. Troubleshooting */}
-      <section className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-8">
-          <Wrench className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
-          <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight">Troubleshooting Guide</h2>
-        </div>
-        <div className="bg-red-500/5 border border-red-500/20 rounded-2xl sm:rounded-[2rem] p-4 sm:p-8">
-          <p className="text-xs sm:text-lg text-muted/90 leading-relaxed whitespace-pre-line text-justify">
-            {troubleshooting}
-          </p>
-        </div>
-      </section>
+      {troubleshooting && (
+        <section className="max-w-4xl mx-auto space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 pb-2 border-b border-slate-200/60 dark:border-white/5">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0">
+                <Wrench className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Troubleshooting Guide</h2>
+                <p className="text-xs sm:text-sm text-muted font-medium">Quick solutions to common questions & potential display issues</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Intro statement banner */}
+          {troubleData.intro && (
+            <div className="flex items-start sm:items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/15 text-amber-900 dark:text-amber-200/90 text-xs sm:text-sm font-semibold">
+              <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5 sm:mt-0" />
+              <span>{troubleData.intro}</span>
+            </div>
+          )}
+
+          {/* List of organized troubleshooting items */}
+          {troubleData.items.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4 sm:gap-5">
+              {troubleData.items.map((item) => (
+                <div 
+                  key={item.number}
+                  className="group p-5 sm:p-6 rounded-2xl bg-slate-100/50 dark:bg-[#1a0b36]/40 border border-slate-200/80 dark:border-white/5 hover:border-primary/40 dark:hover:border-primary/40 transition-all duration-300 shadow-sm flex flex-col sm:flex-row items-start gap-4 sm:gap-5"
+                >
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black text-xs sm:text-sm shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                    0{item.number}
+                  </div>
+                  <div className="flex-1 min-w-0 space-y-1.5">
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-muted/90 leading-relaxed font-normal">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* Fallback for unformatted single paragraph */
+            <div className="p-5 sm:p-6 rounded-2xl bg-slate-100/50 dark:bg-[#1a0b36]/40 border border-slate-200/80 dark:border-white/5">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-muted/90 leading-relaxed">
+                {troubleshooting}
+              </p>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* 6. Extensive FAQ */}
       <section className="space-y-8 sm:space-y-16">

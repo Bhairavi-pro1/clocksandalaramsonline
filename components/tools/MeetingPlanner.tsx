@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { countryToZone } from '@/lib/timezoneData'
 import LocationSearch from '@/components/ui/LocationSearch'
 import { useStore } from '@/hooks/useStore'
+import { useClock } from '@/hooks/useClock'
 
 const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'))
 const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'))
@@ -13,6 +14,7 @@ const PERIODS = ['AM', 'PM']
 
 export default function MeetingPlanner() {
   const is24Hour = useStore((state) => state.is24Hour)
+  const clock = useClock(is24Hour)
 
   const [tz1, setTz1] = useState('local')
   const [targetZones, setTargetZones] = useState<string[]>(['America/New_York'])
@@ -160,6 +162,37 @@ export default function MeetingPlanner() {
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 bg-red-500/30 rounded" />
               <span className="text-[8px] md:text-[11px] font-bold text-slate-600 dark:text-white/60 uppercase tracking-wider md:tracking-widest">Sleep</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Local Time Display Bar */}
+        <div className="bg-slate-100/70 dark:bg-white/[0.04] backdrop-blur-md border border-slate-200/80 dark:border-white/5 p-3 sm:p-5 rounded-2xl flex flex-row items-center justify-between gap-4 mb-4 md:mb-8 shadow-sm">
+          {/* Left Side: Label & Digital Clock */}
+          <div className="flex flex-col items-start">
+            <div className="flex items-center gap-1.5 text-primary mb-0.5 sm:mb-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="font-black text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-500 dark:text-white/45">Local Time</span>
+            </div>
+            <div className="font-mono text-xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tabular-nums flex items-baseline gap-0.5 drop-shadow-sm">
+              <span>{clock.hours}</span>
+              <span className="text-primary/80 animate-pulse mx-0.5">:</span>
+              <span>{clock.minutes}</span>
+              <span className="text-primary/80 animate-pulse mx-0.5">:</span>
+              <span className="text-base sm:text-xl md:text-2xl text-slate-700 dark:text-white/90">{clock.seconds}</span>
+              {!is24Hour && (
+                <span className="text-[10px] sm:text-xs md:text-sm font-normal text-slate-500 dark:text-white/40 ml-1.5 tracking-tighter uppercase">{clock.period}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Right Side: Current Date & Timezone */}
+          <div className="flex flex-col items-end text-right">
+            <div className="text-slate-800 dark:text-white/85 font-bold text-[11px] sm:text-sm md:text-base tracking-tight">
+              {clock.date}
+            </div>
+            <div className="text-[8px] sm:text-[9px] md:text-[10px] text-slate-400 dark:text-white/35 uppercase font-black tracking-wider mt-0.5">
+              {clock.timezone}
             </div>
           </div>
         </div>

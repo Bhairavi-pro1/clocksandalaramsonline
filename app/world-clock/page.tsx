@@ -69,17 +69,14 @@ export default function WorldClockPage() {
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <div className="max-w-7xl mx-auto px-4 pt-4">
-        <div className="text-center space-y-4 animate-in fade-in duration-1000">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-2 sm:pt-4">
+        <div className="text-center space-y-1.5 sm:space-y-2 animate-in fade-in duration-700 mb-3 sm:mb-4">
+          <div className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
             Global Time Synchronization
           </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1] mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
             World <span className="text-primary italic font-serif">Clock</span> Dashboard
           </h1>
-          {/* <p className="text-lg text-muted/60 max-w-3xl mx-auto font-medium">
-            Monitor real-time clocks across over 7,000 cities with high-precision atomic sync and persistent tracking.
-          </p> */}
         </div>
       </div>
 

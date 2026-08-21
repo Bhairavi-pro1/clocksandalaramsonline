@@ -1,8 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { SHOW_ADS } from '@/lib/config'
 
 export default function Ad728x90() {
+  if (!SHOW_ADS) return null
+
   const zoneId = '11789794' // Correct zoneId for this project's 728x90 banner
   const [shouldRender, setShouldRender] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)

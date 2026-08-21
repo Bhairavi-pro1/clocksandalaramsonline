@@ -4,6 +4,7 @@ import { useClock } from '@/hooks/useClock'
 import { Clock } from 'lucide-react'
 import { AdScript } from './AdBanner'
 import { useStore } from '@/hooks/useStore'
+import { SHOW_ADS } from '@/lib/config'
 
 export default function LocalTimeBox() {
   const is24Hour = useStore((state) => state.is24Hour)
@@ -47,10 +48,12 @@ export default function LocalTimeBox() {
       </div>
 
       {/* Ad Slot */}
-      <div className="pt-3 border-t border-white/5 w-full flex flex-col items-center justify-center relative z-10">
-        <p className="text-[7px] text-primary/30 tracking-[0.2em] uppercase mb-1.5 font-black">ADVERTISEMENT</p>
-        <AdScript containerId="ad-localtimebox" />
-      </div>
+      {SHOW_ADS && (
+        <div className="pt-3 border-t border-white/5 w-full flex flex-col items-center justify-center relative z-10">
+          <p className="text-[7px] text-primary/30 tracking-[0.2em] uppercase mb-1.5 font-black">ADVERTISEMENT</p>
+          <AdScript containerId="ad-localtimebox" />
+        </div>
+      )}
     </div>
   )
 }
