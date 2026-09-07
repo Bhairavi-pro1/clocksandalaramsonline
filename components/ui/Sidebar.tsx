@@ -79,7 +79,7 @@ export default function Sidebar() {
               className={cn(
                 "flex items-center justify-between px-5 py-4 rounded-[1.25rem] transition-all duration-500 group relative overflow-hidden",
                 isActive 
-                  ? "bg-gradient-to-r from-primary via-primary to-accent text-white shadow-xl shadow-primary/30 scale-[1.02]" 
+                  ? "bg-gradient-to-r from-primary via-primary to-accent text-white shadow-none" 
                   : "text-white/50 hover:text-white hover:bg-white/5"
               )}
             >

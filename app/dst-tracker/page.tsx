@@ -62,15 +62,15 @@ export default function DSTTrackerPage() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-8 md:pt-16 pb-20 animate-in fade-in duration-1000">
+    <div className="w-full max-w-7xl mx-auto px-4 pt-3 md:pt-6 pb-20 animate-in fade-in duration-1000">
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
 
-      <div className="text-center mb-6 md:mb-16 space-y-2 md:space-y-4">
-        <h1 className="text-3xl md:text-6xl font-black text-white tracking-tighter decoration-primary decoration-8 underline-offset-8">
+      <div className="text-center mb-4 md:mb-6 space-y-1 md:space-y-2">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tighter decoration-primary decoration-8 underline-offset-8">
           Daylight Saving <span className="text-primary italic">Time</span> Tracker
         </h1>
-        <p className="text-white/40 font-medium max-w-2xl mx-auto text-xs sm:text-sm md:text-lg leading-relaxed pt-1">
+        <p className="text-white/40 font-medium max-w-2xl mx-auto text-xs sm:text-sm md:text-base leading-relaxed pt-0.5">
           Stay ahead of the curve. Monitor upcoming clock changes 
           and daylight saving transitions for any city or country in the world.
         </p>

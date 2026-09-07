@@ -29,17 +29,12 @@ export const metadata: Metadata = {
     template: '%s | Clocks and Alarms Online'
   },
   description: 'Free online alarm clock and world clock suite. High-precision stopwatch, countdown timer, and loud alarm options.',
-  other: {
-    'verification': 'Vd3n41F',
-  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jakarta.variable} ${orbitron.variable} dark`} suppressHydrationWarning>
       <head>
-        <meta name="verification" content="Vd3n41F" />
-        {/* Vd3n41F */}
         <script
           id="theme-initializer"
           dangerouslySetInnerHTML={{
@@ -104,12 +99,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LayoutWrapper>
           {children}
         </LayoutWrapper>
-
-        <Script
-          id="aclib"
-          src="https://acscdn.com/script/aclib.js"
-          strategy="afterInteractive"
-        />
 
         <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX"

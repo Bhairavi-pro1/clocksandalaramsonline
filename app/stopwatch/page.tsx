@@ -69,8 +69,8 @@ export default function StopwatchPage() {
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 sm:pt-16">
-        <h1 className="text-primary font-black tracking-[0.3em] uppercase text-xs md:text-sm mb-2 sm:mb-4 text-center animate-in fade-in duration-700">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-2 sm:pt-4">
+        <h1 className="text-primary font-black tracking-[0.3em] uppercase text-xs md:text-sm mb-2 sm:mb-3 text-center animate-in fade-in duration-700">
           Free Online Stopwatch – High-Precision Lap Timer
         </h1>
       </div>

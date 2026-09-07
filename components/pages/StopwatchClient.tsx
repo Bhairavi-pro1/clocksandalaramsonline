@@ -312,21 +312,21 @@ export default function StopwatchClient() {
   }, [])
 
   return (
-    <div className="max-w-3xl mx-auto px-0 sm:px-6 space-y-8 sm:space-y-12">
+    <div className="w-full max-w-7xl mx-auto px-0 sm:px-2 md:px-4 space-y-6 sm:space-y-8">
       {/* Main Stopwatch Card */}
       <div 
         ref={cardRef}
         className={cn(
-          "w-auto sm:w-full bg-[#1a0b2e]/60 border border-x-0 sm:border border-violet-500/20 rounded-none sm:rounded-[2.5rem] shadow-2xl relative overflow-hidden group transition-all duration-500 flex flex-col items-center justify-center -mx-4 sm:mx-0",
-          isFullscreen ? "h-screen rounded-none border-none p-4 sm:p-0 bg-background" : "p-4 sm:p-6 md:p-8 min-h-[280px] sm:min-h-[350px] md:min-h-[400px]"
+          "w-full bg-[#1a0b2e]/60 border border-violet-500/20 rounded-2xl sm:rounded-[2rem] shadow-2xl relative overflow-hidden group transition-all duration-500 flex flex-col items-center justify-center mx-auto",
+          isFullscreen ? "h-screen rounded-none border-none p-4 sm:p-0 bg-background" : "p-4 sm:p-6 md:p-8"
         )}
       >
         {/* Fullscreen Button */}
         <button 
           onClick={toggleFullscreen}
-          className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 sm:p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 z-20"
+          className="absolute top-3 right-3 sm:top-5 sm:right-5 p-1.5 sm:p-2 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 z-20"
         >
-          {isFullscreen ? <Minimize2 className="w-5 h-5 text-white" /> : <Maximize2 className="w-5 h-5 text-white/50 group-hover:text-white" />}
+          {isFullscreen ? <Minimize2 className="w-4 h-4 text-white" /> : <Maximize2 className="w-4 h-4 text-white/50 group-hover:text-white" />}
         </button>
 
         <div className={cn(
@@ -335,8 +335,8 @@ export default function StopwatchClient() {
         )}>
           {/* Timer Display */}
           <div className={cn(
-            "font-mono font-black tracking-tighter text-white tabular-nums flex items-center justify-center drop-shadow-[0_0_50px_rgba(124,58,237,0.3)] mb-4 sm:mb-6 md:mb-8 select-none",
-            isFullscreen ? "text-5xl sm:text-9xl md:text-[14rem] lg:text-[18rem]" : "text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black"
+            "font-mono font-black tracking-tighter text-white tabular-nums flex items-center justify-center drop-shadow-[0_0_40px_rgba(124,58,237,0.25)] mb-3 sm:mb-4 select-none",
+            isFullscreen ? "text-5xl sm:text-9xl md:text-[14rem] lg:text-[18rem]" : "text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-black"
           )}>
             {formatTime(time).split('').map((char, i) => (
               <span key={i} className={cn(char === ':' || char === '.' ? "mx-0.5 sm:mx-1 opacity-40" : "w-[0.6em] md:w-[0.65em] inline-block text-center")}>
@@ -346,18 +346,18 @@ export default function StopwatchClient() {
           </div>
 
           {/* Controls */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 w-full max-w-md px-2 sm:px-6">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 w-full max-w-xs sm:max-w-sm md:max-w-md px-2">
             {!isRunning ? (
               <button 
                 onClick={start}
-                className="w-full py-2.5 sm:py-3.5 md:py-4 rounded-xl sm:rounded-2xl bg-primary text-white font-black text-xs sm:text-sm md:text-base shadow-[0_0_20px_rgba(124,58,237,0.4)] hover:scale-105 active:scale-95 transition-all"
+                className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-primary text-white font-black text-xs sm:text-sm md:text-base shadow-[0_0_15px_rgba(124,58,237,0.35)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
               >
                 Start
               </button>
             ) : (
               <button 
                 onClick={pause}
-                className="w-full py-2.5 sm:py-3.5 md:py-4 rounded-xl sm:rounded-2xl bg-white/10 text-white font-black text-xs sm:text-sm md:text-base border border-white/10 hover:bg-white/20 transition-all"
+                className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-white/10 text-white font-black text-xs sm:text-sm md:text-base border border-white/10 hover:bg-white/20 transition-all cursor-pointer"
               >
                 Pause
               </button>
@@ -366,14 +366,14 @@ export default function StopwatchClient() {
             <button 
               onClick={lap}
               disabled={!isRunning && time === 0}
-              className="w-full py-2.5 sm:py-3.5 md:py-4 rounded-xl sm:rounded-2xl bg-[#2d1b4e] text-white font-black text-xs sm:text-sm md:text-base border border-violet-500/20 hover:bg-[#3d2b5e] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-[#2d1b4e] text-white font-black text-xs sm:text-sm md:text-base border border-violet-500/20 hover:bg-[#3d2b5e] transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
             >
               Lap
             </button>
 
             <button 
               onClick={handleReset}
-              className="w-full py-2.5 sm:py-3.5 md:py-4 rounded-xl sm:rounded-2xl bg-[#ff2e88] text-white font-black text-xs sm:text-sm md:text-base shadow-[0_0_20px_rgba(255,46,136,0.3)] hover:scale-105 active:scale-95 transition-all"
+              className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-[#ff2e88] text-white font-black text-xs sm:text-sm md:text-base shadow-[0_0_15px_rgba(255,46,136,0.25)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
               Reset
             </button>
@@ -381,12 +381,12 @@ export default function StopwatchClient() {
         </div>
 
         {/* Ad Space Inside Card */}
-        <AdBanner />
+        <AdBanner className="mt-2 sm:mt-3 py-1 sm:py-2" />
 
         {/* Lap Times inside card after AdBanner */}
         {laps.length > 0 && (
-          <div className="w-full max-w-md mt-4 border-t border-white/10 pt-4 relative z-10">
-            <div className="flex items-center justify-between mb-3 px-1">
+          <div className="w-full max-w-xl lg:max-w-2xl mt-4 border-t border-white/10 pt-4 relative z-10">
+            <div className="flex items-center justify-between mb-2.5 px-1">
               <h4 className="text-xs font-black text-white/40 uppercase tracking-widest flex items-center gap-2">
                 <Flag className="w-3.5 h-3.5 text-primary" /> Lap Times ({laps.length})
               </h4>
@@ -454,7 +454,7 @@ export default function StopwatchClient() {
 
       {/* Usage History Section */}
       {!isFullscreen && (
-        <div className="w-auto sm:w-full bg-[#1a0b2e]/40 border border-x-0 sm:border border-violet-500/10 rounded-none sm:rounded-[2.5rem] p-4 sm:p-10 md:p-12 -mx-4 sm:mx-0 space-y-8 animate-in fade-in slide-in-from-bottom-3 duration-700">
+        <div className="w-full bg-[#1a0b2e]/40 border border-violet-500/10 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-10 md:p-12 mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-3 duration-700">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-white tracking-tight">Usage History</h2>
             <button 

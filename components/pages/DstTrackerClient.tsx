@@ -93,46 +93,46 @@ export default function DstTrackerClient({ initialChanges }: Props) {
   }, [allChanges])
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-6 md:space-y-16">
+    <div className="w-full max-w-6xl mx-auto space-y-6 md:space-y-10">
       {/* Hero Summary Section */}
-      <div className="relative p-5 md:p-16 rounded-none border-x-0 md:border md:rounded-[3rem] bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a0b36] dark:via-[#120227] dark:to-black border-slate-200 dark:border-white/10 overflow-visible shadow-none md:shadow-2xl w-[calc(100%+2rem)] -mx-4 md:w-full md:mx-auto">
-         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] -mr-32 -mt-32" />
-         <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] -ml-20 -mb-20" />
+      <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-[2.5rem] bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a0b36] dark:via-[#120227] dark:to-black border border-slate-200 dark:border-white/10 overflow-visible shadow-none md:shadow-2xl w-full mx-auto">
+         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] -mr-32 -mt-32 pointer-events-none" />
+         <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] -ml-20 -mb-20 pointer-events-none" />
          
-         <div className="relative z-10 space-y-4 md:space-y-10">
-            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
-               <div className="flex-1 space-y-3 md:space-y-6 text-center md:text-left">
-                  <div className="flex items-center justify-center md:justify-start gap-3">
-                     <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest">
+         <div className="relative z-10 space-y-3 md:space-y-6">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+               <div className="flex-1 space-y-2 md:space-y-3 text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-2.5">
+                     <div className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest">
                        Global Schedule
                      </div>
                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   </div>
-                  <h2 className="text-2xl md:text-6xl font-black text-white tracking-tight leading-none italic">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-black text-white tracking-tight leading-none italic">
                      Upcoming <span className="text-primary not-italic">Clock Changes</span>
                   </h2>
-                  <p className="text-xs md:text-lg text-white/40 font-medium max-w-xl">
+                  <p className="text-xs md:text-sm lg:text-base text-white/40 font-medium max-w-xl">
                      A comprehensive live directory of every scheduled Daylight Saving Time transition across the globe for the next 12 months.
                   </p>
                </div>
                
-               <div className="grid grid-cols-2 gap-2 md:gap-4 w-full md:w-auto">
-                  <div className="p-2.5 md:p-6 rounded-xl md:rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-inner group-hover:scale-105 transition-transform duration-500">
-                     <p className="text-[8px] md:text-[10px] font-black text-primary uppercase tracking-widest mb-0.5 md:mb-1">Total Changes</p>
-                     <p className="text-base sm:text-lg md:text-3xl font-black text-white">{allChanges.length}</p>
+               <div className="grid grid-cols-2 gap-2 md:gap-3 w-full md:w-auto">
+                  <div className="p-2.5 md:p-3.5 lg:p-4 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-inner group-hover:scale-105 transition-transform duration-500">
+                     <p className="text-[8px] md:text-[9px] font-black text-primary uppercase tracking-widest mb-0.5">Total Changes</p>
+                     <p className="text-base sm:text-lg md:text-2xl font-black text-white">{allChanges.length}</p>
                   </div>
-                  <div className="p-2.5 md:p-6 rounded-xl md:rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-inner">
-                     <p className="text-[8px] md:text-[10px] font-black text-accent uppercase tracking-widest mb-0.5 md:mb-1">Next Wave</p>
-                     <p className="text-base sm:text-lg md:text-3xl font-black text-white">{nextWaveDays}<span className="text-[10px] md:text-sm ml-0.5 md:ml-1 opacity-40 font-bold">days</span></p>
+                  <div className="p-2.5 md:p-3.5 lg:p-4 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-inner">
+                     <p className="text-[8px] md:text-[9px] font-black text-accent uppercase tracking-widest mb-0.5">Next Wave</p>
+                     <p className="text-base sm:text-lg md:text-2xl font-black text-white">{nextWaveDays}<span className="text-[10px] md:text-xs ml-0.5 opacity-40 font-bold">days</span></p>
                   </div>
                </div>
             </div>
 
             {/* Filter Search Bar */}
             <div className="relative max-w-2xl mx-auto w-full group">
-               <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity" />
-               <div className="relative flex items-center bg-slate-200/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl md:rounded-2xl px-4 md:px-6 h-10 md:h-14 backdrop-blur-xl focus-within:border-primary/50 transition-all">
-                  <Search className="w-4 h-4 md:w-5 md:h-5 text-slate-400 dark:text-white/20 mr-2.5 md:mr-4" />
+               <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
+               <div className="relative flex items-center bg-slate-200/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl md:rounded-2xl px-4 md:px-5 h-10 md:h-12 backdrop-blur-xl focus-within:border-primary/50 transition-all">
+                  <Search className="w-4 h-4 text-slate-400 dark:text-white/20 mr-2.5 md:mr-3" />
                   <input 
                     type="text"
                     placeholder="Search by country or city name..."
@@ -143,11 +143,11 @@ export default function DstTrackerClient({ initialChanges }: Props) {
                     }}
                     onFocus={() => setShowSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                    className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-white font-bold text-xs md:text-base placeholder:text-slate-400 dark:placeholder:text-white/20"
+                    className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-white font-bold text-xs md:text-sm placeholder:text-slate-400 dark:placeholder:text-white/20"
                   />
                   {searchTerm && (
-                    <button onClick={() => setSearchTerm('')} className="p-1 hover:bg-slate-300/50 dark:hover:bg-white/10 rounded-full transition-colors">
-                      <X className="w-4 h-4 text-slate-400 dark:text-white/40" />
+                    <button onClick={() => setSearchTerm('')} className="p-1 hover:bg-slate-300/50 dark:hover:bg-white/10 rounded-full transition-colors cursor-pointer">
+                      <X className="w-3.5 h-3.5 text-slate-400 dark:text-white/40" />
                     </button>
                   )}
                </div>

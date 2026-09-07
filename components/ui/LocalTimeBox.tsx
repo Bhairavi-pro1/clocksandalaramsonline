@@ -4,7 +4,7 @@ import { useClock } from '@/hooks/useClock'
 import { Clock } from 'lucide-react'
 import { AdScript } from './AdBanner'
 import { useStore } from '@/hooks/useStore'
-import { SHOW_ADS } from '@/lib/config'
+import { SHOW_ADS } from '@/lib/adsConfig'
 
 export default function LocalTimeBox() {
   const is24Hour = useStore((state) => state.is24Hour)

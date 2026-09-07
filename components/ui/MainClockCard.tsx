@@ -5,7 +5,7 @@ import { Maximize2, Minimize2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AdScript } from './AdBanner'
 import { useStore } from '@/hooks/useStore'
-import { SHOW_ADS } from '@/lib/config'
+import { SHOW_ADS } from '@/lib/adsConfig'
 
 interface MainClockCardProps {
   timezone?: string

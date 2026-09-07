@@ -3,9 +3,9 @@
 import { useEffect, useRef } from 'react'
 import { ADS_CONFIG, areAdsEnabled } from '@/lib/adsConfig'
 
-export default function Ad160x600({ side = 'right', delay = 0 }: { side?: string; delay?: number }) {
+export default function Ad320x50({ delay = 0 }: { delay?: number } = {}) {
   const isEnabled = areAdsEnabled()
-  const adKey = ADS_CONFIG.highRevenueFormat?.skyscraperKey
+  const adKey = ADS_CONFIG.highRevenueFormat?.mobileBannerKey
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -16,11 +16,11 @@ export default function Ad160x600({ side = 'right', delay = 0 }: { side?: string
       containerRef.current.innerHTML = ''
 
       const iframe = document.createElement('iframe')
-      iframe.width = '160'
-      iframe.height = '600'
-      iframe.title = `Advertisement ${side}`
-      iframe.style.width = '160px'
-      iframe.style.height = '600px'
+      iframe.width = '320'
+      iframe.height = '50'
+      iframe.title = 'Advertisement 320x50'
+      iframe.style.width = '320px'
+      iframe.style.height = '50px'
       iframe.style.border = 'none'
       iframe.style.overflow = 'hidden'
       iframe.scrolling = 'no'
@@ -40,8 +40,8 @@ export default function Ad160x600({ side = 'right', delay = 0 }: { side?: string
                 html, body {
                   margin: 0;
                   padding: 0;
-                  width: 160px;
-                  height: 600px;
+                  width: 320px;
+                  height: 50px;
                   overflow: hidden;
                   display: flex;
                   justify-content: center;
@@ -55,8 +55,8 @@ export default function Ad160x600({ side = 'right', delay = 0 }: { side?: string
                 atOptions = {
                   'key' : '${adKey}',
                   'format' : 'iframe',
-                  'height' : 600,
-                  'width' : 160,
+                  'height' : 50,
+                  'width' : 320,
                   'params' : {}
                 };
               </script>
@@ -69,21 +69,15 @@ export default function Ad160x600({ side = 'right', delay = 0 }: { side?: string
     }, delay)
 
     return () => clearTimeout(timer)
-  }, [isEnabled, adKey, delay, side])
+  }, [isEnabled, adKey, delay])
 
   if (!isEnabled || !adKey) {
     return null
   }
 
   return (
-    <aside className="ad-column self-stretch">
-      <div className="sticky top-8">
-        <div className="ad-script-container-160x600">
-          <div ref={containerRef} style={{ width: '160px', height: '600px', overflow: 'hidden' }} />
-        </div>
-      </div>
-    </aside>
+    <div className="ad-container-320x50 min-h-[50px] flex items-center justify-center">
+      <div ref={containerRef} style={{ width: '320px', height: '50px', overflow: 'hidden' }} />
+    </div>
   )
 }
-
-

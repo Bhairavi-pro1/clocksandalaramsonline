@@ -115,6 +115,33 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
+.ad-container-320x50 {
+  position: relative;
+  width: 320px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.ad-container-320x50::before {
+  content: "ADVERTISEMENT (320 × 50)";
+  position: absolute;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.25);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ad-container-320x50 > * {
+  position: relative;
+  z-index: 10;
+}
+
 .ad-container-728x90 > * {
   position: relative;
   z-index: 10;

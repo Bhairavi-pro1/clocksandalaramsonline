@@ -48,7 +48,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         "flex-1 min-w-0 flex flex-col min-h-screen lg:overflow-x-visible overflow-x-hidden",
         !isHomePage ? "lg:ml-72 p-4 lg:p-10 pt-20 lg:pt-10" : "w-full"
       )}>
-        <div className="flex-1 flex flex-col xl:flex-row gap-8">
+        <div className="flex-1 flex flex-col xl:flex-row gap-8 items-start relative">
           <div className="flex-1 min-w-0">
             {children}
           </div>
