@@ -69,8 +69,8 @@ export default function AlarmPage() {
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <div className="max-w-7xl mx-auto px-4 pt-8 md:pt-16">
-        <h1 className="text-4xl md:text-6xl font-black text-center mb-4 md:mb-8 text-white tracking-tighter animate-in fade-in duration-1000">
+      <div className="max-w-7xl mx-auto px-0 sm:px-4 pt-4 sm:pt-8 md:pt-16">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-center mb-4 md:mb-8 text-white tracking-tighter animate-in fade-in duration-1000">
           Online <span className="text-primary italic">Alarm</span> Clock
         </h1>
       </div>
@@ -121,7 +121,7 @@ export default function AlarmPage() {
           { q: "Does the alarm adjust for Daylight Saving Time automatically?", a: "Yes, because the alarm utilizes your device's native clock APIs, it automatically inherits any DST shifts enacted by your operating system overnight." }
         ]}
       />
-      <div className="mt-16 max-w-7xl mx-auto px-4">
+      <div className="mt-16 max-w-7xl mx-auto px-0 sm:px-4">
         <AdBanner />
       </div>
     </div>

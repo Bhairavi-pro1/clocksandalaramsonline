@@ -133,7 +133,7 @@ export default function MeetingPlanner() {
   if (!mounted) return null
 
   return (
-    <div className="w-[calc(100%+2rem)] -mx-4 md:mx-auto md:w-full max-w-5xl p-2.5 md:p-8 bg-card/30 backdrop-blur-xl border-x-0 md:border border-slate-200 dark:border-white/10 rounded-none md:rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+    <div className="w-full max-w-5xl mx-auto p-4 md:p-8 bg-card/30 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl md:rounded-[2.5rem] shadow-2xl relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-accent/10 rounded-full blur-3xl" />

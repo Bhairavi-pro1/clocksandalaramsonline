@@ -130,12 +130,31 @@ export default async function BlogPage() {
 
                   <div className="p-5 space-y-3 relative z-10">
                     {/* Category & Date */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/20">
-                        {categoryLabels[post.category] || post.category}
-                      </span>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/20">
+                          {categoryLabels[post.category] || post.category}
+                        </span>
+                        {post.subCategories && post.subCategories.length > 0 && (
+                          <>
+                            {post.subCategories.slice(0, 2).map((sub, idx) => (
+                              <span
+                                key={idx}
+                                className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/5 text-white/70 border border-white/10"
+                              >
+                                {categoryLabels[sub] || sub}
+                              </span>
+                            ))}
+                            {post.subCategories.length > 2 && (
+                              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-white/5 text-muted/60 border border-white/5">
+                                +{post.subCategories.length - 2}
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </div>
                       <ArrowRight
-                        className="text-white/20 group-hover:text-primary group-hover:translate-x-1.5 transition-all"
+                        className="text-white/20 group-hover:text-primary group-hover:translate-x-1.5 transition-all shrink-0"
                         size={16}
                       />
                     </div>

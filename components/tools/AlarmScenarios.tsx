@@ -53,12 +53,12 @@ export default function AlarmScenarios() {
         </div>
       </header>
 
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5 relative z-10 w-full">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-2.5 relative z-10 w-full">
         {alarmPresets.map((time) => (
           <button
             key={time}
             onClick={() => handleCreateAlarm(time)}
-            className="w-full flex items-center justify-center p-3 rounded-xl bg-[#1a0b36]/40 border border-violet-500/20 hover:border-primary/50 hover:bg-primary/5 text-sky-400 font-bold text-[11px] sm:text-xs md:text-sm transition-all duration-300"
+            className="w-full flex items-center justify-center p-2.5 sm:p-3 rounded-xl bg-[#1a0b36]/40 border border-violet-500/20 hover:border-primary/50 hover:bg-primary/5 text-sky-400 font-bold text-[10px] sm:text-xs md:text-sm transition-all duration-300 truncate"
           >
             {time}
           </button>

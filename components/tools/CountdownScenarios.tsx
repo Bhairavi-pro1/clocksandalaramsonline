@@ -182,7 +182,7 @@ export default function CountdownScenarios() {
           <p className="text-[12px] text-muted/60 font-medium ml-6.5">Automatically updated countdowns for holidays in {countryName}</p>
         </header>
 
-        <div className="overflow-hidden bg-white/[0.02] sm:rounded-xl border-y border-x-0 sm:border border-white/5 -mx-5 sm:mx-0 relative z-10">
+        <div className="overflow-hidden bg-white/[0.02] rounded-xl border border-white/5 relative z-10">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-white/5 shadow-sm">

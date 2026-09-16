@@ -128,31 +128,40 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Mobile-Only Header & Hero */}
       <div className="block md:hidden w-full relative">
         {/* First: Back & Share action row */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-white/5">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/5">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-bold text-white/50 hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-white/50 hover:text-primary transition-colors"
           >
-            <ArrowLeft size={16} /> Back to Blog
+            <ArrowLeft size={14} /> Back to Blog
           </Link>
           <ShareButton
             title={post.title}
-            className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white cursor-pointer hover:bg-white/10 transition-colors"
+            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white cursor-pointer hover:bg-white/10 transition-colors"
           />
         </div>
 
         {/* Second: Title & Metadata */}
-        <div className="px-4 pt-6 space-y-3">
-          <h1 className="text-2xl font-black text-white tracking-tight leading-tight">
+        <div className="px-4 pt-3 space-y-1.5">
+          <h1 className="text-lg sm:text-2xl font-black text-white tracking-tight leading-snug">
             {post.title}
           </h1>
-          <div className="flex items-center gap-4 text-xs text-muted/60 font-bold">
-            <div className="flex items-center gap-1.5">
-              <Tag size={13} className="text-primary" />
+          <div className="flex items-center gap-2 text-[10px] sm:text-xs text-muted/60 font-bold flex-wrap">
+            <div className="flex items-center gap-1">
+              <Tag size={11} className="text-primary shrink-0" />
               <span>{categoryLabels[post.category] || post.category}</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Clock size={13} className="text-primary" />
+            {post.subCategories && post.subCategories.length > 0 &&
+              post.subCategories.map((subCat, index) => (
+                <span
+                  key={index}
+                  className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-white/5 text-white/70 border border-white/10"
+                >
+                  {categoryLabels[subCat] || subCat}
+                </span>
+              ))}
+            <div className="flex items-center gap-1">
+              <Clock size={11} className="text-primary shrink-0" />
               <span>
                 {post.estimatedReadingTime ? `${post.estimatedReadingTime} min read` : '5 min read'}
               </span>
@@ -161,17 +170,17 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {/* Third: Author Section */}
-        <div className="px-4 pt-6 flex items-center justify-between">
+        <div className="px-4 pt-2.5 flex items-center justify-between">
           <div>
-            <div className="text-sm font-black text-white leading-tight">{post.author}</div>
-            <div className="text-[11px] text-muted font-medium">Clocks & Alarms Author</div>
+            <div className="text-xs font-black text-white leading-tight">{post.author}</div>
+            <div className="text-[10px] text-muted font-medium">Author</div>
           </div>
         </div>
 
         {/* Fourth: Main Featured Image */}
         {post.mainImage?.asset && (
-          <div className="px-4 mt-6">
-            <div className="relative h-[220px] sm:h-[320px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl w-full">
+          <div className="px-4 mt-3">
+            <div className="relative h-[180px] sm:h-[260px] rounded-xl overflow-hidden border border-white/10 shadow-none w-full">
               <img
                 src={urlFor(post.mainImage).width(800).quality(85).url()}
                 alt={post.mainImage.alt || post.title}
@@ -198,11 +207,20 @@ export default async function BlogPostPage({ params }: Props) {
             Back to Blog
           </Link>
 
-          {/* Category Badge */}
-          <div className="flex items-center gap-3">
+          {/* Category & Sub-Categories Badges */}
+          <div className="flex flex-wrap items-center gap-2.5">
             <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-primary/20 text-primary border border-primary/20">
               {categoryLabels[post.category] || post.category}
             </span>
+            {post.subCategories && post.subCategories.length > 0 &&
+              post.subCategories.map((subCat, index) => (
+                <span
+                  key={index}
+                  className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 text-white/70 border border-white/10"
+                >
+                  {categoryLabels[subCat] || subCat}
+                </span>
+              ))}
           </div>
 
           {/* Title */}
@@ -237,7 +255,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Featured Image */}
         {post.mainImage?.asset && (
-          <div className="max-w-6xl mx-auto px-4 mt-10">
+          <div className="max-w-6xl mx-auto px-4 mt-10 space-y-2.5">
             <div className="relative h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-primary/5 w-full">
               <img
                 src={urlFor(post.mainImage).width(1400).quality(85).url()}
@@ -246,12 +264,17 @@ export default async function BlogPostPage({ params }: Props) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b0118]/40 via-transparent to-transparent" />
             </div>
+            {post.mainImage.alt && (
+              <p className="text-xs text-muted/60 text-center font-medium">
+                {post.mainImage.alt}
+              </p>
+            )}
           </div>
         )}
       </div>
 
       {/* Article Body */}
-      <article className="max-w-6xl mx-auto px-4 py-8 md:py-16">
+      <article className="max-w-6xl mx-auto px-4 py-3 md:py-16">
         <div className="p-0 md:p-14 bg-transparent md:bg-card border-0 md:border md:border-card-border rounded-none md:rounded-2xl shadow-none md:shadow-xl">
           <PortableText value={post.body} components={portableTextComponents} />
         </div>

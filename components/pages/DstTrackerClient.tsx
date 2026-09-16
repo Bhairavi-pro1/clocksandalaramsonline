@@ -265,7 +265,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
             </div>
 
             {/* Mobile Compact List Layout (Full-Width, High Density) */}
-            <div className="block md:hidden w-[calc(100%+2rem)] -mx-4 border-y border-slate-200 dark:border-white/10 bg-[#1a0b2e]/40 divide-y divide-slate-200 dark:divide-white/10">
+            <div className="block md:hidden w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-[#1a0b2e]/40 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
               {group.items.map((item, iIdx) => (
                 <div 
                   key={`${item.zone}-${iIdx}-mobile`}

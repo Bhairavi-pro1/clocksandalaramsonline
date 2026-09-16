@@ -200,7 +200,7 @@ export default function DSTTracker() {
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6 md:space-y-16">
       {/* Hero Summary Section */}
-      <div className="relative p-5 md:p-16 rounded-none border-x-0 md:border md:rounded-[3rem] bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a0b36] dark:via-[#120227] dark:to-black border-slate-200 dark:border-white/10 overflow-visible shadow-none md:shadow-2xl w-[calc(100%+2rem)] -mx-4 md:w-full md:mx-auto">
+      <div className="relative p-4 sm:p-6 md:p-16 rounded-2xl md:rounded-[3rem] bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a0b36] dark:via-[#120227] dark:to-black border border-slate-200 dark:border-white/10 overflow-visible shadow-none md:shadow-2xl w-full mx-auto">
          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] -mr-32 -mt-32" />
          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] -ml-20 -mb-20" />
          
@@ -375,7 +375,7 @@ export default function DSTTracker() {
             </div>
 
             {/* Mobile Compact List Layout (Full-Width, High Density) */}
-            <div className="block md:hidden w-[calc(100%+2rem)] -mx-4 border-y border-slate-200 dark:border-white/10 bg-[#1a0b2e]/40 divide-y divide-slate-200 dark:divide-white/10">
+            <div className="block md:hidden w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-[#1a0b2e]/40 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
               {group.items.map((item, iIdx) => (
                 <div 
                   key={`${item.zone}-${iIdx}-mobile`}

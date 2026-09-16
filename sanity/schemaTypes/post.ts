@@ -121,19 +121,17 @@ export default defineType({
     }),
     defineField({
       name: 'category',
-      title: 'Category',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Time History', value: 'time-history' },
-          { title: 'Clock Technology', value: 'clock-technology' },
-          { title: 'Productivity Tips', value: 'productivity-tips' },
-          { title: 'Tool Guides', value: 'tool-guides' },
-          { title: 'Time Zones & DST', value: 'time-zones-dst' },
-          { title: 'Fun Facts', value: 'fun-facts' },
-        ],
-      },
+      title: 'Main Category',
+      type: 'reference',
+      to: [{ type: 'category' }],
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'subCategories',
+      title: 'Sub Categories',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'category' }] }],
+      description: 'Select one or more sub-categories',
     }),
     defineField({
       name: 'publishedAt',
@@ -155,14 +153,16 @@ export default defineType({
       title: 'title',
       author: 'author',
       media: 'mainImage',
-      category: 'category',
+      categoryTitle: 'category.title',
+      rawCategory: 'category',
     },
     prepare(selection) {
-      const { title, author, category } = selection
+      const { title, author, categoryTitle, rawCategory } = selection
+      const catDisplay = categoryTitle || (typeof rawCategory === 'string' ? rawCategory : '')
       return {
         ...selection,
         title,
-        subtitle: `${category ? category : ''} — ${author}`,
+        subtitle: `${catDisplay ? catDisplay : ''} — ${author}`,
       }
     },
   },

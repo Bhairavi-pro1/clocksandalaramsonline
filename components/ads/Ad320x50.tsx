@@ -76,8 +76,8 @@ export default function Ad320x50({ delay = 0 }: { delay?: number } = {}) {
   }
 
   return (
-    <div className="ad-container-320x50 min-h-[50px] flex items-center justify-center">
-      <div ref={containerRef} style={{ width: '320px', height: '50px', overflow: 'hidden' }} />
+    <div className="ad-container-320x50 min-h-[50px] flex items-center justify-center max-w-full">
+      <div ref={containerRef} style={{ width: '320px', maxWidth: '100%', height: '50px', overflow: 'hidden' }} />
     </div>
   )
 }

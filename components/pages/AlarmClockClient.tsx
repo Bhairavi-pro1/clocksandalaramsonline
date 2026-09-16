@@ -18,7 +18,7 @@ export default function AlarmClockClient() {
   const activeAlarm = alarms.find(a => a.id === activeAlarmId)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pt-0 sm:pt-6 pb-20">
+    <div className="max-w-7xl mx-auto px-0 sm:px-4 pt-0 sm:pt-6 pb-20">
       <div className="flex flex-col gap-6 md:gap-12">
         {/* Row 1: Local Time Box Fully Occupied */}
         <div className="w-full">

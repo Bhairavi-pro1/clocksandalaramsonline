@@ -62,7 +62,7 @@ export default function DSTTrackerPage() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-3 md:pt-6 pb-20 animate-in fade-in duration-1000">
+    <div className="w-full max-w-7xl mx-auto px-0 sm:px-4 pt-3 md:pt-6 pb-20 animate-in fade-in duration-1000">
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
 
@@ -78,7 +78,7 @@ export default function DSTTrackerPage() {
 
       <DstTrackerClient initialChanges={initialChanges} />
       
-      <div className="mt-16 max-w-7xl mx-auto px-4">
+      <div className="mt-16 max-w-7xl mx-auto px-0 sm:px-4">
         <AdBanner />
       </div>
 

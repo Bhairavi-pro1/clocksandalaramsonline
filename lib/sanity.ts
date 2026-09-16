@@ -40,6 +40,7 @@ export interface Post {
   body: any[]
   author: string
   category: string
+  subCategories?: string[]
   publishedAt: string
   estimatedReadingTime?: number
 }
@@ -53,7 +54,8 @@ const postFields = `
   excerpt,
   mainImage,
   author,
-  category,
+  "category": coalesce(category->title, category),
+  "subCategories": coalesce(subCategories[]->title, subCategories, []),
   publishedAt,
   "estimatedReadingTime": round(length(pt::text(body)) / 5 / 200)
 `
@@ -84,7 +86,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 export async function getRelatedPosts(category: string, currentSlug: string): Promise<Post[]> {
   if (!client) return []
   return client.fetch(
-    `*[_type == "post" && category == $category && slug.current != $currentSlug && !(_id in path("drafts.**"))] | order(publishedAt desc) [0...3] {
+    `*[_type == "post" && (category == $category || category->title == $category) && slug.current != $currentSlug && !(_id in path("drafts.**"))] | order(publishedAt desc) [0...3] {
       ${postFields}
     }`,
     { category, currentSlug },

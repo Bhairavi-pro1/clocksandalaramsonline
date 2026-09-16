@@ -14,7 +14,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
       {faqs.map((faq, i) => (
-        <div key={i} className="w-auto sm:w-full bg-white dark:bg-[#1a0b36]/40 border border-x-0 sm:border border-slate-200 dark:border-white/10 p-4 sm:p-6 md:p-8 rounded-none sm:rounded-[1.5rem] md:rounded-[2rem] hover:bg-slate-50 dark:hover:bg-white/[0.08] -mx-4 sm:mx-0 transition-all group flex flex-col justify-start">
+        <div key={i} className="w-full bg-white dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[1.5rem] md:rounded-[2rem] hover:bg-slate-50 dark:hover:bg-white/[0.08] transition-all group flex flex-col justify-start">
           <div 
             className="flex items-center justify-between gap-3 sm:gap-4 w-full cursor-pointer md:cursor-default select-none"
             onClick={() => setActiveMobileFaq(activeMobileFaq === i ? null : i)}

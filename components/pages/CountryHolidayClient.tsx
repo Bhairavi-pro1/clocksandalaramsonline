@@ -586,8 +586,8 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
               })}
             </div>
 
-            {/* Mobile Compact List Layout (DST Tracker pattern) */}
-            <div className="block md:hidden w-[calc(100%+2rem)] -mx-4 border-y border-slate-200 dark:border-white/10 bg-slate-900/[0.02] dark:bg-[#1a0b2e]/40 divide-y divide-slate-200 dark:divide-white/10">
+            {/* Mobile Compact List Layout */}
+            <div className="block md:hidden w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-900/[0.02] dark:bg-[#1a0b2e]/40 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
               {filteredHolidays.map((holiday, i) => {
                 const slug = holiday.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
                 const { text: daysText, isUpcoming } = getDaysRemainingText(holiday.date);

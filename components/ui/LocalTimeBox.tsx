@@ -19,7 +19,7 @@ export default function LocalTimeBox() {
   return (
     <div className="bg-[#1a0b36]/40 backdrop-blur-xl border border-white/5 p-4 sm:p-6 rounded-2xl shadow-2xl flex flex-col w-full relative overflow-hidden group gap-4">
       {/* Info Row: Left (Clock) & Right (Date/Timezone) */}
-      <div className="flex flex-row items-center justify-between gap-4 w-full relative z-10 px-4 sm:px-0">
+      <div className="flex flex-row items-center justify-between gap-4 w-full relative z-10">
         {/* Left Side: Label & Time */}
         <div className="flex flex-col items-start">
           <div className="flex items-center gap-1.5 text-primary mb-1">

@@ -23,22 +23,20 @@ const tableSchema = {
 
 export default function EggTimerPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="w-full max-w-7xl mx-auto px-0 sm:px-4 pt-3 md:pt-6 pb-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(tableSchema) }}
       />
-      <div className="flex flex-col min-h-[calc(100vh-4rem)]">
-        <main className="flex-1 w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 py-4 sm:py-8 md:py-12">
-          
-          <div className="text-center mb-6 sm:mb-12 space-y-2 sm:space-y-4">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight">
-              Perfect <span className="text-primary italic">Egg Timer</span>
-            </h1>
-            <p className="text-sm sm:text-lg md:text-xl text-white/50 font-medium max-w-2xl mx-auto">
-              Select your desired doneness with our interactive guide. Adjust for egg size and starting temperature to boil the perfect egg every time.
-            </p>
-          </div>
+      
+      <div className="text-center mb-6 sm:mb-12 space-y-2 sm:space-y-4">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight">
+          Perfect <span className="text-primary italic">Egg Timer</span>
+        </h1>
+        <p className="text-sm sm:text-lg md:text-xl text-white/50 font-medium max-w-2xl mx-auto">
+          Select your desired doneness with our interactive guide. Adjust for egg size and starting temperature to boil the perfect egg every time.
+        </p>
+      </div>
 
           {/* <div className="py-2 mb-8">
             <AdBanner dataAdSlot="egg_timer_top" />
@@ -134,9 +132,7 @@ export default function EggTimerPage() {
               <p className="text-sm text-primary/70 italic">* Times may vary slightly based on altitude, amount of water, and starting water temperature (always start counting when water returns to a rolling boil).</p>
             </div>
           </section>
-        </main>
-      </div>
-      <div className="py-2 mb-8">
+      <div className="mt-16 max-w-7xl mx-auto px-0 sm:px-4">
         <AdBanner />
       </div>
     </div>
