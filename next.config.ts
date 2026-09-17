@@ -58,6 +58,17 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // 301 Permanent Redirects for legacy routes
+  async redirects() {
+    return [
+      {
+        source: '/tools/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

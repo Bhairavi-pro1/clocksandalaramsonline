@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next'
 import timerData from '@/data/seo/timers.json'
 import cityData from '@/data/seo/cities.json'
-import holidayData from '@/data/seo/holidays.json'
 import countriesData from '@/data/countries.json'
 import { getAllPosts } from '@/lib/sanity'
 
@@ -39,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/shared-alarm',
     '/blog',
   ].map((route) => ({
-    url: `${baseUrl}${route}`,
+    url: `${baseUrl}${route}/`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 1.0,
@@ -52,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/privacy',
     '/terms',
   ].map((route) => ({
-    url: `${baseUrl}${route}`,
+    url: `${baseUrl}${route}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
@@ -60,7 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Timer Dynamic Routes
   const timerRoutes = timerData.map((timer) => ({
-    url: `${baseUrl}/timer/${timer.slug}`,
+    url: `${baseUrl}/timer/${timer.slug}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
@@ -68,47 +67,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // World Clock Dynamic Routes
   const worldClockRoutes = cityData.map((city) => ({
-    url: `${baseUrl}/world-clock/${city.slug}`,
+    url: `${baseUrl}/world-clock/${city.slug}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
   }))
 
-  // Countdown Dynamic Routes
-  const countdownRoutes = holidayData.map((holiday) => ({
-    url: `${baseUrl}/countdown/${holiday.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'yearly' as const,
-    priority: 0.9,
-  }))
-
-  // Country Countdown Landing Pages
+  // Country Countdown Landing Pages (Powered by Firebase & Calendarific)
   const countryCountdownRoutes = countriesData.map((country) => ({
-    url: `${baseUrl}/countdown/${country.code.toLowerCase()}`,
+    url: `${baseUrl}/countdown/${country.code.toLowerCase()}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }))
 
-  // Country-Specific Holiday Countdowns
-  const countryHolidayRoutes: MetadataRoute.Sitemap = []
-  for (const country of countriesData) {
-    for (const holiday of holidayData) {
-      countryHolidayRoutes.push({
-        url: `${baseUrl}/countdown/${country.code.toLowerCase()}/${holiday.slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-      })
-    }
-  }
-
   // 1440 dynamic alarm paths
   const alarmRoutes = getAlarmPaths().map((route) => ({
-    url: `${baseUrl}/alarm-clock/${route}`,
+    url: `${baseUrl}/alarm-clock/${route}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: 0.7, // Slightly lower priority than main tools
+    priority: 0.7,
   }))
 
   // Blog Dynamic Routes (from Sanity CMS)
@@ -116,7 +94,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const posts = await getAllPosts()
     blogRoutes = posts.map((post) => ({
-      url: `${baseUrl}/blog/${post.slug.current}`,
+      url: `${baseUrl}/blog/${post.slug.current}/`,
       lastModified: new Date(post.publishedAt),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
@@ -131,9 +109,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogRoutes,
     ...timerRoutes, 
     ...worldClockRoutes, 
-    ...countdownRoutes, 
     ...countryCountdownRoutes,
-    ...countryHolidayRoutes,
     ...alarmRoutes
   ]
 }
+

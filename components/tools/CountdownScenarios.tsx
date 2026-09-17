@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { Calendar, Clock, ArrowRight, Timer, PartyPopper, Zap } from 'lucide-react'
-import { getHolidays, Holiday } from '@/lib/holidays'
 import { useStore } from '@/hooks/useStore'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
@@ -9,8 +8,14 @@ import * as cityTimezones from 'city-timezones'
 import countriesData from '@/data/countries.json'
 import { getCountryFromTimezone } from '@/lib/timezoneToCountry'
 
+interface HolidayItem {
+  name: string
+  date: Date
+  daysRemaining: number
+}
+
 export default function CountdownScenarios() {
-  const [holidays, setHolidays] = useState<Holiday[]>([])
+  const [holidays, setHolidays] = useState<HolidayItem[]>([])
   const [countryCode, setCountryCode] = useState<string>('us')
   const [countryName, setCountryName] = useState<string>('Global')
   const { addCountdown } = useStore()
@@ -68,9 +73,6 @@ export default function CountdownScenarios() {
       } catch (err) {
         console.error('Failed to fetch country holidays from Firestore/Calendarific:', err)
       }
-
-      // Fallback to static global holidays
-      setHolidays(getHolidays())
     }
 
     loadCountryHolidays()
@@ -85,7 +87,7 @@ export default function CountdownScenarios() {
     document.getElementById('timers-list-section')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const handleAddHolidayCountdown = (holiday: Holiday) => {
+  const handleAddHolidayCountdown = (holiday: HolidayItem) => {
     const now = new Date()
     const diffSeconds = Math.floor((holiday.date.getTime() - now.getTime()) / 1000)
     addCountdown({
