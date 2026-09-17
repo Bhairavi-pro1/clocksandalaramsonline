@@ -3,7 +3,12 @@ import { useState, useEffect, useRef } from 'react'
 import { Share2, Maximize2, Minimize2, Info, Check } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
 import { cn } from '@/lib/utils'
-import { Holiday } from '@/lib/holidays'
+
+export interface Holiday {
+  name: string
+  date: Date | string
+  daysRemaining?: number
+}
 
 interface Props {
   holiday: Holiday
