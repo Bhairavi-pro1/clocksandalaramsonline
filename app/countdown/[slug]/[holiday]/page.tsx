@@ -66,16 +66,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!matchResult) return { title: 'Holiday Not Found' };
   
   const { holiday: matchedHoliday, year } = matchResult;
+  const rawDesc = matchedHoliday.description?.trim();
+  const metaDescription = rawDesc
+    ? `${rawDesc} Track the live accurate countdown to ${matchedHoliday.name} ${year} in ${countryObj.name} with millisecond precision.`
+    : `Track the exact days, hours, minutes, and seconds remaining until ${matchedHoliday.name} in ${countryObj.name} (${year}) with millisecond-accurate precision.`;
+
+  const canonicalUrl = `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/${holiday}/`;
+
   return {
     title: `${matchedHoliday.name} Countdown ${year} (${countryObj.name}) — Clocks and Alarms Online`,
-    description: `Track the exact days, hours, minutes, and seconds remaining until ${matchedHoliday.name} in ${countryObj.name} (${year}) with millisecond-accurate precision.`,
+    description: metaDescription,
     alternates: {
-      canonical: `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/${holiday}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
-      title: `Countdown to ${matchedHoliday.name} ${year} (${countryObj.name})`,
-      description: `Track the seconds until ${matchedHoliday.name} with our professional-grade countdown timer.`,
+      title: `${matchedHoliday.name} Countdown ${year} (${countryObj.name})`,
+      description: metaDescription,
+      url: canonicalUrl,
+      siteName: 'Clocks and Alarms Online',
       type: 'website',
+      images: [
+        {
+          url: '/icon.png',
+          width: 512,
+          height: 512,
+          alt: `${matchedHoliday.name} Countdown - Clocks and Alarms Online`,
+        }
+      ],
+    },
+    twitter: {
+      card: 'summary',
+      title: `${matchedHoliday.name} Countdown ${year} (${countryObj.name})`,
+      description: metaDescription,
+      images: ['/icon.png'],
     }
   };
 }
@@ -106,6 +129,57 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
     title: `Countdown to ${matchedHoliday.name} ${year} in ${countryObj.name}`,
     description: matchedHoliday.description || `Track the precisely calculated time remaining until ${matchedHoliday.name} in ${countryObj.name} with our high-tech holiday tracker.`,
     content: matchedHoliday.description || `${matchedHoliday.name} is a significant event in ${countryObj.name}. Use our precise countdown to keep track of the remaining time and ensure you are perfectly prepared for the festivities.`
+  };
+
+  const eventSchema = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": `${matchedHoliday.name} (${year})`,
+    "startDate": matchedHoliday.date,
+    "endDate": matchedHoliday.date,
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "location": {
+      "@type": "Place",
+      "name": countryObj.name,
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": countryObj.code
+      }
+    },
+    "description": matchedHoliday.description || `Live countdown and holiday tracking for ${matchedHoliday.name} in ${countryObj.name}.`,
+    "image": "https://clocksandalarmsonline.com/icon.png"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://clocksandalarmsonline.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Countdown",
+        "item": "https://clocksandalarmsonline.com/countdown/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": countryObj.name,
+        "item": `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": matchedHoliday.name,
+        "item": `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/${holiday}/`
+      }
+    ]
   };
 
   const softwareSchema = {
@@ -148,6 +222,8 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
 
   return (
     <div className="w-full">
+      <StructuredData data={eventSchema} />
+      <StructuredData data={breadcrumbSchema} />
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       

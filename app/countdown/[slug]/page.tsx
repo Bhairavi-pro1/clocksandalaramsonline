@@ -25,16 +25,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const name = countryObj.name;
+  const canonicalUrl = `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/`;
+  const desc = `Track the seconds until the next big celebration in ${name}. Millisecond-accurate countdowns for national, regional, and bank holidays.`;
+
   return {
     title: `Holiday Countdowns for ${name} (2026 & 2027) — Clocks and Alarms Online`,
-    description: `Track the seconds until the next big celebration in ${name}. Millisecond-accurate countdowns for national, regional, and bank holidays.`,
+    description: desc,
     alternates: {
-      canonical: `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/`,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: `Holiday Countdowns in ${name}`,
-      description: `Track the seconds until holidays in ${name} with our professional-grade countdown timers.`,
+      description: desc,
+      url: canonicalUrl,
+      siteName: 'Clocks and Alarms Online',
       type: 'website',
+      images: [
+        {
+          url: '/icon.png',
+          width: 512,
+          height: 512,
+          alt: `${name} Holiday Countdowns - Clocks and Alarms Online`
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary',
+      title: `Holiday Countdowns in ${name}`,
+      description: desc,
+      images: ['/icon.png'],
     }
   };
 }

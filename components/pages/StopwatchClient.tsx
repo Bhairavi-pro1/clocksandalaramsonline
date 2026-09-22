@@ -302,6 +302,9 @@ export default function StopwatchClient() {
 
   const removeSession = (e: React.MouseEvent, id: string) => {
     e.stopPropagation()
+    if (loadedSessionId === id) {
+      setLoadedSessionId(null)
+    }
     setHistory(prev => prev.filter(s => s.id !== id))
   }
 
@@ -349,31 +352,32 @@ export default function StopwatchClient() {
           <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 w-full max-w-xs sm:max-w-sm md:max-w-md px-2">
             {!isRunning ? (
               <button 
-                onClick={start}
-                className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-primary text-white font-black text-xs sm:text-sm md:text-base shadow-[0_0_15px_rgba(124,58,237,0.35)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                onClick={start} 
+                className="py-3 sm:py-4 bg-primary hover:bg-primary/90 text-white rounded-xl sm:rounded-2xl font-black text-sm sm:text-base tracking-wider uppercase shadow-lg shadow-primary/25 transition-all transform active:scale-95"
               >
                 Start
               </button>
             ) : (
               <button 
-                onClick={pause}
-                className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-white/10 text-white font-black text-xs sm:text-sm md:text-base border border-white/10 hover:bg-white/20 transition-all cursor-pointer"
+                onClick={pause} 
+                className="py-3 sm:py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-xl sm:rounded-2xl font-black text-sm sm:text-base tracking-wider uppercase shadow-lg shadow-amber-500/25 transition-all transform active:scale-95"
               >
-                Pause
+                Stop
               </button>
             )}
-            
+
             <button 
-              onClick={lap}
-              disabled={!isRunning && time === 0}
-              className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-[#2d1b4e] text-white font-black text-xs sm:text-sm md:text-base border border-violet-500/20 hover:bg-[#3d2b5e] transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              onClick={lap} 
+              disabled={!isRunning}
+              className="py-3 sm:py-4 bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 text-white border border-white/10 rounded-xl sm:rounded-2xl font-black text-sm sm:text-base tracking-wider uppercase transition-all transform active:scale-95 disabled:active:scale-100 flex items-center justify-center gap-1 sm:gap-2"
             >
-              Lap
+              <Flag className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-70" />
+              <span>Lap</span>
             </button>
 
             <button 
-              onClick={handleReset}
-              className="w-full py-2 sm:py-2.5 md:py-3 rounded-xl bg-[#ff2e88] text-white font-black text-xs sm:text-sm md:text-base shadow-[0_0_15px_rgba(255,46,136,0.25)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              onClick={handleReset} 
+              className="py-3 sm:py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl sm:rounded-2xl font-black text-sm sm:text-base tracking-wider uppercase transition-all transform active:scale-95"
             >
               Reset
             </button>
@@ -383,19 +387,20 @@ export default function StopwatchClient() {
         {/* Ad Space Inside Card */}
         <AdBanner className="mt-2 sm:mt-3 py-1 sm:py-2" />
 
-        {/* Lap Times inside card after AdBanner */}
+        {/* Lap Table */}
         {laps.length > 0 && (
-          <div className="w-full max-w-xl lg:max-w-2xl mt-4 border-t border-white/10 pt-4 relative z-10">
-            <div className="flex items-center justify-between mb-2.5 px-1">
-              <h4 className="text-xs font-black text-white/40 uppercase tracking-widest flex items-center gap-2">
-                <Flag className="w-3.5 h-3.5 text-primary" /> Lap Times ({laps.length})
-              </h4>
-              
-              {/* Export Dropdown */}
+          <div className={cn(
+            "w-full max-w-xl mx-auto mt-6 sm:mt-8 border-t border-white/10 pt-4 sm:pt-6 animate-in fade-in slide-in-from-top-4 duration-300",
+            isFullscreen && "max-w-3xl"
+          )}>
+            <div className="flex justify-between items-center mb-3 px-2">
+              <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-widest">
+                Laps ({laps.length})
+              </span>
               <div className="relative" ref={dropdownRef}>
                 <button 
                   onClick={() => setIsExportOpen(!isExportOpen)}
-                  className="text-[10px] text-slate-500 dark:text-white/60 hover:text-slate-800 dark:hover:text-white px-2.5 py-1 rounded-full border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/30 transition-all uppercase font-black flex items-center gap-1 cursor-pointer"
+                  className="text-[10px] sm:text-xs text-primary hover:text-primary/80 font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer bg-primary/10 hover:bg-primary/20 px-2.5 py-1 rounded-md border border-primary/20 transition-all"
                 >
                   Export
                 </button>
@@ -454,80 +459,111 @@ export default function StopwatchClient() {
 
       {/* Usage History Section */}
       {!isFullscreen && (
-        <div className="w-full bg-[#1a0b2e]/40 border border-violet-500/10 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-10 md:p-12 mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-3 duration-700">
+        <div className="w-full bg-slate-900/[0.03] dark:bg-[#1a0b2e]/40 border border-slate-200/80 dark:border-violet-500/10 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-10 md:p-12 mx-auto space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-3 duration-700 backdrop-blur-md">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl sm:text-3xl font-bold font-display text-white tracking-tight">Usage History</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white tracking-tight">Usage History</h2>
             <button 
-              onClick={() => setHistory([])}
-              className="text-[10px] text-white/30 hover:text-danger px-3 py-1 rounded-full border border-white/5 hover:border-danger/30 transition-all uppercase font-black"
+              onClick={() => { setHistory([]); setLoadedSessionId(null); }}
+              className="text-[10px] text-slate-400 dark:text-white/30 hover:text-danger dark:hover:text-danger px-3 py-1 rounded-full border border-slate-200 dark:border-white/5 hover:border-danger/30 transition-all uppercase font-black"
             >
               Clear History
             </button>
           </div>
           
           {history.length === 0 ? (
-            <div className="py-12 sm:py-20 text-center space-y-4 opacity-20 border-2 border-dashed border-white/5 rounded-[1.5rem] sm:rounded-[2rem]">
-              <RotateCcw className="w-12 h-12 mx-auto" />
-              <p className="font-bold text-sm uppercase tracking-widest">No sessions saved in history</p>
+            <div className="py-12 sm:py-20 text-center space-y-4 opacity-20 border-2 border-dashed border-slate-300 dark:border-white/5 rounded-[1.5rem] sm:rounded-[2rem]">
+              <RotateCcw className="w-12 h-12 mx-auto text-slate-600 dark:text-white" />
+              <p className="font-bold text-sm uppercase tracking-widest text-slate-600 dark:text-white">No sessions saved in history</p>
             </div>
           ) : (
-            <div className="flex flex-col w-full divide-y divide-slate-200/50 dark:divide-white/10 border-t border-b border-slate-200/50 dark:border-white/10">
-              {history.map((session) => (
-                <div 
-                  key={session.id}
-                  onClick={() => loadSession(session)}
-                  className="group flex items-center justify-between gap-2 sm:gap-6 py-3 sm:py-4 transition-all hover:bg-slate-100/30 dark:hover:bg-white/5 cursor-pointer w-full text-left px-1 sm:px-3"
-                >
-                  {/* Date and Time */}
-                  <div className="flex-1 min-w-0">
-                    {session.date.includes(', ') ? (
-                      <>
-                        <p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-white/40 truncate">
-                          {session.date.split(', ')[0]}
-                        </p>
-                        <p className="text-[9px] sm:text-[10px] text-slate-400 dark:text-white/30 truncate mt-0.5">
-                          {session.date.split(', ')[1]}
-                        </p>
-                      </>
-                    ) : (
-                      <p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-white/40 truncate">
-                        {session.date}
-                      </p>
+            <div className="flex flex-col w-full divide-y divide-slate-200/60 dark:divide-white/10 border-t border-b border-slate-200/60 dark:border-white/10">
+              {history.map((session) => {
+                const isSelected = loadedSessionId === session.id;
+                return (
+                  <div 
+                    key={session.id}
+                    onClick={() => loadSession(session)}
+                    className={cn(
+                      "group flex items-center justify-between gap-2 sm:gap-6 py-3 sm:py-3.5 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl transition-all duration-200 cursor-pointer w-full text-left my-1 border",
+                      isSelected
+                        ? "bg-primary/10 dark:bg-primary/25 border-primary/40 dark:border-primary/50 shadow-md shadow-primary/10 dark:shadow-primary/5 ring-1 ring-primary/40"
+                        : "hover:bg-slate-100/70 dark:hover:bg-white/5 border-transparent"
                     )}
-                  </div>
-
-                  {/* Total Run Time */}
-                  <div className="flex-1 text-center">
-                    <p className="text-sm sm:text-lg font-mono font-black text-slate-800 dark:text-white tabular-nums">
-                      {formatTime(session.time)}
-                    </p>
-                  </div>
-
-                  {/* Laps */}
-                  <div className="flex-1 text-center">
-                    <p className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-wider">
-                      {session.laps.length} Laps
-                    </p>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                    {/* Load / Clock Button */}
-                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 flex items-center justify-center border border-slate-200 dark:border-white/10 group-hover:bg-primary group-hover:border-primary/50 transition-all cursor-pointer" title="Load Session">
-                       <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 dark:text-white/50 group-hover:text-white" />
+                  >
+                    {/* Date and Time */}
+                    <div className="flex-1 min-w-0">
+                      {session.date.includes(', ') ? (
+                        <>
+                          <p className={cn(
+                            "text-[10px] sm:text-xs font-bold truncate transition-colors",
+                            isSelected ? "text-primary dark:text-primary font-extrabold" : "text-slate-600 dark:text-white/60"
+                          )}>
+                            {session.date.split(', ')[0]}
+                          </p>
+                          <p className={cn(
+                            "text-[9px] sm:text-[10px] truncate mt-0.5 transition-colors",
+                            isSelected ? "text-primary/70 dark:text-white/60 font-semibold" : "text-slate-400 dark:text-white/30"
+                          )}>
+                            {session.date.split(', ')[1]}
+                          </p>
+                        </>
+                      ) : (
+                        <p className={cn(
+                          "text-[10px] sm:text-xs font-bold truncate transition-colors",
+                          isSelected ? "text-primary dark:text-primary font-extrabold" : "text-slate-600 dark:text-white/60"
+                        )}>
+                          {session.date}
+                        </p>
+                      )}
                     </div>
 
-                    {/* Circle Remove Button */}
-                    <button 
-                      onClick={(e) => removeSession(e, session.id)}
-                      className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-danger/10 dark:hover:bg-danger/20 flex items-center justify-center border border-slate-200 dark:border-white/10 hover:border-danger/30 transition-all z-20 cursor-pointer"
-                      title="Remove session"
-                    >
-                      <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 dark:text-white/40 group-hover:text-danger" />
-                    </button>
+                    {/* Total Run Time */}
+                    <div className="flex-1 text-center">
+                      <p className={cn(
+                        "text-sm sm:text-lg font-mono font-black tabular-nums transition-all",
+                        isSelected ? "text-primary dark:text-primary drop-shadow-sm font-extrabold" : "text-slate-800 dark:text-white"
+                      )}>
+                        {formatTime(session.time)}
+                      </p>
+                    </div>
+
+                    {/* Laps */}
+                    <div className="flex-1 text-center flex items-center justify-center">
+                      <p className={cn(
+                        "text-[10px] sm:text-xs font-black uppercase tracking-wider transition-colors",
+                        isSelected ? "text-primary dark:text-primary font-black" : "text-primary/80 dark:text-primary"
+                      )}>
+                        {session.laps.length} {session.laps.length === 1 ? 'Lap' : 'Laps'}
+                      </p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                      {/* Load / Clock Button */}
+                      <div 
+                        className={cn(
+                          "w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border transition-all cursor-pointer",
+                          isSelected
+                            ? "bg-primary text-white border-primary shadow-sm shadow-primary/30"
+                            : "bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border-slate-200 dark:border-white/10 group-hover:bg-primary group-hover:border-primary/50 text-slate-500 dark:text-white/50 group-hover:text-white"
+                        )} 
+                        title={isSelected ? "Active Session Loaded" : "Load Session"}
+                      >
+                         <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+
+                      {/* Circle Remove Button */}
+                      <button 
+                        onClick={(e) => removeSession(e, session.id)}
+                        className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-danger/10 dark:hover:bg-danger/20 flex items-center justify-center border border-slate-200 dark:border-white/10 hover:border-danger/30 transition-all z-20 cursor-pointer"
+                        title="Remove session"
+                      >
+                        <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 dark:text-white/40 hover:text-danger" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

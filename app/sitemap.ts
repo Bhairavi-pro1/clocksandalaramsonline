@@ -3,6 +3,12 @@ import timerData from '@/data/seo/timers.json'
 import cityData from '@/data/seo/cities.json'
 import countriesData from '@/data/countries.json'
 import { getAllPosts } from '@/lib/sanity'
+import { db } from '@/lib/firebase'
+import { collection, getDocs } from 'firebase/firestore'
+
+function getHolidaySlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+}
 
 // Helper function to generate all 1440 paths from 12:00 AM to 11:59 PM
 function getAlarmPaths() {
@@ -103,6 +109,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Sanity fetch may fail during build if no posts exist yet
   }
 
+  // Holiday Dynamic Routes (Read ONLY from Firestore cache — 0 Calendarific API calls)
+  let cachedHolidayRoutes: MetadataRoute.Sitemap = []
+  try {
+    const cacheSnapshot = await getDocs(collection(db, 'holiday_cache'))
+    const seenUrls = new Set<string>()
+
+    cacheSnapshot.forEach((docSnap) => {
+      const data = docSnap.data()
+      const countryCode = (data.country || docSnap.id.split('_')[0])?.toLowerCase()
+      if (countryCode && Array.isArray(data.holidays)) {
+        for (const holiday of data.holidays) {
+          if (holiday?.name) {
+            const slug = getHolidaySlug(holiday.name)
+            const url = `${baseUrl}/countdown/${countryCode}/${slug}/`
+            if (!seenUrls.has(url)) {
+              seenUrls.add(url)
+              cachedHolidayRoutes.push({
+                url,
+                lastModified: data.lastUpdated ? new Date(data.lastUpdated) : new Date(),
+                changeFrequency: 'weekly' as const,
+                priority: 0.8,
+              })
+            }
+          }
+        }
+      }
+    })
+  } catch (err) {
+    // Graceful fallback if offline or Firestore query is unavailable
+    console.error('Failed to read holiday_cache in sitemap:', err)
+  }
+
   return [
     ...routes, 
     ...secondaryRoutes, 
@@ -110,6 +148,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...timerRoutes, 
     ...worldClockRoutes, 
     ...countryCountdownRoutes,
+    ...cachedHolidayRoutes,
     ...alarmRoutes
   ]
 }

@@ -29,6 +29,26 @@ export const metadata: Metadata = {
     template: '%s | Clocks and Alarms Online'
   },
   description: 'Free online alarm clock and world clock suite. High-precision stopwatch, countdown timer, and loud alarm options.',
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png'
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'Clocks and Alarms Online',
+    images: [
+      {
+        url: '/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Clocks and Alarms Online Logo'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    images: ['/icon.png']
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

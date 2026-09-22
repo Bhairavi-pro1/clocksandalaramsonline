@@ -29,8 +29,8 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   
-  // Status filter state (All, Upcoming, Passed)
-  const [statusFilter, setStatusFilter] = useState<'all' | 'upcoming' | 'passed'>('all');
+  // Status filter state (All, Upcoming, Passed) - Default to 'upcoming'
+  const [statusFilter, setStatusFilter] = useState<'all' | 'upcoming' | 'passed'>('upcoming');
   
   // Category filter state (All, Hinduism, Christian, National, etc.)
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -44,7 +44,7 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
   // Year selector manual change handler that resets filters
   const handleYearChange = (newYear: number) => {
     setYear(newYear);
-    setStatusFilter('all');
+    setStatusFilter('upcoming');
     setCategoryFilter('all');
   };
 
@@ -61,7 +61,7 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
       } else {
         // Reset to defaults for the new country
         setYear(initialYear);
-        setStatusFilter('all');
+        setStatusFilter('upcoming');
         setCategoryFilter('all');
       }
     } catch (e) {
