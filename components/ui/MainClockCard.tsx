@@ -109,7 +109,8 @@ export default function MainClockCard({
           <button 
             type="button"
             onClick={toggleFullscreen}
-            className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10 z-20 text-white"
+            aria-label="Exit Fullscreen Mode"
+            className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10 z-20 text-white cursor-pointer"
             title="Exit Fullscreen"
           >
             <Minimize2 className="w-6 h-6" />

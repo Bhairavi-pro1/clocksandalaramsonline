@@ -326,8 +326,10 @@ export default function StopwatchClient() {
       >
         {/* Fullscreen Button */}
         <button 
+          type="button"
           onClick={toggleFullscreen}
-          className="absolute top-3 right-3 sm:top-5 sm:right-5 p-1.5 sm:p-2 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 z-20"
+          aria-label={isFullscreen ? "Exit Fullscreen Mode" : "Enter Fullscreen Mode"}
+          className="absolute top-3 right-3 sm:top-5 sm:right-5 p-1.5 sm:p-2 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 z-20 cursor-pointer"
         >
           {isFullscreen ? <Minimize2 className="w-4 h-4 text-white" /> : <Maximize2 className="w-4 h-4 text-white/50 group-hover:text-white" />}
         </button>
@@ -399,26 +401,32 @@ export default function StopwatchClient() {
               </span>
               <div className="relative" ref={dropdownRef}>
                 <button 
+                  type="button"
                   onClick={() => setIsExportOpen(!isExportOpen)}
-                  className="text-[10px] sm:text-xs text-primary hover:text-primary/80 font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer bg-primary/10 hover:bg-primary/20 px-2.5 py-1 rounded-md border border-primary/20 transition-all"
+                  aria-label="Export lap times"
+                  aria-expanded={isExportOpen}
+                  className="text-[10px] sm:text-xs text-primary hover:text-white font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer bg-white/5 hover:bg-primary px-2.5 py-1 rounded-md border border-primary/30 transition-all"
                 >
                   Export
                 </button>
                 {isExportOpen && (
                   <div className="absolute right-0 mt-1 w-24 bg-white dark:bg-[#1a0b2e] border border-slate-200 dark:border-violet-500/20 rounded-lg shadow-xl py-1 z-30 animate-in fade-in duration-100">
                     <button 
+                      type="button"
                       onClick={() => { exportPDF(); setIsExportOpen(false); }}
                       className="w-full text-left px-3 py-1.5 text-xs text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-all uppercase font-bold cursor-pointer"
                     >
                       PDF
                     </button>
                     <button 
+                      type="button"
                       onClick={() => { exportExcel(); setIsExportOpen(false); }}
                       className="w-full text-left px-3 py-1.5 text-xs text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-all uppercase font-bold cursor-pointer"
                     >
                       Excel
                     </button>
                     <button 
+                      type="button"
                       onClick={() => { exportTXT(); setIsExportOpen(false); }}
                       className="w-full text-left px-3 py-1.5 text-xs text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-all uppercase font-bold cursor-pointer"
                     >
@@ -463,8 +471,10 @@ export default function StopwatchClient() {
           <div className="flex items-center justify-between">
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white tracking-tight">Usage History</h2>
             <button 
+              type="button"
               onClick={() => { setHistory([]); setLoadedSessionId(null); }}
-              className="text-[10px] text-slate-400 dark:text-white/30 hover:text-danger dark:hover:text-danger px-3 py-1 rounded-full border border-slate-200 dark:border-white/5 hover:border-danger/30 transition-all uppercase font-black"
+              aria-label="Clear stopwatch history"
+              className="text-[10px] text-slate-600 dark:text-white/70 hover:text-red-500 dark:hover:text-red-400 px-3 py-1 rounded-full border border-slate-300 dark:border-white/10 hover:border-red-500/40 transition-all uppercase font-black cursor-pointer"
             >
               Clear History
             </button>
@@ -554,7 +564,9 @@ export default function StopwatchClient() {
 
                       {/* Circle Remove Button */}
                       <button 
+                        type="button"
                         onClick={(e) => removeSession(e, session.id)}
+                        aria-label="Remove session from history"
                         className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-danger/10 dark:hover:bg-danger/20 flex items-center justify-center border border-slate-200 dark:border-white/10 hover:border-danger/30 transition-all z-20 cursor-pointer"
                         title="Remove session"
                       >

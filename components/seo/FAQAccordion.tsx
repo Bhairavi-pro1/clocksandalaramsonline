@@ -31,7 +31,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
             activeMobileFaq === i ? "grid-rows-[1fr] opacity-100 mt-3 sm:mt-4" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100 md:mt-4"
           )}>
             <div className="overflow-hidden">
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-10 text-justify">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-10 text-left">
                 {faq.a}
               </p>
             </div>

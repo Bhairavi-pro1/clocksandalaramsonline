@@ -249,7 +249,7 @@ export default function MeetingPlanner() {
                     <select 
                       value={inputPeriod}
                       onChange={(e) => setInputPeriod(e.target.value)}
-                      className="bg-primary/20 text-primary text-[9px] md:text-sm font-black px-1 md:px-4 py-1 md:py-2 rounded-lg md:rounded-xl focus:outline-none appearance-none cursor-pointer hover:bg-primary/30 transition-colors"
+                      className="bg-white/5 border border-primary/30 text-primary text-[9px] md:text-sm font-black px-1 md:px-4 py-1 md:py-2 rounded-lg md:rounded-xl focus:outline-none appearance-none cursor-pointer hover:bg-white/10 transition-colors"
                     >
                       {PERIODS.map(p => <option key={p} value={p} className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">{p}</option>)}
                     </select>
@@ -328,7 +328,7 @@ export default function MeetingPlanner() {
               <div className="bg-slate-50/50 dark:bg-slate-900/40 backdrop-blur-3xl rounded-[0.9rem] md:rounded-[2.4rem] p-2.5 md:p-10">
                   <div className="flex flex-col gap-4 md:gap-10">
                     <div className="flex items-center gap-4">
-                      <div className="px-3 py-1 md:px-4 md:py-2 bg-primary/20 text-primary text-[9px] md:text-[11px] font-black rounded-full uppercase tracking-[0.2em] border border-primary/20 shadow-sm">
+                      <div className="px-3 py-1 md:px-4 md:py-2 bg-white/5 text-primary text-[9px] md:text-[11px] font-black rounded-full uppercase tracking-[0.2em] border border-primary/30 shadow-sm">
                         Meeting Sync Results
                       </div>
                       <div className="h-px bg-slate-200 dark:bg-white/5 flex-1" />
@@ -336,10 +336,10 @@ export default function MeetingPlanner() {
                     
                     <div className="grid grid-cols-3 gap-1.5 md:gap-5">
                       {/* Origin Zone Result Card */}
-                      <div className="flex flex-col justify-start gap-1.5 md:gap-4 p-2 md:p-6 bg-primary/10 rounded-2xl md:rounded-3xl border border-primary/20 group hover:border-primary/40 transition-all shadow-lg shadow-primary/5 min-h-[90px] md:min-h-[135px]">
+                      <div className="flex flex-col justify-start gap-1.5 md:gap-4 p-2 md:p-6 bg-slate-100/50 dark:bg-white/5 rounded-2xl md:rounded-3xl border border-primary/30 group hover:border-primary/50 transition-all shadow-lg shadow-primary/5 min-h-[90px] md:min-h-[135px]">
                         <div className="flex items-center justify-between mb-2 md:mb-4 min-w-0">
                           <span className="text-primary/60 font-black uppercase text-[8px] md:text-[10px] tracking-widest truncate mr-1" title={getTzLabel(tz1)}>{getTzLabel(tz1)}</span>
-                          <div className="px-1 py-0.5 rounded-full bg-primary/20 text-[6px] md:text-[8px] font-black text-primary uppercase flex-shrink-0">Org</div>
+                          <div className="px-1.5 py-0.5 rounded-full bg-white/5 border border-primary/30 text-[6px] md:text-[8px] font-black text-primary uppercase flex-shrink-0">Org</div>
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[7px] md:text-[10px] font-bold text-slate-400 dark:text-white/30 uppercase mb-0.5 md:mb-1 leading-none">{originDateTime.toFormat('ccc, MMM dd')}</span>
@@ -406,6 +406,7 @@ export default function MeetingPlanner() {
                         href={generateGoogleCalendarLink()}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="Schedule Meeting in Google Calendar (opens in a new tab)"
                         className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2.5 md:px-6 md:py-3 rounded-xl text-xs md:text-sm font-black transition-all duration-300 active:scale-95 shadow-lg shadow-primary/10 w-full sm:w-auto"
                       >
                         <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4" />

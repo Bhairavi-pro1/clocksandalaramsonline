@@ -152,7 +152,7 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
           <div className="flex justify-between items-start mb-8">
             <div>
               <h2 className="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-3">
-                <span className="p-2 rounded-xl bg-primary/20 text-primary">
+                <span className="p-2 rounded-xl bg-white/5 border border-primary/30 text-primary">
                   <Bell size={24} />
                 </span>
                 New Alarm
@@ -276,7 +276,7 @@ export default function AddAlarmModal({ isOpen, onClose, onAdd }: AddAlarmModalP
                   onClick={handlePreviewSound}
                   className={`px-4 py-3 rounded-2xl border transition-all flex items-center justify-center ${
                     isPreviewPlaying 
-                      ? 'bg-red-500/20 border-red-500/30 text-red-500' 
+                      ? 'bg-rose-600 text-white border-rose-500 shadow-md' 
                       : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-white/60 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 shadow-inner'
                   }`}
                 >

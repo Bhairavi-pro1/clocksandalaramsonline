@@ -91,7 +91,9 @@ export default function BookmarkModal() {
         <div className="p-8 sm:p-10 relative z-10 flex flex-col items-center text-center">
           {/* Close icon button top-right */}
           <button 
+            type="button"
             onClick={handleClose}
+            aria-label="Close bookmark dialog"
             className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 dark:text-white/50 dark:hover:text-white transition-colors cursor-pointer"
           >
             <X size={20} />
@@ -174,7 +176,9 @@ export default function BookmarkModal() {
                       {typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}?ref=bookmark` : ''}
                     </span>
                     <button 
+                      type="button"
                       onClick={handleCopyLink}
+                      aria-label="Copy bookmark URL to clipboard"
                       className="p-1.5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-500 hover:text-slate-800 dark:text-white/70 dark:hover:text-white transition-colors cursor-pointer"
                       title="Copy URL to clipboard"
                     >

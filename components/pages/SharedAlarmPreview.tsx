@@ -171,7 +171,7 @@ export default function SharedAlarmPreview({ alarmId }: SharedAlarmPreviewProps)
                </span>
                <button 
                   onClick={() => router.push('/shared-alarm/')}
-                  className="mt-4 w-full py-3 bg-primary/20 hover:bg-primary/30 text-primary rounded-xl font-bold transition-all"
+                  className="mt-4 w-full py-3 bg-white/5 hover:bg-primary text-primary hover:text-white border border-primary/30 rounded-xl font-bold transition-all"
                >
                   Back to Dashboard
                </button>

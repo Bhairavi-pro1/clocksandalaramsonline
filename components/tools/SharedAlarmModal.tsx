@@ -322,7 +322,7 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                 onClick={handlePreviewSound}
                 className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border transition-all flex items-center justify-center h-[38px] w-[38px] sm:h-[46px] sm:w-[46px] shrink-0 ${
                   isPreviewPlaying 
-                    ? 'bg-red-500/20 border-red-500/30 text-red-500' 
+                    ? 'bg-rose-600 text-white border-rose-500 shadow-md' 
                     : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10 shadow-inner'
                 }`}
               >

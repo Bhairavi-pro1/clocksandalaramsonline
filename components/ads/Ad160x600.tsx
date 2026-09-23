@@ -23,8 +23,6 @@ export default function Ad160x600({ side = 'right', delay = 0 }: { side?: string
       iframe.style.height = '600px'
       iframe.style.border = 'none'
       iframe.style.overflow = 'hidden'
-      iframe.scrolling = 'no'
-      iframe.setAttribute('frameborder', '0')
 
       containerRef.current.appendChild(iframe)
 
@@ -76,9 +74,10 @@ export default function Ad160x600({ side = 'right', delay = 0 }: { side?: string
   }
 
   return (
-    <aside className="ad-column self-stretch">
+    <aside className="ad-column self-stretch" aria-label="Advertisement">
       <div className="sticky top-8">
-        <div className="ad-script-container-160x600">
+        <div className="ad-script-container-160x600 relative">
+          <span className="sr-only">Advertisement</span>
           <div ref={containerRef} style={{ width: '160px', height: '600px', overflow: 'hidden' }} />
         </div>
       </div>

@@ -103,7 +103,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
                <div className="flex-1 space-y-2 md:space-y-3 text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-2.5">
-                     <div className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest">
+                     <div className="px-2.5 py-0.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest">
                        Global Schedule
                      </div>
                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -146,7 +146,12 @@ export default function DstTrackerClient({ initialChanges }: Props) {
                     className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-white font-bold text-xs md:text-sm placeholder:text-slate-400 dark:placeholder:text-white/20"
                   />
                   {searchTerm && (
-                    <button onClick={() => setSearchTerm('')} className="p-1 hover:bg-slate-300/50 dark:hover:bg-white/10 rounded-full transition-colors cursor-pointer">
+                    <button 
+                      type="button"
+                      onClick={() => setSearchTerm('')} 
+                      className="p-1 hover:bg-slate-300/50 dark:hover:bg-white/10 rounded-full transition-colors cursor-pointer"
+                      aria-label="Clear search input"
+                    >
                       <X className="w-3.5 h-3.5 text-slate-400 dark:text-white/40" />
                     </button>
                   )}
@@ -225,10 +230,10 @@ export default function DstTrackerClient({ initialChanges }: Props) {
                       </div>
                       <div className={cn(
                         "px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border",
-                        item.isLordHowe || item.isHistorical ? "bg-amber-500/10 border-amber-500/20 text-amber-500" :
+                        item.isLordHowe || item.isHistorical ? "bg-white/5 border-amber-500/30 text-amber-400" :
                         item.type === 'Spring Forward' 
-                          ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" 
-                          : "bg-orange-500/10 border-orange-500/20 text-orange-400"
+                          ? "bg-white/5 border-emerald-500/30 text-emerald-400" 
+                          : "bg-white/5 border-orange-500/30 text-orange-400"
                       )}>
                         {item.isLordHowe ? '±30m' : item.type === 'Spring Forward' ? '+1h' : item.type === 'Fall Back' ? '-1h' : 'Shift'}
                       </div>
@@ -281,10 +286,10 @@ export default function DstTrackerClient({ initialChanges }: Props) {
                      <div className="flex items-center gap-1.5 min-w-0">
                        <span className={cn(
                          "px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-wider border flex-shrink-0",
-                         item.isLordHowe || item.isHistorical ? "bg-amber-500/10 border-amber-500/20 text-amber-500" :
+                         item.isLordHowe || item.isHistorical ? "bg-white/5 border-amber-500/30 text-amber-400" :
                          item.type === 'Spring Forward' 
-                           ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" 
-                           : "bg-orange-500/10 border-orange-500/20 text-orange-400"
+                           ? "bg-white/5 border-emerald-500/30 text-emerald-400" 
+                           : "bg-white/5 border-orange-500/30 text-orange-400"
                        )}>
                          {item.isLordHowe ? '±30m' : item.type === 'Spring Forward' ? '+1h' : item.type === 'Fall Back' ? '-1h' : 'Shift'}
                        </span>
@@ -339,7 +344,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
           <div className="flex justify-center pt-4 pb-8">
             <button 
               onClick={() => setVisibleGroups(prev => prev + 10)}
-              className="px-6 py-3 rounded-full bg-primary/10 border border-primary/20 hover:bg-primary/20 text-primary text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2"
+              className="px-6 py-3 rounded-full bg-white/5 border border-primary/30 hover:bg-primary hover:text-white text-primary text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2"
             >
               Load More Dates
             </button>
@@ -362,7 +367,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
             <Info className="text-primary" size={20} />
           </div>
           <h4 className="text-base sm:text-lg font-bold text-white uppercase tracking-tight">Why do we use DST?</h4>
-          <p className="text-xs sm:text-base text-white/50 leading-relaxed text-justify font-medium">
+          <p className="text-xs sm:text-base text-white/70 leading-relaxed text-left font-medium">
             Daylight Saving Time (DST) is the practice of advancing clocks during warmer months so that darkness falls at a later clock time. The main purpose is to make better use of daylight by having the sun rise and set later. This practice is observed by over 70 countries worldwide.
           </p>
         </div>
@@ -371,7 +376,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
             <Sparkles className="text-amber-500" size={20} />
           </div>
           <h4 className="text-base sm:text-lg font-bold text-white uppercase tracking-tight">The 30-Minute Exception</h4>
-          <p className="text-xs sm:text-base text-white/50 leading-relaxed text-justify font-medium">
+          <p className="text-xs sm:text-base text-white/70 leading-relaxed text-left font-medium">
             While standard DST transitions are exactly 60 minutes, Lord Howe Island (Australia) uses a unique 30-minute shift. This rare adjustment makes it one of the most interesting time zones for horologists and researchers.
           </p>
         </div>

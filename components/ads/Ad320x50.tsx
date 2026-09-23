@@ -23,8 +23,6 @@ export default function Ad320x50({ delay = 0 }: { delay?: number } = {}) {
       iframe.style.height = '50px'
       iframe.style.border = 'none'
       iframe.style.overflow = 'hidden'
-      iframe.scrolling = 'no'
-      iframe.setAttribute('frameborder', '0')
 
       containerRef.current.appendChild(iframe)
 
@@ -76,7 +74,8 @@ export default function Ad320x50({ delay = 0 }: { delay?: number } = {}) {
   }
 
   return (
-    <div className="ad-container-320x50 min-h-[50px] flex items-center justify-center max-w-full">
+    <div className="ad-container-320x50 min-h-[50px] flex items-center justify-center max-w-full relative">
+      <span className="sr-only">Advertisement</span>
       <div ref={containerRef} style={{ width: '320px', maxWidth: '100%', height: '50px', overflow: 'hidden' }} />
     </div>
   )

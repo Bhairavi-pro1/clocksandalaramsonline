@@ -5,7 +5,7 @@ export default function TermsPage() {
     <div className="max-w-4xl mx-auto px-0 sm:px-6 py-4 sm:py-12 md:py-16 space-y-4 sm:space-y-8 md:space-y-10 w-full">
       {/* Hero Section */}
       <section className="text-center space-y-3 sm:space-y-6">
-        <div className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest mb-1 sm:mb-2">
+        <div className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/5 border border-accent/30 text-accent text-[10px] font-black uppercase tracking-widest mb-1 sm:mb-2">
           Usage Agreement
         </div>
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-foreground uppercase tracking-tighter italic">Terms of Service</h1>

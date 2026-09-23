@@ -94,6 +94,7 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
             <button 
               type="button"
               onClick={toggleFullscreen} 
+              aria-label={isFullscreen ? "Exit Fullscreen Mode" : "Enter Fullscreen Mode"}
               className="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-white/60 cursor-pointer"
             >
               {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={14} />}
@@ -102,7 +103,8 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
               <button 
                 type="button"
                 onClick={() => onRemove(id)}
-                className="p-1.5 sm:p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-colors text-red-500/60 cursor-pointer"
+                aria-label={`Delete ${label} timer`}
+                className="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-red-500/20 text-red-400 border border-white/10 hover:border-red-500/30 transition-colors cursor-pointer"
               >
                 <Trash2 size={14} />
               </button>
@@ -154,6 +156,7 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
                 <button 
                   type="button"
                   onClick={(e) => { e.stopPropagation(); isPaused ? resume() : pause(); }}
+                  aria-label={isPaused ? "Resume Timer" : "Pause Timer"}
                   className={cn(
                     "bg-primary/90 hover:bg-primary text-white rounded-xl transition-all flex items-center justify-center shadow-xl shadow-primary/20 text-xs sm:text-base cursor-pointer",
                     isFullscreen ? "w-16 h-16" : "flex-1 py-2 sm:py-3.5"
@@ -164,6 +167,7 @@ export default function CountdownTimer({ id, label, initialSeconds, sound, onRem
                 <button 
                   type="button"
                   onClick={(e) => { e.stopPropagation(); reset(); }}
+                  aria-label="Reset Timer"
                   className={cn(
                     "bg-white/5 hover:bg-white/10 text-white rounded-xl transition-all flex items-center justify-center text-xs sm:text-base cursor-pointer",
                     isFullscreen ? "w-16 h-16" : "px-4 py-2 sm:px-6 sm:py-3.5"

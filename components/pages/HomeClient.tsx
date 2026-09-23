@@ -206,13 +206,13 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
       {/* 📘 Section 1: What is Clocks and Alarms Online */}
       <section id="overview" className="max-w-6xl mx-auto px-6 space-y-6">
-        <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
           Overview & Utility
         </div>
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           What is Clocks and <span className="text-primary">Alarms Online?</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-left">
           <p>
             Clocks and Alarms Online is a professional, comprehensive web-based platform offering a suite of precision utility tools designed to make time management simple and accessible for everyone. We provide an integrated interface featuring world clocks, stopwatch lap trackers, countdown timers, daylight saving databases, and shared alarm grids.
           </p>
@@ -224,13 +224,13 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
       {/* 📘 Section 2: Why Does This Platform Exist? */}
       <section id="mission" className="max-w-6xl mx-auto px-6 space-y-6 border-t border-white/5 pt-16">
-        <div className="inline-block px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest mb-2">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-accent/30 text-accent text-[10px] font-black uppercase tracking-widest mb-2">
           Our Core Mission
         </div>
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           Why Does This <span className="text-accent">Platform Exist?</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-left">
           <p>
             In our increasingly interconnected remote-work world, timezone synchronization and task execution timing have become absolute necessities. Team members are distributed across multiple continents, daylight saving shifts happen unexpectedly, and task-switching costs are higher than ever. Standard tools are scattered, bloated with advertisements, or lock key features behind subscription walls.
           </p>
@@ -278,7 +278,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                   <tool.icon className="w-7 h-7 md:w-10 md:h-10" />
                 </div>
                 {tool.badge && (
-                  <span className="hidden md:inline-block px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest shadow-inner">
+                  <span className="hidden md:inline-block px-3 py-1.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[9px] font-black uppercase tracking-widest shadow-inner">
                     {tool.badge}
                   </span>
                 )}
@@ -289,7 +289,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-xl md:text-3xl font-black text-white">{tool.title}</h3>
                   {tool.badge && (
-                    <span className="inline-block md:hidden px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[8px] font-black uppercase tracking-widest shadow-inner">
+                    <span className="inline-block md:hidden px-2 py-0.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[8px] font-black uppercase tracking-widest shadow-inner">
                       {tool.badge}
                     </span>
                   )}
@@ -311,12 +311,12 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         {/* Benefits Card */}
         <div id="benefits" className="p-0 md:p-12 bg-transparent md:bg-white/[0.02] border-0 md:border border-white/5 rounded-none md:rounded-[3rem] space-y-8 flex flex-col hover:border-primary/25 transition-all duration-500 shadow-none md:shadow-2xl">
           <div className="space-y-6">
-            <div className="w-14 h-14 bg-primary/20 rounded-2xl flex items-center justify-center text-primary border border-primary/20">
+            <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-primary border border-primary/30">
               <CheckCircle size={28} />
             </div>
             <h3 className="text-2xl md:text-3xl font-black text-white">Why Choose Clocks and Alarms Online?</h3>
             <div className="space-y-4">
-              <p className="text-sm text-muted/70 leading-relaxed font-medium text-left md:text-justify">
+              <p className="text-sm text-muted/70 leading-relaxed font-medium text-left">
                 Our suite offers distinct benefits tailored to modern digital workflows. By running directly in the browser's execution thread with hardware optimization, we consume fewer system resources than electron-based desktop utility apps.
               </p>
               <ul className="space-y-3 text-sm text-muted font-medium">
@@ -343,12 +343,12 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         {/* Supported Devices Card */}
         <div id="devices" className="p-0 md:p-12 bg-transparent md:bg-white/[0.02] border-0 md:border border-white/5 rounded-none md:rounded-[3rem] space-y-8 flex flex-col hover:border-accent/25 transition-all duration-500 shadow-none md:shadow-2xl">
           <div className="space-y-6">
-            <div className="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center text-accent border border-accent/20">
+            <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-accent border border-accent/30">
               <Laptop size={28} />
             </div>
             <h3 className="text-2xl md:text-3xl font-black text-white">Universal Supported Devices</h3>
             <div className="space-y-4">
-              <p className="text-sm text-muted/70 leading-relaxed font-medium text-left md:text-justify">
+              <p className="text-sm text-muted/70 leading-relaxed font-medium text-left">
                 We designed our platform with responsiveness at its core. It is cross-platform compatible and functions smoothly across all devices without needing downloads.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
@@ -379,13 +379,13 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
       {/* 🔬 Section 6: Accuracy */}
       <section id="accuracy" className="max-w-6xl mx-auto px-6 space-y-6">
-        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-widest">
+        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase tracking-widest">
           <Cpu size={14} /> Zero-Drift Engineering
         </div>
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           How Do We Guarantee <span className="text-emerald-400">Atomic Time Accuracy?</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-left">
           <p>
             Timer drift is a major issue on the web. Standard JavaScript timers created using `setInterval` or `setTimeout` run on the main browser thread. If the system undergoes CPU spikes, handles heavy layouts, or goes inactive, these functions delay, accumulating seconds of drift over minutes.
           </p>
@@ -397,13 +397,13 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
 
       {/* 🔬 Section 7: Privacy First */}
       <section id="privacy" className="max-w-6xl mx-auto px-6 space-y-6 border-t border-white/5 pt-16">
-        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-[10px] font-black uppercase tracking-widest">
+        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-violet-500/30 text-violet-400 text-[10px] font-black uppercase tracking-widest">
           <ShieldAlert size={14} /> 100% Privacy-First Architecture
         </div>
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
           Your Time data remains <span className="text-violet-400">Completely Yours</span>
         </h2>
-        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-justify">
+        <div className="flex flex-col gap-6 text-base text-muted/70 leading-relaxed font-medium text-left">
           <p>
             Your privacy is our core priority. Unlike typical time tools that require accounts or save your alarms on a remote cloud database, our site stores all data client-side. The dashboard configuration, world clocks, alarms, and settings save exclusively inside your browser's LocalStorage memory cache.
           </p>
@@ -416,7 +416,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
       {/* ❓ Section 8: FAQ Section */}
       <section id="faq" className="max-w-6xl mx-auto px-6 space-y-16">
         <div className="text-left space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest">
             <HelpCircle size={14} /> Frequently Asked Questions
           </div>
           <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
@@ -446,7 +446,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                 activeMobileFaq === i ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100 md:mt-4"
               )}>
                 <div className="overflow-hidden">
-                  <p className="text-sm text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-6 text-justify">
+                  <p className="text-sm text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-6 text-left">
                     {faq.a}
                   </p>
                 </div>
@@ -461,7 +461,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <section id="blogs" className="max-w-6xl mx-auto px-6 space-y-16">
           <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 md:gap-8">
             <div className="space-y-4 text-left max-w-2xl">
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest">
                 <BookOpen size={14} /> Insights & Articles
               </div>
               <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
@@ -473,7 +473,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             </div>
             <Link 
               href="/blog" 
-              className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2 border border-primary/20 bg-primary/5 hover:bg-primary hover:text-white transition-all px-6 py-3.5 rounded-full whitespace-nowrap mb-2"
+              className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2 border border-primary/30 bg-white/5 hover:bg-primary hover:text-white transition-all px-6 py-3.5 rounded-full whitespace-nowrap mb-2"
             >
               View All Articles <ArrowUpRight size={14} />
             </Link>
@@ -504,7 +504,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                   )}
 
                   <div className="p-8 space-y-4 relative z-10">
-                    <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-primary/20 text-primary border border-primary/20 inline-block">
+                    <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-white/5 text-primary border border-primary/30 inline-block">
                       {categoryLabels[post.category] || post.category}
                     </span>
                     <h3 className="text-xl font-black text-white group-hover:text-primary transition-colors leading-tight line-clamp-2">

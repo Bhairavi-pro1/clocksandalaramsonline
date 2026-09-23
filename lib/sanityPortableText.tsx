@@ -41,14 +41,14 @@ export const portableTextComponents: PortableTextComponents = {
       </h4>
     ),
     normal: ({ children }) => (
-      <p className="text-[13.5px] sm:text-[15px] md:text-[18px] text-white/80 leading-[1.6] md:leading-[1.8] mb-3 md:mb-6 font-normal text-justify">
+      <p className="text-[13.5px] sm:text-[15px] md:text-[18px] text-white/80 leading-[1.6] md:leading-[1.8] mb-3 md:mb-6 font-normal text-left">
         {children}
       </p>
     ),
     blockquote: ({ children }) => (
       <blockquote className="border-l-[3px] md:border-l-4 border-primary pl-3 md:pl-6 py-1.5 md:py-4 my-3 md:my-8 bg-primary/5 rounded-r-lg md:rounded-r-2xl relative overflow-hidden">
         <span className="absolute -left-2 -top-4 text-4xl md:text-7xl text-primary/10 font-serif pointer-events-none select-none">“</span>
-        <p className="text-xs sm:text-sm md:text-lg text-white/90 italic font-medium relative z-10 leading-relaxed text-justify">{children}</p>
+        <p className="text-xs sm:text-sm md:text-lg text-white/90 italic font-medium relative z-10 leading-relaxed text-left">{children}</p>
       </blockquote>
     ),
   },
@@ -63,7 +63,7 @@ export const portableTextComponents: PortableTextComponents = {
       <span className="underline underline-offset-4 decoration-primary/50">{children}</span>
     ),
     code: ({ children }) => (
-      <code className="bg-primary/10 text-primary border border-primary/15 rounded-md px-1.5 py-0.5 text-xs md:text-sm font-mono">
+      <code className="bg-white/5 text-primary border border-primary/25 rounded-md px-1.5 py-0.5 text-xs md:text-sm font-mono font-bold">
         {children}
       </code>
     ),
@@ -77,6 +77,7 @@ export const portableTextComponents: PortableTextComponents = {
           className="text-primary hover:text-accent underline underline-offset-4 decoration-primary/30 hover:decoration-accent/60 transition-colors font-bold"
         >
           {children}
+          {target === '_blank' && <span className="sr-only"> (opens in a new tab)</span>}
         </a>
       )
     },
@@ -95,12 +96,12 @@ export const portableTextComponents: PortableTextComponents = {
   },
   listItem: {
     bullet: ({ children }) => (
-      <li className="text-[13.5px] sm:text-[15px] md:text-[18px] leading-[1.6] md:leading-[1.8] font-normal pl-1 md:pl-2 text-justify">
+      <li className="text-[13.5px] sm:text-[15px] md:text-[18px] leading-[1.6] md:leading-[1.8] font-normal pl-1 md:pl-2 text-left">
         {children}
       </li>
     ),
     number: ({ children }) => (
-      <li className="text-[13.5px] sm:text-[15px] md:text-[18px] leading-[1.6] md:leading-[1.8] font-normal pl-1 md:pl-2 text-justify">
+      <li className="text-[13.5px] sm:text-[15px] md:text-[18px] leading-[1.6] md:leading-[1.8] font-normal pl-1 md:pl-2 text-left">
         {children}
       </li>
     ),

@@ -96,7 +96,7 @@ export default function AlarmTimeClient({ params }: Props) {
     <div className="max-w-7xl mx-auto px-4 pt-6 md:pt-12 pb-20 animate-in fade-in duration-1000">
       {/* Dynamic SEO Title Section */}
       <div className="text-center mb-8 md:mb-16 space-y-6">
-        <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-1 shadow-inner">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest mb-1 shadow-inner">
           Free Online Alarm
         </div>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-none bg-gradient-to-b from-white to-white/60 bg-clip-text">
@@ -117,7 +117,7 @@ export default function AlarmTimeClient({ params }: Props) {
             <Bell size={240} />
           </div>
           <div className="flex items-center gap-6 relative z-10">
-            <div className="w-20 h-20 rounded-3xl bg-primary/20 flex items-center justify-center text-primary shadow-[inset_0_0_20px_rgba(124,58,237,0.3)] border border-primary/30">
+            <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center text-primary shadow-[inset_0_0_20px_rgba(124,58,237,0.3)] border border-primary/30">
               <Clock size={40} />
             </div>
             <div className="space-y-1">

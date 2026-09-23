@@ -138,10 +138,10 @@ export default function TimeInfoPanel({ timezone, cityName, lat, lon }: TimeInfo
   }
 
   const getDiffColor = (diffMins: number | null) => {
-    if (diffMins === null || diffMins === 0) return { text: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-500/20' }
+    if (diffMins === null || diffMins === 0) return { text: 'text-violet-400', bg: 'bg-white/5', border: 'border-violet-500/30' }
     return diffMins > 0 
-      ? { text: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-500/20' }
-      : { text: 'text-rose-400', bg: 'bg-rose-400/10', border: 'border-rose-500/20' }
+      ? { text: 'text-emerald-400', bg: 'bg-white/5', border: 'border-emerald-500/30' }
+      : { text: 'text-rose-400', bg: 'bg-white/5', border: 'border-rose-500/30' }
   }
 
   const diffStyles = getDiffColor(timeDiffMinutes)

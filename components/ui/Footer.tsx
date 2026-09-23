@@ -51,7 +51,7 @@ export default function Footer() {
                 <span className="text-primary/70">Online</span>
               </h4>
             </div>
-            <p className="text-white/70 text-sm leading-relaxed max-w-md font-medium text-justify">
+            <p className="text-white/70 text-sm leading-relaxed max-w-md font-medium text-left">
               Your ultimate high-precision timekeeping suite. Track global time
               zones, set powerful alarms, and use our millisecond-accurate
               stopwatch and countdown tools with confidence and ease. Built for
@@ -61,10 +61,12 @@ export default function Footer() {
               <a
                 href="https://www.producthunt.com/products/free-clocks-timers-shared-alarms/reviews/new?utm_source=badge-product_review&utm_medium=badge&utm_source=badge-free&#0045;clocks&#0045;timers&#0045;shared&#0045;alarms"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Read reviews on Product Hunt (opens in a new tab)"
               >
                 <img
                   src="/assets/product_review.svg"
-                  alt="Free&#0032;clocks&#0044;&#0032;timers&#0032;&#0038;&#0032;shared&#0032;alarms&#0046; - Precision&#0032;world&#0032;clocks&#0044;&#0032;loud&#0032;alarms&#0032;&#0038;&#0032;real&#0045;time&#0032;sync | Product Hunt"
+                  alt="Free clocks, timers and shared alarms on Product Hunt"
                   style={{ width: "250px", height: "54px" }}
                 />
               </a>

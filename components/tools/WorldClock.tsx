@@ -48,43 +48,57 @@ export default function WorldClock() {
           <Globe className="text-accent" />
           World Clock
         </h2>
-        <button className="p-2 rounded-lg bg-secondary hover:bg-primary transition-colors">
+        <button 
+          type="button"
+          aria-label="Add new city"
+          className="p-2 rounded-lg bg-secondary hover:bg-primary transition-colors cursor-pointer"
+        >
           <Plus size={20} />
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {clocks.map((clock) => (
-          <Link 
+          <div 
             key={clock.id} 
-            href={`/world-clock/${clock.slug}`}
             className="p-6 bg-secondary/20 rounded-2xl border border-card-border hover:border-accent/80 hover:bg-secondary/40 transition-all group relative block cursor-pointer"
           >
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-lg font-bold">{clock.name}</h3>
-                <p className="text-xs text-muted font-medium uppercase tracking-tighter">{clock.timezone}</p>
-              </div>
-              <Clock size={16} className="text-accent/50" />
-            </div>
+            <Link 
+              href={`/world-clock/${clock.slug}`}
+              className="absolute inset-0 z-0 rounded-2xl"
+              aria-label={`View details for ${clock.name}`}
+            />
             
-            <div className="font-mono text-3xl font-black mb-1 tabular-nums">
-              {formatTime(clock.timezone)}
-            </div>
-            <div className="text-sm text-muted font-bold">
-              {formatDate(clock.timezone)}
+            <div className="relative z-10 pointer-events-none">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-lg font-bold">{clock.name}</h3>
+                  <p className="text-xs text-muted font-medium uppercase tracking-tighter">{clock.timezone}</p>
+                </div>
+                <Clock size={16} className="text-accent/50" />
+              </div>
+              
+              <div className="font-mono text-3xl font-black mb-1 tabular-nums">
+                {formatTime(clock.timezone)}
+              </div>
+              <div className="text-sm text-muted font-bold">
+                {formatDate(clock.timezone)}
+              </div>
             </div>
 
             <button 
+              type="button"
               onClick={(e) => {
                 e.preventDefault()
+                e.stopPropagation()
                 setClocks(clocks.filter(c => c.id !== clock.id))
               }}
-              className="absolute top-2 right-2 p-1 text-danger opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-2 right-2 p-1 text-danger opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-pointer"
+              aria-label={`Remove ${clock.name}`}
             >
               <Trash2 size={14} />
             </button>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

@@ -55,13 +55,14 @@ export default function SmallClockCard({ country, city, timezone, onRemove }: Sm
             if (onRemove) onRemove();
           }}
           className="text-slate-400 dark:text-white/20 hover:text-danger hover:bg-danger/10 rounded-full p-0.5 sm:p-1 transition-all cursor-pointer z-20"
+          aria-label={`Remove ${city} from world clock`}
         >
           <X className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </button>
       </div>
 
       {/* Main Content (Centered) wrapped in Link */}
-      <Link href={href} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-0" aria-label={`View time in ${city}, ${country}`} />
+      <Link href={href} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-0" aria-label={`View time in ${city}, ${country} (opens in a new tab)`} />
       
       <div className="flex flex-col items-center justify-center space-y-1 sm:space-y-2 relative pointer-events-none w-full">
         <h4 className="text-sm sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate w-full text-center">{city}</h4>

@@ -268,7 +268,7 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                       className={cn(
                         "px-4 py-2 flex items-center justify-between cursor-pointer transition-colors duration-150 text-xs font-medium",
                         idx === highlightedIndex 
-                          ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-white" 
+                          ? "bg-primary text-white" 
                           : "text-slate-800 dark:text-white/80 hover:bg-slate-100 dark:hover:bg-white/5"
                       )}
                     >
@@ -483,7 +483,7 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
         )}
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-200 rounded-[2rem] p-8 text-center max-w-xl mx-auto space-y-4">
+          <div className="bg-white/5 border border-red-500/30 text-red-200 rounded-[2rem] p-8 text-center max-w-xl mx-auto space-y-4">
             <h3 className="text-xl font-bold">Failed to load holidays</h3>
             <p className="text-sm opacity-80">{error}</p>
             <button 
@@ -533,20 +533,20 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                       {/* Tags */}
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className={cn(
-                          "text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded",
+                          "text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border",
                           isUpcoming 
-                            ? 'bg-primary/10 dark:bg-primary/20 text-primary' 
-                            : 'bg-slate-900/5 dark:bg-white/10 text-slate-500 dark:text-white/40'
+                            ? 'bg-white/5 border-primary/30 text-primary' 
+                            : 'bg-slate-900/5 dark:bg-white/10 border-slate-200 dark:border-white/10 text-slate-500 dark:text-white/40'
                         )}>
                           {daysText}
                         </span>
                         <span className={cn(
                           "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border",
                           isNational 
-                            ? "bg-sky-500/10 text-sky-400 border-sky-500/20" 
+                            ? "bg-white/5 text-sky-400 border-sky-500/30" 
                             : isReligious 
-                              ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                              : "bg-slate-500/10 text-slate-400 border-slate-500/20"
+                              ? "bg-white/5 text-amber-400 border-amber-500/30"
+                              : "bg-white/5 text-slate-400 border-slate-500/30"
                         )}>
                           {holiday.type[0]}
                         </span>
@@ -609,7 +609,7 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                         <span className={cn(
                           "px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-wider border flex-shrink-0",
                           isUpcoming 
-                            ? 'bg-primary/10 border-primary/20 text-primary' 
+                            ? 'bg-white/5 border-primary/30 text-primary' 
                             : 'bg-slate-900/5 dark:bg-white/10 border-slate-200 dark:border-white/10 text-slate-500 dark:text-white/40'
                         )}>
                           {daysText}
@@ -625,10 +625,10 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                         <span className={cn(
                           "px-1.5 py-0.5 rounded-[4px] text-[8px] font-bold uppercase tracking-wider border flex-shrink-0",
                           isNational 
-                            ? "bg-sky-500/10 text-sky-400 border-sky-500/20" 
+                            ? "bg-white/5 text-sky-400 border-sky-500/30" 
                             : isReligious 
-                              ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                              : "bg-slate-500/10 text-slate-400 border-slate-500/20"
+                              ? "bg-white/5 text-amber-400 border-amber-500/30"
+                              : "bg-white/5 text-slate-400 border-slate-500/30"
                         )}>
                           {holiday.type[0]}
                         </span>

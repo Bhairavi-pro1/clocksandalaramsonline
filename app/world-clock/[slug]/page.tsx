@@ -138,13 +138,13 @@ export default async function DynamicCityPage({ params }: Props) {
               text: "Use the detailed astronomical data to understand sunrise, sunset, and day length relative to your current location." 
             }
           ].map((item, i) => (
-            <div key={i} className="group p-8 rounded-[2.5rem] bg-[#1a0b36]/40 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500 flex flex-col md:flex-row items-start gap-6">
-              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30 group-hover:bg-primary/40 transition-colors shrink-0">
-                <item.icon className="w-6 h-6 text-white" />
+            <div key={i} className="group p-8 rounded-[2.5rem] bg-slate-100/60 dark:bg-[#1a0b36]/40 border border-slate-200/80 dark:border-violet-500/10 hover:border-primary/40 dark:hover:border-violet-500/30 transition-all duration-500 flex flex-col md:flex-row items-start gap-6 shadow-sm">
+              <div className="w-12 h-12 bg-primary/10 dark:bg-white/5 rounded-2xl flex items-center justify-center border border-primary/30 group-hover:bg-primary group-hover:border-primary transition-all duration-300 shrink-0 shadow-sm">
+                <item.icon className="w-6 h-6 text-primary dark:text-violet-300 group-hover:text-white transition-colors" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-bold text-white">{item.title}</h3>
-                <p className="text-sm text-muted/80 leading-relaxed font-medium">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{item.title}</h3>
+                <p className="text-sm text-slate-600 dark:text-muted/80 leading-relaxed font-medium text-left">
                   {item.text}
                 </p>
               </div>

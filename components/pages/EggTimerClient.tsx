@@ -261,14 +261,14 @@ export default function EggTimerClient() {
                 {status === 'running' ? (
                   <button 
                     onClick={handlePause}
-                    className="flex-1 sm:flex-none bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/30 border border-yellow-500/30 px-4 py-3 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer"
+                    className="flex-1 sm:flex-none bg-amber-600 hover:bg-amber-500 text-white border border-amber-500/40 px-4 py-3 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shadow-lg shadow-amber-500/20"
                   >
                     <Pause className="fill-current w-4 h-4 sm:w-6 sm:h-6" /> PAUSE
                   </button>
                 ) : (
                   <button 
                     onClick={handleResume}
-                    className="flex-1 sm:flex-none bg-green-500/20 text-green-500 hover:bg-green-500/30 border border-green-500/30 px-4 py-3 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer"
+                    className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500/40 px-4 py-3 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shadow-lg shadow-emerald-500/20"
                   >
                     <Play className="fill-current w-4 h-4 sm:w-6 sm:h-6" /> RESUME
                   </button>
@@ -293,7 +293,7 @@ export default function EggTimerClient() {
           <div className="space-y-6 sm:space-y-8 h-full flex flex-col justify-center">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
               <h3 className="text-lg sm:text-2xl font-black text-slate-800 dark:text-white">Desired Doneness</h3>
-              <span className="bg-primary/20 text-primary px-3 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-inner border border-primary/20 whitespace-nowrap">
+              <span className="bg-white/5 text-primary px-3 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-inner border border-primary/30 whitespace-nowrap">
                 {EGG_STATES[targetMinute as keyof typeof EGG_STATES].label}
               </span>
             </div>

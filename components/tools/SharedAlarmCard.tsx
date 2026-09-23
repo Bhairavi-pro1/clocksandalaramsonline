@@ -140,7 +140,7 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
     <div className="w-full bg-[#1a0b36]/60 border border-violet-500/20 rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-8 relative overflow-hidden group shadow-2xl transition-all duration-300 hover:border-primary/40">
       
       {!isCreator && (
-        <div className="absolute top-0 right-0 bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-bl-xl border-b border-l border-primary/20 hidden md:block">
+        <div className="absolute top-0 right-0 bg-white/5 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-bl-xl border-b border-l border-primary/30 hidden md:block">
           📨 Shared Alarm
         </div>
       )}
@@ -170,7 +170,7 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
                   </button>
                   <button 
                      onClick={handleDelete}
-                     className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
+                     className="p-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-red-400 border border-white/10 hover:border-red-500/30 transition-colors"
                      aria-label="Delete Alarm"
                   >
                      <Trash2 size={14} />
@@ -199,7 +199,7 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
          <div className="flex md:hidden items-center gap-2 mt-3 pt-3 border-t border-white/5 w-full">
             <button 
                onClick={handleCopyLink}
-               className="flex items-center justify-center gap-1.5 bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
+               className="flex items-center justify-center gap-1.5 bg-white/5 hover:bg-primary text-primary hover:text-white border border-primary/30 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
             >
                <Link2 size={12} /> 
                {copying ? "Copied!" : "Share Link"}
@@ -239,7 +239,7 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
                 </button>
                 <button 
                   onClick={handleDelete}
-                  className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
+                  className="p-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-red-400 border border-white/10 hover:border-red-500/30 transition-colors"
                   aria-label="Delete Alarm"
                 >
                   <Trash2 size={16} />
@@ -272,7 +272,7 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/5">
                <button 
                   onClick={handleCopyLink}
-                  className="w-full flex items-center justify-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2.5 rounded-xl text-sm font-bold transition-colors relative"
+                  className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-primary text-primary hover:text-white border border-primary/30 px-4 py-2.5 rounded-xl text-sm font-bold transition-colors relative"
                >
                   <Link2 size={16} /> 
                   {copying ? "Copied!" : "Share Link"}

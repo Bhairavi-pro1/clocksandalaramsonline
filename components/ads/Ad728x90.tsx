@@ -23,8 +23,6 @@ export default function Ad728x90({ delay = 0 }: { delay?: number } = {}) {
       iframe.style.height = '90px'
       iframe.style.border = 'none'
       iframe.style.overflow = 'hidden'
-      iframe.scrolling = 'no'
-      iframe.setAttribute('frameborder', '0')
 
       containerRef.current.appendChild(iframe)
 
@@ -76,7 +74,8 @@ export default function Ad728x90({ delay = 0 }: { delay?: number } = {}) {
   }
 
   return (
-    <div className="ad-container-728x90 min-h-[90px] flex items-center justify-center">
+    <div className="ad-container-728x90 min-h-[90px] flex items-center justify-center relative">
+      <span className="sr-only">Advertisement</span>
       <div ref={containerRef} style={{ width: '728px', height: '90px', overflow: 'hidden' }} />
     </div>
   )

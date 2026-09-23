@@ -81,7 +81,7 @@ export default function PrivacyPage() {
         </p>
         <div className="p-3.5 sm:p-6 bg-secondary/30 dark:bg-secondary/10 border border-card-border rounded-xl sm:rounded-2xl">
           <p className="text-xs text-muted font-medium sm:font-bold italic">
-            You may opt out of personalized advertising by visiting Google's Ads Settings or by using an industry-standard opt-out tool like <a href="https://aboutads.info" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AboutAds.info</a>.
+            You may opt out of personalized advertising by visiting Google's Ads Settings or by using an industry-standard opt-out tool like <a href="https://aboutads.info" target="_blank" rel="noopener noreferrer" aria-label="AboutAds.info (opens in a new tab)" className="text-primary hover:underline">AboutAds.info</a>.
           </p>
         </div>
       </section>

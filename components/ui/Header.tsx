@@ -156,7 +156,7 @@ export default function Header() {
                       href={tool.href}
                       className="group/item p-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all flex items-start gap-4"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/10 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-primary border border-primary/20 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
                         <tool.icon size={20} />
                       </div>
                       <div>
@@ -240,8 +240,11 @@ export default function Header() {
             </Link>
 
             <button 
+              type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-3 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all active:scale-90"
+              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isOpen}
+              className="lg:hidden p-3 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all active:scale-90 cursor-pointer"
             >
               {isOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
             </button>
@@ -278,7 +281,7 @@ export default function Header() {
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-5 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 transition-all font-bold text-white group"
                     >
-                       <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                       <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-all">
                           <tool.icon size={20} />
                        </div>
                        <span className="group-hover:translate-x-1 transition-transform">{tool.label}</span>
@@ -325,7 +328,7 @@ export default function Header() {
                 onClick={() => setIsOpen(false)}
                 className="flex items-center gap-5 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 transition-all font-bold text-white group"
               >
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-all">
                   <BookOpen size={20} />
                 </div>
                 <span className="group-hover:translate-x-1 transition-transform">Blog</span>

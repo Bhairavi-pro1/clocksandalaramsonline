@@ -143,9 +143,9 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Second: Title & Metadata */}
         <div className="px-4 pt-3 space-y-1.5">
-          <h1 className="text-lg sm:text-2xl font-black text-white tracking-tight leading-snug">
+          <div className="text-lg sm:text-2xl font-black text-white tracking-tight leading-snug font-display">
             {post.title}
-          </h1>
+          </div>
           <div className="flex items-center gap-2 text-[10px] sm:text-xs text-muted/60 font-bold flex-wrap">
             <div className="flex items-center gap-1">
               <Tag size={11} className="text-primary shrink-0" />

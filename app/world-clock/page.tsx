@@ -71,7 +71,7 @@ export default function WorldClockPage() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-2 sm:pt-4">
         <div className="text-center space-y-1.5 sm:space-y-2 animate-in fade-in duration-700 mb-3 sm:mb-4">
-          <div className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
+          <div className="inline-block px-3 py-1 rounded-full bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest">
             Global Time Synchronization
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
