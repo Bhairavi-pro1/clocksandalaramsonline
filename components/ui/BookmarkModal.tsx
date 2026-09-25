@@ -161,8 +161,8 @@ export default function BookmarkModal() {
 
                 {platform === 'mobile' && (
                   <div className="py-4 px-4 bg-primary/10 border border-primary/20 rounded-[2rem] my-6 text-left">
-                    <p className="text-slate-800 dark:text-white/90 font-semibold text-xs text-center uppercase tracking-wider mb-2">Instructions:</p>
-                    <ol className="text-slate-600 dark:text-white/70 text-xs space-y-1.5 list-decimal list-inside font-medium">
+                    <p className="text-slate-800 dark:text-white/90 font-semibold text-sm text-center uppercase tracking-wider mb-2">Instructions:</p>
+                    <ol className="text-slate-600 dark:text-white/70 text-sm space-y-1.5 list-decimal list-inside font-medium">
                       <li>Tap the menu button (<span className="font-bold text-slate-800 dark:text-white">⋮</span> or Safari share icon <span className="font-bold text-slate-800 dark:text-white">⎙</span>)</li>
                       <li>Select <span className="text-slate-800 dark:text-white font-semibold">"Add to Bookmarks"</span> or <span className="text-slate-800 dark:text-white font-semibold">"Add to Home Screen"</span></li>
                     </ol>
@@ -170,7 +170,7 @@ export default function BookmarkModal() {
                 )}
 
                 <div className="space-y-2 text-left w-full mt-4">
-                  <p className="text-slate-400 dark:text-white/40 text-[10px] font-bold uppercase tracking-wider">Or copy the bookmark link:</p>
+                  <p className="text-slate-400 dark:text-white/40 text-xs font-bold uppercase tracking-wider">Or copy the bookmark link:</p>
                   <div className="flex items-center gap-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-2.5">
                     <span className="text-slate-500 dark:text-white/50 text-xs font-mono truncate flex-1 select-all">
                       {typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}?ref=bookmark` : ''}

@@ -121,6 +121,8 @@ export default async function BlogPage() {
                           .quality(80)
                           .url()}
                         alt={post.mainImage.alt || post.title}
+                        width="600"
+                        height="340"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         loading="lazy"
                       />

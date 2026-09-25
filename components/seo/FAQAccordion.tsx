@@ -21,7 +21,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
           >
             <div className="flex gap-3 sm:gap-4 items-center">
               <HelpCircle className="text-primary group-hover:scale-110 transition-transform shrink-0 w-5 h-5 sm:w-6 sm:h-6" />
-              <h3 className="text-sm sm:text-base md:text-lg font-bold text-slate-800 dark:text-white tracking-tight leading-snug">{faq.q}</h3>
+              <h3 className="text-base sm:text-lg font-bold text-slate-800 dark:text-white tracking-tight leading-snug">{faq.q}</h3>
             </div>
             <ChevronDown className={cn("w-4 h-4 sm:w-5 sm:h-5 text-slate-400 dark:text-muted transition-transform duration-300 md:hidden shrink-0", activeMobileFaq === i && "rotate-180")} />
           </div>
@@ -31,7 +31,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
             activeMobileFaq === i ? "grid-rows-[1fr] opacity-100 mt-3 sm:mt-4" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100 md:mt-4"
           )}>
             <div className="overflow-hidden">
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-10 text-left">
+              <p className="text-base text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-10 text-left">
                 {faq.a}
               </p>
             </div>

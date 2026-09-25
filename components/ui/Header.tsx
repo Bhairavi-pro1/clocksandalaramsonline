@@ -112,6 +112,8 @@ export default function Header() {
               <img 
                 src="/assets/clock_site_logo.png" 
                 alt="Clocks and Alarms Online Logo" 
+                width="48"
+                height="48"
                 className="w-full h-full object-contain dark:invert dark:brightness-200 transition-all duration-500 group-hover:brightness-110 dark:group-hover:brightness-250 animate-pulse"
               />
             </div>

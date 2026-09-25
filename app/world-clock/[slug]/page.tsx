@@ -144,7 +144,7 @@ export default async function DynamicCityPage({ params }: Props) {
               </div>
               <div className="space-y-2">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">{item.title}</h3>
-                <p className="text-sm text-slate-600 dark:text-muted/80 leading-relaxed font-medium text-left">
+                <p className="text-base text-slate-600 dark:text-muted/90 leading-relaxed font-medium text-left">
                   {item.text}
                 </p>
               </div>

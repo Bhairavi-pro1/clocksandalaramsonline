@@ -71,7 +71,7 @@ export default function ToolSEO({
       
       {/* 1. Introduction (Thin Content Fix) */}
       <section className="text-center space-y-4 sm:space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-1000 mt-10 sm:mt-20">
-        <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 dark:bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest mb-1 sm:mb-2">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 dark:bg-white/5 border border-primary/30 text-primary text-xs font-black uppercase tracking-widest mb-1 sm:mb-2">
           {introTag}
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-display text-slate-900 dark:text-white tracking-tight leading-tight">
@@ -79,7 +79,7 @@ export default function ToolSEO({
             i > arr.length - 3 ? <span key={i} className="text-primary/80">{word} </span> : <span key={i}>{word} </span>
           )}
         </h2>
-        <p className="text-sm sm:text-lg md:text-xl text-slate-600 dark:text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90 whitespace-pre-line text-left">
+        <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90 whitespace-pre-line text-left">
           {introParagraph}
         </p>
       </section>
@@ -100,8 +100,8 @@ export default function ToolSEO({
                 </span>
               </div>
               <div className="space-y-1 sm:space-y-2">
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">{item.title}</h3>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-muted/80 leading-relaxed font-medium text-left">
+                <h3 className="text-base sm:text-xl font-bold text-slate-900 dark:text-white">{item.title}</h3>
+                <p className="text-base text-slate-600 dark:text-muted/90 leading-relaxed font-medium text-left">
                   {item.text}
                 </p>
               </div>
@@ -119,7 +119,7 @@ export default function ToolSEO({
               {proTips.map((tip, i) => (
                 <li key={i} className="flex items-start gap-3 sm:gap-4">
                   <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0 mt-0.5" />
-                  <p className="text-xs sm:text-base text-slate-600 dark:text-muted/90 font-medium leading-relaxed text-left">{tip}</p>
+                  <p className="text-base text-slate-600 dark:text-muted/90 font-medium leading-relaxed text-left">{tip}</p>
                 </li>
               ))}
             </ul>
@@ -132,7 +132,7 @@ export default function ToolSEO({
         <div className="text-center space-y-2 sm:space-y-4">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Popular Use Cases for <span className="text-primary">{toolName}</span></h2>
           <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-          <p className="text-slate-600 dark:text-muted text-sm sm:text-lg max-w-2xl mx-auto font-medium">Discover how people around the world optimize their daily routines using our comprehensive timing suite.</p>
+          <p className="text-slate-600 dark:text-muted text-base sm:text-lg max-w-2xl mx-auto font-medium">Discover how people around the world optimize their daily routines using our comprehensive timing suite.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -141,8 +141,8 @@ export default function ToolSEO({
             return (
               <div key={i} className="p-4 sm:p-8 rounded-2xl sm:rounded-[2rem] bg-slate-100/60 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-primary/30 transition-all duration-300 shadow-sm">
                 <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary dark:text-sky-400 mb-4 sm:mb-6" />
-                <h3 className="text-base sm:text-xl font-bold text-slate-900 dark:text-white mb-2 sm:mb-3">{uc.title}</h3>
-                <p className="text-xs sm:text-base text-slate-600 dark:text-muted/80 leading-relaxed text-left">{uc.text}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2 sm:mb-3">{uc.title}</h3>
+                <p className="text-base text-slate-600 dark:text-muted/80 leading-relaxed text-left">{uc.text}</p>
               </div>
             )
           })}
@@ -156,7 +156,7 @@ export default function ToolSEO({
         </div>
         <div className="relative z-10 max-w-3xl">
           <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-4 sm:mb-8">Why Choose Our <span className="text-primary">{toolName}</span>?</h2>
-          <p className="text-sm sm:text-lg text-slate-600 dark:text-muted/90 leading-relaxed mb-4 sm:mb-8 whitespace-pre-line text-left font-medium">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-muted/90 leading-relaxed mb-4 sm:mb-8 whitespace-pre-line text-left font-medium">
             {whyChooseUs}
           </p>
         </div>
@@ -172,14 +172,14 @@ export default function ToolSEO({
               </div>
               <div>
                 <h2 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Troubleshooting Guide</h2>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-muted font-medium">Quick solutions to common questions & potential display issues</p>
+                <p className="text-sm sm:text-base text-slate-500 dark:text-muted font-medium">Quick solutions to common questions & potential display issues</p>
               </div>
             </div>
           </div>
 
           {/* Intro statement banner */}
           {troubleData.intro && (
-            <div className="flex items-start sm:items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/10 dark:bg-white/5 border border-amber-500/25 text-amber-800 dark:text-amber-300 text-xs sm:text-sm font-semibold">
+            <div className="flex items-start sm:items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/10 dark:bg-white/5 border border-amber-500/25 text-amber-800 dark:text-amber-300 text-sm font-semibold">
               <AlertTriangle className="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
               <span>{troubleData.intro}</span>
             </div>
@@ -199,10 +199,10 @@ export default function ToolSEO({
                     </span>
                   </div>
                   <div className="flex-1 min-w-0 space-y-1.5">
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       {item.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-muted/90 leading-relaxed font-normal">
+                    <p className="text-base text-slate-600 dark:text-muted/90 leading-relaxed font-normal">
                       {item.description}
                     </p>
                   </div>
@@ -212,7 +212,7 @@ export default function ToolSEO({
           ) : (
             /* Fallback for unformatted single paragraph */
             <div className="p-5 sm:p-6 rounded-2xl bg-slate-100/60 dark:bg-[#1a0b36]/40 border border-slate-200/80 dark:border-white/5">
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-muted/90 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-muted/90 leading-relaxed">
                 {troubleshooting}
               </p>
             </div>

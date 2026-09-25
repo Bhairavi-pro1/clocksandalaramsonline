@@ -184,6 +184,8 @@ export default async function BlogPostPage({ params }: Props) {
               <img
                 src={urlFor(post.mainImage).width(800).quality(85).url()}
                 alt={post.mainImage.alt || post.title}
+                width="800"
+                height="450"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -260,6 +262,8 @@ export default async function BlogPostPage({ params }: Props) {
               <img
                 src={urlFor(post.mainImage).width(1400).quality(85).url()}
                 alt={post.mainImage.alt || post.title}
+                width="1400"
+                height="700"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b0118]/40 via-transparent to-transparent" />
@@ -312,6 +316,8 @@ export default async function BlogPostPage({ params }: Props) {
                         .quality(75)
                         .url()}
                       alt={related.mainImage.alt || related.title}
+                      width="400"
+                      height="400"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       loading="lazy"
                     />

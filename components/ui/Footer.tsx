@@ -43,6 +43,8 @@ export default function Footer() {
                 <img
                   src="/assets/clock_site_logo.png"
                   alt="Logo"
+                  width="32"
+                  height="32"
                   className="w-full h-full object-contain filter invert brightness-200"
                 />
               </div>
@@ -51,7 +53,7 @@ export default function Footer() {
                 <span className="text-primary/70">Online</span>
               </h4>
             </div>
-            <p className="text-white/70 text-sm leading-relaxed max-w-md font-medium text-left">
+            <p className="text-white/70 text-base leading-relaxed max-w-md font-medium text-left">
               Your ultimate high-precision timekeeping suite. Track global time
               zones, set powerful alarms, and use our millisecond-accurate
               stopwatch and countdown tools with confidence and ease. Built for
@@ -67,6 +69,8 @@ export default function Footer() {
                 <img
                   src="/assets/product_review.svg"
                   alt="Free clocks, timers and shared alarms on Product Hunt"
+                  width="250"
+                  height="54"
                   style={{ width: "250px", height: "54px" }}
                 />
               </a>
@@ -211,13 +215,13 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-20 pt-8 border-t border-card-border/10 flex flex-col items-center justify-center text-center gap-3">
-          <p className="text-[11px] text-white/50 font-bold tracking-wide">
+          <p className="text-xs sm:text-sm text-white/50 font-bold tracking-wide">
             &copy; {currentYear} Clocks and Alarms Online. All rights reserved.
           </p>
-          <div className="flex items-center justify-center gap-3 text-[11px] font-bold">
+          <div className="flex items-center justify-center gap-3 text-xs sm:text-sm font-bold">
             <span className="text-primary/70">Precision in Every Second</span>
             <span className="text-white/20">|</span>
-            <span className="text-primary/60 uppercase tracking-widest text-[9px] font-black">
+            <span className="text-primary/60 uppercase tracking-widest text-xs font-black">
               Designed for speed
             </span>
           </div>
