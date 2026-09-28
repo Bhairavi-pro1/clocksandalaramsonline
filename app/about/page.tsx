@@ -1,5 +1,6 @@
 import { Zap, Shield, Globe, Clock, Cpu, Layout } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
+import TeamSection from '@/components/ui/TeamSection'
 
 export default function AboutPage() {
   return (
@@ -78,7 +79,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 4. Expertise & Authorship */}
+      {/* 4. Our Team Section (CEO & CTO) */}
+      <TeamSection />
+
+      {/* 5. Expertise & Authorship */}
       <section className="bg-primary/5 border border-primary/20 p-5 sm:p-10 md:p-12 rounded-2xl sm:rounded-[3.5rem] mt-8 sm:mt-12 md:mt-16 max-w-4xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight uppercase italic mb-3 sm:mb-6 text-center">Engineered for Precision & Reliability</h2>
         <p className="text-sm sm:text-lg text-muted leading-relaxed font-medium text-center">
@@ -86,7 +90,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-      {/* 5. Vision Section */}
+      {/* 6. Vision Section */}
       <section className="max-w-4xl mx-auto text-center space-y-4 sm:space-y-8">
         <h2 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight uppercase italic">Developed for Productivity</h2>
         <p className="text-sm sm:text-lg text-muted leading-relaxed font-medium">
@@ -97,7 +101,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-      {/* 5. Ad Banner Placeholder */}
+      {/* 7. Ad Banner Placeholder */}
       <AdBanner />
     </div>
   )
