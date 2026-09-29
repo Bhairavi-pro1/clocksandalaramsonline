@@ -416,26 +416,29 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
       {/* ❓ Section 8: FAQ Section */}
       <section id="faq" className="max-w-6xl mx-auto px-6 space-y-16">
         <div className="text-left space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
             <HelpCircle size={14} /> Frequently Asked Questions
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             Got Questions? We Have <span className="text-primary italic">Answers</span>
           </h2>
-          <p className="text-lg text-muted/60 max-w-2xl font-medium">
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl font-medium">
             Find simple, straightforward answers to the questions our global community asks most.
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto flex flex-col gap-6 pt-8 w-full">
           {faqs.map((faq, i) => (
-            <div key={i} className="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-white dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:border-primary/20 transition-all duration-500 shadow-2xl flex flex-col justify-start w-full">
+            <div 
+              key={i} 
+              className="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-white dark:bg-[#1a0b36]/60 border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-2xl flex flex-col justify-start w-full transition-colors"
+            >
               <h4 
-                className="text-base md:text-lg font-black text-slate-800 dark:text-white flex items-center justify-between gap-3 leading-snug w-full cursor-pointer md:cursor-default select-none"
+                className="text-base md:text-lg font-bold text-slate-900 dark:text-white flex items-center justify-between gap-3 leading-snug w-full cursor-pointer md:cursor-default select-none"
                 onClick={() => setActiveMobileFaq(activeMobileFaq === i ? null : i)}
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-base md:text-lg">Q.</span>
+                  <span className="text-primary font-bold text-base md:text-lg shrink-0">Q.</span>
                   <span>{faq.q}</span>
                 </div>
                 <ChevronDown className={cn("w-5 h-5 text-slate-400 dark:text-muted transition-transform duration-300 md:hidden shrink-0 mt-0.5", activeMobileFaq === i && "rotate-180")} />
@@ -446,7 +449,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                 activeMobileFaq === i ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100 md:mt-4"
               )}>
                 <div className="overflow-hidden">
-                  <p className="text-sm text-slate-600 dark:text-white/70 leading-relaxed font-medium pl-0 md:pl-6 text-left">
+                  <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal pl-0 md:pl-7 text-left">
                     {faq.a}
                   </p>
                 </div>

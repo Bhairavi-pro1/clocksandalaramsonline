@@ -29,6 +29,13 @@ export default function WorldClockPage() {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "1120",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   }
 

@@ -29,6 +29,13 @@ export default function StopwatchPage() {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "740",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   }
 

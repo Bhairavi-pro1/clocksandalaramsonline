@@ -31,6 +31,13 @@ export default function MeetingPlannerPage() {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "610",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   }
 

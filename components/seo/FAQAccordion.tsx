@@ -14,14 +14,14 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
       {faqs.map((faq, i) => (
-        <div key={i} className="w-full bg-white dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[1.5rem] md:rounded-[2rem] hover:bg-slate-50 dark:hover:bg-white/[0.08] transition-all group flex flex-col justify-start">
+        <div key={i} className="w-full bg-white dark:bg-[#1a0b36]/60 border border-slate-200 dark:border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[1.5rem] md:rounded-[2rem] shadow-sm dark:shadow-md flex flex-col justify-start">
           <div 
             className="flex items-center justify-between gap-3 sm:gap-4 w-full cursor-pointer md:cursor-default select-none"
             onClick={() => setActiveMobileFaq(activeMobileFaq === i ? null : i)}
           >
             <div className="flex gap-3 sm:gap-4 items-center">
-              <HelpCircle className="text-primary group-hover:scale-110 transition-transform shrink-0 w-5 h-5 sm:w-6 sm:h-6" />
-              <h3 className="text-base sm:text-lg font-bold text-slate-800 dark:text-white tracking-tight leading-snug">{faq.q}</h3>
+              <HelpCircle className="text-primary shrink-0 w-5 h-5 sm:w-6 sm:h-6" />
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight leading-snug">{faq.q}</h3>
             </div>
             <ChevronDown className={cn("w-4 h-4 sm:w-5 sm:h-5 text-slate-400 dark:text-muted transition-transform duration-300 md:hidden shrink-0", activeMobileFaq === i && "rotate-180")} />
           </div>

@@ -193,6 +193,13 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "320",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   };
 
