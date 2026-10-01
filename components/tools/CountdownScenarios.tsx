@@ -139,7 +139,7 @@ export default function CountdownScenarios() {
             <Timer className="text-primary" size={18} />
             <h3 className="text-lg md:text-xl font-black text-white tracking-tight leading-none">Set the timer for the specified time</h3>
           </div>
-          <p className="text-[12px] text-muted/60 font-medium ml-6.5">Quick start any of these high-precision timer presets</p>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 font-medium ml-6.5">Quick start any of these high-precision timer presets</p>
         </header>
 
         <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1.5 sm:gap-2 relative z-10">
@@ -154,16 +154,16 @@ export default function CountdownScenarios() {
                 onClick={() => handleAddTimer(preset.label, preset.seconds)}
                 className="group flex items-center justify-center sm:justify-between p-2 sm:p-2.5 px-1.5 sm:px-3.5 rounded-lg bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 cursor-pointer"
               >
-                <div className="flex items-center gap-1 sm:gap-2.5">
-                  <div className="hidden sm:flex w-5 h-5 rounded-full bg-primary/10 items-center justify-center opacity-30 group-hover:opacity-100 group-hover:bg-primary/20 transition-all">
+                <span className="flex items-center gap-1 sm:gap-2.5">
+                  <span className="hidden sm:flex w-5 h-5 rounded-full bg-primary/10 items-center justify-center opacity-30 group-hover:opacity-100 group-hover:bg-primary/20 transition-all">
                     <Zap size={10} className="text-primary" />
-                  </div>
-                  <span className="text-[10px] sm:text-[13px] font-bold text-primary/95 dark:text-sky-400 group-hover:text-primary transition-colors whitespace-nowrap">
+                  </span>
+                  <span className="text-xs sm:text-[13px] font-bold text-primary dark:text-violet-300 group-hover:text-primary transition-colors whitespace-nowrap">
                     <span className="hidden sm:inline">{preset.label}</span>
                     <span className="sm:hidden">{shortLabel}</span>
                   </span>
-                </div>
-                <ArrowRight size={12} className="hidden sm:block text-white/10 group-hover:text-primary transition-all" />
+                </span>
+                <ArrowRight size={12} className="hidden sm:block text-white/20 group-hover:text-primary transition-all" />
               </button>
             );
           })}
@@ -181,16 +181,16 @@ export default function CountdownScenarios() {
             <Calendar className="text-primary" size={18} />
             <h3 className="text-lg md:text-xl font-black text-white tracking-tight leading-none">Important Dates & Holidays</h3>
           </div>
-          <p className="text-[12px] text-muted/60 font-medium ml-6.5">Automatically updated countdowns for holidays in {countryName}</p>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 font-medium ml-6.5">Automatically updated countdowns for holidays in {countryName}</p>
         </header>
 
         <div className="overflow-hidden bg-white/[0.02] rounded-xl border border-white/5 relative z-10">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-white/5 shadow-sm">
-                <th className="px-3 py-2.5 md:px-5 md:py-3 font-black text-white/40 uppercase text-[8px] tracking-[0.2em]">Scenario</th>
-                <th className="px-3 py-2.5 md:px-5 md:py-3 font-black text-white/40 uppercase text-[8px] tracking-[0.2em] hidden sm:table-cell">Date</th>
-                <th className="px-3 py-2.5 md:px-5 md:py-3 font-black text-white/40 uppercase text-[8px] tracking-[0.2em] text-right">Remaining</th>
+                <th className="px-3 py-2.5 md:px-5 md:py-3 font-bold text-slate-400 dark:text-slate-300 uppercase text-xs tracking-wider">Scenario</th>
+                <th className="px-3 py-2.5 md:px-5 md:py-3 font-bold text-slate-400 dark:text-slate-300 uppercase text-xs tracking-wider hidden sm:table-cell">Date</th>
+                <th className="px-3 py-2.5 md:px-5 md:py-3 font-bold text-slate-400 dark:text-slate-300 uppercase text-xs tracking-wider text-right">Remaining</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">

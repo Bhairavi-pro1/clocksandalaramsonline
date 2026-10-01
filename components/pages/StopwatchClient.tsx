@@ -473,8 +473,8 @@ export default function StopwatchClient() {
             <button 
               type="button"
               onClick={() => { setHistory([]); setLoadedSessionId(null); }}
-              aria-label="Clear stopwatch history"
-              className="text-[10px] text-slate-600 dark:text-white/70 hover:text-red-500 dark:hover:text-red-400 px-3 py-1 rounded-full border border-slate-300 dark:border-white/10 hover:border-red-500/40 transition-all uppercase font-black cursor-pointer"
+              aria-label="Clear History"
+              className="text-xs text-slate-600 dark:text-slate-300 hover:text-red-500 dark:hover:text-red-400 px-3 py-1 rounded-full border border-slate-300 dark:border-white/10 hover:border-red-500/40 transition-all uppercase font-black cursor-pointer"
             >
               Clear History
             </button>

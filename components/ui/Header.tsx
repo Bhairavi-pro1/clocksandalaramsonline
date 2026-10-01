@@ -121,7 +121,7 @@ export default function Header() {
               <span className="text-lg font-black tracking-tighter text-white font-display leading-[0.8] transition-colors group-hover:text-primary">
                 Clocks and Alarms
               </span>
-              <span className="text-primary font-black text-[10px] uppercase tracking-[0.4em] mt-1 ml-0.5 opacity-80">
+              <span className="text-primary font-black text-xs uppercase tracking-[0.4em] mt-1 ml-0.5">
                 Online
               </span>
             </div>
@@ -156,21 +156,21 @@ export default function Header() {
                     <Link 
                       key={tool.href} 
                       href={tool.href}
-                      className="group/item p-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all flex items-start gap-4"
+                      className="group/item p-4 rounded-2xl hover:bg-primary/5 dark:hover:bg-white/5 border border-transparent hover:border-primary/20 dark:hover:border-white/5 transition-all flex items-start gap-4"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-primary border border-primary/20 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
-                        <tool.icon size={20} />
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 dark:bg-white/5 flex items-center justify-center text-primary border border-primary/20 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-300 shrink-0">
+                        <tool.icon size={20} className="transition-colors" />
                       </div>
                       <div>
-                        <div className="text-sm font-black text-white group-hover/item:text-primary transition-colors">{tool.label}</div>
-                        <div className="text-[10px] text-white/40 font-bold uppercase tracking-wider mt-1">{tool.description}</div>
+                        <div className="text-sm font-black text-slate-900 dark:text-white group-hover/item:text-primary transition-colors">{tool.label}</div>
+                        <div className="text-xs text-slate-500 dark:text-white/40 font-bold uppercase tracking-wider mt-1">{tool.description}</div>
                       </div>
                     </Link>
                   ))}
                 </div>
-                <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between px-2">
-                   <span className="text-[10px] font-black uppercase text-white/30 tracking-widest italic">Professional Grade Precision</span>
-                   <Link href="/world-clock" className="text-[10px] font-black uppercase text-primary hover:text-accent transition-colors tracking-widest flex items-center gap-2">
+                <div className="mt-6 pt-6 border-t border-slate-200 dark:border-white/5 flex items-center justify-between px-2">
+                   <span className="text-xs font-black uppercase text-slate-400 dark:text-white/30 tracking-widest italic">Professional Grade Precision</span>
+                   <Link href="/world-clock" className="text-xs font-black uppercase text-primary hover:text-accent transition-colors tracking-widest flex items-center gap-2">
                       View All Tools <Zap size={10} fill="currentColor" />
                    </Link>
                 </div>
@@ -205,7 +205,7 @@ export default function Header() {
                       key={section.href} 
                       href={section.href}
                       onClick={(e) => handleSectionClick(e, section.href)}
-                      className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-white/70 hover:text-primary hover:bg-white/5 rounded-xl transition-all block text-left"
+                      className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-white/70 hover:text-primary dark:hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 rounded-xl transition-all block text-left"
                     >
                       {section.label}
                     </Link>
@@ -339,10 +339,10 @@ export default function Header() {
 
             {/* Settings in Mobile */}
             <div className="space-y-4">
-              <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Settings</span>
+              <span className="text-xs font-black text-primary uppercase tracking-[0.4em]">Settings</span>
               <div className="p-6 rounded-[2rem] bg-white/5 border border-white/5 space-y-6">
                 <div className="space-y-3">
-                  <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Time Format Preference</div>
+                  <div className="text-xs font-bold text-slate-300 dark:text-slate-300 uppercase tracking-widest">Time Format Preference</div>
                   <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
                     <button
                       onClick={() => is24Hour && toggleTimeFormat()}
@@ -350,7 +350,7 @@ export default function Header() {
                         "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
                         mounted && !is24Hour 
                           ? "bg-primary text-white shadow-md shadow-primary/20" 
-                          : "bg-transparent text-white/50 hover:text-white"
+                          : "bg-transparent text-slate-400 dark:text-slate-400 hover:text-white"
                       )}
                     >
                       12-Hour
@@ -361,7 +361,7 @@ export default function Header() {
                         "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer",
                         mounted && is24Hour 
                           ? "bg-primary text-white shadow-md shadow-primary/20" 
-                          : "bg-transparent text-white/50 hover:text-white"
+                          : "bg-transparent text-slate-400 dark:text-slate-400 hover:text-white"
                       )}
                     >
                       24-Hour
@@ -370,7 +370,7 @@ export default function Header() {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Theme Preference</div>
+                  <div className="text-xs font-bold text-slate-300 dark:text-slate-300 uppercase tracking-widest">Theme Preference</div>
                   <div className="flex w-full rounded-full border border-primary/30 overflow-hidden bg-white/5 p-0.5">
                     <button
                       onClick={() => theme !== 'light' && toggleTheme()}
@@ -378,7 +378,7 @@ export default function Header() {
                         "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-2",
                         mounted && theme === 'light' 
                           ? "bg-primary text-white shadow-md shadow-primary/20" 
-                          : "bg-transparent text-white/50 hover:text-white"
+                          : "bg-transparent text-slate-400 dark:text-slate-400 hover:text-white"
                       )}
                     >
                       <Sun size={12} /> Light
@@ -389,7 +389,7 @@ export default function Header() {
                         "flex-1 text-center py-2.5 text-xs font-black uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-2",
                         mounted && theme === 'dark' 
                           ? "bg-primary text-white shadow-md shadow-primary/20" 
-                          : "bg-transparent text-white/50 hover:text-white"
+                          : "bg-transparent text-slate-400 dark:text-slate-400 hover:text-white"
                       )}
                     >
                       <Moon size={12} /> Dark
@@ -407,7 +407,7 @@ export default function Header() {
               >
                 Get Started Free
               </Link>
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30">
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-400">
                 ⚡ No Login Required
               </p>
            </div>

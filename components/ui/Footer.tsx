@@ -48,12 +48,12 @@ export default function Footer() {
                   className="w-full h-full object-contain filter invert brightness-200"
                 />
               </div>
-              <h4 className="text-xl font-extrabold font-display text-white tracking-tight">
+              <h4 className="text-xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
                 Clocks and Alarms{" "}
-                <span className="text-primary/70">Online</span>
+                <span className="text-primary">Online</span>
               </h4>
             </div>
-            <p className="text-white/70 text-base leading-relaxed max-w-md font-medium text-left">
+            <p className="text-slate-600 dark:text-slate-200 text-base leading-relaxed max-w-md font-medium text-left">
               Your ultimate high-precision timekeeping suite. Track global time
               zones, set powerful alarms, and use our millisecond-accurate
               stopwatch and countdown tools with confidence and ease. Built for
@@ -79,82 +79,82 @@ export default function Footer() {
 
           {/* Tools Links */}
           <div className="md:col-span-8 lg:col-span-5 space-y-6">
-            <h6 className="text-[10px] uppercase font-bold text-white tracking-[0.2em]">
+            <h6 className="text-xs uppercase font-black text-slate-900 dark:text-white tracking-[0.2em]">
               Tools
             </h6>
             <ul className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
               <li>
                 <Link
                   href="/world-clock"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Globe className="w-3.5 h-3.5 flex-shrink-0" /> World Clock
+                  <Globe className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> World Clock
                 </Link>
               </li>
               <li>
                 <Link
                   href="/stopwatch"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Timer className="w-3.5 h-3.5 flex-shrink-0" /> Stopwatch
+                  <Timer className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Stopwatch
                 </Link>
               </li>
               <li>
                 <Link
                   href="/timer"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Hourglass className="w-3.5 h-3.5 flex-shrink-0" /> Timer
+                  <Hourglass className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Timer
                 </Link>
               </li>
               <li>
                 <Link
                   href="/alarm-clock"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Bell className="w-3.5 h-3.5 flex-shrink-0" /> Alarms
+                  <Bell className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Alarms
                 </Link>
               </li>
               <li>
                 <Link
                   href="/meeting-planner"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <CalendarRange className="w-3.5 h-3.5 flex-shrink-0" />{" "}
+                  <CalendarRange className="w-3.5 h-3.5 flex-shrink-0 text-primary" />{" "}
                   Meeting Planner
                 </Link>
               </li>
               <li>
                 <Link
                   href="/dst-tracker"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Calendar className="w-3.5 h-3.5 flex-shrink-0" /> DST Tracker
+                  <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> DST Tracker
                 </Link>
               </li>
               <li>
                 <Link
                   href="/countdown"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <PartyPopper className="w-3.5 h-3.5 flex-shrink-0" /> Holiday
+                  <PartyPopper className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Holiday
                   Countdown
                 </Link>
               </li>
               <li>
                 <Link
                   href="/shared-alarm"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Share2 className="w-3.5 h-3.5 flex-shrink-0" /> Shared Alarm
+                  <Share2 className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Shared Alarm
                 </Link>
               </li>
               <li>
                 <Link
                   href="/egg-timer"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Thermometer className="w-3.5 h-3.5 flex-shrink-0" /> Egg
+                  <Thermometer className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Egg
                   Timer
                 </Link>
               </li>
@@ -163,49 +163,49 @@ export default function Footer() {
 
           {/* Company Links */}
           <div className="md:col-span-4 lg:col-span-2 space-y-6">
-            <h6 className="text-[10px] uppercase font-bold text-white tracking-[0.2em]">
+            <h6 className="text-xs uppercase font-black text-slate-900 dark:text-white tracking-[0.2em]">
               Company
             </h6>
             <ul className="grid grid-cols-2 md:grid-cols-1 gap-x-6 gap-y-3 text-sm">
               <li>
                 <Link
                   href="/about"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium"
                 >
-                  <Info className="w-3.5 h-3.5 flex-shrink-0" /> About Us
+                  <Info className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> About Us
                 </Link>
               </li>
               <li>
                 <Link
                   href="/blog"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium"
                 >
-                  <BookOpen className="w-3.5 h-3.5 flex-shrink-0" /> Blog
+                  <BookOpen className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Blog
                 </Link>
               </li>
               <li>
                 <Link
                   href="/contact"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium"
                 >
-                  <Mail className="w-3.5 h-3.5 flex-shrink-0" /> Contact Us
+                  <Mail className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Contact Us
                 </Link>
               </li>
               <li>
                 <Link
                   href="/privacy"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0" /> Privacy
+                  <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Privacy
                   Policy
                 </Link>
               </li>
               <li>
                 <Link
                   href="/terms"
-                  className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 font-medium"
+                  className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium"
                 >
-                  <FileText className="w-3.5 h-3.5 flex-shrink-0" /> Terms of
+                  <FileText className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Terms of
                   Use
                 </Link>
               </li>
@@ -215,13 +215,13 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-20 pt-8 border-t border-card-border/10 flex flex-col items-center justify-center text-center gap-3">
-          <p className="text-xs sm:text-sm text-white/50 font-bold tracking-wide">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-bold tracking-wide">
             &copy; {currentYear} Clocks and Alarms Online. All rights reserved.
           </p>
           <div className="flex items-center justify-center gap-3 text-xs sm:text-sm font-bold">
-            <span className="text-primary/70">Precision in Every Second</span>
-            <span className="text-white/20">|</span>
-            <span className="text-primary/60 uppercase tracking-widest text-xs font-black">
+            <span className="text-primary font-bold">Precision in Every Second</span>
+            <span className="text-slate-400 dark:text-white/20">|</span>
+            <span className="text-primary uppercase tracking-widest text-xs font-black">
               Designed for speed
             </span>
           </div>
