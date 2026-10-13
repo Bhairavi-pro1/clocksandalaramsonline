@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link2, Trash2, Edit2, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SharedAlarm, SharedAlarmResponse, deleteSharedAlarm } from '@/lib/sharedAlarmLogic'
@@ -73,28 +73,36 @@ export default function SharedAlarmCard({ alarm, isCreator, onEdit, onRemoveFrom
     return () => unsub();
   }, [alarm.alarmId, onRemoveFromUI]);
 
-  // Auto-remove if time passed
+  const hasTriggeredRef = useRef(false);
+
+  // Auto-remove if time passed beyond grace period (5 minutes)
   useEffect(() => {
     const checkExpiration = setInterval(() => {
       const now = new Date();
       const alarmTime = new Date(currentAlarm.alarmDateTime);
+      const diff = now.getTime() - alarmTime.getTime();
+
       if (now > alarmTime) {
-        
-        // Trigger ringing if the expiration was recent (within 60s)
-        if (now.getTime() - alarmTime.getTime() < 60000) {
-           onAlarmRinging?.(currentAlarm)
+        // Trigger ringing once if the expiration is recent (within 5 minutes grace period)
+        if (diff < 300000 && !hasTriggeredRef.current) {
+           hasTriggeredRef.current = true;
+           onAlarmRinging?.(currentAlarm);
         }
 
-        if (isCreator) {
-          deleteSharedAlarm(currentAlarm.alarmId);
-        } else {
-          onRemoveFromUI(currentAlarm.alarmId);
+        // Only clean up after 5 minutes have elapsed
+        if (diff >= 300000) {
+          if (isCreator) {
+            deleteSharedAlarm(currentAlarm.alarmId);
+          } else {
+            onRemoveFromUI(currentAlarm.alarmId);
+          }
         }
       }
     }, 1000); // Check every second for exact trigger
     
-    // Initial check (prevent old alarms from ringing if user opens page late)
-    if (new Date() > new Date(currentAlarm.alarmDateTime)) {
+    // Initial check (prevent old alarms beyond 5 minutes from remaining)
+    const initialDiff = Date.now() - new Date(currentAlarm.alarmDateTime).getTime();
+    if (initialDiff >= 300000) {
        if (isCreator) deleteSharedAlarm(currentAlarm.alarmId);
        else onRemoveFromUI(currentAlarm.alarmId);
     }

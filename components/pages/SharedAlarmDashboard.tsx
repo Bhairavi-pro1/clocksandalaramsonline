@@ -18,6 +18,7 @@ import { useStore } from '@/hooks/useStore'
 export default function SharedAlarmDashboard() {
   const { sessionId } = useSession()
   const is24Hour = useStore((state) => state.is24Hour)
+  const setRingingSharedAlarm = useStore((state) => state.setRingingSharedAlarm)
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
     setMounted(true)
@@ -51,8 +52,12 @@ export default function SharedAlarmDashboard() {
     const cAlarms = (await Promise.all(createdIds.map(fetchAlarm))).filter(Boolean) as SharedAlarm[];
     const rAlarms = (await Promise.all(receivedIds.map(fetchAlarm))).filter(Boolean) as SharedAlarm[];
 
-    setCreatedAlarms(cAlarms.sort((a,b) => new Date(a.alarmDateTime).getTime() - new Date(b.alarmDateTime).getTime()));
-    setReceivedAlarms(rAlarms.sort((a,b) => new Date(a.alarmDateTime).getTime() - new Date(b.alarmDateTime).getTime()));
+    const now = Date.now();
+    const validCAlarms = cAlarms.filter(a => now - new Date(a.alarmDateTime).getTime() < 300000);
+    const validRAlarms = rAlarms.filter(a => now - new Date(a.alarmDateTime).getTime() < 300000);
+
+    setCreatedAlarms(validCAlarms.sort((a,b) => new Date(a.alarmDateTime).getTime() - new Date(b.alarmDateTime).getTime()));
+    setReceivedAlarms(validRAlarms.sort((a,b) => new Date(a.alarmDateTime).getTime() - new Date(b.alarmDateTime).getTime()));
     setIsLoading(false);
   };
 
@@ -139,6 +144,7 @@ export default function SharedAlarmDashboard() {
                         setIsModalOpen(true);
                       }}
                      onRemoveFromUI={handleRemoveCreatedUI}
+                     onAlarmRinging={setRingingSharedAlarm}
                   />
                ))}
             </div>
@@ -168,6 +174,7 @@ export default function SharedAlarmDashboard() {
                      alarm={alarm}
                      isCreator={false}
                      onRemoveFromUI={handleRemoveReceivedUI}
+                     onAlarmRinging={setRingingSharedAlarm}
                   />
                ))}
             </div>

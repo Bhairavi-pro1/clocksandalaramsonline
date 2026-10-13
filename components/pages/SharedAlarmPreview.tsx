@@ -43,10 +43,10 @@ export default function SharedAlarmPreview({ alarmId }: SharedAlarmPreviewProps)
 
         const alarmData = alarmSnap.data() as SharedAlarm;
         
-        // Check expiration
+        // Check expiration (allow up to 5 minute grace period)
         const now = new Date();
         const alarmTime = new Date(alarmData.alarmDateTime);
-        if (now > alarmTime) {
+        if (now.getTime() - alarmTime.getTime() > 300000) {
            setErrorStatus("This alarm has already expired.");
            return;
         }

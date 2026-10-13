@@ -183,23 +183,27 @@ export default function BackgroundTimeService() {
       activeSharedAlarms.forEach((sa) => {
         if (sa.isActive) {
           const alarmTime = new Date(sa.alarmDateTime).getTime()
+          const timeSinceAlarm = nowMs - alarmTime
           
           if (nowMs >= alarmTime) {
-            // Trigger ring if expiration is recent (within 60 seconds) and not rung yet
-            if (nowMs - alarmTime < 60000 && !ringingSharedAlarm && !rungSharedAlarmsRef.current.has(sa.alarmId)) {
+            // Trigger ring if expiration is recent (within 5 minutes grace period) and not rung yet
+            if (timeSinceAlarm < 300000 && !ringingSharedAlarm && !rungSharedAlarmsRef.current.has(sa.alarmId)) {
               rungSharedAlarmsRef.current.add(sa.alarmId)
               setRingingSharedAlarm(sa)
               sendPushNotification('⏰ Shared Alarm!', sa.title || 'A shared group alarm is ringing.')
             }
 
-            // Expiration clean up
-            const isCreator = sa.createdBy === localStorage.getItem('clocks-and-alarms-session-id')
-            if (isCreator) {
-              deleteSharedAlarm(sa.alarmId)
-            } else {
-              // Receiver: remove from local storage
-              const received = getMyReceivedAlarms().filter((id) => id !== sa.alarmId)
-              localStorage.setItem('myReceivedAlarms', JSON.stringify(received))
+            // Expiration clean up: only after 5-minute grace period has elapsed
+            if (timeSinceAlarm >= 300000) {
+              const currentSessionId = localStorage.getItem('caoSessionId')
+              const isCreator = sa.createdBy === currentSessionId
+              if (isCreator) {
+                deleteSharedAlarm(sa.alarmId)
+              } else {
+                // Receiver: remove from local storage
+                const received = getMyReceivedAlarms().filter((id) => id !== sa.alarmId)
+                localStorage.setItem('myReceivedAlarms', JSON.stringify(received))
+              }
             }
           }
         }
