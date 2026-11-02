@@ -143,8 +143,8 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
 
           {/* Toolbar Sidebar/Top Corner (Always active) */}
           <div className={cn(
-            "absolute flex items-center gap-4 text-white/50 z-30 transition-all duration-500",
-            isFullscreen ? "top-8 right-8" : "top-6 right-6"
+            "absolute flex items-center gap-4 z-30 transition-all duration-500",
+            isFullscreen ? "top-8 right-8 text-white/50" : "top-6 right-6 text-slate-500 dark:text-white/50"
           )}>
             <button onClick={handleShare} className="hover:text-primary transition-colors flex items-center">
               {copied ? <Check size={18} className="text-success" /> : <Share2 size={16} />}
@@ -166,14 +166,14 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
               {/* Days Display */}
               <div className="flex flex-col items-center">
                 <span className={cn(
-                  "font-black leading-none tracking-tighter tabular-nums text-white transition-all duration-700",
-                  isFullscreen ? "text-[max(6rem,10vw)]" : "text-6xl md:text-8xl"
+                  "font-black leading-none tracking-tighter tabular-nums transition-all duration-700",
+                  isFullscreen ? "text-[max(6rem,10vw)] text-white" : "text-6xl md:text-8xl text-slate-900 dark:text-white"
                 )}>
                   {timeLeft.days.toString().padStart(3, '0')}
                 </span>
                 <span className={cn(
-                  "font-bold uppercase tracking-[0.4em] opacity-70 transition-all",
-                  isFullscreen ? "text-xs mt-0" : "text-[10px] mt-2"
+                  "font-bold uppercase tracking-[0.4em] transition-all",
+                  isFullscreen ? "text-xs mt-0 text-white/70" : "text-[10px] mt-2 text-slate-500 dark:text-white/70"
                 )}>
                   Days Remaining
                 </span>
@@ -183,15 +183,15 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
               <div className="flex flex-col items-center pt-6">
                 <div className={cn(
                   "font-black leading-none tracking-tighter tabular-nums drop-shadow-[0_0_20px_rgba(124,58,237,0.2)] transition-all duration-700",
-                  isFullscreen ? "text-[max(4.5rem,4vw)]" : "text-4xl md:text-6xl"
+                  isFullscreen ? "text-[max(4.5rem,4vw)] text-primary" : "text-4xl md:text-6xl text-primary"
                 )}>
                   {timeLeft.hours.toString().padStart(2, '0')+" "}: 
                   {" "+ timeLeft.minutes.toString().padStart(2, '0') +" "}: 
                   {" "+timeLeft.seconds.toString().padStart(2, '0')+" "}
                 </div>
                 <div className={cn(
-                  "flex font-bold uppercase tracking-[0.3em] opacity-70 transition-all",
-                  isFullscreen ? "gap-12 text-xs mt-0" : "gap-10 text-[10px] mt-3"
+                  "flex font-bold uppercase tracking-[0.3em] transition-all",
+                  isFullscreen ? "gap-12 text-xs mt-0 text-white/70" : "gap-10 text-[10px] mt-3 text-slate-500 dark:text-white/70"
                 )}>
                   <span>Hours</span>
                   <span>Min</span>
@@ -202,13 +202,18 @@ export default function HolidayCountdownClient({ holiday, seoInfo }: Props) {
 
             {/* Target Date Box */}
             <div className={cn(
-              "border-t border-white/5 w-full flex flex-col items-center gap-1 transition-all",
-              isFullscreen ? "pt-4 mt-2 max-w-sm" : "pt-8 mt-4 max-w-[280px]"
+              "w-full flex flex-col items-center gap-1 transition-all",
+              isFullscreen ? "pt-4 mt-2 max-w-sm border-t border-white/10" : "pt-8 mt-4 max-w-[280px] border-t border-slate-200/80 dark:border-white/5"
             )}>
-              <p className="text-[10px] font-black tracking-[0.3em] text-white/40 uppercase mb-1">Target Date</p>
+              <p className={cn(
+                "text-[10px] font-black tracking-[0.3em] uppercase mb-1",
+                isFullscreen ? "text-white/40" : "text-slate-500 dark:text-white/40"
+              )}>Target Date</p>
               <div className={cn(
-                "rounded-lg bg-white/5 border border-white/5 font-black tracking-[0.05em] text-white/80 transition-all",
-                isFullscreen ? "px-6 py-3 text-base md:text-xl" : "px-4 py-2 text-sm md:text-base"
+                "rounded-lg font-black tracking-[0.05em] transition-all",
+                isFullscreen 
+                  ? "bg-white/10 border border-white/10 text-white px-6 py-3 text-base md:text-xl" 
+                  : "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white/90 px-4 py-2 text-sm md:text-base shadow-sm"
               )}>
                 {targetDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, ' -')}
               </div>

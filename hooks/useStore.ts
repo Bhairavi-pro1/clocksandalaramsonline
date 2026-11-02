@@ -54,9 +54,22 @@ export const useStore = create<AppState>()(
   persist(
     (set) => ({
       alarms: [],
-      addAlarm: (alarm) => set((state) => ({ 
-        alarms: [...state.alarms, { ...alarm, id: Math.random().toString(36).substring(7) }] 
-      })),
+      addAlarm: (alarm) => set((state) => {
+        const existingIndex = state.alarms.findIndex((a) => a.time === alarm.time)
+        if (existingIndex !== -1) {
+          // If alarm for this time already exists, ensure it is active without creating a duplicate card
+          const updated = [...state.alarms]
+          updated[existingIndex] = {
+            ...updated[existingIndex],
+            isActive: true,
+            label: alarm.label || updated[existingIndex].label
+          }
+          return { alarms: updated }
+        }
+        return { 
+          alarms: [...state.alarms, { ...alarm, id: Math.random().toString(36).substring(7) }] 
+        }
+      }),
       removeAlarm: (id) => set((state) => ({ 
         alarms: state.alarms.filter((a) => a.id !== id) 
       })),
@@ -118,6 +131,16 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'clocks-and-alarms-storage',
+      onRehydrateStorage: () => (state) => {
+        if (state && Array.isArray(state.alarms)) {
+          const seen = new Set<string>()
+          state.alarms = state.alarms.filter((a) => {
+            if (seen.has(a.time)) return false
+            seen.add(a.time)
+            return true
+          })
+        }
+      }
     }
   )
 )

@@ -2,30 +2,9 @@ import { MetadataRoute } from 'next'
 import timerData from '@/data/seo/timers.json'
 import cityData from '@/data/seo/cities.json'
 import countriesData from '@/data/countries.json'
+import alarmData from '@/data/seo/alarms.json'
+import holidayData from '@/data/seo/holidays.json'
 import { getAllPosts } from '@/lib/sanity'
-import { db } from '@/lib/firebase'
-import { collection, getDocs } from 'firebase/firestore'
-
-function getHolidaySlug(name: string): string {
-  return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
-}
-
-// Helper function to generate all 1440 paths from 12:00 AM to 11:59 PM
-function getAlarmPaths() {
-  const paths: string[] = []
-  const periods = ['am', 'pm']
-  
-  for (let p of periods) {
-    for (let h = 0; h < 12; h++) {
-      const hour = h === 0 ? 12 : h
-      for (let m = 0; m < 60; m += 1) {
-        const minute = m === 0 ? '' : `-${m.toString().padStart(2, '0')}`
-        paths.push(`set-alarm-for-${hour}${minute}-${p}`)
-      }
-    }
-  }
-  return paths
-}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://clocksandalarmsonline.com'
@@ -87,12 +66,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
-  // 1440 dynamic alarm paths
-  const alarmRoutes = getAlarmPaths().map((route) => ({
-    url: `${baseUrl}/alarm-clock/${route}/`,
+  // Popular Alarms Dynamic Routes (Curated from alarms.json)
+  const alarmRoutes = alarmData.map((alarm) => ({
+    url: `${baseUrl}/alarm-clock/${alarm.slug}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: 0.7,
+    priority: 0.8,
+  }))
+
+  // Popular Holiday Dynamic Routes (Curated from holidays.json)
+  const holidayRoutes = holidayData.map((holiday) => ({
+    url: `${baseUrl}${holiday.sublink}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
   }))
 
   // Blog Dynamic Routes (from Sanity CMS)
@@ -109,38 +96,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Sanity fetch may fail during build if no posts exist yet
   }
 
-  // Holiday Dynamic Routes (Read ONLY from Firestore cache — 0 Calendarific API calls)
-  let cachedHolidayRoutes: MetadataRoute.Sitemap = []
-  try {
-    const cacheSnapshot = await getDocs(collection(db, 'holiday_cache'))
-    const seenUrls = new Set<string>()
-
-    cacheSnapshot.forEach((docSnap) => {
-      const data = docSnap.data()
-      const countryCode = (data.country || docSnap.id.split('_')[0])?.toLowerCase()
-      if (countryCode && Array.isArray(data.holidays)) {
-        for (const holiday of data.holidays) {
-          if (holiday?.name) {
-            const slug = getHolidaySlug(holiday.name)
-            const url = `${baseUrl}/countdown/${countryCode}/${slug}/`
-            if (!seenUrls.has(url)) {
-              seenUrls.add(url)
-              cachedHolidayRoutes.push({
-                url,
-                lastModified: data.lastUpdated ? new Date(data.lastUpdated) : new Date(),
-                changeFrequency: 'weekly' as const,
-                priority: 0.8,
-              })
-            }
-          }
-        }
-      }
-    })
-  } catch (err) {
-    // Graceful fallback if offline or Firestore query is unavailable
-    console.error('Failed to read holiday_cache in sitemap:', err)
-  }
-
   return [
     ...routes, 
     ...secondaryRoutes, 
@@ -148,8 +103,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...timerRoutes, 
     ...worldClockRoutes, 
     ...countryCountdownRoutes,
-    ...cachedHolidayRoutes,
-    ...alarmRoutes
+    ...alarmRoutes,
+    ...holidayRoutes
   ]
 }
 

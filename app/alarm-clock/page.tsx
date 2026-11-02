@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import AlarmClockClient from '@/components/pages/AlarmClockClient'
 import StructuredData from '@/components/seo/StructuredData'
 import { HelpCircle, Bell, Clock, Zap, Shield, GraduationCap, Briefcase, Dumbbell, Utensils, Timer } from 'lucide-react'
@@ -8,12 +9,13 @@ export const metadata: Metadata = {
   title: 'Online Alarm Clock & Timers',
   description: 'Set free online alarms and timers in your browser. Features custom alarm sounds, multiple alarms, and a beautiful interface.',
   alternates: {
-    canonical: 'https://clocksandalarmsonline.com/alarm-clock',
+    canonical: 'https://clocksandalarmsonline.com/alarm-clock/',
   },
   openGraph: {
     title: 'Online Alarm Clock & Timers',
     description: 'Set free online alarms and timers instantly. Multiple sounds, custom labels, and a beautiful interface.',
     type: 'website',
+    url: 'https://clocksandalarmsonline.com/alarm-clock/',
   }
 }
 
@@ -37,6 +39,25 @@ export default function AlarmPage() {
       "bestRating": "5",
       "worstRating": "1"
     }
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://clocksandalarmsonline.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Alarm Clock",
+        "item": "https://clocksandalarmsonline.com/alarm-clock/"
+      }
+    ]
   }
 
   const faqSchema = {
@@ -74,10 +95,22 @@ export default function AlarmPage() {
   return (
     <div className="w-full">
       <StructuredData data={softwareSchema} />
+      <StructuredData data={breadcrumbSchema} />
       <StructuredData data={faqSchema} />
       
-      <div className="max-w-7xl mx-auto px-0 sm:px-4 pt-4 sm:pt-8 md:pt-16">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-center mb-4 md:mb-8 text-white tracking-tighter animate-in fade-in duration-1000">
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 pt-4 sm:pt-6">
+        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted/70 font-medium">
+          <li>
+            <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Home</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li className="text-slate-900 dark:text-white font-bold" aria-current="page">Alarm Clock</li>
+        </ol>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-0 sm:px-4 pt-3 sm:pt-6 md:pt-8">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-center mb-4 md:mb-8 text-slate-900 dark:text-white tracking-tighter animate-in fade-in duration-1000">
           Online <span className="text-primary italic">Alarm</span> Clock
         </h1>
       </div>

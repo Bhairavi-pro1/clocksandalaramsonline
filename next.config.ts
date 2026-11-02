@@ -67,6 +67,11 @@ const nextConfig: NextConfig = {
         destination: '/:path*',
         permanent: true,
       },
+      {
+        source: '/time/:path*',
+        destination: '/world-clock/',
+        permanent: true,
+      },
     ];
   },
 };

@@ -1,13 +1,16 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getHolidaysServer, FormattedHoliday } from '@/lib/getHolidaysServer';
 import countriesData from '@/data/countries.json';
+import holidayData from '@/data/seo/holidays.json';
 import HolidayCountdownClient from '@/components/pages/HolidayCountdownClient';
 import StructuredData from '@/components/seo/StructuredData';
 import AdBanner from '@/components/ui/AdBanner';
 import FAQAccordion from '@/components/seo/FAQAccordion';
-import { HelpCircle, Calendar, Clock, Maximize2, Info, Briefcase, Users } from 'lucide-react';
+import { HelpCircle, Calendar, Clock, Maximize2, Info, Briefcase, Users, Sparkles } from 'lucide-react';
 import ToolSEO from '@/components/seo/ToolSEO';
+import { cn } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string; holiday: string }>;
@@ -17,26 +20,96 @@ function getCountryByCode(code: string) {
   return countriesData.find(c => c.code.toLowerCase() === code.toLowerCase());
 }
 
-function getSlug(name: string): string {
-  return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+function getCleanSlug(str: string): string {
+  return str.toLowerCase().replace(/[\/\\]/g, '-').replace(/\s+/g, '-').replace(/[^\w-]/g, '').replace(/-+/g, '-');
+}
+
+function getSlugAlternatives(name: string): string[] {
+  const clean = name.toLowerCase();
+  const alts = new Set<string>();
+  
+  // 1. Direct slug (with slashes stripped)
+  alts.add(clean.replace(/\s+/g, '-').replace(/[^\w-]/g, ''));
+  // 2. Direct slug (with slashes replaced by hyphens)
+  alts.add(getCleanSlug(clean));
+  
+  // 3. Remove parentheticals, e.g. "Ramadan Start (Provisional)" -> "Ramadan Start"
+  const withoutParens = clean.replace(/\(.*?\)/g, '').trim();
+  if (withoutParens && withoutParens !== clean) {
+    alts.add(withoutParens.replace(/\s+/g, '-').replace(/[^\w-]/g, ''));
+    alts.add(getCleanSlug(withoutParens));
+  }
+
+  // 4. Alternative names split by slashes, e.g. "Diwali/Deepavali" -> ["Diwali", "Deepavali"]
+  const parts = clean.split(/[\/\\]/).map(p => p.replace(/\(.*?\)/g, '').trim()).filter(Boolean);
+  for (const part of parts) {
+    alts.add(part.replace(/\s+/g, '-').replace(/[^\w-]/g, ''));
+    alts.add(getCleanSlug(part));
+  }
+
+  return Array.from(alts);
+}
+
+function findBestHolidayMatch(holidays: FormattedHoliday[], holidaySlug: string): FormattedHoliday | null {
+  const cleanTarget = holidaySlug.toLowerCase();
+  const cleanTargetWithoutDay = cleanTarget.replace(/-day$/, '');
+
+  // Tier 1: Exact direct slug match (e.g. "Christmas Day" -> "christmas-day")
+  const exact = holidays.find(h => {
+    const s1 = h.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    const s2 = getCleanSlug(h.name);
+    return s1 === cleanTarget || s2 === cleanTarget;
+  });
+  if (exact) return exact;
+
+  // Tier 2: Exact slug match ignoring '-day' (e.g. "Christmas" -> "Christmas Day")
+  const exactWithoutDay = holidays.find(h => {
+    const s1 = h.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '').replace(/-day$/, '');
+    const s2 = getCleanSlug(h.name).replace(/-day$/, '');
+    return s1 === cleanTargetWithoutDay || s2 === cleanTargetWithoutDay;
+  });
+  if (exactWithoutDay) return exactWithoutDay;
+
+  // Tier 3: Alternative names (slashes or parentheticals, e.g. "Diwali/Deepavali" -> "diwali")
+  const altMatch = holidays.find(h => {
+    const alts = getSlugAlternatives(h.name);
+    return alts.includes(cleanTarget) || alts.map(a => a.replace(/-day$/, '')).includes(cleanTargetWithoutDay);
+  });
+  if (altMatch) return altMatch;
+
+  // Tier 4: Substring match preferring national/federal holidays
+  const partials = holidays.filter(h => {
+    const hLower = h.name.toLowerCase();
+    const targetWords = cleanTargetWithoutDay.replace(/-/g, ' ');
+    return hLower.includes(targetWords);
+  });
+
+  if (partials.length > 0) {
+    const national = partials.find(h => 
+      h.type && h.type.some(t => /national|federal|public/i.test(t))
+    );
+    return national || partials[0];
+  }
+
+  return null;
 }
 
 // Find matched holiday across current year and next year
 async function findHoliday(countryCode: string, holidaySlug: string): Promise<{ holiday: FormattedHoliday; year: number } | null> {
   const currentYear = new Date().getFullYear();
-  
+
   try {
     // 1. Fetch current year holidays
     const holidaysCurr = await getHolidaysServer(countryCode, currentYear);
-    const matchCurr = holidaysCurr.find(h => getSlug(h.name) === holidaySlug);
+    const matchCurr = findBestHolidayMatch(holidaysCurr, holidaySlug);
     
     if (matchCurr) {
       const targetDate = new Date(matchCurr.date);
       const now = new Date();
-      // If the holiday has already passed, check next year
+      // If the holiday has already passed in the current year, check next year
       if (targetDate.getTime() < now.getTime()) {
         const holidaysNext = await getHolidaysServer(countryCode, currentYear + 1);
-        const matchNext = holidaysNext.find(h => getSlug(h.name) === holidaySlug);
+        const matchNext = findBestHolidayMatch(holidaysNext, holidaySlug);
         if (matchNext) {
           return { holiday: matchNext, year: currentYear + 1 };
         }
@@ -46,7 +119,7 @@ async function findHoliday(countryCode: string, holidaySlug: string): Promise<{ 
 
     // 2. If not found in current year, try next year
     const holidaysNext = await getHolidaysServer(countryCode, currentYear + 1);
-    const matchNext = holidaysNext.find(h => getSlug(h.name) === holidaySlug);
+    const matchNext = findBestHolidayMatch(holidaysNext, holidaySlug);
     if (matchNext) {
       return { holiday: matchNext, year: currentYear + 1 };
     }
@@ -234,11 +307,30 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
       <StructuredData data={softwareSchema} />
       <StructuredData data={faqSchema} />
       
-      <div className="max-w-7xl mx-auto px-4 pt-8 md:pt-16 text-center space-y-2.5 md:space-y-4">
+      {/* Visual Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 pt-6 md:pt-10">
+        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-muted/70 font-medium">
+          <li>
+            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li>
+            <Link href="/countdown/" className="hover:text-primary transition-colors">Holiday Countdown</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li>
+            <Link href={`/countdown/${slug.toLowerCase()}/`} className="hover:text-primary transition-colors">{countryObj.name}</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li className="text-slate-900 dark:text-white font-bold" aria-current="page">{matchedHoliday.name}</li>
+        </ol>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-4 pt-4 md:pt-8 text-center space-y-2.5 md:space-y-4">
         <div className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest mb-1">
           Holiday Countdown — {countryObj.name}
         </div>
-        <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter animate-in fade-in duration-1000">
+        <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter animate-in fade-in duration-1000">
           {seoInfo.title}
         </h1>
       </div>
@@ -247,6 +339,50 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
       
       <div className="max-w-7xl mx-auto px-4 mb-8">
         <AdBanner />
+      </div>
+
+      {/* Popular Global Holidays Directory */}
+      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-slate-200/80 dark:border-white/10">
+        <div className="text-center mb-6">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center justify-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            Popular Global Holiday Countdowns
+          </h2>
+          <p className="text-slate-600 dark:text-muted/70 text-xs sm:text-sm mt-1">
+            Explore live countdown clocks for the world&apos;s most celebrated holidays and festivals
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
+          {holidayData.map((h) => {
+            const isCurrent = h.slug === holiday && h.country.toLowerCase() === slug.toLowerCase();
+            return (
+              <Link
+                key={h.slug}
+                href={h.sublink}
+                className={cn(
+                  "group p-2.5 sm:p-3.5 rounded-2xl border transition-all text-center flex flex-col justify-center items-center shadow-sm relative min-h-[76px] sm:min-h-[84px]",
+                  isCurrent
+                    ? "bg-primary/10 border-primary text-primary shadow-primary/20 ring-1 ring-primary"
+                    : "bg-slate-50 dark:bg-white/[0.04] border-slate-200/80 dark:border-white/5 hover:border-primary/50 hover:bg-primary/5 text-slate-900 dark:text-white hover:shadow-md"
+                )}
+              >
+                <div className={cn(
+                  "font-bold text-xs sm:text-sm transition-colors text-center leading-snug break-words w-full",
+                  isCurrent ? "text-primary font-black" : "text-slate-900 dark:text-white group-hover:text-primary"
+                )}>
+                  {h.name}
+                </div>
+                <div className={cn(
+                  "text-[10px] sm:text-[11px] mt-1 font-semibold uppercase tracking-wider",
+                  isCurrent ? "text-primary/80" : "text-slate-500 dark:text-muted"
+                )}>
+                  {h.country}
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       {/* SEO Content & Dynamic FAQ Section (Server Side) */}

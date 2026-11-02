@@ -231,7 +231,7 @@ export default function EggTimerClient() {
   const isControlsDisabled = status === 'running' || status === 'paused'
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+    <div className="w-full max-w-6xl mx-auto space-y-6 sm:space-y-8">
 
       {/* FIRST ROW: TIME & BUTTON */}
       <div className="w-full bg-white dark:bg-[#110624]/60 backdrop-blur-md border border-slate-200 dark:border-white/5 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-8 md:p-12 shadow-2xl relative overflow-hidden">
@@ -239,7 +239,7 @@ export default function EggTimerClient() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 blur-[100px] rounded-full pointer-events-none" />
         
         <div className="z-10 w-full flex flex-col md:flex-row justify-between items-center gap-4 md:gap-8">
-          <div className="text-center md:text-left space-y-1 sm:space-y-2">
+          <div className="text-center md:text-left space-y-1 sm:space-y-2 w-full md:w-auto">
             <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-slate-800 dark:text-white tracking-tighter tabular-nums drop-shadow-xl leading-none">
               {status === 'running' || status === 'paused' ? formatTime(timeLeft!) : formatTime(calculatedSeconds)}
             </h2>
@@ -248,7 +248,7 @@ export default function EggTimerClient() {
             </p>
           </div>
 
-          <div className="w-full md:w-auto">
+          <div className="w-full md:w-auto flex justify-center">
             {status === 'idle' || status === 'finished' ? (
               <button 
                 onClick={handleStart}
@@ -286,14 +286,14 @@ export default function EggTimerClient() {
       </div>
 
       {/* SECOND ROW: DONENESS & MODIFIERS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 w-full">
         
         {/* Visual Slider Panel */}
-        <div className={`bg-[#110624] p-4 sm:p-8 border border-slate-200 dark:border-white/5 rounded-[1.75rem] sm:rounded-[2.5rem] transition-all duration-300 ${isControlsDisabled ? 'opacity-50 pointer-events-none cursor-not-allowed select-none' : ''}`}>
+        <div className={`w-full bg-white dark:bg-[#110624] p-4 sm:p-8 border border-slate-200 dark:border-white/5 rounded-[1.75rem] sm:rounded-[2.5rem] shadow-sm transition-all duration-300 overflow-hidden ${isControlsDisabled ? 'opacity-50 pointer-events-none cursor-not-allowed select-none' : ''}`}>
           <div className="space-y-6 sm:space-y-8 h-full flex flex-col justify-center">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
-              <h3 className="text-lg sm:text-2xl font-black text-slate-800 dark:text-white">Desired Doneness</h3>
-              <span className="bg-white/5 text-primary px-3 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-inner border border-primary/30 whitespace-nowrap">
+              <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white">Desired Doneness</h3>
+              <span className="bg-primary/10 dark:bg-white/5 text-primary px-3 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-inner border border-primary/30 whitespace-nowrap">
                 {EGG_STATES[targetMinute as keyof typeof EGG_STATES].label}
               </span>
             </div>
@@ -309,16 +309,16 @@ export default function EggTimerClient() {
                 onChange={(e) => !isControlsDisabled && setTargetMinute(Number(e.target.value))}
                 className="w-full h-3 sm:h-4 bg-slate-200 dark:bg-white/10 rounded-full appearance-none cursor-pointer accent-primary hover:bg-slate-300 dark:hover:bg-white/20 transition-colors disabled:cursor-not-allowed"
               />
-              <div className="relative h-6 sm:h-8 mt-1 sm:mt-2 w-full px-1.5 box-border">
+              <div className="relative h-6 sm:h-8 mt-1 sm:mt-2 w-full px-2 sm:px-3 box-border">
                 {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(num => (
                   <div 
                     key={num}
                     className={`absolute top-0 flex flex-col items-center -translate-x-1/2 transition-all ${isControlsDisabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} ${targetMinute === num ? 'scale-125 z-10' : !isControlsDisabled ? 'hover:scale-110' : ''}`}
-                    style={{ left: `calc(${((num - 3) / 11) * 100}%)` }}
+                    style={{ left: `calc(8px + (${num - 3} / 11) * (100% - 16px))` }}
                     onClick={() => !isControlsDisabled && setTargetMinute(num)}
                   >
                     <div className={`w-0.5 h-1 sm:h-1.5 mb-0.5 sm:mb-1 rounded-full ${targetMinute === num ? 'bg-primary' : 'bg-slate-300 dark:bg-white/20'}`} />
-                    <span className={`text-[9px] sm:text-[10px] font-black ${targetMinute === num ? 'text-primary' : 'text-slate-400 dark:text-white/40'}`}>
+                    <span className={`text-[9px] sm:text-[10px] font-black ${targetMinute === num ? 'text-primary' : 'text-slate-500 dark:text-white/40'}`}>
                       {num}
                     </span>
                   </div>
@@ -326,12 +326,12 @@ export default function EggTimerClient() {
               </div>
             </div>
 
-            <div className="bg-[#110624] p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-primary/20 relative overflow-hidden shadow-inner min-h-[110px] sm:h-[150px] flex flex-col justify-center shrink-0">
+            <div className="bg-slate-100/80 dark:bg-[#110624] p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-primary/20 relative overflow-hidden shadow-inner min-h-[110px] sm:h-[150px] flex flex-col justify-center shrink-0">
                <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 blur-[30px] rounded-full pointer-events-none" />
                <p className="text-[10px] sm:text-xs uppercase tracking-widest text-primary font-black mb-1 sm:mb-2 opacity-80 z-10 relative flex items-center gap-2">
                  Result at {targetMinute} Minutes
                </p>
-               <p className="text-white text-sm sm:text-lg md:text-xl font-bold leading-relaxed z-10 relative line-clamp-3">
+               <p className="text-slate-900 dark:text-white text-sm sm:text-lg md:text-xl font-bold leading-relaxed z-10 relative line-clamp-3">
                  {EGG_STATES[targetMinute as keyof typeof EGG_STATES].desc}
                </p>
             </div>
@@ -339,16 +339,16 @@ export default function EggTimerClient() {
         </div>
 
         {/* Modifiers Panel */}
-        <div className={`bg-[#110624] p-4 sm:p-8 border border-slate-200 dark:border-white/5 rounded-[1.75rem] sm:rounded-[2.5rem] space-y-4 sm:space-y-6 shadow-[0_0_40px_rgba(124,58,237,0.05)] transition-all duration-300 ${isControlsDisabled ? 'opacity-50 pointer-events-none cursor-not-allowed select-none' : ''}`}>
+        <div className={`w-full bg-white dark:bg-[#110624] p-4 sm:p-8 border border-slate-200 dark:border-white/5 rounded-[1.75rem] sm:rounded-[2.5rem] space-y-4 sm:space-y-6 shadow-sm transition-all duration-300 ${isControlsDisabled ? 'opacity-50 pointer-events-none cursor-not-allowed select-none' : ''}`}>
            <div className="flex items-center gap-2 sm:gap-3 mb-1">
               <Settings2 className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
-              <h3 className="text-lg sm:text-xl font-black text-slate-800 dark:text-white">Modifiers</h3>
+              <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">Modifiers</h3>
            </div>
            
            <div className="space-y-4 sm:space-y-6">
               {/* Egg Size */}
               <div className="space-y-2 sm:space-y-3">
-                 <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-white/40">Egg Size</label>
+                 <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-slate-500 dark:text-white/40">Egg Size</label>
                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                     {Object.keys(SIZE_MODIFIERS).map(size => (
                        <button
@@ -357,8 +357,8 @@ export default function EggTimerClient() {
                           onClick={() => !isControlsDisabled && setEggSize(size)}
                           className={`py-2 sm:py-3 px-1 sm:px-2 rounded-xl text-[10px] sm:text-xs font-bold border transition-all disabled:cursor-not-allowed ${
                              eggSize === size 
-                                ? 'bg-primary/20 border-primary/50 text-slate-800 dark:text-white shadow-[0_0_20px_rgba(168,85,247,0.2)] font-black' 
-                                : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 text-slate-600 dark:text-white/60 hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-800 dark:hover:text-white'
+                                ? 'bg-primary/20 border-primary/50 text-slate-900 dark:text-white shadow-[0_0_20px_rgba(168,85,247,0.2)] font-black' 
+                                : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 text-slate-700 dark:text-white/60 hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white'
                           }`}
                        >
                           {size}
@@ -369,7 +369,7 @@ export default function EggTimerClient() {
 
               {/* Egg Temp */}
               <div className="space-y-2 sm:space-y-3">
-                 <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-white/40">Starting Temperature</label>
+                 <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-slate-500 dark:text-white/40">Starting Temperature</label>
                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                     {Object.keys(TEMP_MODIFIERS).map(temp => (
                        <button
@@ -378,8 +378,8 @@ export default function EggTimerClient() {
                           onClick={() => !isControlsDisabled && setEggTemp(temp)}
                           className={`py-2.5 sm:py-4 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold border transition-all disabled:cursor-not-allowed ${
                              eggTemp === temp 
-                                ? 'bg-primary/20 border-primary/50 text-slate-800 dark:text-white shadow-[0_0_20px_rgba(168,85,247,0.2)] font-black' 
-                                : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 text-slate-600 dark:text-white/60 hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-800 dark:hover:text-white'
+                                ? 'bg-primary/20 border-primary/50 text-slate-900 dark:text-white shadow-[0_0_20px_rgba(168,85,247,0.2)] font-black' 
+                                : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 text-slate-700 dark:text-white/60 hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white'
                           }`}
                        >
                           {temp}
@@ -398,7 +398,7 @@ export default function EggTimerClient() {
 
               {/* Alarm Sound */}
               <div className={`space-y-2 sm:space-y-3 pt-3 sm:pt-4 border-t border-slate-200/50 dark:border-white/5 transition-all ${isControlsDisabled ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
-                 <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-white/40">Alarm Sound</label>
+                 <label className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-slate-500 dark:text-white/40">Alarm Sound</label>
                  <div className="flex gap-2 sm:gap-3 items-center">
                     <div className="flex-1 relative group">
                        <select 
@@ -408,10 +408,10 @@ export default function EggTimerClient() {
                              setSound(e.target.value)
                              if (isPreviewPlaying) handleStopPreview()
                           }}
-                          className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-3 sm:px-6 py-2 sm:py-3 text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold disabled:cursor-not-allowed"
+                          className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-3 sm:px-6 py-2 sm:py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold disabled:cursor-not-allowed"
                        >
                           {Object.keys(SOUNDS).map(k => (
-                             <option key={k} value={k} className="bg-white dark:bg-[#110624] text-slate-800 dark:text-white">
+                             <option key={k} value={k} className="bg-white dark:bg-[#110624] text-slate-900 dark:text-white">
                                 {k.charAt(0).toUpperCase() + k.slice(1)}
                              </option>
                           ))}
@@ -422,7 +422,7 @@ export default function EggTimerClient() {
                        type="button"
                        disabled={isControlsDisabled}
                        onClick={handlePreviewSound}
-                       className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border transition-all flex items-center justify-center shadow-lg disabled:cursor-not-allowed ${isPreviewPlaying ? 'bg-primary text-white shadow-primary/40 scale-[1.04]' : 'bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-white/60 hover:bg-slate-300 dark:hover:bg-white/20 hover:text-slate-800 dark:hover:text-white'}`}
+                       className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border transition-all flex items-center justify-center shadow-sm disabled:cursor-not-allowed ${isPreviewPlaying ? 'bg-primary text-white shadow-primary/40 scale-[1.04]' : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white/60 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/20 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                        {isPreviewPlaying ? <Square className="w-4 h-4 sm:w-5 sm:h-5 fill-current" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />}
                     </button>

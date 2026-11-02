@@ -161,10 +161,10 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
         className="absolute inset-0"
       />
       
-      <div className="relative w-full max-w-md bg-[#110624] border border-white/10 p-4 sm:p-8 rounded-[1.75rem] sm:rounded-[2.5rem] shadow-2xl shadow-primary/20 animate-in zoom-in-95 duration-300">
+      <div className="relative w-full max-w-md bg-white dark:bg-[#110624] border border-slate-200 dark:border-white/10 p-4 sm:p-8 rounded-[1.75rem] sm:rounded-[2.5rem] shadow-2xl shadow-primary/20 animate-in zoom-in-95 duration-300">
         <button 
           onClick={onClose}
-          className="absolute right-4 top-4 sm:right-6 sm:top-6 p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors text-white/50 hover:text-white"
+          className="absolute right-4 top-4 sm:right-6 sm:top-6 p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-slate-400 dark:text-white/50 hover:text-slate-800 dark:hover:text-white"
         >
           <X size={18} />
         </button>
@@ -174,11 +174,11 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
             <Clock className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <h2 className="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight">
+            <h2 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
               {initialData ? "Edit Shared Alarm" : "New Shared Alarm"}
             </h2>
             {currentTime && (
-              <p className="text-xs sm:text-sm text-white/50 font-medium mt-0.5">
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-white/50 font-medium mt-0.5">
                 Current Time: {currentTime.toLocaleTimeString([], { hour12: !(mounted && is24Hour) })}
               </p>
             )}
@@ -187,7 +187,7 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div className="space-y-1.5">
-            <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 ml-1">Title</label>
+            <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-white/50 ml-1">Title</label>
             <input 
                autoFocus
                required
@@ -195,23 +195,23 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                value={title}
                onChange={(e) => setTitle(e.target.value)}
                placeholder="Morning Meeting"
-               className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base text-white placeholder:text-white/20 outline-none focus:border-primary focus:bg-white/10 transition-all font-medium animate-none"
+               className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/20 outline-none focus:border-primary focus:bg-white dark:focus:bg-white/10 transition-all font-medium animate-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 ml-1">Description (Optional)</label>
+            <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-white/50 ml-1">Description (Optional)</label>
             <textarea 
                value={description}
                onChange={(e) => setDescription(e.target.value)}
                placeholder="Don't forget to join the Zoom call..."
-               className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base text-white placeholder:text-white/20 outline-none focus:border-primary focus:bg-white/10 transition-all font-medium resize-none min-h-[60px] sm:min-h-[80px]"
+               className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/20 outline-none focus:border-primary focus:bg-white dark:focus:bg-white/10 transition-all font-medium resize-none min-h-[60px] sm:min-h-[80px]"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
              <div className="space-y-1.5">
-                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 ml-1">Date</label>
+                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-white/50 ml-1">Date</label>
                 <input 
                    required
                    type="date"
@@ -229,7 +229,7 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                 />
              </div>
              <div className="space-y-1.5">
-                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 ml-1">Time</label>
+                <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-white/50 ml-1">Time</label>
                 {mounted && is24Hour ? (
                    <div className="grid grid-cols-2 gap-1.5">
                       {/* Hour Select */}
@@ -237,11 +237,11 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                          <select 
                             value={derivedHour24}
                             onChange={(e) => handle24hChange(e.target.value, derivedMinute)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-2 py-2 sm:px-3 sm:py-3 text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
+                            className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-2 py-2 sm:px-3 sm:py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
                          >
-                            {HOURS_24.map(h => <option key={h} value={h} className="bg-[#1a0b36]">{h}</option>)}
+                            {HOURS_24.map(h => <option key={h} value={h} className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">{h}</option>)}
                          </select>
-                         <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
+                         <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
                       </div>
 
                       {/* Minute Select */}
@@ -249,11 +249,11 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                          <select 
                             value={derivedMinute}
                             onChange={(e) => handle24hChange(derivedHour24, e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-2 py-2 sm:px-3 sm:py-3 text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
+                            className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-2 py-2 sm:px-3 sm:py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
                          >
-                            {MINUTES.map(m => <option key={m} value={m} className="bg-[#1a0b36]">{m}</option>)}
+                            {MINUTES.map(m => <option key={m} value={m} className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">{m}</option>)}
                          </select>
-                         <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
+                         <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
                       </div>
                    </div>
                 ) : (
@@ -263,11 +263,11 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                          <select 
                             value={derivedHour12}
                             onChange={(e) => handle12hChange(e.target.value, derivedMinute, derivedPeriod)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-1.5 py-2 sm:px-3 sm:py-3 text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
+                            className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-1.5 py-2 sm:px-3 sm:py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
                          >
-                            {HOURS_12.map(h => <option key={h} value={h} className="bg-[#1a0b36]">{h}</option>)}
+                            {HOURS_12.map(h => <option key={h} value={h} className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">{h}</option>)}
                          </select>
-                         <ChevronDown size={10} className="absolute right-1 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
+                         <ChevronDown size={10} className="absolute right-1 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
                       </div>
 
                       {/* Minute Select */}
@@ -275,11 +275,11 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                          <select 
                             value={derivedMinute}
                             onChange={(e) => handle12hChange(derivedHour12, e.target.value, derivedPeriod)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-1.5 py-2 sm:px-3 sm:py-3 text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
+                            className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-1.5 py-2 sm:px-3 sm:py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
                          >
-                            {MINUTES.map(m => <option key={m} value={m} className="bg-[#1a0b36]">{m}</option>)}
+                            {MINUTES.map(m => <option key={m} value={m} className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">{m}</option>)}
                          </select>
-                         <ChevronDown size={10} className="absolute right-1 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
+                         <ChevronDown size={10} className="absolute right-1 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
                       </div>
 
                       {/* Period Select */}
@@ -287,11 +287,11 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                          <select 
                             value={derivedPeriod}
                             onChange={(e) => handle12hChange(derivedHour12, derivedMinute, e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-1 py-2 sm:px-3 sm:py-3 text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
+                            className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-1 py-2 sm:px-3 sm:py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold text-center h-[38px] sm:h-[46px]"
                          >
-                            {PERIODS.map(p => <option key={p} value={p} className="bg-[#1a0b36]">{p}</option>)}
+                            {PERIODS.map(p => <option key={p} value={p} className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">{p}</option>)}
                          </select>
-                         <ChevronDown size={10} className="absolute right-1 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
+                         <ChevronDown size={10} className="absolute right-1 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
                       </div>
                    </div>
                 )}
@@ -299,23 +299,23 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 ml-1">Alarm Sound</label>
+            <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-white/50 ml-1">Alarm Sound</label>
             <div className="flex gap-2 sm:gap-3 items-center">
               <div className="flex-1 relative group">
                 <select 
                   value={sound}
                   onChange={(e) => setSound(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-4 py-2 sm:px-6 sm:py-3 text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-white/[0.07] text-xs sm:text-sm font-bold h-[38px] sm:h-[46px]"
+                  className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-4 py-2 sm:px-6 sm:py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 appearance-none cursor-pointer transition-all hover:bg-slate-200/50 dark:hover:bg-white/[0.07] text-xs sm:text-sm font-bold h-[38px] sm:h-[46px]"
                 >
-                  <option value="vibe" className="bg-[#1a0b36]">Vibe</option>
-                  <option value="editorial" className="bg-[#1a0b36]">Editorial</option>
-                  <option value="guitar" className="bg-[#1a0b36]">Guitar</option>
-                  <option value="riser" className="bg-[#1a0b36]">Riser</option>
-                  <option value="birds" className="bg-[#1a0b36]">Birds</option>
-                  <option value="fun" className="bg-[#1a0b36]">Fun</option>
-                  <option value="synthwave" className="bg-[#1a0b36]">Synthwave</option>
+                  <option value="vibe" className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">Vibe</option>
+                  <option value="editorial" className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">Editorial</option>
+                  <option value="guitar" className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">Guitar</option>
+                  <option value="riser" className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">Riser</option>
+                  <option value="birds" className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">Birds</option>
+                  <option value="fun" className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">Fun</option>
+                  <option value="synthwave" className="bg-white dark:bg-[#1a0b36] text-slate-900 dark:text-white">Synthwave</option>
                 </select>
-                <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/20 group-hover:text-primary transition-colors pointer-events-none" />
               </div>
               <button 
                 type="button"
@@ -323,7 +323,7 @@ export default function SharedAlarmModal({ isOpen, onClose, onSave, initialData 
                 className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border transition-all flex items-center justify-center h-[38px] w-[38px] sm:h-[46px] sm:w-[46px] shrink-0 ${
                   isPreviewPlaying 
                     ? 'bg-rose-600 text-white border-rose-500 shadow-md' 
-                    : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10 shadow-inner'
+                    : 'bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-white/60 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10'
                 }`}
               >
                 {isPreviewPlaying ? <Square size={16} fill="currentColor" /> : <Volume2 size={16} />}

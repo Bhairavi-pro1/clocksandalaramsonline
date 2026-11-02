@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import MeetingPlanner from '@/components/tools/MeetingPlanner'
 import StructuredData from '@/components/seo/StructuredData'
 import { Calendar, MapPin, Clock, Globe, LayoutGrid, CalendarCheck, HelpCircle, GraduationCap, Briefcase, Dumbbell, Utensils, Timer } from 'lucide-react'
@@ -10,12 +11,13 @@ export const metadata: Metadata = {
   title: 'Global Meeting Planner',
   description: 'Schedule international meetings across timezones. Find the perfect call time with color-coded availability heatmaps.',
   alternates: {
-    canonical: 'https://clocksandalarmsonline.com/meeting-planner',
+    canonical: 'https://clocksandalarmsonline.com/meeting-planner/',
   },
   openGraph: {
     title: 'Global Meeting Planner',
     description: 'Find the perfect meeting time for your global team. Visual timezone coordination made simple.',
     type: 'website',
+    url: 'https://clocksandalarmsonline.com/meeting-planner/',
   }
 }
 
@@ -39,6 +41,25 @@ export default function MeetingPlannerPage() {
       "bestRating": "5",
       "worstRating": "1"
     }
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://clocksandalarmsonline.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Meeting Planner",
+        "item": "https://clocksandalarmsonline.com/meeting-planner/"
+      }
+    ]
   }
 
   const faqSchema = {
@@ -74,11 +95,23 @@ export default function MeetingPlannerPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-20 animate-in fade-in duration-1000">
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-16 animate-in fade-in duration-1000">
       <StructuredData data={softwareSchema} />
+      <StructuredData data={breadcrumbSchema} />
       <StructuredData data={faqSchema} />
       
-      <h1 className="text-4xl md:text-6xl font-black text-center mb-6 md:mb-16 text-slate-900 dark:text-white tracking-tighter">
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6">
+        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted/70 font-medium">
+          <li>
+            <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Home</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li className="text-slate-900 dark:text-white font-bold" aria-current="page">Meeting Planner</li>
+        </ol>
+      </nav>
+
+      <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-center mb-4 sm:mb-6 md:mb-12 text-slate-900 dark:text-white tracking-tighter">
         Global Meeting <span className="text-primary italic">Planner</span>
       </h1>
       

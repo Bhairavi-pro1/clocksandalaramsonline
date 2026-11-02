@@ -13,19 +13,15 @@ export async function getHolidaysServer(country: string, year: number): Promise<
   const docId = `${normCountry}_${year}`;
   const docRef = doc(db, 'holiday_cache', docId);
 
-  // 1. Try reading from Firestore cache
+  // 1. Try reading from Firestore cache first
   try {
     const cachedDoc = await getDoc(docRef);
     if (cachedDoc.exists()) {
       const cachedData = cachedDoc.data();
-      const lastUpdated = new Date(cachedData.lastUpdated).getTime();
-      const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
-      
-      if (Date.now() - lastUpdated < thirtyDaysInMs) {
+      if (cachedData.holidays && Array.isArray(cachedData.holidays) && cachedData.holidays.length > 0) {
         console.log(`[Server Helper Cache Hit] Served ${normCountry}_${year} from Firestore`);
         return cachedData.holidays;
       }
-      console.log(`[Server Helper Cache Expired] ${normCountry}_${year} is older than 30 days`);
     }
   } catch (err) {
     console.error('Firestore cache read error in getHolidaysServer:', err);

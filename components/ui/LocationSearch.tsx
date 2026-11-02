@@ -72,21 +72,21 @@ export default function LocationSearch({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-2.5 py-2 md:px-5 md:py-4 text-[10px] md:text-sm font-bold text-slate-800 dark:text-white flex items-center justify-between hover:bg-slate-200/55 dark:hover:bg-white/10 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 group min-w-0"
+        className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-3 py-2.5 md:px-5 md:py-4 text-xs md:text-sm font-bold text-slate-800 dark:text-white flex items-center justify-between hover:bg-slate-200/55 dark:hover:bg-white/10 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 group min-w-0"
       >
-        <div className="flex items-center gap-1.5 md:gap-3 min-w-0 flex-1">
+        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
           <Globe className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400 dark:text-white/40 group-hover:text-primary transition-colors flex-shrink-0" />
           <span className="truncate text-left">{selectedLocation ? selectedLocation.label : (placeholder || 'Select Location')}</span>
         </div>
-        <ChevronDown className={cn("w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400 dark:text-white/20 transition-transform duration-300 flex-shrink-0", isOpen && "rotate-180")} />
+        <ChevronDown className={cn("w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400 dark:text-white/20 transition-transform duration-300 flex-shrink-0 ml-1.5", isOpen && "rotate-180")} />
       </button>
 
       {isOpen && (
         <div className={cn(
-          "absolute top-full mt-2 w-[220px] md:w-full bg-white dark:bg-[#120227] border border-slate-200 dark:border-white/10 rounded-[1.5rem] shadow-2xl z-[100] overflow-hidden animate-in fade-in zoom-in-95 duration-200",
-          dropdownAlign === 'left' && "left-0 md:left-0 md:translate-x-0",
-          dropdownAlign === 'right' && "right-0 left-auto md:left-0 md:translate-x-0",
-          dropdownAlign === 'center' && "left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0"
+          "absolute top-full mt-2 w-full min-w-[260px] max-w-[calc(100vw-2rem)] bg-white dark:bg-[#120227] border border-slate-200 dark:border-white/10 rounded-[1.5rem] shadow-2xl z-[100] overflow-hidden animate-in fade-in zoom-in-95 duration-200",
+          dropdownAlign === 'left' && "left-0",
+          dropdownAlign === 'right' && "right-0 left-auto",
+          dropdownAlign === 'center' && "left-1/2 -translate-x-1/2"
         )}>
           <div className="p-3 border-b border-slate-100 dark:border-white/5 sticky top-0 bg-white/90 dark:bg-[#120227]/80 backdrop-blur-md z-10">
             <div className="relative">

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
+import Link from 'next/link'
 import { 
   ArrowRight, 
   Info, 
@@ -14,6 +15,12 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DSTChange, getUpcomingDSTChanges } from '@/lib/dst'
+import citiesData from '@/data/seo/cities.json'
+
+const citySlugByZone = new Map<string, string>()
+citiesData.forEach(c => {
+  if (c.timezone) citySlugByZone.set(c.timezone, c.slug)
+})
 
 interface Props {
   initialChanges: DSTChange[]
@@ -95,7 +102,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6 md:space-y-10">
       {/* Hero Summary Section */}
-      <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-[2.5rem] bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a0b36] dark:via-[#120227] dark:to-black border border-slate-200 dark:border-white/10 overflow-visible shadow-none md:shadow-2xl w-full mx-auto">
+      <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-[2.5rem] bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a0b36] dark:via-[#120227] dark:to-black border border-slate-200 dark:border-white/10 overflow-visible shadow-sm md:shadow-2xl w-full mx-auto">
          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] -mr-32 -mt-32 pointer-events-none" />
          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] -ml-20 -mb-20 pointer-events-none" />
          
@@ -103,27 +110,27 @@ export default function DstTrackerClient({ initialChanges }: Props) {
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
                <div className="flex-1 space-y-2 md:space-y-3 text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-2.5">
-                     <div className="px-2.5 py-0.5 rounded-full bg-white/5 border border-primary/30 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest">
+                     <div className="px-2.5 py-0.5 rounded-full bg-primary/10 dark:bg-white/5 border border-primary/30 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest">
                        Global Schedule
                      </div>
                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-black text-white tracking-tight leading-none italic">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-black text-slate-900 dark:text-white tracking-tight leading-none italic">
                      Upcoming <span className="text-primary not-italic">Clock Changes</span>
                   </h2>
-                  <p className="text-xs md:text-sm lg:text-base text-white/40 font-medium max-w-xl">
+                  <p className="text-xs md:text-sm lg:text-base text-slate-600 dark:text-white/50 font-medium max-w-xl">
                      A comprehensive live directory of every scheduled Daylight Saving Time transition across the globe for the next 12 months.
                   </p>
                </div>
                
                <div className="grid grid-cols-2 gap-2 md:gap-3 w-full md:w-auto">
-                  <div className="p-2.5 md:p-3.5 lg:p-4 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-inner group-hover:scale-105 transition-transform duration-500">
+                  <div className="p-2.5 md:p-3.5 lg:p-4 rounded-xl md:rounded-2xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-sm shadow-sm dark:shadow-inner group-hover:scale-105 transition-transform duration-500">
                      <p className="text-[8px] md:text-[9px] font-black text-primary uppercase tracking-widest mb-0.5">Total Changes</p>
-                     <p className="text-base sm:text-lg md:text-2xl font-black text-white">{allChanges.length}</p>
+                     <p className="text-base sm:text-lg md:text-2xl font-black text-slate-900 dark:text-white">{allChanges.length}</p>
                   </div>
-                  <div className="p-2.5 md:p-3.5 lg:p-4 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-inner">
+                  <div className="p-2.5 md:p-3.5 lg:p-4 rounded-xl md:rounded-2xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-sm shadow-sm dark:shadow-inner">
                      <p className="text-[8px] md:text-[9px] font-black text-accent uppercase tracking-widest mb-0.5">Next Wave</p>
-                     <p className="text-base sm:text-lg md:text-2xl font-black text-white">{nextWaveDays}<span className="text-[10px] md:text-xs ml-0.5 opacity-40 font-bold">days</span></p>
+                     <p className="text-base sm:text-lg md:text-2xl font-black text-slate-900 dark:text-white">{nextWaveDays}<span className="text-[10px] md:text-xs ml-0.5 opacity-50 font-bold">days</span></p>
                   </div>
                </div>
             </div>
@@ -131,7 +138,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
             {/* Filter Search Bar */}
             <div className="relative max-w-2xl mx-auto w-full group">
                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
-               <div className="relative flex items-center bg-slate-200/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl md:rounded-2xl px-4 md:px-5 h-10 md:h-12 backdrop-blur-xl focus-within:border-primary/50 transition-all">
+               <div className="relative flex items-center bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl md:rounded-2xl px-4 md:px-5 h-10 md:h-12 backdrop-blur-xl focus-within:border-primary/50 transition-all shadow-sm">
                   <Search className="w-4 h-4 text-slate-400 dark:text-white/20 mr-2.5 md:mr-3" />
                   <input 
                     type="text"
@@ -143,13 +150,13 @@ export default function DstTrackerClient({ initialChanges }: Props) {
                     }}
                     onFocus={() => setShowSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                    className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-white font-bold text-xs md:text-sm placeholder:text-slate-400 dark:placeholder:text-white/20"
+                    className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-white font-bold text-xs md:text-sm placeholder:text-slate-400 dark:placeholder:text-white/30"
                   />
                   {searchTerm && (
                     <button 
                       type="button"
                       onClick={() => setSearchTerm('')} 
-                      className="p-1 hover:bg-slate-300/50 dark:hover:bg-white/10 rounded-full transition-colors cursor-pointer"
+                      className="p-1 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full transition-colors cursor-pointer"
                       aria-label="Clear search input"
                     >
                       <X className="w-3.5 h-3.5 text-slate-400 dark:text-white/40" />
@@ -159,7 +166,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
 
                {/* Suggestions Dropdown */}
                {searchTerm && suggestions.length > 0 && showSuggestions && (
-                 <div className="absolute top-full left-0 right-0 mt-2 bg-slate-100 dark:bg-[#1a0b36]/95 border border-slate-200 dark:border-white/10 rounded-xl z-50 overflow-hidden divide-y divide-slate-200/50 dark:divide-white/5 backdrop-blur-xl">
+                 <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1a0b36]/95 border border-slate-200 dark:border-white/10 rounded-xl z-50 overflow-hidden divide-y divide-slate-100 dark:divide-white/5 backdrop-blur-xl shadow-xl">
                    {suggestions.map((s, idx) => (
                      <div
                        key={idx}
@@ -167,7 +174,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
                          setSearchTerm(s.value)
                          setShowSuggestions(false)
                        }}
-                       className="px-4 py-3 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors cursor-pointer text-slate-800 dark:text-white flex items-center justify-between text-xs md:text-sm font-bold"
+                       className="px-4 py-3 hover:bg-slate-50 dark:hover:bg-primary/20 transition-colors cursor-pointer text-slate-800 dark:text-white flex items-center justify-between text-xs md:text-sm font-bold"
                      >
                        <div className="flex items-center gap-2">
                          {s.type === 'country' ? (
@@ -188,154 +195,177 @@ export default function DstTrackerClient({ initialChanges }: Props) {
          </div>
       </div>
       {/* Changes Timeline */}
-      <div className="space-y-8 md:space-y-12">
+      <div className="space-y-6 sm:space-y-8 md:space-y-12">
         {groupedChanges.slice(0, visibleGroups).map((group, gIdx) => (
-          <div key={group.date} className="space-y-4 md:space-y-8">
+          <div key={group.date} className="space-y-3 sm:space-y-4 md:space-y-8">
             <div className="flex items-center gap-3 md:gap-6 group">
               <div className="flex items-baseline gap-1.5 md:gap-2">
-                <h2 className="text-base sm:text-lg md:text-3xl font-black text-white tracking-tight">{group.date}</h2>
+                <h2 className="text-base sm:text-lg md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{group.date}</h2>
                 <span className="text-primary font-black uppercase text-[9px] sm:text-xs tracking-widest whitespace-nowrap">
                   <span className="hidden sm:inline">({group.daysRemaining} days remaining)</span>
                   <span className="inline sm:hidden">({group.daysRemaining}d left)</span>
                 </span>
               </div>
-              <div className="h-px bg-white/10 flex-1 group-hover:bg-primary/20 transition-colors" />
+              <div className="h-px bg-slate-200 dark:bg-white/10 flex-1 group-hover:bg-primary/20 transition-colors" />
             </div>
 
             {/* Desktop Grid Layout */}
             <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {group.items.map((item, iIdx) => (
-                <div 
-                  key={`${item.zone}-${iIdx}`}
-                  className={cn(
-                    "group relative bg-[#1a0b2e]/40 hover:bg-[#1a0b2e]/60 border p-8 rounded-[2rem] transition-all duration-500 shadow-xl hover:-translate-y-1 overflow-hidden",
-                    item.isLordHowe || item.isHistorical 
-                      ? "border-amber-500/30 bg-amber-500/[0.03] shadow-amber-500/5" 
-                      : "border-white/5 hover:border-primary/30"
-                  )}
-                >
-                   {(item.isLordHowe || item.isHistorical) && (
-                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
-                   )}
-                   
-                   <div className="flex justify-between items-start mb-6">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Globe className="w-3.5 h-3.5 text-primary/60" />
-                          <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{item.country}</span>
-                        </div>
-                        <h3 className="text-xl font-black text-white tracking-tight truncate max-w-[180px]">
-                          {item.zone.split('/').pop()?.replace('_', ' ')}
-                        </h3>
-                      </div>
-                      <div className={cn(
-                        "px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border",
-                        item.isLordHowe || item.isHistorical ? "bg-white/5 border-amber-500/30 text-amber-400" :
-                        item.type === 'Spring Forward' 
-                          ? "bg-white/5 border-emerald-500/30 text-emerald-400" 
-                          : "bg-white/5 border-orange-500/30 text-orange-400"
-                      )}>
-                        {item.isLordHowe ? '±30m' : item.type === 'Spring Forward' ? '+1h' : item.type === 'Fall Back' ? '-1h' : 'Shift'}
-                      </div>
-                   </div>
+              {group.items.map((item, iIdx) => {
+                const citySlug = citySlugByZone.get(item.zone)
+                const cityName = item.zone.split('/').pop()?.replace('_', ' ')
 
-                   <div className="space-y-4">
-                      {item.description && (
-                        <div className="bg-white/5 rounded-xl p-3 border border-white/5 flex gap-3">
-                           {item.isLordHowe ? <Sparkles className="w-4 h-4 text-amber-500 shrink-0" /> : <History className="w-4 h-4 text-amber-500 shrink-0" />}
-                           <p className="text-[11px] font-bold text-white/50 leading-relaxed italic">
-                              {item.description}
-                           </p>
+                return (
+                  <div 
+                    key={`${item.zone}-${iIdx}`}
+                    className={cn(
+                      "group relative bg-slate-50 dark:bg-[#1a0b2e]/40 hover:bg-slate-100/80 dark:hover:bg-[#1a0b2e]/60 border p-6 md:p-8 rounded-[2rem] transition-all duration-500 shadow-sm dark:shadow-xl hover:-translate-y-1 overflow-hidden",
+                      item.isLordHowe || item.isHistorical 
+                        ? "border-amber-500/30 bg-amber-500/[0.03] shadow-amber-500/5" 
+                        : "border-slate-200/80 dark:border-white/5 hover:border-primary/40"
+                    )}
+                  >
+                     {(item.isLordHowe || item.isHistorical) && (
+                       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+                     )}
+                     
+                     <div className="flex justify-between items-start mb-6">
+                        <div className="space-y-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <Globe className="w-3.5 h-3.5 text-primary/60" />
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] truncate">{item.country}</span>
+                          </div>
+                          <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight truncate max-w-[180px]">
+                            {citySlug ? (
+                              <Link href={`/world-clock/${citySlug}/`} className="hover:text-primary transition-colors hover:underline">
+                                {cityName}
+                              </Link>
+                            ) : (
+                              cityName
+                            )}
+                          </h3>
                         </div>
-                      )}
-                      <div className="flex items-center justify-between text-xs font-bold text-white/30 border-b border-white/5 pb-4">
-                        <span>Time of Change</span>
-                        <span className="text-white/80">{item.time}</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between pt-2">
-                        <div className="flex flex-col">
-                          <span className="text-[9px] font-black text-white/20 uppercase mb-1">Current</span>
-                          <span className="text-sm font-black text-white/60 tabular-nums">GMT {item.offsetBefore >= 0 ? '+' : ''}{item.offsetBefore}</span>
+                        <div className={cn(
+                          "px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border flex-shrink-0",
+                          item.isLordHowe || item.isHistorical ? "bg-amber-500/10 border-amber-500/30 text-amber-500" :
+                          item.type === 'Spring Forward' 
+                            ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400" 
+                            : "bg-orange-500/10 border-orange-500/30 text-orange-600 dark:text-orange-400"
+                        )}>
+                          {item.isLordHowe ? '±30m' : item.type === 'Spring Forward' ? '+1h' : item.type === 'Fall Back' ? '-1h' : 'Shift'}
                         </div>
-                        <ArrowRight className={cn("text-primary/40", (item.isLordHowe || item.isHistorical) && "text-amber-500/40")} size={16} />
-                        <div className="flex flex-col text-right">
-                          <span className={cn("text-[9px] font-black uppercase mb-1", (item.isLordHowe || item.isHistorical) ? "text-amber-500/60" : "text-primary/60")}>Target</span>
-                          <span className={cn("text-sm font-black tabular-nums", (item.isLordHowe || item.isHistorical) ? "text-amber-500" : "text-primary")}>GMT {item.offsetAfter >= 0 ? '+' : ''}{item.offsetAfter}</span>
+                     </div>
+
+                     <div className="space-y-4">
+                        {item.description && (
+                          <div className="bg-slate-100 dark:bg-white/5 rounded-xl p-3 border border-slate-200 dark:border-white/5 flex gap-3">
+                             {item.isLordHowe ? <Sparkles className="w-4 h-4 text-amber-500 shrink-0" /> : <History className="w-4 h-4 text-amber-500 shrink-0" />}
+                             <p className="text-[11px] font-bold text-slate-600 dark:text-white/60 leading-relaxed italic">
+                                {item.description}
+                             </p>
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-white/40 border-b border-slate-200 dark:border-white/5 pb-4">
+                          <span>Time of Change</span>
+                          <span className="text-slate-800 dark:text-white/80">{item.time}</span>
                         </div>
-                      </div>
-                   </div>
-                </div>
-              ))}
+                        
+                        <div className="flex items-center justify-between pt-2">
+                          <div className="flex flex-col">
+                            <span className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase mb-1">Current</span>
+                            <span className="text-sm font-black text-slate-600 dark:text-white/60 tabular-nums">GMT {item.offsetBefore >= 0 ? '+' : ''}{item.offsetBefore}</span>
+                          </div>
+                          <ArrowRight className={cn("text-primary/40", (item.isLordHowe || item.isHistorical) && "text-amber-500/40")} size={16} />
+                          <div className="flex flex-col text-right">
+                            <span className={cn("text-[9px] font-black uppercase mb-1", (item.isLordHowe || item.isHistorical) ? "text-amber-500/70" : "text-primary/70")}>Target</span>
+                            <span className={cn("text-sm font-black tabular-nums", (item.isLordHowe || item.isHistorical) ? "text-amber-500" : "text-primary")}>GMT {item.offsetAfter >= 0 ? '+' : ''}{item.offsetAfter}</span>
+                          </div>
+                        </div>
+                     </div>
+                  </div>
+                )
+              })}
             </div>
 
             {/* Mobile Compact List Layout (Full-Width, High Density) */}
-            <div className="block md:hidden w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-[#1a0b2e]/40 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
-              {group.items.map((item, iIdx) => (
-                <div 
-                  key={`${item.zone}-${iIdx}-mobile`}
-                  className={cn(
-                    "flex flex-col p-4 relative overflow-hidden",
-                    item.isLordHowe || item.isHistorical 
-                      ? "bg-amber-500/[0.03]" 
-                      : ""
-                  )}
-                >
-                   {/* Top Row: Badge, Time + GMT change, Days countdown */}
-                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                     <div className="flex items-center gap-1.5 min-w-0">
-                       <span className={cn(
-                         "px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-wider border flex-shrink-0",
-                         item.isLordHowe || item.isHistorical ? "bg-white/5 border-amber-500/30 text-amber-400" :
-                         item.type === 'Spring Forward' 
-                           ? "bg-white/5 border-emerald-500/30 text-emerald-400" 
-                           : "bg-white/5 border-orange-500/30 text-orange-400"
-                       )}>
-                         {item.isLordHowe ? '±30m' : item.type === 'Spring Forward' ? '+1h' : item.type === 'Fall Back' ? '-1h' : 'Shift'}
-                       </span>
-                       <span className="text-white font-bold text-xs tabular-nums flex-shrink-0">
-                         {item.time}
-                       </span>
-                       <span className="text-white/20 text-[10px] font-medium flex-shrink-0">|</span>
-                       <span className="text-white/60 text-xs font-bold tabular-nums truncate">
-                         GMT {item.offsetBefore >= 0 ? '+' : ''}{item.offsetBefore} → {item.offsetAfter >= 0 ? '+' : ''}{item.offsetAfter}
-                       </span>
-                     </div>
-                     <span className="text-primary text-[10px] font-black uppercase tracking-wider flex-shrink-0">
-                       {item.daysRemaining}d left
-                     </span>
-                   </div>
+            <div className="block md:hidden w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#1a0b2e]/40 divide-y divide-slate-100 dark:divide-white/10 overflow-hidden shadow-sm">
+              {group.items.map((item, iIdx) => {
+                const citySlug = citySlugByZone.get(item.zone)
+                const cityName = item.zone.split('/').pop()?.replace('_', ' ')
 
-                   {/* Bottom Row: Location (City, Country), Type Label */}
-                   <div className="flex items-baseline justify-between gap-4">
-                     <div className="flex items-center gap-1.5 min-w-0">
-                       <span className="text-white font-black text-sm truncate">
-                         {item.zone.split('/').pop()?.replace('_', ' ')}
-                       </span>
-                       <span className="text-white/40 text-[10px] font-medium truncate">
-                         ({item.country})
+                return (
+                  <div 
+                    key={`${item.zone}-${iIdx}-mobile`}
+                    className={cn(
+                      "flex flex-col p-3.5 sm:p-4 relative overflow-hidden",
+                      item.isLordHowe || item.isHistorical 
+                        ? "bg-amber-500/[0.04]" 
+                        : ""
+                    )}
+                  >
+                     {/* Top Row: Badge, Time + GMT change, Days countdown */}
+                     <div className="flex items-center justify-between gap-2 mb-1">
+                       <div className="flex items-center gap-1.5 min-w-0">
+                         <span className={cn(
+                           "px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-wider border flex-shrink-0",
+                           item.isLordHowe || item.isHistorical ? "bg-amber-500/10 border-amber-500/30 text-amber-500" :
+                           item.type === 'Spring Forward' 
+                             ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400" 
+                             : "bg-orange-500/10 border-orange-500/30 text-orange-600 dark:text-orange-400"
+                         )}>
+                           {item.isLordHowe ? '±30m' : item.type === 'Spring Forward' ? '+1h' : item.type === 'Fall Back' ? '-1h' : 'Shift'}
+                         </span>
+                         <span className="text-slate-900 dark:text-white font-bold text-xs tabular-nums flex-shrink-0">
+                           {item.time}
+                         </span>
+                         <span className="text-slate-300 dark:text-white/20 text-[10px] font-medium flex-shrink-0">|</span>
+                         <span className="text-slate-600 dark:text-white/70 text-xs font-bold tabular-nums truncate">
+                           GMT {item.offsetBefore >= 0 ? '+' : ''}{item.offsetBefore} → {item.offsetAfter >= 0 ? '+' : ''}{item.offsetAfter}
+                         </span>
+                       </div>
+                       <span className="text-primary text-[10px] font-black uppercase tracking-wider flex-shrink-0">
+                         {item.daysRemaining}d left
                        </span>
                      </div>
-                     <span className="text-white/30 text-[9px] font-black uppercase tracking-wider flex-shrink-0">
-                       {item.type}
-                     </span>
-                   </div>
 
-                   {/* Description (Optional) */}
-                   {item.description && (
-                     <div className="mt-1.5 flex gap-1.5 items-start">
-                       {item.isLordHowe ? (
-                         <Sparkles className="w-3 h-3 text-amber-500 shrink-0 mt-0.5" />
-                       ) : (
-                         <History className="w-3 h-3 text-amber-500 shrink-0 mt-0.5" />
-                       )}
-                       <p className="text-[9px] font-bold text-white/40 leading-normal italic">
-                         {item.description}
-                       </p>
+                     {/* Bottom Row: Location (City, Country), Type Label */}
+                     <div className="flex items-baseline justify-between gap-3">
+                       <div className="flex items-center gap-1.5 min-w-0">
+                         <span className="text-slate-900 dark:text-white font-black text-sm truncate">
+                           {citySlug ? (
+                             <Link href={`/world-clock/${citySlug}/`} className="hover:text-primary transition-colors hover:underline">
+                               {cityName}
+                             </Link>
+                           ) : (
+                             cityName
+                           )}
+                         </span>
+                         <span className="text-slate-500 dark:text-white/40 text-[10px] font-medium truncate">
+                           ({item.country})
+                         </span>
+                       </div>
+                       <span className="text-slate-400 dark:text-white/40 text-[9px] font-black uppercase tracking-wider flex-shrink-0">
+                         {item.type}
+                       </span>
                      </div>
-                   )}
-                </div>
-              ))}
+
+                     {/* Description (Optional) */}
+                     {item.description && (
+                       <div className="mt-1.5 flex gap-1.5 items-start">
+                         {item.isLordHowe ? (
+                           <Sparkles className="w-3 h-3 text-amber-500 shrink-0 mt-0.5" />
+                         ) : (
+                           <History className="w-3 h-3 text-amber-500 shrink-0 mt-0.5" />
+                         )}
+                         <p className="text-[9px] font-bold text-slate-600 dark:text-white/50 leading-normal italic">
+                           {item.description}
+                         </p>
+                       </div>
+                     )}
+                  </div>
+                )
+              })}
             </div>
           </div>
         ))}
@@ -344,7 +374,7 @@ export default function DstTrackerClient({ initialChanges }: Props) {
           <div className="flex justify-center pt-4 pb-8">
             <button 
               onClick={() => setVisibleGroups(prev => prev + 10)}
-              className="px-6 py-3 rounded-full bg-white/5 border border-primary/30 hover:bg-primary hover:text-white text-primary text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2"
+              className="px-6 py-3 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-primary/30 hover:bg-primary hover:text-white text-primary text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 shadow-sm"
             >
               Load More Dates
             </button>
@@ -352,31 +382,31 @@ export default function DstTrackerClient({ initialChanges }: Props) {
         )}
 
         {groupedChanges.length === 0 && (
-          <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border border-dashed border-white/10">
-             <Timer size={48} className="mx-auto text-white/10 mb-6" />
-             <h3 className="text-xl font-black text-white italic">No changes found</h3>
-             <p className="text-white/40 font-medium">Try adjusting your search or check back later for new updates.</p>
+          <div className="text-center py-20 bg-slate-50 dark:bg-white/5 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-white/10">
+             <Timer size={48} className="mx-auto text-slate-400 dark:text-white/10 mb-6" />
+             <h3 className="text-xl font-black text-slate-900 dark:text-white italic">No changes found</h3>
+             <p className="text-slate-500 dark:text-white/40 font-medium">Try adjusting your search or check back later for new updates.</p>
           </div>
         )}
       </div>
 
       {/* Educational Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 mt-8 sm:mt-12 pt-10 sm:pt-16 border-t border-white/5">
-        <div className="p-4 sm:p-8 bg-[#1a0b36]/40 border border-white/10 rounded-2xl sm:rounded-[2.5rem] space-y-3 sm:space-y-6">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-primary/20 shrink-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 mt-8 sm:mt-12 pt-8 sm:pt-16 border-t border-slate-200 dark:border-white/5">
+        <div className="p-4 sm:p-8 bg-slate-50 dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-[2.5rem] space-y-3 sm:space-y-6">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 dark:bg-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-primary/20 shrink-0">
             <Info className="text-primary" size={20} />
           </div>
-          <h4 className="text-base sm:text-lg font-bold text-white uppercase tracking-tight">Why do we use DST?</h4>
-          <p className="text-xs sm:text-base text-white/70 leading-relaxed text-left font-medium">
+          <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Why do we use DST?</h4>
+          <p className="text-xs sm:text-base text-slate-600 dark:text-white/70 leading-relaxed text-left font-medium">
             Daylight Saving Time (DST) is the practice of advancing clocks during warmer months so that darkness falls at a later clock time. The main purpose is to make better use of daylight by having the sun rise and set later. This practice is observed by over 70 countries worldwide.
           </p>
         </div>
-        <div className="p-4 sm:p-8 bg-[#1a0b36]/40 border border-white/10 rounded-2xl sm:rounded-[2.5rem] space-y-3 sm:space-y-6">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-500/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-amber-500/20 shrink-0">
+        <div className="p-4 sm:p-8 bg-slate-50 dark:bg-[#1a0b36]/40 border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-[2.5rem] space-y-3 sm:space-y-6">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-500/10 dark:bg-amber-500/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-amber-500/20 shrink-0">
             <Sparkles className="text-amber-500" size={20} />
           </div>
-          <h4 className="text-base sm:text-lg font-bold text-white uppercase tracking-tight">The 30-Minute Exception</h4>
-          <p className="text-xs sm:text-base text-white/70 leading-relaxed text-left font-medium">
+          <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">The 30-Minute Exception</h4>
+          <p className="text-xs sm:text-base text-slate-600 dark:text-white/70 leading-relaxed text-left font-medium">
             While standard DST transitions are exactly 60 minutes, Lord Howe Island (Australia) uses a unique 30-minute shift. This rare adjustment makes it one of the most interesting time zones for horologists and researchers.
           </p>
         </div>

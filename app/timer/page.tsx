@@ -77,7 +77,7 @@ export default function TimerPage() {
       <StructuredData data={faqSchema} />
       
       <div className="max-w-7xl mx-auto px-4 pt-8 md:pt-16">
-        <h1 className="text-3xl md:text-6xl font-black text-center mb-6 md:mb-10 text-white tracking-tighter animate-in fade-in duration-1000">
+        <h1 className="text-3xl md:text-6xl font-black text-center mb-6 md:mb-10 text-slate-900 dark:text-white tracking-tighter animate-in fade-in duration-1000">
           Online <span className="text-primary italic">Timer</span>
         </h1>
       </div>

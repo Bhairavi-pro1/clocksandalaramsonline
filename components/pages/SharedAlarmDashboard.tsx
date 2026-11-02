@@ -107,11 +107,11 @@ export default function SharedAlarmDashboard() {
   return (
     <div className="space-y-8 md:space-y-12">
       {/* SECTION A: My Shared Alarms */}
-      <section className="w-full bg-slate-100/40 dark:bg-white/5 p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] border border-slate-200/70 dark:border-white/5 space-y-6 shadow-sm">
-         <div className="flex justify-between items-center gap-4 pb-4 border-b border-slate-200/60 dark:border-white/5 w-full">
+      <section className="w-full bg-slate-50 dark:bg-white/5 p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] border border-slate-200/80 dark:border-white/5 space-y-6 shadow-sm">
+         <div className="flex justify-between items-center gap-4 pb-4 border-b border-slate-200/80 dark:border-white/5 w-full">
             <div className="space-y-0.5 text-left">
                <h3 className="text-lg md:text-2xl font-black text-slate-900 dark:text-white leading-tight">My Shared Alarms</h3>
-               <p className="text-[11px] md:text-sm text-muted font-medium">Alarms you created and shared with others</p>
+               <p className="text-[11px] md:text-sm text-slate-500 dark:text-muted font-medium">Alarms you created and shared with others</p>
             </div>
             <button 
                onClick={() => {
@@ -127,7 +127,7 @@ export default function SharedAlarmDashboard() {
          </div>
 
          {createdAlarms.length === 0 ? (
-            <div className="text-center py-12 md:py-16 bg-slate-200/30 dark:bg-white/[0.02] rounded-2xl md:rounded-[2rem] border border-dashed border-slate-300/80 dark:border-white/10 flex flex-col items-center justify-center p-6">
+            <div className="text-center py-12 md:py-16 bg-slate-100/60 dark:bg-white/[0.02] rounded-2xl md:rounded-[2rem] border border-dashed border-slate-300 dark:border-white/10 flex flex-col items-center justify-center p-6">
                <p className="text-slate-500 dark:text-white/40 text-xs md:text-sm font-medium">
                   Click the "+ Create Shared Alarm" button above to create and share a new alarm.
                </p>
@@ -152,16 +152,16 @@ export default function SharedAlarmDashboard() {
       </section>
 
       {/* SECTION B: Received Alarms */}
-      <section className="w-full bg-slate-100/40 dark:bg-white/5 p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] border border-slate-200/70 dark:border-white/5 space-y-6 shadow-sm">
-         <div className="flex justify-between items-center gap-4 pb-4 border-b border-slate-200/60 dark:border-white/5 w-full">
+      <section className="w-full bg-slate-50 dark:bg-white/5 p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] border border-slate-200/80 dark:border-white/5 space-y-6 shadow-sm">
+         <div className="flex justify-between items-center gap-4 pb-4 border-b border-slate-200/80 dark:border-white/5 w-full">
             <div className="space-y-0.5 text-left">
                <h3 className="text-lg md:text-2xl font-black text-slate-900 dark:text-white leading-tight">Received Alarms</h3>
-               <p className="text-[11px] md:text-sm text-muted font-medium">Alarms shared with you that you accepted</p>
+               <p className="text-[11px] md:text-sm text-slate-500 dark:text-muted font-medium">Alarms shared with you that you accepted</p>
             </div>
          </div>
 
          {receivedAlarms.length === 0 ? (
-            <div className="text-center py-12 md:py-16 bg-slate-200/30 dark:bg-white/[0.02] rounded-2xl md:rounded-[2rem] border border-dashed border-slate-300/80 dark:border-white/10 flex flex-col items-center justify-center p-6">
+            <div className="text-center py-12 md:py-16 bg-slate-100/60 dark:bg-white/[0.02] rounded-2xl md:rounded-[2rem] border border-dashed border-slate-300 dark:border-white/10 flex flex-col items-center justify-center p-6">
                <p className="text-slate-500 dark:text-white/40 text-xs md:text-sm font-medium">
                   No accepted alarms yet. Alarms shared with you will appear here once accepted.
                </p>

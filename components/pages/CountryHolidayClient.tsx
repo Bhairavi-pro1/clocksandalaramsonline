@@ -411,10 +411,10 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                 <select
                   value={year}
                   onChange={(e) => handleYearChange(Number(e.target.value))}
-                  className="w-full bg-slate-950/20 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 dark:text-white/90 focus:outline-none appearance-none cursor-pointer pr-7"
+                  className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 dark:text-white focus:outline-none appearance-none cursor-pointer pr-7 transition-colors"
                 >
                   {[2026, 2027].map((y) => (
-                    <option key={y} value={y} className="bg-slate-100 dark:bg-[#1a0b36] text-slate-800 dark:text-white">
+                    <option key={y} value={y} className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">
                       {y}
                     </option>
                   ))}
@@ -432,11 +432,11 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
-                  className="w-full bg-slate-950/20 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 dark:text-white/90 focus:outline-none appearance-none cursor-pointer pr-7"
+                  className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 dark:text-white focus:outline-none appearance-none cursor-pointer pr-7 transition-colors"
                 >
-                  <option value="all" className="bg-slate-100 dark:bg-[#1a0b36] text-slate-800 dark:text-white">All ({holidays.length})</option>
-                  <option value="upcoming" className="bg-slate-100 dark:bg-[#1a0b36] text-slate-800 dark:text-white">Upcoming ({upcomingCount})</option>
-                  <option value="passed" className="bg-slate-100 dark:bg-[#1a0b36] text-slate-800 dark:text-white">Passed ({passedCount})</option>
+                  <option value="all" className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">All ({holidays.length})</option>
+                  <option value="upcoming" className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">Upcoming ({upcomingCount})</option>
+                  <option value="passed" className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">Passed ({passedCount})</option>
                 </select>
                 <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-white/40 pointer-events-none" />
               </div>
@@ -452,13 +452,13 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-full bg-slate-950/20 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 dark:text-white/90 focus:outline-none appearance-none cursor-pointer pr-7"
+                    className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-800 dark:text-white focus:outline-none appearance-none cursor-pointer pr-7 transition-colors"
                   >
-                    <option value="all" className="bg-slate-100 dark:bg-[#1a0b36] text-slate-800 dark:text-white">All ({holidays.length})</option>
+                    <option value="all" className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">All ({holidays.length})</option>
                     {uniqueCategories.map((cat) => {
                       const count = holidays.filter(h => h.type.includes(cat)).length;
                       return (
-                        <option key={cat} value={cat} className="bg-slate-100 dark:bg-[#1a0b36] text-slate-800 dark:text-white">
+                        <option key={cat} value={cat} className="bg-white dark:bg-[#1a0b36] text-slate-800 dark:text-white">
                           {cat} ({count})
                         </option>
                       );
@@ -478,12 +478,12 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
         {loading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/50 backdrop-blur-sm z-30 animate-in fade-in duration-300 rounded-[2.5rem]">
             <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
-            <p className="text-white/60 font-medium tracking-wide">Loading holidays for {year}...</p>
+            <p className="text-slate-600 dark:text-white/60 font-medium tracking-wide">Loading holidays for {year}...</p>
           </div>
         )}
 
         {error && (
-          <div className="bg-white/5 border border-red-500/30 text-red-200 rounded-[2rem] p-8 text-center max-w-xl mx-auto space-y-4">
+          <div className="bg-red-50 dark:bg-white/5 border border-red-500/30 text-red-600 dark:text-red-200 rounded-[2rem] p-8 text-center max-w-xl mx-auto space-y-4">
             <h3 className="text-xl font-bold">Failed to load holidays</h3>
             <p className="text-sm opacity-80">{error}</p>
             <button 
@@ -496,10 +496,10 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
         )}
 
         {!loading && !error && filteredHolidays.length === 0 && (
-          <div className="bg-white/5 border border-white/10 rounded-[2rem] p-12 text-center max-w-xl mx-auto">
-            <Calendar className="w-16 h-16 text-white/20 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">No Holidays Found</h3>
-            <p className="text-sm text-white/50">
+          <div className="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[2rem] p-12 text-center max-w-xl mx-auto">
+            <Calendar className="w-16 h-16 text-slate-400 dark:text-white/20 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No Holidays Found</h3>
+            <p className="text-sm text-slate-600 dark:text-white/50">
               No holiday observances match your selected filters for {countryName} in {year}.
             </p>
           </div>

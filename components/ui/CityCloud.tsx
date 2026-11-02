@@ -91,7 +91,7 @@ export default function CityCloud() {
             {list.cities.map((city) => (
               <Link 
                 key={city.name}
-                href={`/time/${city.slug}?timezone=${city.timezone}`}
+                href={`/world-clock/${city.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`}
                 className={cn(
                   "hover:text-primary transition-all duration-300 hover:scale-[1.05] cursor-pointer inline-block mx-2",
                   city.weight

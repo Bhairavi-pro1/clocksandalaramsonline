@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import DstTrackerClient from '@/components/pages/DstTrackerClient'
 import { Metadata } from 'next'
 import { List, Search, Clock, Zap, CalendarDays, HelpCircle, GraduationCap, Briefcase, Dumbbell, Utensils, Timer, Globe } from 'lucide-react'
@@ -11,12 +12,13 @@ export const metadata: Metadata = {
   title: 'DST Tracker & Clock Changes',
   description: 'Track upcoming daylight saving time (DST) changes worldwide. Chronological timeline of scheduled clock changes.',
   alternates: {
-    canonical: 'https://clocksandalarmsonline.com/dst-tracker',
+    canonical: 'https://clocksandalarmsonline.com/dst-tracker/',
   },
   openGraph: {
     title: 'DST Tracker & Clock Changes',
     description: 'Never get confused by clock changes again. Our real-time tracker monitors over 150 timezones globally.',
     type: 'website',
+    url: 'https://clocksandalarmsonline.com/dst-tracker/',
   }
 }
 
@@ -44,6 +46,25 @@ export default function DSTTrackerPage() {
     }
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://clocksandalarmsonline.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "DST Tracker",
+        "item": "https://clocksandalarmsonline.com/dst-tracker/"
+      }
+    ]
+  }
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -69,15 +90,27 @@ export default function DSTTrackerPage() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-0 sm:px-4 pt-3 md:pt-6 pb-20 animate-in fade-in duration-1000">
+    <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 pt-3 md:pt-6 pb-20 animate-in fade-in duration-1000">
       <StructuredData data={softwareSchema} />
+      <StructuredData data={breadcrumbSchema} />
       <StructuredData data={faqSchema} />
 
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6">
+        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted/70 font-medium">
+          <li>
+            <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Home</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li className="text-slate-900 dark:text-white font-bold" aria-current="page">DST Tracker</li>
+        </ol>
+      </nav>
+
       <div className="text-center mb-4 md:mb-6 space-y-1 md:space-y-2">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tighter decoration-primary decoration-8 underline-offset-8">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tighter decoration-primary decoration-8 underline-offset-8">
           Daylight Saving <span className="text-primary italic">Time</span> Tracker
         </h1>
-        <p className="text-white/40 font-medium max-w-2xl mx-auto text-xs sm:text-sm md:text-base leading-relaxed pt-0.5">
+        <p className="text-slate-600 dark:text-white/50 font-medium max-w-2xl mx-auto text-xs sm:text-sm md:text-base leading-relaxed pt-0.5">
           Stay ahead of the curve. Monitor upcoming clock changes 
           and daylight saving transitions for any city or country in the world.
         </p>

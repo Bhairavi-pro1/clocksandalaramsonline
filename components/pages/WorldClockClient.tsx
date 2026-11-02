@@ -5,7 +5,9 @@ import MainClockCard from '@/components/ui/MainClockCard'
 import TimezoneSearch from '@/components/ui/TimezoneSearch'
 import SmallClockCard from '@/components/ui/SmallClockCard'
 import AdBanner from '@/components/ui/AdBanner'
+import Link from 'next/link'
 import * as cityTimezones from 'city-timezones'
+import cityData from '@/data/seo/cities.json'
 
 interface ClockData {
   country: string
@@ -116,7 +118,7 @@ export default function WorldClockClient() {
           <TimezoneSearch onAdd={addClock} />
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-6 gap-y-4 sm:gap-y-10 pb-20">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-6 gap-y-4 sm:gap-y-10 pb-12">
           {globalClocks.map((clock, index) => (
             <SmallClockCard 
               key={`${clock.timezone}-${clock.city}-${index}`}
@@ -126,6 +128,33 @@ export default function WorldClockClient() {
               onRemove={() => removeClock(index)}
             />
           ))}
+        </div>
+
+        {/* Popular World Cities SEO Directory */}
+        <div className="pt-8 pb-16 border-t border-white/10">
+          <div className="text-center mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold font-display text-white">Popular World Cities</h3>
+            <p className="text-muted/70 text-xs sm:text-sm mt-1">
+              Live clocks, astronomical data, weather, and DST schedules for major global cities
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4">
+            {cityData.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/world-clock/${c.slug}/`}
+                className="group py-2.5 px-1.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-100/70 dark:bg-[#1a0b36]/40 hover:bg-slate-200/80 dark:hover:bg-[#1a0b36]/80 border border-slate-200/80 dark:border-white/5 hover:border-primary/40 transition-all flex flex-col items-center justify-center text-center shadow-sm"
+              >
+                <span className="text-slate-900 dark:text-white text-[11px] sm:text-xs md:text-sm font-bold group-hover:text-primary transition-colors truncate max-w-full">
+                  {c.name}
+                </span>
+                <span className="text-[8px] sm:text-[10px] text-slate-500 dark:text-muted/60 mt-0.5 truncate max-w-full">
+                  {c.timezone.split('/')[1]?.replace(/_/g, ' ') || c.timezone}
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>

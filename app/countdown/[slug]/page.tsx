@@ -1,12 +1,15 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getHolidaysServer, FormattedHoliday } from '@/lib/getHolidaysServer';
 import countriesData from '@/data/countries.json';
+import holidayData from '@/data/seo/holidays.json';
 import CountryHolidayClient from '@/components/pages/CountryHolidayClient';
 import StructuredData from '@/components/seo/StructuredData';
 import AdBanner from '@/components/ui/AdBanner';
-import { Calendar, Briefcase, Users } from 'lucide-react';
+import { Calendar, Briefcase, Users, Sparkles } from 'lucide-react';
 import ToolSEO from '@/components/seo/ToolSEO';
+import { cn } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -16,11 +19,30 @@ function getCountryByCode(code: string) {
   return countriesData.find(c => c.code.toLowerCase() === code.toLowerCase());
 }
 
+function getMatchedHoliday(slug: string) {
+  const clean = slug.toLowerCase();
+  return holidayData.find(h => 
+    h.slug === clean || 
+    h.slug.replace(/-day$/, '') === clean || 
+    clean.replace(/-day$/, '') === h.slug.replace(/-day$/, '')
+  );
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const countryObj = getCountryByCode(slug);
   
   if (!countryObj) {
+    const matchedHoliday = getMatchedHoliday(slug);
+    if (matchedHoliday) {
+      return {
+        title: matchedHoliday.title,
+        description: matchedHoliday.description,
+        alternates: {
+          canonical: `https://clocksandalarmsonline.com${matchedHoliday.sublink}`
+        }
+      };
+    }
     return { title: 'Country Not Found' };
   }
 
@@ -63,6 +85,10 @@ export default async function CountdownSegmentPage({ params }: Props) {
   const countryObj = getCountryByCode(slug);
 
   if (!countryObj) {
+    const matchedHoliday = getMatchedHoliday(slug);
+    if (matchedHoliday) {
+      redirect(matchedHoliday.sublink);
+    }
     notFound();
   }
 
@@ -128,14 +154,29 @@ export default async function CountdownSegmentPage({ params }: Props) {
       <StructuredData data={softwareSchema} />
       <StructuredData data={breadcrumbSchema} />
 
-      <div className="max-w-7xl mx-auto px-4 pt-8 md:pt-16 text-center space-y-3 md:space-y-6 animate-in fade-in duration-1000">
+      {/* Visual Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 pt-6 md:pt-10">
+        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-muted/70 font-medium">
+          <li>
+            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li>
+            <Link href="/countdown/" className="hover:text-primary transition-colors">Holiday Countdown</Link>
+          </li>
+          <li className="opacity-40">/</li>
+          <li className="text-slate-900 dark:text-white font-bold" aria-current="page">{countryName}</li>
+        </ol>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-4 pt-4 md:pt-8 text-center space-y-3 md:space-y-6 animate-in fade-in duration-1000">
         <div className="inline-block px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-1 md:mb-2">
           Universal Celebration Trackers
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1]">
+        <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white tracking-tighter leading-[1.1]">
           {countryName} Holiday <span className="text-primary italic font-serif">Countdowns</span>
         </h1>
-        <p className="text-sm md:text-lg text-muted/60 max-w-3xl mx-auto font-medium">
+        <p className="text-sm md:text-lg text-slate-600 dark:text-white/60 max-w-3xl mx-auto font-medium">
           Track every upcoming public, religious, and federal holiday in {countryName} with millisecond-accurate countdowns synchronized with global atomic time.
         </p>
       </div>
@@ -149,6 +190,39 @@ export default async function CountdownSegmentPage({ params }: Props) {
 
       <div className="max-w-7xl mx-auto px-4 my-8">
         <AdBanner />
+      </div>
+
+      {/* Popular Global Holidays Directory */}
+      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-slate-200/80 dark:border-white/10">
+        <div className="text-center mb-6">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center justify-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            Popular Global Holiday Countdowns
+          </h2>
+          <p className="text-slate-600 dark:text-muted/70 text-xs sm:text-sm mt-1">
+            Explore live countdown clocks for the world&apos;s most celebrated holidays and festivals
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
+          {holidayData.map((h) => (
+            <Link
+              key={h.slug}
+              href={h.sublink}
+              className={cn(
+                "group p-2.5 sm:p-3.5 rounded-2xl border transition-all text-center flex flex-col justify-center items-center shadow-sm relative min-h-[76px] sm:min-h-[84px]",
+                "bg-slate-50 dark:bg-white/[0.04] border-slate-200/80 dark:border-white/5 hover:border-primary/50 hover:bg-primary/5 text-slate-900 dark:text-white hover:shadow-md"
+              )}
+            >
+              <div className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white group-hover:text-primary transition-colors text-center leading-snug break-words w-full">
+                {h.name}
+              </div>
+              <div className="text-[10px] sm:text-[11px] mt-1 font-semibold text-slate-500 dark:text-muted uppercase tracking-wider">
+                {h.country}
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 pb-12 sm:pb-24">

@@ -1,0 +1,163 @@
+[
+  {
+    "slug": "christmas-day",
+    "name": "Christmas Day",
+    "country": "us",
+    "sublink": "/countdown/us/christmas-day/",
+    "title": "Christmas Countdown — Days Until Christmas Day",
+    "description": "Count down the days, hours, minutes, and seconds until Christmas Day with our accurate live online countdown clock."
+  },
+  {
+    "slug": "new-years-day",
+    "name": "New Year's Day",
+    "country": "us",
+    "sublink": "/countdown/us/new-years-day/",
+    "title": "New Year Countdown — Days Until New Year",
+    "description": "Live countdown to New Year's Day. Watch the clock tick down to the stroke of midnight with live atomic precision."
+  },
+  {
+    "slug": "new-years-eve",
+    "name": "New Year's Eve",
+    "country": "us",
+    "sublink": "/countdown/us/new-years-eve/",
+    "title": "New Year's Eve Countdown — Count to Midnight",
+    "description": "Count down to New Year's Eve celebrations. Real-time digital clock counting seconds until the ball drops."
+  },
+  {
+    "slug": "halloween",
+    "name": "Halloween",
+    "country": "us",
+    "sublink": "/countdown/us/halloween/",
+    "title": "Halloween Countdown — How Many Days Until Halloween?",
+    "description": "Live countdown to Halloween on October 31st. Track exact days, hours, and minutes left for spooky season."
+  },
+  {
+    "slug": "thanksgiving-day",
+    "name": "Thanksgiving Day",
+    "country": "us",
+    "sublink": "/countdown/us/thanksgiving-day/",
+    "title": "Thanksgiving Countdown — Days Until Thanksgiving",
+    "description": "Track the exact time left until Thanksgiving Day. High-precision online countdown timer for holiday dinner planning."
+  },
+  {
+    "slug": "valentines-day",
+    "name": "Valentine's Day",
+    "country": "us",
+    "sublink": "/countdown/us/valentines-day/",
+    "title": "Valentine's Day Countdown — Days Until February 14",
+    "description": "Count down the days, hours, and minutes until Valentine's Day. Celebrate romance with our live countdown."
+  },
+  {
+    "slug": "independence-day",
+    "name": "Independence Day",
+    "country": "us",
+    "sublink": "/countdown/us/independence-day/",
+    "title": "4th of July Countdown — Days Until Independence Day",
+    "description": "Live countdown to the Fourth of July Independence Day. Celebrate freedom with precise time tracking."
+  },
+  {
+    "slug": "easter-sunday",
+    "name": "Easter Sunday",
+    "country": "us",
+    "sublink": "/countdown/us/easter-sunday/",
+    "title": "Easter Countdown — Days Until Easter Sunday",
+    "description": "Accurate real-time countdown to Easter Sunday. See how many days and hours are left until Easter celebrations."
+  },
+  {
+    "slug": "st-patricks-day",
+    "name": "St. Patrick's Day",
+    "country": "us",
+    "sublink": "/countdown/us/st-patricks-day/",
+    "title": "St. Patrick's Day Countdown — Days Until March 17",
+    "description": "Count down to St. Patrick's Day with our live online clock. Track the days and seconds until the green celebrations begin."
+  },
+  {
+    "slug": "memorial-day",
+    "name": "Memorial Day",
+    "country": "us",
+    "sublink": "/countdown/us/memorial-day/",
+    "title": "Memorial Day Countdown — Days Until Memorial Day",
+    "description": "Live countdown to Memorial Day weekend. Track days, hours, and minutes left."
+  },
+  {
+    "slug": "labor-day",
+    "name": "Labor Day",
+    "country": "us",
+    "sublink": "/countdown/us/labor-day/",
+    "title": "Labor Day Countdown — Days Until Labor Day Weekend",
+    "description": "Count down the days until Labor Day. Free online countdown clock for holiday travel and long weekend planning."
+  },
+  {
+    "slug": "mothers-day",
+    "name": "Mother's Day",
+    "country": "us",
+    "sublink": "/countdown/us/mothers-day/",
+    "title": "Mother's Day Countdown — Days Until Mother's Day",
+    "description": "See exactly how many days, hours, and minutes are left until Mother's Day. Never forget to celebrate Mom."
+  },
+  {
+    "slug": "fathers-day",
+    "name": "Father's Day",
+    "country": "us",
+    "sublink": "/countdown/us/fathers-day/",
+    "title": "Father's Day Countdown — Days Until Father's Day",
+    "description": "Live countdown to Father's Day. Track the time remaining to celebrate Dad."
+  },
+  {
+    "slug": "juneteenth-national-independence-day",
+    "name": "Juneteenth",
+    "country": "us",
+    "sublink": "/countdown/us/juneteenth-national-independence-day/",
+    "title": "Juneteenth Countdown — Days Until Juneteenth",
+    "description": "Real-time countdown to Juneteenth National Independence Day on June 19th."
+  },
+  {
+    "slug": "martin-luther-king-jr-day",
+    "name": "Martin Luther King Jr. Day",
+    "country": "us",
+    "sublink": "/countdown/us/martin-luther-king-jr-day/",
+    "title": "MLK Day Countdown — Days Until Martin Luther King Jr. Day",
+    "description": "Live online countdown to Martin Luther King Jr. Day with accurate time tracking."
+  },
+  {
+    "slug": "veterans-day",
+    "name": "Veterans Day",
+    "country": "us",
+    "sublink": "/countdown/us/veterans-day/",
+    "title": "Veterans Day Countdown — Days Until November 11",
+    "description": "Live countdown to Veterans Day on November 11th. Honor military veterans with our precise online clock."
+  },
+  {
+    "slug": "diwali",
+    "name": "Diwali",
+    "country": "in",
+    "sublink": "/countdown/in/diwali/",
+    "title": "Diwali Countdown — Days Until Deepavali Festival of Lights",
+    "description": "Live countdown to Diwali festival of lights. Track the exact days, hours, and minutes until celebrations begin."
+  },
+  {
+    "slug": "holi",
+    "name": "Holi",
+    "country": "in",
+    "sublink": "/countdown/in/holi/",
+    "title": "Holi Countdown — Days Until Festival of Colors",
+    "description": "Accurate live countdown to Holi festival of colors in India. Track days and hours remaining."
+  },
+  {
+    "slug": "republic-day",
+    "name": "Republic Day",
+    "country": "in",
+    "sublink": "/countdown/in/republic-day/",
+    "title": "Republic Day Countdown — Days Until January 26",
+    "description": "Track the seconds until India's Republic Day on January 26th with live countdown timer."
+  },
+  {
+    "slug": "boxing-day",
+    "name": "Boxing Day",
+    "country": "gb",
+    "sublink": "/countdown/gb/boxing-day/",
+    "title": "Boxing Day Countdown — Days Until December 26",
+    "description": "Live countdown to Boxing Day in the UK. Track the hours and minutes until holiday sales and sports events."
+  }
+]
+

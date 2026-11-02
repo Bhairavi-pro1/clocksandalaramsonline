@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { X } from 'lucide-react'
 import Link from 'next/link'
 import { useStore } from '@/hooks/useStore'
+import cityData from '@/data/seo/cities.json'
 
 interface SmallClockCardProps {
   country: string
@@ -29,18 +30,13 @@ export default function SmallClockCard({ country, city, timezone, onRemove }: Sm
     return () => clearInterval(interval)
   }, [timezone])
 
-  const countrySlug = (country || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-')
-  const citySlug = (city || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-')
-  
-  // Standard SEO optimized nested route: /time/country/city/year/month/day
-  // Use a stable fixed date for placeholders to avoid hydration mismatch
-  // DateTime.now() changes between server and client.
-  const placeholderDate = DateTime.fromISO('2024-01-01T00:00:00Z');
-  const currentTime = time || placeholderDate;
-  const year = currentTime.toFormat('yyyy')
-  const month = currentTime.toFormat('MMMM').toLowerCase()
-  const day = currentTime.toFormat('dd')
-  const href = `/time/${countrySlug}/${citySlug}/${year}/${month}/${day}?timezone=${encodeURIComponent(timezone)}`
+  const targetSlug = (city || country || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  const matchedCity = cityData.find(c => 
+    c.slug === targetSlug || 
+    c.name.toLowerCase() === (city || '').toLowerCase() ||
+    c.timezone === timezone
+  )
+  const href = `/world-clock/${matchedCity ? matchedCity.slug : targetSlug}/`
 
   return (
     <div className="relative p-3.5 sm:p-7 rounded-2xl sm:rounded-[1.8rem] bg-slate-100/50 dark:bg-[#1a0b2e]/40 border border-slate-200/60 dark:border-violet-500/20 hover:border-slate-300 dark:hover:border-violet-500/40 transition-all duration-500 hover:shadow-[0_0_30px_rgba(124,58,237,0.1)] group">
