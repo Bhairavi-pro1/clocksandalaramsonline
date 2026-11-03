@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useStore, Alarm, Countdown } from '@/hooks/useStore'
 import { db } from '@/lib/firebase'
 import { doc, onSnapshot } from 'firebase/firestore'
@@ -32,10 +32,45 @@ export default function BackgroundTimeService() {
   // Track Firestore snapshot unsubs
   const unsubsRef = useRef<Record<string, () => void>>({})
 
-  // Track already rung shared alarm IDs to prevent repeated triggers
+  // Track already rung alarm keys to prevent repeated triggers in the same minute
+  const rungAlarmsRef = useRef<Set<string>>(new Set())
   const rungSharedAlarmsRef = useRef<Set<string>>(new Set())
 
-  // 1. Sync Shared Alarm Documents from Firestore
+  // 1. Audio Pre-warming & Notification Permission on First Interaction
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const unlockAudioAndNotify = () => {
+      // Pre-warm audio element with user gesture so background playback is never blocked
+      if (!audioRef.current) {
+        const audio = new Audio(SOUNDS.vibe)
+        audio.volume = 0
+        audio.play().then(() => {
+          audio.pause()
+          audio.currentTime = 0
+          audio.volume = 0.8
+        }).catch(() => {})
+        audioRef.current = audio
+      }
+
+      // Request browser notification permission for native OS popups across any app
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().catch(() => {})
+      }
+    }
+
+    window.addEventListener('click', unlockAudioAndNotify, { once: true })
+    window.addEventListener('keydown', unlockAudioAndNotify, { once: true })
+    window.addEventListener('touchstart', unlockAudioAndNotify, { once: true })
+
+    return () => {
+      window.removeEventListener('click', unlockAudioAndNotify)
+      window.removeEventListener('keydown', unlockAudioAndNotify)
+      window.removeEventListener('touchstart', unlockAudioAndNotify)
+    }
+  }, [])
+
+  // 2. Sync Shared Alarm Documents from Firestore
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -62,9 +97,7 @@ export default function BackgroundTimeService() {
           docRef,
           (snap) => {
             if (!snap.exists()) {
-              // Doc deleted on firestore
               setActiveSharedAlarms((prev) => prev.filter((a) => a.alarmId !== id))
-              // Remove from local storage
               const created = getMyCreatedAlarms().filter((cId) => cId !== id)
               localStorage.setItem('myCreatedAlarms', JSON.stringify(created))
               const received = getMyReceivedAlarms().filter((rId) => rId !== id)
@@ -86,23 +119,18 @@ export default function BackgroundTimeService() {
     }
 
     loadAndListenSharedAlarms()
-
-    // Periodically re-check active storage IDs (every 5 seconds)
     const interval = setInterval(loadAndListenSharedAlarms, 5000)
 
     return () => {
       clearInterval(interval)
-      // Clean up all active listeners on service unmount
       Object.values(unsubsRef.current).forEach((unsub) => unsub())
       unsubsRef.current = {}
     }
   }, [])
 
-  // 2. Play / Stop Ringing Audio globally
+  // 3. Play / Stop Ringing Audio globally
   useEffect(() => {
-    // Determine if anything is ringing
     const ringingTimer = countdowns.find((c) => c.isRinging)
-    
     const isRinging = !!activeAlarmId || !!ringingTimer || !!ringingSharedAlarm
     let targetSound = 'vibe'
 
@@ -115,22 +143,25 @@ export default function BackgroundTimeService() {
       targetSound = ringingSharedAlarm.sound
     }
 
+    const soundUrl = SOUNDS[targetSound] || SOUNDS.vibe
+
     if (isRinging) {
-      // If audio already playing and matches sound, do nothing
-      if (audioRef.current && audioRef.current.src.includes(SOUNDS[targetSound])) {
+      // If already playing the correct sound, keep looping
+      if (audioRef.current && audioRef.current.src.includes(soundUrl) && !audioRef.current.paused) {
         return
       }
 
-      // Stop previous
+      // Stop previous audio if running
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current.currentTime = 0
       }
 
       // Play new sound loop
-      const audio = new Audio(SOUNDS[targetSound] || SOUNDS.vibe)
+      const audio = audioRef.current || new Audio(soundUrl)
+      audio.src = soundUrl
       audio.loop = true
-      audio.volume = 0.8
+      audio.volume = 0.9
       audio.play().catch((e) => console.warn('Background audio playback blocked:', e))
       audioRef.current = audio
     } else {
@@ -138,119 +169,162 @@ export default function BackgroundTimeService() {
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current.currentTime = 0
-        audioRef.current = null
       }
     }
   }, [activeAlarmId, countdowns, ringingSharedAlarm, alarms])
 
-  // 3. Central Tick Loop: Runs every second
-  useEffect(() => {
-    const checkExpiration = () => {
-      const now = new Date()
-      const nowMs = now.getTime()
-      const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
-      const currentDay = now.getDay()
-      const currentSeconds = now.getSeconds()
+  // 4. Core Expiration Check Callback
+  const checkExpiration = useCallback(() => {
+    const now = new Date()
+    const nowMs = now.getTime()
+    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+    const currentDay = now.getDay()
+    const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
 
-      // A. Check local alarms (at start of the minute)
-      if (currentSeconds === 0) {
-        alarms.forEach((alarm) => {
-          if (alarm.isActive && alarm.time === currentTime) {
-            if (alarm.days.length === 0 || alarm.days.includes(currentDay)) {
-              setRingingAlarmId(alarm.id)
-              sendPushNotification('⏰ Alarm!', alarm.label || `Your ${alarm.time} alarm is ringing.`)
-            }
+    // A. Check local alarms (Trigger reliably on ANY tick during the target minute)
+    alarms.forEach((alarm) => {
+      if (alarm.isActive && alarm.time === currentTime) {
+        const triggerKey = `${alarm.id}-${dateKey}-${currentTime}`
+        if (!rungAlarmsRef.current.has(triggerKey)) {
+          if (alarm.days.length === 0 || alarm.days.includes(currentDay)) {
+            rungAlarmsRef.current.add(triggerKey)
+            setRingingAlarmId(alarm.id)
+            sendPushNotification('⏰ Alarm Ringing!', alarm.label || `Your ${alarm.time} alarm is ringing.`)
           }
-        })
+        }
       }
+    })
 
-      // B. Check active local countdown timers
-      countdowns.forEach((c) => {
-        if (c.isActive && !c.isPaused && c.endTime) {
-          const remaining = Math.max(0, Math.ceil((c.endTime - nowMs) / 1000))
-          if (remaining !== c.timeLeft) {
-            updateCountdown(c.id, { timeLeft: remaining })
-          }
-
-          if (remaining <= 0) {
-            updateCountdown(c.id, { isActive: false, isRinging: true, timeLeft: 0, endTime: null })
-            sendPushNotification('⌛ Time Up!', c.label || 'Your timer has finished.')
-          }
-        }
-      })
-
-      // C. Check active shared alarms
-      activeSharedAlarms.forEach((sa) => {
-        if (sa.isActive) {
-          const alarmTime = new Date(sa.alarmDateTime).getTime()
-          const timeSinceAlarm = nowMs - alarmTime
-          
-          if (nowMs >= alarmTime) {
-            // Trigger ring if expiration is recent (within 5 minutes grace period) and not rung yet
-            if (timeSinceAlarm < 300000 && !ringingSharedAlarm && !rungSharedAlarmsRef.current.has(sa.alarmId)) {
-              rungSharedAlarmsRef.current.add(sa.alarmId)
-              setRingingSharedAlarm(sa)
-              sendPushNotification('⏰ Shared Alarm!', sa.title || 'A shared group alarm is ringing.')
-            }
-
-            // Expiration clean up: only after 5-minute grace period has elapsed
-            if (timeSinceAlarm >= 300000) {
-              const currentSessionId = localStorage.getItem('caoSessionId')
-              const isCreator = sa.createdBy === currentSessionId
-              if (isCreator) {
-                deleteSharedAlarm(sa.alarmId)
-              } else {
-                // Receiver: remove from local storage
-                const received = getMyReceivedAlarms().filter((id) => id !== sa.alarmId)
-                localStorage.setItem('myReceivedAlarms', JSON.stringify(received))
-              }
-            }
-          }
-        }
-      })
+    // Clean up old alarm trigger keys once the minute has passed
+    if (rungAlarmsRef.current.size > 50) {
+      rungAlarmsRef.current.clear()
     }
 
-    const interval = setInterval(checkExpiration, 1000)
+    // B. Check active local countdown timers
+    countdowns.forEach((c) => {
+      if (c.isActive && !c.isPaused && c.endTime) {
+        const remaining = Math.max(0, Math.ceil((c.endTime - nowMs) / 1000))
+        if (remaining !== c.timeLeft) {
+          updateCountdown(c.id, { timeLeft: remaining })
+        }
 
-    return () => clearInterval(interval)
+        if (remaining <= 0) {
+          updateCountdown(c.id, { isActive: false, isRinging: true, timeLeft: 0, endTime: null })
+          sendPushNotification('⌛ Time Up!', c.label || 'Your timer has finished.')
+        }
+      }
+    })
+
+    // C. Check active shared alarms
+    activeSharedAlarms.forEach((sa) => {
+      if (sa.isActive) {
+        const alarmTime = new Date(sa.alarmDateTime).getTime()
+        const timeSinceAlarm = nowMs - alarmTime
+        
+        if (nowMs >= alarmTime) {
+          if (timeSinceAlarm < 300000 && !ringingSharedAlarm && !rungSharedAlarmsRef.current.has(sa.alarmId)) {
+            rungSharedAlarmsRef.current.add(sa.alarmId)
+            setRingingSharedAlarm(sa)
+            sendPushNotification('⏰ Shared Alarm!', sa.title || 'A shared group alarm is ringing.')
+          }
+
+          if (timeSinceAlarm >= 300000) {
+            const currentSessionId = localStorage.getItem('caoSessionId')
+            const isCreator = sa.createdBy === currentSessionId
+            if (isCreator) {
+              deleteSharedAlarm(sa.alarmId)
+            } else {
+              const received = getMyReceivedAlarms().filter((id) => id !== sa.alarmId)
+              localStorage.setItem('myReceivedAlarms', JSON.stringify(received))
+            }
+          }
+        }
+      }
+    })
   }, [alarms, countdowns, activeSharedAlarms, ringingSharedAlarm, updateCountdown, setRingingAlarmId, setRingingSharedAlarm])
 
-  // 4. Tab Visibility Synchronization (re-check time gaps when returning to tab)
+  // 5. Central Background-Resistant Tick Engine (Web Worker + Interval Fallback)
+  useEffect(() => {
+    let worker: Worker | null = null
+    let fallbackInterval: NodeJS.Timeout | null = null
+
+    // Try creating a Web Worker: Web Workers run on a background OS thread and are NOT throttled by browsers when tabs are inactive
+    try {
+      const blob = new Blob([`
+        let timer = null;
+        self.onmessage = function(e) {
+          if (e.data === 'START') {
+            if (!timer) {
+              timer = setInterval(function() {
+                self.postMessage('TICK');
+              }, 1000);
+            }
+          } else if (e.data === 'STOP') {
+            if (timer) {
+              clearInterval(timer);
+              timer = null;
+            }
+          }
+        };
+      `], { type: 'application/javascript' })
+
+      const workerUrl = URL.createObjectURL(blob)
+      worker = new Worker(workerUrl)
+      worker.onmessage = (e) => {
+        if (e.data === 'TICK') {
+          checkExpiration()
+        }
+      }
+      worker.postMessage('START')
+    } catch {
+      // Fallback to standard interval if Web Workers are restricted by browser security policies
+      fallbackInterval = setInterval(checkExpiration, 1000)
+    }
+
+    return () => {
+      if (worker) {
+        worker.postMessage('STOP')
+        worker.terminate()
+      }
+      if (fallbackInterval) {
+        clearInterval(fallbackInterval)
+      }
+    }
+  }, [checkExpiration])
+
+  // 6. Tab Visibility Resynchronization (Catches up immediately upon returning to tab)
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
-        const nowMs = Date.now()
-        
-        // Resync timers in case background tabs throttled JavaScript intervals
-        countdowns.forEach((c) => {
-          if (c.isActive && !c.isPaused && c.endTime) {
-            const remaining = Math.max(0, Math.ceil((c.endTime - nowMs) / 1000))
-            updateCountdown(c.id, { timeLeft: remaining })
-
-            if (remaining <= 0) {
-              updateCountdown(c.id, { isActive: false, isRinging: true, timeLeft: 0, endTime: null })
-              sendPushNotification('⌛ Time Up!', c.label || 'Your timer has finished.')
-            }
-          }
-        })
+        checkExpiration()
       }
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange)
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
-  }, [countdowns, updateCountdown])
+  }, [checkExpiration])
 
   return null
 }
 
-// Push notification helper
+// Native Desktop Push Notification with Click-to-Focus
 function sendPushNotification(title: string, body: string) {
   if (typeof window !== 'undefined' && 'Notification' in window) {
     if (Notification.permission === 'granted') {
-      new Notification(title, {
-        body,
-        icon: '/icons/icon-192.png',
-      })
+      try {
+        const notification = new Notification(title, {
+          body,
+          icon: '/icon.png',
+          tag: 'cao-alarm-alert',
+          requireInteraction: true, // Keeps notification visible on Windows/Mac until dismissed or clicked
+        })
+        notification.onclick = () => {
+          window.focus()
+          notification.close()
+        }
+      } catch (e) {
+        console.warn('Native notification display error:', e)
+      }
     }
   }
 }

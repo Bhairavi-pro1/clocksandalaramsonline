@@ -1,6 +1,20 @@
-'use client'
+import type { Metadata } from 'next'
 import { Mail, MessageCircle, HelpCircle } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
+
+export const metadata: Metadata = {
+  title: 'Contact Us — Support, Bug Reports & Feedback',
+  description: 'Contact the Clocks and Alarms Online team for technical support, feature suggestions, bug reports, and timekeeping feedback. We respond within 24 to 48 hours.',
+  alternates: {
+    canonical: 'https://clocksandalarmsonline.com/contact/',
+  },
+  openGraph: {
+    title: 'Contact Us — Support, Bug Reports & Feedback',
+    description: 'Contact the Clocks and Alarms Online team for technical support, feature suggestions, bug reports, and timekeeping feedback. We respond within 24 to 48 hours.',
+    type: 'website',
+    url: 'https://clocksandalarmsonline.com/contact/',
+  }
+}
 
 export default function ContactPage() {
   return (

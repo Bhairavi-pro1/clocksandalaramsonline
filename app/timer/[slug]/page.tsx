@@ -1,9 +1,48 @@
 import CountdownTimer from '@/components/tools/CountdownTimer'
 import StructuredData from '@/components/seo/StructuredData'
+import ToolSEO from '@/components/seo/ToolSEO'
+import AdBanner from '@/components/ui/AdBanner'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import timerData from '@/data/seo/timers.json'
 import { cn } from '@/lib/utils'
+import { 
+  GraduationCap, 
+  Briefcase, 
+  Dumbbell, 
+  Utensils, 
+  Timer, 
+  Coffee, 
+  Brain, 
+  Sparkles, 
+  Hourglass, 
+  CheckCircle2, 
+  Zap, 
+  Users, 
+  Flame, 
+  BookOpen, 
+  Tv, 
+  Eye 
+} from 'lucide-react'
+
+const iconMap: Record<string, any> = {
+  GraduationCap,
+  Briefcase,
+  Dumbbell,
+  Utensils,
+  Timer,
+  Coffee,
+  Brain,
+  Sparkles,
+  Hourglass,
+  CheckCircle2,
+  Zap,
+  Users,
+  Flame,
+  BookOpen,
+  Tv,
+  Eye,
+}
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -106,29 +145,52 @@ export default async function DynamicTimerPage({ params }: Props) {
     ]
   }
 
+  const faqSchema = seo?.faqs && seo.faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "name": `${pageTitle} Frequently Asked Questions`,
+    "mainEntity": seo.faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  } : null
+
+  const mappedUseCases = (seo?.useCases || []).map((uc) => ({
+    title: uc.title,
+    text: uc.text,
+    icon: (uc.iconName && iconMap[uc.iconName]) ? iconMap[uc.iconName] : Timer
+  }))
+
+  const display = getTimerDisplay(slug)
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
+    <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
       <StructuredData data={schema} />
       <StructuredData data={breadcrumbSchema} />
+      {faqSchema && <StructuredData data={faqSchema} />}
 
       {/* Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted/70 font-medium">
+      <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8">
+        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-muted/70 font-medium">
           <li>
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-primary dark:hover:text-white transition-colors">Home</Link>
           </li>
           <li className="opacity-40">/</li>
           <li>
-            <Link href="/timer/" className="hover:text-white transition-colors">Timer</Link>
+            <Link href="/timer/" className="hover:text-primary dark:hover:text-white transition-colors">Timer</Link>
           </li>
           <li className="opacity-40">/</li>
-          <li className="text-white font-bold" aria-current="page">
-            {getTimerDisplay(slug).label} Timer
+          <li className="text-slate-900 dark:text-white font-bold" aria-current="page">
+            {display.label} Timer
           </li>
         </ol>
       </nav>
 
-      <h1 className="text-3xl md:text-5xl font-black text-center mb-10 text-slate-900 dark:text-white tracking-tighter animate-in fade-in duration-1000">
+      <h1 className="text-3xl md:text-5xl font-black text-center mb-8 sm:mb-10 text-slate-900 dark:text-white tracking-tighter animate-in fade-in duration-1000">
         {pageTitle}
       </h1>
 
@@ -142,9 +204,9 @@ export default async function DynamicTimerPage({ params }: Props) {
       </div>
 
       {/* Popular Countdown Timers Directory */}
-      <div className="mt-16 sm:mt-20 pt-10 border-t border-slate-200/80 dark:border-white/10">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+      <div className="mt-14 sm:mt-18 pt-8 sm:pt-10 border-t border-slate-200/80 dark:border-white/10">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
             Popular Countdown Timers
           </h2>
           <p className="text-slate-600 dark:text-muted/70 text-xs sm:text-sm mt-1 max-w-2xl mx-auto">
@@ -155,7 +217,7 @@ export default async function DynamicTimerPage({ params }: Props) {
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3">
           {sortedTimers.map((t) => {
             const isCurrent = t.slug === slug
-            const display = getTimerDisplay(t.slug)
+            const timerInfo = getTimerDisplay(t.slug)
             return (
               <Link
                 key={t.slug}
@@ -171,10 +233,10 @@ export default async function DynamicTimerPage({ params }: Props) {
                   "text-[11px] sm:text-xs md:text-sm font-bold transition-colors truncate max-w-full",
                   isCurrent ? "text-primary font-black" : "text-slate-900 dark:text-white group-hover:text-primary"
                 )}>
-                  {display.label}
+                  {timerInfo.label}
                 </span>
                 <span className="text-[8px] sm:text-[10px] text-slate-500 dark:text-muted/60 mt-0.5 truncate max-w-full">
-                  {isCurrent ? "Active" : display.sub}
+                  {isCurrent ? "Active" : timerInfo.sub}
                 </span>
               </Link>
             )
@@ -182,14 +244,40 @@ export default async function DynamicTimerPage({ params }: Props) {
         </div>
       </div>
       
-      {/* About this timer content section */}
-      <div className="mt-16 sm:mt-20 bg-slate-100/70 dark:bg-[#1a0b36]/40 p-8 sm:p-12 md:p-16 rounded-[2.5rem] border border-slate-200/80 dark:border-white/5 shadow-xl">
-        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mb-6 border-b border-slate-200/80 dark:border-white/5 pb-4">
-          About our {slug.replace(/-/g, ' ')} timer
-        </h2>
-        <p className="text-base sm:text-lg text-slate-700 dark:text-muted/80 leading-relaxed font-medium">
-          {seo?.content || `This pre-configured timer is set specifically for your convenience. Whether you are timing a workout, a break, or a task, our reliable countdown will alert you precisely when time is up.`}
-        </p>
+      {/* Comprehensive High-Word-Count SEO Guide (Solves Thin Content) */}
+      {seo && seo.introParagraph && (
+        <div className="mt-14 sm:mt-20">
+          <ToolSEO
+            toolName={`${display.label} Timer`}
+            introTag={seo.introTag || `${display.label} Countdown`}
+            introHeading={seo.introHeading || pageTitle}
+            introParagraph={seo.introParagraph}
+            howToSteps={seo.howToSteps || [
+              { title: "Start the Countdown", text: `Click the START button to begin your ${display.label} countdown immediately.` },
+              { title: "Engage Full-Screen", text: "Click the maximize icon in the top right to expand the timer for distraction-free focus." },
+              { title: "Pause or Reset", text: "Pause the timer whenever interrupted and resume without missing a second." },
+              { title: "Audio Notification", text: "A resonant chime rings the exact moment your countdown expires." }
+            ]}
+            proTips={seo.proTips || [
+              "Keep the browser tab visible to prevent background tab sleeping.",
+              "Turn your device volume to 100% so you never miss the completion chime.",
+              "Use full-screen mode on a secondary monitor for an ambient focus clock."
+            ]}
+            useCases={mappedUseCases.length > 0 ? mappedUseCases : [
+              { title: "Study & Work Sprints", text: "Use this countdown interval to maintain peak mental focus.", icon: Briefcase },
+              { title: "Health & Fitness", text: "Time your workouts and intervals with precision.", icon: Dumbbell },
+              { title: "Kitchen & Cooking", text: "Time boiling, baking, and steeping without guesswork.", icon: Utensils }
+            ]}
+            whyChooseUs={seo.whyChooseUs || "Our timer engine calculates time using hardware timestamps against absolute system clocks, ensuring zero drift. Designed with glassmorphic dark-mode aesthetics, full-screen capability, and loud audio alerts."}
+            troubleshooting={seo.troubleshooting || "If audio does not play, ensure you clicked START directly on the card to grant browser audio permissions."}
+            faqs={seo.faqs || []}
+          />
+        </div>
+      )}
+
+      {/* Ad placement */}
+      <div className="mt-12 max-w-7xl mx-auto">
+        <AdBanner />
       </div>
 
     </div>

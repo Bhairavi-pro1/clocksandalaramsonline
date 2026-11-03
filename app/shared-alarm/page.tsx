@@ -11,13 +11,13 @@ import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Shared Alarms — Sync Time Together in Real Time',
-  description: 'Create and share alarms instantly without an account. Keep your team, family, or friends on the same schedule with real-time atomic syncing.',
+  description: 'Create and share real-time group alarms with friends, teams, or family. Coordinate across time zones with instant shareable links and no account required.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/shared-alarm/',
   },
   openGraph: {
     title: 'Shared Alarms — Sync Time Together in Real Time',
-    description: 'Create and share alarms instantly without an account. Keep your team on the same schedule with real-time syncing.',
+    description: 'Create and share real-time group alarms with friends, teams, or family. Coordinate across time zones with instant shareable links and no account required.',
     url: 'https://clocksandalarmsonline.com/shared-alarm/',
     siteName: 'Clocks and Alarms Online',
     type: 'website',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary',
     title: 'Shared Alarms — Sync Time Together in Real Time',
-    description: 'Create and share alarms instantly without an account. Keep your team on the same schedule with real-time syncing.',
+    description: 'Create and share real-time group alarms with friends, teams, or family. Coordinate across time zones with instant shareable links and no account required.',
     images: ['/icon.png'],
   }
 }

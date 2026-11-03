@@ -1,11 +1,13 @@
 import CityClockDisplay from '@/components/tools/CityClockDisplay'
 import StructuredData from '@/components/seo/StructuredData'
-import { Globe, Clock, Sun } from 'lucide-react'
+import { Globe, Clock, Sun, TrendingUp, Briefcase, Plane } from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'
 import cityData from '@/data/seo/cities.json'
 import { resolveCityOrCountry } from '@/lib/cityResolver'
 import { cn } from '@/lib/utils'
+import ToolSEO from '@/components/seo/ToolSEO'
+import AdBanner from '@/components/ui/AdBanner'
 
 export const dynamicParams = true
 
@@ -32,6 +34,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: city.description,
       url: `https://clocksandalarmsonline.com/world-clock/${city.slug}/`,
       type: 'website',
+      images: [
+        {
+          url: '/icon.png',
+          width: 512,
+          height: 512,
+          alt: `${city.name} World Clock - Clocks and Alarms Online`
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary',
+      title: city.title,
+      description: city.description,
+      images: ['/icon.png'],
     }
   }
 }
@@ -77,28 +93,35 @@ export default async function DynamicCityPage({ params }: Props) {
     }
   }
 
+  const defaultFaqs = [
+    {
+      q: `What is the current time in ${city.name}?`,
+      a: `The current local time in ${city.name} is synchronized with global atomic time to ensure precise accuracy for all your scheduling needs.`
+    },
+    {
+      q: `Does ${city.name} observe Daylight Saving Time?`,
+      a: `You can track all upcoming clock changes and DST shifts for ${city.name} in our dedicated world clock display.`
+    },
+    {
+      q: `What timezone is ${city.name} located in?`,
+      a: `${city.name} operates in the ${city.timezone} timezone.`
+    }
+  ]
+
+  const activeFaqs = city.faqs && city.faqs.length > 0 ? city.faqs : defaultFaqs
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "name": "Frequently Asked Questions",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": `What is the current time in ${city.name}?`,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": `The current local time in ${city.name} is synchronized with global atomic time to ensure precise accuracy for all your scheduling needs.`
-        }
-      },
-      {
-        "@type": "Question",
-        "name": `Does ${city.name} observe Daylight Saving Time?`,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": `You can track all upcoming clock changes and DST shifts for ${city.name} in our dedicated Global DST Schedule section below.`
-        }
+    "name": `Frequently Asked Questions about ${city.name} Time`,
+    "mainEntity": activeFaqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
       }
-    ]
+    }))
   }
 
   const breadcrumbSchema = {
@@ -126,6 +149,29 @@ export default async function DynamicCityPage({ params }: Props) {
     ]
   }
 
+  const iconMap: Record<string, any> = {
+    TrendingUp,
+    Briefcase,
+    Plane,
+    Globe,
+    Clock,
+    Sun
+  }
+
+  const defaultUseCases = [
+    { title: "Global Business & Remote Meetings", text: `Coordinate client presentations, standups, and team communication with ${city.name}.`, icon: Briefcase },
+    { title: "International Flights & Travel", text: `Plan departures, transit layovers, and jet lag adjustments for travel to ${city.name}.`, icon: Plane },
+    { title: "Market Hours & Financial Sessions", text: `Monitor regional market opening and closing bells and financial transactions in ${city.name}.`, icon: TrendingUp }
+  ]
+
+  const mappedUseCases = (city.useCases && city.useCases.length > 0)
+    ? city.useCases.map(u => ({
+        title: u.title,
+        text: u.text,
+        icon: typeof u.icon === 'string' ? (iconMap[u.icon] || Globe) : (u.icon || Globe)
+      }))
+    : defaultUseCases
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12 md:py-16">
       <StructuredData data={schema} />
@@ -147,7 +193,7 @@ export default async function DynamicCityPage({ params }: Props) {
           <li className="text-slate-900 dark:text-white font-bold" aria-current="page">{city.name}</li>
         </ol>
       </nav>
-      
+
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-8 sm:mb-12 text-slate-900 dark:text-white tracking-tighter animate-in fade-in duration-1000">
         Current Local Time in <span className="text-primary">{city.name}</span>
       </h1>
@@ -206,56 +252,35 @@ export default async function DynamicCityPage({ params }: Props) {
         </div>
       </div>
 
-      {/* How to Use Section for City Page */}
-      <section className="mt-20 sm:mt-28 space-y-10 sm:space-y-12">
-        <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            How to Track <span className="text-primary italic font-serif">{city.name} Time</span>
-          </h2>
-          <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
-        </div>
+      {/* Comprehensive High-Word-Count ToolSEO Component (Solves Thin Content) */}
+      <div className="mt-16 sm:mt-24">
+        <ToolSEO
+          toolName={`${city.name} World Clock`}
+          introTag={city.introTag || "Global Time & Coordination Hub"}
+          introHeading={city.introHeading || `Current Local Time in ${city.name}: Timezone, Daylight & Business Hours`}
+          introParagraph={city.introParagraph || city.content}
+          howToSteps={city.howToSteps || [
+            { title: "Monitor Atomic Local Time", text: `View real-time ticking hours, minutes, and seconds for ${city.name} synchronized with official time standards.` },
+            { title: "Check Sunrise, Sunset & Weather", text: `Inspect today's exact dawn, dusk, day length, and local weather conditions in ${city.name}.` },
+            { title: "Toggle 12h / 24h Formats", text: "Easily switch between 12-hour AM/PM and 24-hour military formats to suit your preference." },
+            { title: "Coordinate International Schedules", text: "Use the Popular World Cities directory to align cross-timezone meetings without scheduling conflicts." }
+          ]}
+          proTips={city.proTips || [
+            `Keep this world clock tab open to track live ${city.name} time with zero CPU drift.`,
+            "Check local daylight saving transition dates in advance to prevent missed international conference calls.",
+            "Use 24-hour military mode for flight itineraries and logistics coordination to avoid AM/PM confusion.",
+            "Compare business hours with other global hubs using our top city navigation bar."
+          ]}
+          useCases={mappedUseCases}
+          whyChooseUs={city.whyChooseUs || "Our world clock engine synchronizes directly with global atomic time servers (NTP) to eliminate hardware clock drift. Features integrated solar ephemeris data (sunrise and sunset), real-time weather telemetry, and high-contrast dark-mode styling."}
+          troubleshooting={city.troubleshooting || `1. Time Desynchronization: Ensure your device's system clock is set to sync automatically.\n2. Daylight Saving Changes: Check whether ${city.name} observes DST and when the next clock shift takes place.\n3. Background Tab Sleep: Inactive tabs may be throttled by browsers; our clock recalibrates immediately upon tab focus.\n4. Format Preference: Toggle the AM/PM button on the main toolbar to lock your preferred 12-hour or 24-hour display.`}
+          faqs={activeFaqs}
+        />
+      </div>
 
-        <div className="flex flex-col gap-5 sm:gap-6 max-w-4xl mx-auto w-full">
-          {[
-            { 
-              icon: Clock, 
-              title: "1. Real-Time Local Time", 
-              text: `Monitor live ticking hours, minutes, and seconds for ${city.name} synchronized with official standards (${city.timezone}). Easily switch between 12-hour AM/PM and 24-hour military formats.` 
-            },
-            { 
-              icon: Sun, 
-              title: "2. Sunrise, Sunset & Weather", 
-              text: `Check today's exact sunrise and sunset times in ${city.name}, along with live localized temperature and wind conditions to plan meetings, international calls, or travel.` 
-            },
-            { 
-              icon: Globe, 
-              title: "3. Global Timezone Coordination", 
-              text: `Use the Popular World Cities directory above to compare ${city.name}'s business hours against major international hubs like London, New York, or Tokyo for seamless collaboration.` 
-            }
-          ].map((item, i) => (
-            <div key={i} className="group p-6 sm:p-8 rounded-[2rem] bg-slate-100/70 dark:bg-[#1a0b36]/40 border border-slate-200/80 dark:border-violet-500/10 hover:border-primary/40 dark:hover:border-violet-500/30 transition-all duration-500 flex flex-col md:flex-row items-start gap-5 sm:gap-6 shadow-sm">
-              <div className="w-12 h-12 bg-primary/10 dark:bg-white/5 rounded-2xl flex items-center justify-center border border-primary/30 group-hover:bg-primary group-hover:border-primary transition-all duration-300 shrink-0 shadow-sm">
-                <item.icon className="w-6 h-6 text-primary dark:text-violet-300 group-hover:text-white transition-colors" />
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{item.title}</h3>
-                <p className="text-sm sm:text-base text-slate-600 dark:text-muted/90 leading-relaxed font-medium text-left">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-      
-      {/* Detailed Insights Section */}
-      <div className="mt-20 sm:mt-28 bg-slate-100/70 dark:bg-[#1a0b36]/40 p-8 sm:p-12 md:p-16 rounded-[2.5rem] border border-slate-200/80 dark:border-white/5 shadow-xl">
-        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mb-6 border-b border-slate-200/80 dark:border-white/5 pb-4">
-          Detailed Insights: Time in {city.name}
-        </h2>
-        <div className="text-base sm:text-lg text-slate-700 dark:text-muted/80 font-medium leading-relaxed">
-          {city.content}
-        </div>
+      {/* Ad placement */}
+      <div className="mt-12 max-w-7xl mx-auto">
+        <AdBanner />
       </div>
 
     </div>

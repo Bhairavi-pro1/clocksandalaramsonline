@@ -10,14 +10,14 @@ import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Interactive Egg Timer — Perfect Boiled Eggs Every Time',
-  description: 'Free interactive egg boiling timer. Adjust dynamically for egg size, starting temperature, and desired yolk firmness. Sync with atomic accuracy.',
+  description: 'Free interactive egg timer for perfect boiled eggs every time. Dynamically adjust for egg size, fridge temperature, and your exact desired yolk firmness.',
   keywords: 'egg timer, boiled egg timer, how long to boil eggs, perfect hard boiled eggs, ramen egg timer, soft boiled egg time',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/egg-timer/',
   },
   openGraph: {
     title: 'Interactive Egg Timer — Perfect Boiled Eggs Every Time',
-    description: 'Calculate the exact time needed for the perfect soft, medium, or hard boiled egg. Adjust for size and temperature with our free visual egg timer.',
+    description: 'Free interactive egg timer for perfect boiled eggs every time. Dynamically adjust for egg size, fridge temperature, and your exact desired yolk firmness.',
     url: 'https://clocksandalarmsonline.com/egg-timer/',
     siteName: 'Clocks and Alarms Online',
     type: 'website',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary',
     title: 'Interactive Egg Timer — Perfect Boiled Eggs Every Time',
-    description: 'Calculate the exact time needed for the perfect soft, medium, or hard boiled egg with atomic precision.',
+    description: 'Free interactive egg timer for perfect boiled eggs every time. Dynamically adjust for egg size, fridge temperature, and your exact desired yolk firmness.',
     images: ['/icon.png'],
   }
 }

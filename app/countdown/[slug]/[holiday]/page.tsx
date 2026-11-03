@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getHolidaysServer, FormattedHoliday } from '@/lib/getHolidaysServer';
-import countriesData from '@/data/countries.json';
 import holidayData from '@/data/seo/holidays.json';
+import { getCountryBySlugOrCode, getCountrySlug } from '@/lib/countryResolver';
 import HolidayCountdownClient from '@/components/pages/HolidayCountdownClient';
 import StructuredData from '@/components/seo/StructuredData';
 import AdBanner from '@/components/ui/AdBanner';
@@ -14,10 +14,6 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string; holiday: string }>;
-}
-
-function getCountryByCode(code: string) {
-  return countriesData.find(c => c.code.toLowerCase() === code.toLowerCase());
 }
 
 function getCleanSlug(str: string): string {
@@ -132,9 +128,10 @@ async function findHoliday(countryCode: string, holidaySlug: string): Promise<{ 
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, holiday } = await params;
-  const countryObj = getCountryByCode(slug);
-  if (!countryObj) return { title: 'Country Not Found' };
-  
+  const countryObj = getCountryBySlugOrCode(slug);
+  if (!countryObj) return { title: 'Holiday Countdown Not Found' };
+
+  const canonicalCountrySlug = getCountrySlug(countryObj.name);
   const matchResult = await findHoliday(countryObj.code, holiday);
   if (!matchResult) return { title: 'Holiday Not Found' };
   
@@ -144,7 +141,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `${rawDesc} Track the live accurate countdown to ${matchedHoliday.name} ${year} in ${countryObj.name} with millisecond precision.`
     : `Track the exact days, hours, minutes, and seconds remaining until ${matchedHoliday.name} in ${countryObj.name} (${year}) with millisecond-accurate precision.`;
 
-  const canonicalUrl = `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/${holiday}/`;
+  const canonicalUrl = `https://clocksandalarmsonline.com/countdown/${canonicalCountrySlug}/${holiday}/`;
 
   return {
     title: `${matchedHoliday.name} Countdown ${year} (${countryObj.name}) — Clocks and Alarms Online`,
@@ -178,10 +175,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SingleCountryHolidayPage({ params }: Props) {
   const { slug, holiday } = await params;
-  const countryObj = getCountryByCode(slug);
+  const countryObj = getCountryBySlugOrCode(slug);
   
   if (!countryObj) {
     notFound();
+  }
+
+  const canonicalCountrySlug = getCountrySlug(countryObj.name);
+
+  // If accessed by old 2-letter code or unnormalized country slug, 301/308 permanent redirect to canonical URL
+  if (slug.toLowerCase() !== canonicalCountrySlug) {
+    permanentRedirect(`/countdown/${canonicalCountrySlug}/${holiday}/`);
   }
 
   const matchResult = await findHoliday(countryObj.code, holiday);
@@ -244,13 +248,13 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
         "@type": "ListItem",
         "position": 3,
         "name": countryObj.name,
-        "item": `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/`
+        "item": `https://clocksandalarmsonline.com/countdown/${canonicalCountrySlug}/`
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": matchedHoliday.name,
-        "item": `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/${holiday}/`
+        "item": `https://clocksandalarmsonline.com/countdown/${canonicalCountrySlug}/${holiday}/`
       }
     ]
   };
@@ -319,7 +323,7 @@ export default async function SingleCountryHolidayPage({ params }: Props) {
           </li>
           <li className="opacity-40">/</li>
           <li>
-            <Link href={`/countdown/${slug.toLowerCase()}/`} className="hover:text-primary transition-colors">{countryObj.name}</Link>
+            <Link href={`/countdown/${canonicalCountrySlug}/`} className="hover:text-primary transition-colors">{countryObj.name}</Link>
           </li>
           <li className="opacity-40">/</li>
           <li className="text-slate-900 dark:text-white font-bold" aria-current="page">{matchedHoliday.name}</li>

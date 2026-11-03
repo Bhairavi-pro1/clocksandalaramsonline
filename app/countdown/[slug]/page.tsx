@@ -1,8 +1,7 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getHolidaysServer, FormattedHoliday } from '@/lib/getHolidaysServer';
-import countriesData from '@/data/countries.json';
 import holidayData from '@/data/seo/holidays.json';
 import CountryHolidayClient from '@/components/pages/CountryHolidayClient';
 import StructuredData from '@/components/seo/StructuredData';
@@ -10,13 +9,10 @@ import AdBanner from '@/components/ui/AdBanner';
 import { Calendar, Briefcase, Users, Sparkles } from 'lucide-react';
 import ToolSEO from '@/components/seo/ToolSEO';
 import { cn } from '@/lib/utils';
+import { getCountryBySlugOrCode, getCountrySlug } from '@/lib/countryResolver';
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-function getCountryByCode(code: string) {
-  return countriesData.find(c => c.code.toLowerCase() === code.toLowerCase());
 }
 
 function getMatchedHoliday(slug: string) {
@@ -30,7 +26,7 @@ function getMatchedHoliday(slug: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const countryObj = getCountryByCode(slug);
+  const countryObj = getCountryBySlugOrCode(slug);
   
   if (!countryObj) {
     const matchedHoliday = getMatchedHoliday(slug);
@@ -43,11 +39,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         }
       };
     }
-    return { title: 'Country Not Found' };
+    return { title: 'Country Countdown Not Found' };
   }
 
   const name = countryObj.name;
-  const canonicalUrl = `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/`;
+  const canonicalCountrySlug = getCountrySlug(countryObj.name);
+  const canonicalUrl = `https://clocksandalarmsonline.com/countdown/${canonicalCountrySlug}/`;
   const desc = `Track the seconds until the next big celebration in ${name}. Millisecond-accurate countdowns for national, regional, and bank holidays.`;
 
   return {
@@ -82,14 +79,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CountdownSegmentPage({ params }: Props) {
   const { slug } = await params;
-  const countryObj = getCountryByCode(slug);
+  const countryObj = getCountryBySlugOrCode(slug);
 
   if (!countryObj) {
     const matchedHoliday = getMatchedHoliday(slug);
     if (matchedHoliday) {
-      redirect(matchedHoliday.sublink);
+      permanentRedirect(matchedHoliday.sublink);
     }
     notFound();
+  }
+
+  const canonicalCountrySlug = getCountrySlug(countryObj.name);
+
+  // If accessed by old 2-letter code or unnormalized slug, 301/308 permanent redirect to canonical country slug
+  if (slug.toLowerCase() !== canonicalCountrySlug) {
+    permanentRedirect(`/countdown/${canonicalCountrySlug}/`);
   }
 
   const countryCode = countryObj.code;
@@ -144,7 +148,7 @@ export default async function CountdownSegmentPage({ params }: Props) {
         "@type": "ListItem",
         "position": 3,
         "name": countryName,
-        "item": `https://clocksandalarmsonline.com/countdown/${slug.toLowerCase()}/`
+        "item": `https://clocksandalarmsonline.com/countdown/${canonicalCountrySlug}/`
       }
     ]
   };
@@ -184,6 +188,7 @@ export default async function CountdownSegmentPage({ params }: Props) {
       <CountryHolidayClient
         countryCode={countryCode}
         countryName={countryName}
+        countrySlug={canonicalCountrySlug}
         initialYear={initialYear}
         initialHolidays={initialHolidays}
       />

@@ -9,16 +9,17 @@ import AdBanner from '@/components/ui/AdBanner';
 import ToolSEO from '@/components/seo/ToolSEO';
 import { Calendar, Globe, Sparkles, Users, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getCountrySlug } from '@/lib/countryResolver';
 
 export const metadata: Metadata = {
   title: 'Holiday Countdowns — Live Global Holiday Countdown Clocks',
-  description: 'Precise, millisecond-accurate countdowns for all major global holidays. Track federal bank holidays, cultural events, and festivals with atomic precision.',
+  description: 'Track live countdown clocks for major national holidays, bank holidays, and cultural festivals worldwide. Accurate to the millisecond with full-screen displays.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/countdown/',
   },
   openGraph: {
     title: 'Global Holiday Countdowns — Clocks and Alarms Online',
-    description: 'Track the seconds until the next celebration with our suite of high-precision holiday countdowns.',
+    description: 'Track live countdown clocks for major national holidays, bank holidays, and cultural festivals worldwide. Accurate to the millisecond with full-screen displays.',
     url: 'https://clocksandalarmsonline.com/countdown/',
     siteName: 'Clocks and Alarms Online',
     type: 'website',
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary',
     title: 'Global Holiday Countdowns — Clocks and Alarms Online',
-    description: 'Track the seconds until the next celebration with our suite of high-precision holiday countdowns.',
+    description: 'Track live countdown clocks for major national holidays, bank holidays, and cultural festivals worldwide. Accurate to the millisecond with full-screen displays.',
     images: ['/icon.png'],
   }
 };
@@ -63,7 +64,8 @@ export default async function HolidayCountdownIndexPage() {
   const vercelCountry = headersList.get('x-vercel-ip-country');
   
   if (vercelCountry) {
-    redirect(`/countdown/${vercelCountry.toLowerCase()}`);
+    const slug = getCountrySlug(vercelCountry);
+    redirect(`/countdown/${slug}/`);
   }
 
   const breadcrumbSchema = {
@@ -182,10 +184,12 @@ export default async function HolidayCountdownIndexPage() {
         </div>
 
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-2.5 sm:gap-3">
-          {featuredCountries.map((c) => (
-            <Link
-              key={c.code}
-              href={`/countdown/${c.code}/`}
+          {featuredCountries.map((c) => {
+            const countrySlug = getCountrySlug(c.name);
+            return (
+              <Link
+                key={c.code}
+                href={`/countdown/${countrySlug}/`}
               className={cn(
                 "group p-2.5 sm:p-3 rounded-2xl border transition-all text-center flex flex-col justify-center items-center shadow-sm relative min-h-[84px]",
                 "bg-slate-50 dark:bg-white/[0.04] border-slate-200/80 dark:border-white/5 hover:border-primary/50 hover:bg-primary/5 text-slate-900 dark:text-white hover:shadow-md"
@@ -198,8 +202,9 @@ export default async function HolidayCountdownIndexPage() {
               <div className="text-[10px] sm:text-[11px] mt-1 font-mono font-semibold text-slate-500 dark:text-muted uppercase">
                 {c.code}
               </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
 

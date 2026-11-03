@@ -5,6 +5,7 @@ import countriesData from '@/data/countries.json'
 import alarmData from '@/data/seo/alarms.json'
 import holidayData from '@/data/seo/holidays.json'
 import { getAllPosts } from '@/lib/sanity'
+import { getCountrySlug } from '@/lib/countryResolver'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://clocksandalarmsonline.com'
@@ -60,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Country Countdown Landing Pages (Powered by Firebase & Calendarific)
   const countryCountdownRoutes = countriesData.map((country) => ({
-    url: `${baseUrl}/countdown/${country.code.toLowerCase()}/`,
+    url: `${baseUrl}/countdown/${getCountrySlug(country.name)}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,

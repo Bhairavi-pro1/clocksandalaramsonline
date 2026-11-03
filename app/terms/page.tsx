@@ -1,4 +1,19 @@
+import type { Metadata } from 'next'
 import { FileText, ShieldAlert, Scale, Globe, Terminal } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Terms of Service — Usage Guidelines & Agreement',
+  description: 'Review the Terms of Service for Clocks and Alarms Online. Understand the guidelines and usage conditions governing our free browser-based timekeeping suite.',
+  alternates: {
+    canonical: 'https://clocksandalarmsonline.com/terms/',
+  },
+  openGraph: {
+    title: 'Terms of Service — Usage Guidelines & Agreement',
+    description: 'Review the Terms of Service for Clocks and Alarms Online. Understand the guidelines and usage conditions governing our free browser-based timekeeping suite.',
+    type: 'website',
+    url: 'https://clocksandalarmsonline.com/terms/',
+  }
+}
 
 export default function TermsPage() {
   return (

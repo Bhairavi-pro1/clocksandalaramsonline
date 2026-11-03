@@ -25,10 +25,10 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   metadataBase: new URL('https://clocksandalarmsonline.com'),
   title: {
-    default: 'Free Online Alarm Clock & World Clock | Clocks & Alarms',
+    default: 'Clocks and Alarms Online — Free Online Timekeeping Tools',
     template: '%s | Clocks and Alarms Online'
   },
-  description: 'Free online alarm clock and world clock suite. High-precision stopwatch, countdown timer, and loud alarm options.',
+  description: 'Free online alarm clock, world clock, countdown timer, and stopwatch. Millisecond accuracy, loud alarm sounds, and full-screen focus modes in your browser.',
   icons: {
     icon: '/icon.png',
     apple: '/apple-icon.png'

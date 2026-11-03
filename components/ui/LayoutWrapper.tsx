@@ -22,6 +22,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     setRingingAlarmId,
     countdowns,
     updateCountdown,
+    removeCountdown,
     ringingSharedAlarm,
     setRingingSharedAlarm
   } = useStore()
@@ -76,7 +77,21 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
       <AlarmTriggerModal
         isOpen={!!ringingTimer}
-        onClose={() => ringingTimer && updateCountdown(ringingTimer.id, { isRinging: false })}
+        onClose={() => {
+          if (ringingTimer) {
+            if (ringingTimer.id.startsWith('preset-')) {
+              removeCountdown(ringingTimer.id)
+            } else {
+              updateCountdown(ringingTimer.id, { 
+                isRinging: false, 
+                timeLeft: ringingTimer.seconds,
+                isActive: false,
+                isPaused: false,
+                endTime: null
+              })
+            }
+          }
+        }}
         label={ringingTimer?.label || 'Timer Finished!'}
         type="timer"
       />

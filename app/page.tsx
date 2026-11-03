@@ -7,15 +7,15 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'Free Online Alarm Clock & World Clock | Clocks & Alarms'
+    absolute: 'Free Online Alarm Clock & World Clock Suite | Clocks and Alarms Online'
   },
-  description: 'Free online alarm clock, world clock, and countdown timer. Set precision alarms and track global time. No login required.',
+  description: 'Free online alarm clock, world clock, and countdown timer suite. Set loud alarms with snooze, track global timezones, and boost focus with zero registration.',
   alternates: {
-    canonical: 'https://clocksandalarmsonline.com',
+    canonical: 'https://clocksandalarmsonline.com/',
   },
   openGraph: {
-    title: 'Free Online Alarm Clock & World Clock | Clocks & Alarms',
-    description: 'The gold standard in online timekeeping. Loud alarm clock online options, precise world clocks, and timers with a vibrant interface.',
+    title: 'Free Online Alarm Clock & World Clock Suite | Clocks and Alarms Online',
+    description: 'Free online alarm clock, world clock, and countdown timer suite. Set loud alarms with snooze, track global timezones, and boost focus with zero registration.',
     type: 'website',
   }
 }

@@ -54,7 +54,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      url: `https://clocksandalarmsonline.com/alarm-clock/${slug}/`
+      url: `https://clocksandalarmsonline.com/alarm-clock/${slug}/`,
+      images: [
+        {
+          url: '/icon.png',
+          width: 512,
+          height: 512,
+          alt: `${title} - Clocks and Alarms Online`
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+      images: ['/icon.png'],
     }
   }
 }
@@ -128,10 +142,38 @@ export default async function Page({ params }: Props) {
     ]
   }
 
+  const defaultFaqs = [
+    {
+      q: `Will this alarm ring if my computer is locked?`,
+      a: `As long as your computer is connected to power and does not enter deep sleep or hibernation, the alarm will ring on time.`
+    },
+    {
+      q: `Can I snooze the alarm?`,
+      a: `Yes, clicking the Snooze button gives you an additional 5 minutes of rest before the chime repeats.`
+    }
+  ]
+
+  const activeFaqs = (seoItem as any)?.faqs && (seoItem as any).faqs.length > 0 ? (seoItem as any).faqs : defaultFaqs
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "name": `Frequently Asked Questions for ${pageTitle}`,
+    "mainEntity": activeFaqs.map((faq: any) => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  }
+
   return (
     <div className="w-full">
       <StructuredData data={softwareSchema} />
       <StructuredData data={breadcrumbSchema} />
+      <StructuredData data={faqSchema} />
       <AlarmTimeClient params={resolvedParams} seoItem={seoItem} />
     </div>
   )

@@ -12,6 +12,15 @@ export interface ResolvedCity {
   title: string
   description: string
   content: string
+  introTag?: string
+  introHeading?: string
+  introParagraph?: string
+  howToSteps?: Array<{ title: string; text: string }>
+  proTips?: string[]
+  useCases?: Array<{ title: string; text: string; icon?: string }>
+  whyChooseUs?: string
+  troubleshooting?: string
+  faqs?: Array<{ q: string; a: string }>
 }
 
 const allCityMappings: any[] = 
@@ -26,16 +35,9 @@ export function resolveCityOrCountry(rawSlug: string): ResolvedCity {
   const curated = cityData.find(c => c.slug === slug)
   if (curated) {
     return {
-      slug: curated.slug,
-      name: curated.name,
       country: curated.name,
-      timezone: curated.timezone,
-      lat: curated.lat,
-      lon: curated.lon,
-      title: curated.title,
-      description: curated.description,
-      content: curated.content
-    }
+      ...curated
+    } as ResolvedCity
   }
 
   // 2. Normalize slug (replace hyphens and underscores with spaces)

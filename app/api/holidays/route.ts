@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getHolidaysServer } from '@/lib/getHolidaysServer';
+import { getHolidaysServer, deduplicateHolidays } from '@/lib/getHolidaysServer';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       const cachedDoc = await getDoc(docRef);
       if (cachedDoc.exists()) {
         console.warn(`[Fallback Cache Route] Serving expired cache due to server helper failure`);
-        return NextResponse.json({ holidays: cachedDoc.data().holidays, source: 'cache_fallback' });
+        return NextResponse.json({ holidays: deduplicateHolidays(cachedDoc.data().holidays), source: 'cache_fallback' });
       }
     } catch (fallbackDbError) {
       console.error('Fallback cache lookup failed in route:', fallbackDbError);

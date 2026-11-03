@@ -95,9 +95,27 @@ export const useStore = create<AppState>()(
       removeCountdown: (id) => set((state) => ({
         countdowns: state.countdowns.filter((c) => c.id !== id)
       })),
-      updateCountdown: (id, updates) => set((state) => ({
-        countdowns: state.countdowns.map((c) => c.id === id ? { ...c, ...updates } : c)
-      })),
+      updateCountdown: (id, updates) => set((state) => {
+        const exists = state.countdowns.some((c) => c.id === id)
+        if (!exists) {
+          const newCountdown: Countdown = {
+            id,
+            label: updates.label || 'Timer',
+            seconds: updates.seconds || updates.timeLeft || 0,
+            sound: updates.sound || 'vibe',
+            isActive: updates.isActive ?? false,
+            isPaused: updates.isPaused ?? false,
+            timeLeft: updates.timeLeft ?? updates.seconds ?? 0,
+            endTime: updates.endTime ?? null,
+            isRinging: updates.isRinging ?? false,
+            ...updates
+          }
+          return { countdowns: [...state.countdowns, newCountdown] }
+        }
+        return {
+          countdowns: state.countdowns.map((c) => c.id === id ? { ...c, ...updates } : c)
+        }
+      }),
 
       activeAlarmId: null,
       setRingingAlarmId: (id) => set(() => ({ activeAlarmId: id })),

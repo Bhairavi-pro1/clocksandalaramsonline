@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { Play, Pause, Maximize2, Minimize2, Trash2, RotateCcw } from 'lucide-react'
-import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
+// AlarmTriggerModal handled globally in LayoutWrapper
 import { useTimer } from '@/hooks/useTimer'
 import { cn } from '@/lib/utils'
 import AdBanner from '@/components/ui/AdBanner'
@@ -15,11 +15,11 @@ interface CountdownTimerProps {
 }
 
 export default function CountdownTimer({ id, label, initialSeconds, sound, onRemove }: CountdownTimerProps) {
-  const { timeLeft, isActive, isPaused, isSoundPlaying, start, pause, resume, reset, formatTime } = useTimer(id, initialSeconds, sound)
+  const { timeLeft, isActive, isPaused, isSoundPlaying, start, pause, resume, reset, formatTime } = useTimer(id, initialSeconds, sound, label)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
-  const progress = (timeLeft / initialSeconds) * 100
+  const progress = initialSeconds > 0 ? (timeLeft / initialSeconds) * 100 : 0
 
   const toggleFullscreen = () => {
     if (!isFullscreen) {

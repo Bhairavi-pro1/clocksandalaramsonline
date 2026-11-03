@@ -8,10 +8,11 @@ import LocalTimeBox from '@/components/ui/LocalTimeBox'
 import { useStore } from '@/hooks/useStore'
 import { useAlarm } from '@/hooks/useAlarm'
 import AdBanner from '@/components/ui/AdBanner'
-import { Plus, Info, Bell, Clock, Zap } from 'lucide-react'
+import { Plus, Info, Bell, Clock, Zap, Dumbbell, BookOpen, Sun, Briefcase, Utensils, Moon } from 'lucide-react'
 import AlarmScenarios from '@/components/tools/AlarmScenarios'
 import alarmData from '@/data/seo/alarms.json'
 import { cn } from '@/lib/utils'
+import ToolSEO from '@/components/seo/ToolSEO'
 
 interface Props {
   params: { slug: string }
@@ -20,6 +21,15 @@ interface Props {
     title: string
     description: string
     content?: string
+    introTag?: string
+    introHeading?: string
+    introParagraph?: string
+    howToSteps?: Array<{ title: string; text: string }>
+    proTips?: string[]
+    useCases?: Array<{ title: string; text: string; icon?: string }>
+    whyChooseUs?: string
+    troubleshooting?: string
+    faqs?: Array<{ q: string; a: string }>
   }
 }
 
@@ -119,116 +129,150 @@ export default function AlarmTimeClient({ params, seoItem }: Props) {
     if (useStore.persist?.hasHydrated && !useStore.persist.hasHydrated()) {
       const unsub = useStore.persist.onFinishHydration(() => {
         ensureAlarm()
+        unsub()
       })
-      return () => unsub()
     } else {
       ensureAlarm()
     }
   }, [slug, addAlarm])
 
-  const displayedAlarms = alarms.filter((alarm, index, self) =>
-    index === self.findIndex((a) => a.time === alarm.time)
-  )
+  const iconMap: Record<string, any> = {
+    Dumbbell,
+    BookOpen,
+    Sun,
+    Briefcase,
+    Clock,
+    Zap,
+    Utensils,
+    Moon,
+    Bell
+  }
 
-  const activeAlarm = displayedAlarms.find(a => a.id === activeAlarmId)
+  const defaultUseCases = [
+    { title: "Morning Routine & Wake-Up", text: `Start your morning punctually and build momentum with a reliable ${timeInfo?.display || 'scheduled'} alert.`, icon: Sun },
+    { title: "Work & Productivity Focus", text: `Transition between daily priorities, meetings, and deep work blocks with atomic precision.`, icon: Briefcase },
+    { title: "Fitness & Personal Habits", text: `Protect time for workouts, hydration, and mindful rest throughout your day.`, icon: Dumbbell }
+  ]
 
-  if (!timeInfo) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-    </div>
-  )
+  const mappedUseCases = (seoItem?.useCases && seoItem.useCases.length > 0)
+    ? seoItem.useCases.map(u => ({
+        title: u.title,
+        text: u.text,
+        icon: typeof u.icon === 'string' ? (iconMap[u.icon] || Clock) : (u.icon || Clock)
+      }))
+    : defaultUseCases
+
+  if (!timeInfo) {
+    return <div className="min-h-screen bg-background" />
+  }
+
+  // Find the matching alarm from store
+  const targetAlarm = alarms.find(a => a.time === timeInfo.time24)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pt-4 sm:pt-6 md:pt-10 pb-20 animate-in fade-in duration-1000">
-      {/* Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="mb-6">
-        <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted/70 font-medium">
-          <li>
-            <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Home</Link>
-          </li>
-          <li className="opacity-40">/</li>
-          <li>
-            <Link href="/alarm-clock/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Alarm Clock</Link>
-          </li>
-          <li className="opacity-40">/</li>
-          <li className="text-slate-900 dark:text-white font-bold" aria-current="page">
-            Set Alarm for {timeInfo.display}
-          </li>
-        </ol>
-      </nav>
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 pb-20">
+      <AlarmTriggerModal
+        isOpen={!!activeAlarmId}
+        onClose={stopAlarm}
+        label={alarms.find(a => a.id === activeAlarmId)?.label || 'Alarm Ringing!'}
+        timeText={alarms.find(a => a.id === activeAlarmId)?.time}
+        type="alarm"
+      />
 
-      {/* Dynamic SEO Title Section */}
-      <div className="text-center mb-8 md:mb-12 space-y-4">
-        <div className="inline-block px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest shadow-inner">
-          Free Online Alarm
-        </div>
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter leading-tight">
-          {seoItem?.title ? seoItem.title.split('—')[0].trim() : `Set Alarm for ${timeInfo.display}`}
-        </h1>
-        <p className="text-slate-600 dark:text-muted text-base md:text-lg font-medium max-w-3xl mx-auto leading-relaxed">
-          {seoItem?.description || `Set a free online alarm for ${timeInfo.display} with loud sound alerts and customizable reminders.`}
-        </p>
-      </div>
+      {/* Main Hero Container */}
+      <div className="max-w-7xl mx-auto px-4 pt-4 md:pt-8 space-y-8">
+        
+        {/* Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb">
+          <ol className="flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-muted/70 font-medium">
+            <li>
+              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+            </li>
+            <li className="opacity-40">/</li>
+            <li>
+              <Link href="/alarm-clock/" className="hover:text-primary transition-colors">Alarm Clock</Link>
+            </li>
+            <li className="opacity-40">/</li>
+            <li className="text-slate-900 dark:text-white font-bold" aria-current="page">Set Alarm for {timeInfo.display}</li>
+          </ol>
+        </nav>
 
-      <div className="flex flex-col gap-6 md:gap-10">
-        {/* Row 1: Local Time Box */}
-        <LocalTimeBox />
-
-        {/* Highlighted Preset Alert */}
-        <div className="bg-primary/5 hover:bg-primary/10 border border-primary/20 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-xl transition-all duration-500 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-12 opacity-[0.03] group-hover:opacity-[0.05] group-hover:scale-125 transition-all duration-1000 pointer-events-none">
-            <Bell size={240} />
-          </div>
-          <div className="flex items-center gap-4 sm:gap-6 relative z-10 w-full md:w-auto">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-white/5 flex items-center justify-center text-primary shadow-[inset_0_0_20px_rgba(124,58,237,0.3)] border border-primary/30 flex-shrink-0">
-              <Clock size={36} />
-            </div>
-            <div className="space-y-1">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Preset Ready: {timeInfo.display}</h2>
-              <p className="text-primary font-black uppercase tracking-[0.2em] text-[10px]">Your requested alarm time is active below</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 relative z-10 w-full md:w-auto">
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="w-full md:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-primary text-white rounded-[1.25rem] font-black hover:scale-[1.03] active:scale-[0.98] transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-3 cursor-pointer"
-            >
-              <Zap size={20} fill="currentColor" />
-              Customize Alarm
-            </button>
-          </div>
+        {/* Minimal Title Block */}
+        <div className="text-center space-y-2">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+            Set Alarm for <span className="text-primary italic font-serif">{timeInfo.display}</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-muted/80 max-w-lg mx-auto font-medium">
+            High-precision online alarm clock with customizable sound alerts, full-screen display, and snooze.
+          </p>
         </div>
 
-        {/* Current Alarms Section */}
-        <div className="space-y-6 md:space-y-8">
-          <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-7 bg-primary rounded-full shadow-[0_0_15px_rgba(124,58,237,0.5)]" />
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">Your Alarms</h3>
-            </div>
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 group text-primary font-black text-xs sm:text-sm uppercase tracking-widest hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
-            >
-              <Plus size={18} className="group-hover:rotate-90 transition-transform" />
-              Add More
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {displayedAlarms.map((alarm) => (
+        {/* Local Time Helper Box */}
+        <div className="flex justify-center">
+          <LocalTimeBox />
+        </div>
+
+        {/* Hero Dedicated Alarm Box */}
+        <div className="flex flex-col items-center">
+          <div className="w-full max-w-md">
+            {targetAlarm ? (
               <AlarmCard 
-                key={alarm.id}
-                id={alarm.id}
-                label={alarm.label}
-                time={alarm.time}
-                isActive={alarm.isActive}
-                onRemove={removeAlarm}
-                onToggle={toggleAlarm}
+                key={targetAlarm.id} 
+                id={targetAlarm.id}
+                label={targetAlarm.label}
+                time={targetAlarm.time}
+                isActive={targetAlarm.isActive}
+                onToggle={toggleAlarm} 
+                onRemove={removeAlarm} 
               />
-            ))}
+            ) : (
+              <div className="p-8 rounded-[2.5rem] bg-slate-50 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/5 text-center flex flex-col items-center justify-center min-h-[220px]">
+                <Clock className="w-10 h-10 text-primary animate-pulse mb-3" />
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">
+                  Alarm set for {timeInfo.display}
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-muted">
+                  Initializing your scheduled alert...
+                </p>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Quick Actions (Add Alternative Alarms) */}
+        <div className="flex justify-center pt-2">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-3 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white font-bold text-xs sm:text-sm transition-all border border-slate-200/80 dark:border-white/10 shadow-sm"
+          >
+            <Plus size={16} className="text-primary" />
+            Set Another Alarm Time
+          </button>
+        </div>
+
+        {/* Other Active Alarms Panel (if user has multiple) */}
+        {alarms.length > 1 && (
+          <div className="pt-6 border-t border-slate-200/80 dark:border-white/10">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4 text-center">
+              Your Other Configured Alarms
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {alarms
+                .filter(a => a.time !== timeInfo.time24)
+                .map(alarm => (
+                  <AlarmCard 
+                    key={alarm.id} 
+                    id={alarm.id}
+                    label={alarm.label}
+                    time={alarm.time}
+                    isActive={alarm.isActive}
+                    onToggle={toggleAlarm} 
+                    onRemove={removeAlarm} 
+                  />
+                ))}
+            </div>
+          </div>
+        )}
 
         {/* Popular Alarm Times Directory */}
         <div className="pt-4 border-t border-slate-200/80 dark:border-white/10">
@@ -277,64 +321,33 @@ export default function AlarmTimeClient({ params, seoItem }: Props) {
         {/* Alarm Presets (Scenario Grid) */}
         <AlarmScenarios />
 
-        {/* High-Precision Description & User Guide */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-16 pt-12 sm:pt-16 border-t border-slate-200/80 dark:border-white/10">
-          <section className="lg:col-span-2 space-y-8">
-            <div className="flex items-center gap-4 sm:gap-5 bg-slate-50 dark:bg-white/5 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-200/80 dark:border-white/10 shadow-sm">
-              <div className="min-w-[48px] sm:min-w-[56px] h-12 sm:h-14 rounded-2xl bg-primary/20 flex items-center justify-center text-primary shadow-inner">
-                <Info size={26} />
-              </div>
-              <div>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
-                  Guide for the {timeInfo.display} Alarm
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-muted font-medium mt-0.5">
-                  Wake up on time with reliable browser-based audio scheduling
-                </p>
-              </div>
-            </div>
-            
-            <div className="prose prose-invert max-w-none space-y-6">
-              {seoItem?.content && (
-                <div className="p-6 rounded-2xl bg-primary/[0.04] border border-primary/20">
-                  <p className="text-slate-700 dark:text-slate-200 text-base md:text-lg leading-relaxed font-medium">
-                    {seoItem.content}
-                  </p>
-                </div>
-              )}
-
-              <div className="space-y-3">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-                  How the {timeInfo.display} Alarm Works
-                </h3>
-                <p className="text-slate-600 dark:text-muted text-base sm:text-lg leading-relaxed font-medium">
-                  Setting an online alarm for {timeInfo.display} ensures you start your day or transition tasks with maximum precision. Once you open this page, the system automatically prepares the {timeInfo.display} preset in your active alarm list. You can customize the sound, label, and volume according to your personal preference.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-                  Tips for Maximum Alarm Reliability
-                </h3>
-                <p className="text-slate-600 dark:text-muted text-base sm:text-lg leading-relaxed font-medium">
-                  To ensure the alert triggers flawlessly at {timeInfo.display}, keep this browser tab open. Modern operating systems can throttle inactive tabs, so we recommend keeping your device plugged into power and setting your system volume to at least 70–80%.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <aside className="space-y-8">
-            <div className="bg-slate-50 dark:bg-[#1a0b36]/60 p-8 sm:p-10 rounded-[2.5rem] sm:rounded-[3rem] border border-slate-200/80 dark:border-violet-500/20 shadow-xl relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 blur-3xl rounded-full" />
-              <h4 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-4 sm:mb-6 leading-tight">
-                Daily Routine Insight: <br/>The {timeInfo.display} Anchor
-              </h4>
-              <p className="text-slate-600 dark:text-muted font-medium leading-relaxed italic text-sm sm:text-base">
-                "Consistently setting an alarm for {timeInfo.display} helps anchor your daily circadian rhythm. A predictable wake-up time builds momentum and enhances overall mental focus throughout the day."
-              </p>
-              <div className="h-1 w-12 bg-primary/40 rounded-full mt-6" />
-            </div>
-          </aside>
+        {/* Comprehensive High-Word-Count ToolSEO Component (Solves Thin Content) */}
+        <div className="mt-14 sm:mt-20">
+          <ToolSEO
+            toolName={`Online Alarm for ${timeInfo.display}`}
+            introTag={seoItem?.introTag || "Reliable Online Wake-Up Call"}
+            introHeading={seoItem?.introHeading || `Set an Alarm for ${timeInfo.display}: Wake Up On Time with Atomic Precision`}
+            introParagraph={seoItem?.introParagraph || seoItem?.content || `Setting an online alarm for ${timeInfo.display} ensures you start your day or transition tasks with maximum precision.`}
+            howToSteps={seoItem?.howToSteps || [
+              { title: "Verify Your Alarm Setting", text: `This page automatically arms your ${timeInfo.display} alarm in the active list.` },
+              { title: "Choose Sound & Adjust Volume", text: "Select your preferred audio alert and ensure master system volume is unmuted at 70–80%." },
+              { title: "Keep Browser Tab Open", text: "Leave this browser tab active and ensure your device remains connected to power." },
+              { title: "Wake Up & Conquer the Day", text: "When the scheduled time arrives, our loud chime and full-screen display alert you immediately." }
+            ]}
+            proTips={seoItem?.proTips || [
+              `To wake up refreshed at ${timeInfo.display}, aim to complete 5 full 90-minute sleep cycles (7.5 hours of sleep).`,
+              "Prevent computer sleep by keeping your laptop plugged in and setting your system power timer to display-off only.",
+              "Place your device across the bedroom so you must physically stand up to dismiss the alert.",
+              "Expose your eyes to natural daylight within 15 minutes of waking to stop melatonin production."
+            ]}
+            useCases={mappedUseCases}
+            whyChooseUs={seoItem?.whyChooseUs || "Our online alarm engine connects directly with atomic time protocols, eliminating device clock drift. Features high-frequency audio tones engineered for deep sleepers, full-screen visual rings, and works 100% free with no sign-ups."}
+            troubleshooting={seoItem?.troubleshooting || "1. System Sleep Mode: Keep your computer plugged into power so the browser does not enter hibernation.\n2. Audio Permissions: Click 'Test Sound' on the alarm card to confirm browser autoplay permissions.\n3. Output Device: Verify audio is not routing to disconnected Bluetooth earbuds.\n4. Screen Dimming: Dim your monitor brightness instead of closing the laptop lid to keep audio timers active."}
+            faqs={seoItem?.faqs || [
+              { q: `Will this alarm ring if my computer is locked?`, a: `As long as your computer is connected to power and does not enter deep sleep or hibernation, the alarm will ring on time.` },
+              { q: `Can I snooze the alarm?`, a: `Yes, clicking the Snooze button gives you an additional 5 minutes of rest before the chime repeats.` }
+            ]}
+          />
         </div>
 
         {/* Ad Space */}

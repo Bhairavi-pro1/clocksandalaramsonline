@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import * as cityTimezones from 'city-timezones'
 import countriesData from '@/data/countries.json'
 import { getCountryFromTimezone } from '@/lib/timezoneToCountry'
+import { getCountrySlug } from '@/lib/countryResolver'
 
 interface HolidayItem {
   name: string
@@ -202,7 +203,8 @@ export default function CountdownScenarios() {
                     const slug = holiday.name.toLowerCase()
                       .replace(/\s+/g, '-')
                       .replace(/[^\w-]/g, '')
-                    router.push(`/countdown/${countryCode}/${slug}`)
+                    const cSlug = getCountrySlug(countryCode) || countryCode
+                    router.push(`/countdown/${cSlug}/${slug}`)
                   }}
                 >
                   <td className="px-3 py-2.5 md:px-5 md:py-3 pr-3 md:pr-5">

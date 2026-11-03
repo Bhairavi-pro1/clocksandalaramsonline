@@ -7,16 +7,19 @@ import { Search, Calendar, Clock, Globe, ArrowRight, ChevronDown, Check, Loader2
 import countriesData from '@/data/countries.json';
 import { FormattedHoliday } from '@/lib/getHolidaysServer';
 import { cn } from '@/lib/utils';
+import { slugifyCountry } from '@/lib/countryResolver';
 
 interface Props {
   countryCode: string;
   countryName: string;
+  countrySlug?: string;
   initialYear: number;
   initialHolidays: FormattedHoliday[];
 }
 
-export default function CountryHolidayClient({ countryCode, countryName, initialYear, initialHolidays }: Props) {
+export default function CountryHolidayClient({ countryCode, countryName, countrySlug, initialYear, initialHolidays }: Props) {
   const router = useRouter();
+  const canonicalCountrySlug = countrySlug || slugifyCountry(countryName);
   
   // Year selector state
   const [year, setYear] = useState<number>(initialYear);
@@ -160,11 +163,16 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
   }, []);
 
   // Handle autocomplete item selection
-  const selectCountry = (code: string) => {
+  const selectCountry = (codeOrName: string) => {
     setSearchQuery('');
     setShowSuggestions(false);
     setHighlightedIndex(-1);
-    router.push(`/countdown/${code.toLowerCase()}`);
+    const country = countriesData.find(item => 
+      item.code.toLowerCase() === codeOrName.toLowerCase() || 
+      item.name.toLowerCase() === codeOrName.toLowerCase()
+    );
+    const slug = country ? slugifyCountry(country.name) : slugifyCountry(codeOrName);
+    router.push(`/countdown/${slug}`);
   };
 
   // Keyboard navigation for suggestions
@@ -520,7 +528,7 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                 return (
                   <Link
                     key={`${holiday.name}-${holiday.date}-${i}`}
-                    href={`/countdown/${countryCode.toLowerCase()}/${slug}`}
+                    href={`/countdown/${canonicalCountrySlug}/${slug}`}
                     prefetch={false}
                     className="group relative bg-slate-900/[0.02] dark:bg-[#1a0b2e]/40 border border-slate-900/5 dark:border-white/5 rounded-[2.5rem] p-8 hover:border-primary/40 dark:hover:border-primary/40 hover:bg-slate-900/[0.04] transition-all duration-500 flex flex-col justify-between overflow-hidden min-h-[260px] shadow-lg"
                   >
@@ -599,7 +607,7 @@ export default function CountryHolidayClient({ countryCode, countryName, initial
                 return (
                   <Link
                     key={`${holiday.name}-${holiday.date}-${i}-mobile`}
-                    href={`/countdown/${countryCode.toLowerCase()}/${slug}`}
+                    href={`/countdown/${canonicalCountrySlug}/${slug}`}
                     prefetch={false}
                     className="flex flex-col p-4 relative overflow-hidden text-left hover:bg-slate-900/[0.04] dark:hover:bg-white/[0.02] active:bg-slate-900/[0.08] dark:active:bg-white/[0.04] transition-colors"
                   >
