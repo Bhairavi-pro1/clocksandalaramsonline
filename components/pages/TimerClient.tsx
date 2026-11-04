@@ -43,7 +43,7 @@ export default function TimerClient() {
         </div>
 
         {/* Row 2: Control Bar */}
-        <div className="flex items-center justify-between gap-3 w-full pb-3 border-b border-white/5">
+        <div id="timers-list-section" className="flex items-center justify-between gap-3 w-full pb-3 border-b border-white/5 scroll-mt-24">
           <div className="flex items-center gap-2.5">
             <div className={`w-2 h-2 rounded-full ${
               countdowns.length > 0 ? "bg-emerald-500 animate-pulse" : "bg-white/20"
@@ -62,7 +62,7 @@ export default function TimerClient() {
 
         {/* Row 3: Countdown Cards Grid (only when active) */}
         {countdowns.length > 0 && (
-          <div id="timers-list-section" className="scroll-mt-8 w-full">
+          <div className="w-full">
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8 animate-in fade-in duration-500">
               {countdowns.map((c) => (
                 <CountdownTimer 

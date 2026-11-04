@@ -79,13 +79,19 @@ export default function CountdownScenarios() {
     loadCountryHolidays()
   }, [])
 
+  const scrollToTimers = () => {
+    setTimeout(() => {
+      document.getElementById('timers-list-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
+  }
+
   const handleAddTimer = (label: string, seconds: number) => {
     addCountdown({
       label,
       seconds,
       sound: 'vibe' 
     })
-    document.getElementById('timers-list-section')?.scrollIntoView({ behavior: 'smooth' })
+    scrollToTimers()
   }
 
   const handleAddHolidayCountdown = (holiday: HolidayItem) => {
@@ -96,7 +102,7 @@ export default function CountdownScenarios() {
       seconds: diffSeconds,
       sound: 'vibe'
     })
-    document.getElementById('timers-list-section')?.scrollIntoView({ behavior: 'smooth' })
+    scrollToTimers()
   }
 
   const timerPresets = [
