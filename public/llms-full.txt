@@ -95,14 +95,15 @@ Specialized kitchen and boiling presets.
   - **Customizable Conditions:** Dynamic calculations based on egg size (Medium, Large, Extra Large) and starting temperature (refrigerator cold vs. room temperature) to guarantee perfect boiling results.
   - **Audible Finish Alarm:** High-decibel audio alarm to alert users immediately on completion.
 
-### 9. Shared Alarm
-Create and distribute alarm configurations via custom URLs.
-- **URL:** [https://clocksandalarmsonline.com/shared-alarm](https://clocksandalarmsonline.com/shared-alarm)
-- **Primary Use Case:** Synchronized wakeups, remote class starts, multi-player games, or group presentation scheduling.
+### 9. Shared Timer
+Create and distribute real-time synchronized countdown timers via custom URLs.
+- **URL:** [https://clocksandalarmsonline.com/shared-timer](https://clocksandalarmsonline.com/shared-timer)
+- **Primary Use Case:** Synchronized agile standups, hackathon demos, remote classes, Pomodoro sessions, or fitness workouts.
 - **Features:**
-  - **URL Import Schema:** Configure the alarm time, sound, description, and repeat rules, then generate a unique link.
-  - **Instant Import Dashboard:** Anyone loading the shared URL immediately imports the configuration into their local client with zero setup.
-  - **Group Sync:** Ensures multiple remote users are synchronized to trigger their alarms at the exact same moment.
+  - **Zero-Drift Synchronization:** Anchored to standardized Epoch timestamps across all global timezones.
+  - **Live Multiplayer Room:** Host starts, pauses, resumes, and resets the timer for all connected participants.
+  - **Mid-Session Joining:** Participants joining midway automatically sync to the exact remaining countdown second.
+  - **5-Minute Auto-Purge:** Finished timers and participant data automatically erase from database storage after 5 minutes.
 
 ---
 

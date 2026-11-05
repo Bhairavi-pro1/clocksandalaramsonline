@@ -3,16 +3,33 @@ import { Mail, MessageCircle, HelpCircle } from 'lucide-react'
 import AdBanner from '@/components/ui/AdBanner'
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Support, Bug Reports & Feedback',
+  title: {
+    absolute: 'Contact Us — Support & Inquiries | Clocks & Alarms'
+  },
   description: 'Contact the Clocks and Alarms Online team for technical support, feature suggestions, bug reports, and timekeeping feedback. We respond within 24 to 48 hours.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/contact/',
   },
   openGraph: {
-    title: 'Contact Us — Support, Bug Reports & Feedback',
+    title: 'Contact Us — Support & Inquiries | Clocks & Alarms',
     description: 'Contact the Clocks and Alarms Online team for technical support, feature suggestions, bug reports, and timekeeping feedback. We respond within 24 to 48 hours.',
-    type: 'website',
     url: 'https://clocksandalarmsonline.com/contact/',
+    siteName: 'Clocks and Alarms Online',
+    type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Contact Us - Clocks and Alarms Online'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Contact Us — Support & Inquiries | Clocks & Alarms',
+    description: 'Contact the Clocks and Alarms Online team for technical support, feature suggestions, bug reports, and timekeeping feedback. We respond within 24 to 48 hours.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

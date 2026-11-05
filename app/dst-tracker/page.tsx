@@ -9,16 +9,33 @@ import StructuredData from '@/components/seo/StructuredData'
 import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
-  title: 'Daylight Saving Time (DST) Tracker — Global Clock Changes & Dates',
+  title: {
+    absolute: 'Daylight Saving Time (DST) Tracker | Clocks & Alarms'
+  },
   description: 'Track upcoming Daylight Saving Time (DST) changes worldwide. View exact dates and times when clocks spring forward or fall back across 150+ global time zones.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/dst-tracker/',
   },
   openGraph: {
-    title: 'Daylight Saving Time (DST) Tracker — Global Clock Changes & Dates',
+    title: 'Daylight Saving Time (DST) Tracker | Clocks & Alarms',
     description: 'Track upcoming Daylight Saving Time (DST) changes worldwide. View exact dates and times when clocks spring forward or fall back across 150+ global time zones.',
-    type: 'website',
     url: 'https://clocksandalarmsonline.com/dst-tracker/',
+    siteName: 'Clocks and Alarms Online',
+    type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'DST Tracker'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Daylight Saving Time (DST) Tracker | Clocks & Alarms',
+    description: 'Track upcoming Daylight Saving Time (DST) changes worldwide. View exact dates and times when clocks spring forward or fall back across 150+ global time zones.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

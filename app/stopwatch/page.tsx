@@ -5,15 +5,33 @@ import { HelpCircle, Timer, RotateCcw, List, Maximize2, GraduationCap, Briefcase
 import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
-  title: 'Free Online Stopwatch — Millisecond Precision with Laps',
+  title: {
+    absolute: 'Free Online Stopwatch with Lap Timing | Clocks & Alarms'
+  },
   description: 'Free online stopwatch with millisecond precision, split lap recording, and exportable history. Ideal for sports training, workouts, classroom timing, and tests.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/stopwatch/',
   },
   openGraph: {
-    title: 'Free Online Stopwatch — Millisecond Precision with Laps',
+    title: 'Free Online Stopwatch with Lap Timing | Clocks & Alarms',
     description: 'Free online stopwatch with millisecond precision, split lap recording, and exportable history. Ideal for sports training, workouts, classroom timing, and tests.',
+    url: 'https://clocksandalarmsonline.com/stopwatch/',
+    siteName: 'Clocks and Alarms Online',
     type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Free Online Stopwatch'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Free Online Stopwatch with Lap Timing | Clocks & Alarms',
+    description: 'Free online stopwatch with millisecond precision, split lap recording, and exportable history. Ideal for sports training, workouts, classroom timing, and tests.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

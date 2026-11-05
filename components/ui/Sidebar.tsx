@@ -32,7 +32,7 @@ const navItems = [
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner' },
   { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker' },
   { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown' },
-  { label: 'Shared Alarm', icon: Share2, href: '/shared-alarm' },
+  { label: 'Shared Timer', icon: Share2, href: '/shared-timer' },
   { label: 'Egg Timer', icon: Thermometer, href: '/egg-timer' },
   { label: 'Blog', icon: BookOpen, href: '/blog' }
 ]

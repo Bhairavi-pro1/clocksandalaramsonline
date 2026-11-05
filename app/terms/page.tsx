@@ -2,16 +2,33 @@ import type { Metadata } from 'next'
 import { FileText, ShieldAlert, Scale, Globe, Terminal } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — Usage Guidelines & Agreement',
+  title: {
+    absolute: 'Terms of Service — Clocks and Alarms Online'
+  },
   description: 'Review the Terms of Service for Clocks and Alarms Online. Understand the guidelines and usage conditions governing our free browser-based timekeeping suite.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/terms/',
   },
   openGraph: {
-    title: 'Terms of Service — Usage Guidelines & Agreement',
+    title: 'Terms of Service — Clocks and Alarms Online',
     description: 'Review the Terms of Service for Clocks and Alarms Online. Understand the guidelines and usage conditions governing our free browser-based timekeeping suite.',
-    type: 'website',
     url: 'https://clocksandalarmsonline.com/terms/',
+    siteName: 'Clocks and Alarms Online',
+    type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Terms of Service - Clocks and Alarms Online'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Terms of Service — Clocks and Alarms Online',
+    description: 'Review the Terms of Service for Clocks and Alarms Online. Understand the guidelines and usage conditions governing our free browser-based timekeeping suite.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

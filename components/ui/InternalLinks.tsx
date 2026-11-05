@@ -8,7 +8,7 @@ const TOOLS = [
   { name: 'Meeting Planner', href: '/meeting-planner' },
   { name: 'DST Tracker', href: '/dst-tracker' },
   { name: 'Holiday Countdown', href: '/countdown' },
-  { name: 'Shared Alarm', href: '/shared-alarm' },
+  { name: 'Shared Timer', href: '/shared-timer' },
   { name: 'Egg Timer', href: '/egg-timer' },
 ]
 

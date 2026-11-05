@@ -12,7 +12,7 @@
 - [World Meeting Planner](https://clocksandalarmsonline.com/meeting-planner): Easy coordination tool to find ideal meeting times across multiple time zones.
 - [DST Tracker](https://clocksandalarmsonline.com/dst-tracker): Comprehensive guide to Daylight Saving Time changes and schedules globally.
 - [Egg Timer](https://clocksandalarmsonline.com/egg-timer): Simple, preset-based cooking timer for kitchen and culinary time management.
-- [Shared Alarm](https://clocksandalarmsonline.com/shared-alarm): Create alarm configurations that can be shared with others via unique URL links.
+- [Shared Timer](https://clocksandalarmsonline.com/shared-timer): Real-time synchronized countdown timers for teams, classrooms, and focus sessions with 5-minute auto-deletion.
 
 ## Information & Resources
 

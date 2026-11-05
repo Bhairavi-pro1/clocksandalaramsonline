@@ -26,19 +26,37 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://clocksandalarmsonline.com'),
   title: {
     default: 'Clocks and Alarms Online — Free Online Timekeeping Tools',
-    template: '%s | Clocks and Alarms Online'
+    template: '%s | Clocks & Alarms'
   },
   description: 'Free online alarm clock, world clock, countdown timer, and stopwatch. Millisecond accuracy, loud alarm sounds, and full-screen focus modes in your browser.',
+  alternates: {
+    canonical: './',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: '/icon.png',
     apple: '/apple-icon.png'
   },
   openGraph: {
     type: 'website',
+    locale: 'en_US',
+    url: 'https://clocksandalarmsonline.com/',
     siteName: 'Clocks and Alarms Online',
+    title: 'Clocks and Alarms Online — Free Online Timekeeping Tools',
+    description: 'Free online alarm clock, world clock, countdown timer, and stopwatch. Millisecond accuracy, loud alarm sounds, and full-screen focus modes in your browser.',
     images: [
       {
-        url: '/icon.png',
+        url: 'https://clocksandalarmsonline.com/icon.png',
         width: 512,
         height: 512,
         alt: 'Clocks and Alarms Online Logo'
@@ -47,7 +65,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    images: ['/icon.png']
+    title: 'Clocks and Alarms Online — Free Online Timekeeping Tools',
+    description: 'Free online alarm clock, world clock, countdown timer, and stopwatch. Millisecond accuracy, loud alarm sounds, and full-screen focus modes in your browser.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

@@ -32,7 +32,7 @@ const tools = [
   { label: 'Meeting Planner', icon: CalendarRange, href: '/meeting-planner', description: 'Global coordination' },
   { label: 'DST Tracker', icon: Calendar, href: '/dst-tracker', description: 'Daylight saving updates' },
   { label: 'Holiday Countdown', icon: PartyPopper, href: '/countdown', description: 'Global event tracking' },
-  { label: 'Shared Alarm', icon: Users, href: '/shared-alarm', description: 'Synchronized team alarms' },
+  { label: 'Shared Timer', icon: Users, href: '/shared-timer', description: 'Synchronized group countdowns' },
   { label: 'Egg Timer', icon: ChefHat, href: '/egg-timer', description: 'Perfectly boiled eggs' }
 ]
 

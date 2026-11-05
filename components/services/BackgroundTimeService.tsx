@@ -1,9 +1,6 @@
 'use client'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { useStore, Alarm, Countdown } from '@/hooks/useStore'
-import { db } from '@/lib/firebase'
-import { doc, onSnapshot } from 'firebase/firestore'
-import { getMyCreatedAlarms, getMyReceivedAlarms, deleteSharedAlarm, SharedAlarm } from '@/lib/sharedAlarmLogic'
 
 const SOUNDS: Record<string, string> = {
   vibe: '/sounds/vibe.mp3',
@@ -21,20 +18,13 @@ export default function BackgroundTimeService() {
     countdowns, 
     updateCountdown,
     activeAlarmId, 
-    setRingingAlarmId,
-    ringingSharedAlarm,
-    setRingingSharedAlarm
+    setRingingAlarmId
   } = useStore()
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [activeSharedAlarms, setActiveSharedAlarms] = useState<SharedAlarm[]>([])
   
-  // Track Firestore snapshot unsubs
-  const unsubsRef = useRef<Record<string, () => void>>({})
-
   // Track already rung alarm keys to prevent repeated triggers in the same minute
   const rungAlarmsRef = useRef<Set<string>>(new Set())
-  const rungSharedAlarmsRef = useRef<Set<string>>(new Set())
 
   // 1. Audio Pre-warming & Notification Permission on First Interaction
   useEffect(() => {
@@ -70,68 +60,10 @@ export default function BackgroundTimeService() {
     }
   }, [])
 
-  // 2. Sync Shared Alarm Documents from Firestore
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const loadAndListenSharedAlarms = () => {
-      const createdIds = getMyCreatedAlarms()
-      const receivedIds = getMyReceivedAlarms()
-      const allIds = Array.from(new Set([...createdIds, ...receivedIds]))
-
-      // Remove unsubs that are no longer needed
-      Object.keys(unsubsRef.current).forEach((id) => {
-        if (!allIds.includes(id)) {
-          unsubsRef.current[id]()
-          delete unsubsRef.current[id]
-          setActiveSharedAlarms((prev) => prev.filter((a) => a.alarmId !== id))
-        }
-      })
-
-      // Attach new listeners
-      allIds.forEach((id) => {
-        if (unsubsRef.current[id]) return // Already listening
-
-        const docRef = doc(db, 'sharedAlarms', id)
-        const unsub = onSnapshot(
-          docRef,
-          (snap) => {
-            if (!snap.exists()) {
-              setActiveSharedAlarms((prev) => prev.filter((a) => a.alarmId !== id))
-              const created = getMyCreatedAlarms().filter((cId) => cId !== id)
-              localStorage.setItem('myCreatedAlarms', JSON.stringify(created))
-              const received = getMyReceivedAlarms().filter((rId) => rId !== id)
-              localStorage.setItem('myReceivedAlarms', JSON.stringify(received))
-            } else {
-              const data = snap.data() as SharedAlarm
-              setActiveSharedAlarms((prev) => {
-                const filtered = prev.filter((a) => a.alarmId !== id)
-                return [...filtered, data]
-              })
-            }
-          },
-          (err) => {
-            console.warn(`Could not sync shared alarm ${id} in background:`, err.message)
-          }
-        )
-        unsubsRef.current[id] = unsub
-      })
-    }
-
-    loadAndListenSharedAlarms()
-    const interval = setInterval(loadAndListenSharedAlarms, 5000)
-
-    return () => {
-      clearInterval(interval)
-      Object.values(unsubsRef.current).forEach((unsub) => unsub())
-      unsubsRef.current = {}
-    }
-  }, [])
-
-  // 3. Play / Stop Ringing Audio globally
+  // 2. Play / Stop Ringing Audio globally
   useEffect(() => {
     const ringingTimer = countdowns.find((c) => c.isRinging)
-    const isRinging = !!activeAlarmId || !!ringingTimer || !!ringingSharedAlarm
+    const isRinging = !!activeAlarmId || !!ringingTimer
     let targetSound = 'vibe'
 
     if (activeAlarmId) {
@@ -139,8 +71,6 @@ export default function BackgroundTimeService() {
       if (activeAlarm) targetSound = activeAlarm.sound
     } else if (ringingTimer) {
       targetSound = ringingTimer.sound
-    } else if (ringingSharedAlarm) {
-      targetSound = ringingSharedAlarm.sound
     }
 
     const soundUrl = SOUNDS[targetSound] || SOUNDS.vibe
@@ -171,7 +101,7 @@ export default function BackgroundTimeService() {
         audioRef.current.currentTime = 0
       }
     }
-  }, [activeAlarmId, countdowns, ringingSharedAlarm, alarms])
+  }, [activeAlarmId, countdowns, alarms])
 
   // 4. Core Expiration Check Callback
   const checkExpiration = useCallback(() => {
@@ -214,34 +144,7 @@ export default function BackgroundTimeService() {
         }
       }
     })
-
-    // C. Check active shared alarms
-    activeSharedAlarms.forEach((sa) => {
-      if (sa.isActive) {
-        const alarmTime = new Date(sa.alarmDateTime).getTime()
-        const timeSinceAlarm = nowMs - alarmTime
-        
-        if (nowMs >= alarmTime) {
-          if (timeSinceAlarm < 300000 && !ringingSharedAlarm && !rungSharedAlarmsRef.current.has(sa.alarmId)) {
-            rungSharedAlarmsRef.current.add(sa.alarmId)
-            setRingingSharedAlarm(sa)
-            sendPushNotification('⏰ Shared Alarm!', sa.title || 'A shared group alarm is ringing.')
-          }
-
-          if (timeSinceAlarm >= 300000) {
-            const currentSessionId = localStorage.getItem('caoSessionId')
-            const isCreator = sa.createdBy === currentSessionId
-            if (isCreator) {
-              deleteSharedAlarm(sa.alarmId)
-            } else {
-              const received = getMyReceivedAlarms().filter((id) => id !== sa.alarmId)
-              localStorage.setItem('myReceivedAlarms', JSON.stringify(received))
-            }
-          }
-        }
-      }
-    })
-  }, [alarms, countdowns, activeSharedAlarms, ringingSharedAlarm, updateCountdown, setRingingAlarmId, setRingingSharedAlarm])
+  }, [alarms, countdowns, updateCountdown, setRingingAlarmId])
 
   // 5. Central Background-Resistant Tick Engine (Web Worker + Interval Fallback)
   useEffect(() => {

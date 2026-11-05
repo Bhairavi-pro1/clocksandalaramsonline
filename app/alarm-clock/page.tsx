@@ -6,16 +6,33 @@ import { HelpCircle, Bell, Clock, Zap, Shield, GraduationCap, Briefcase, Dumbbel
 import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
-  title: 'Online Alarm Clock — Loud Alarms, Custom Sounds & Snooze',
+  title: {
+    absolute: 'Online Alarm Clock — Loud Alarm & Snooze | Clocks & Alarms'
+  },
   description: 'Set a free online alarm clock with loud sounds, custom labels, and snooze. Reliable browser alarms that wake you up on time on any desktop, tablet, or phone.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/alarm-clock/',
   },
   openGraph: {
-    title: 'Online Alarm Clock — Loud Alarms, Custom Sounds & Snooze',
+    title: 'Online Alarm Clock — Loud Alarm & Snooze | Clocks & Alarms',
     description: 'Set a free online alarm clock with loud sounds, custom labels, and snooze. Reliable browser alarms that wake you up on time on any desktop, tablet, or phone.',
-    type: 'website',
     url: 'https://clocksandalarmsonline.com/alarm-clock/',
+    siteName: 'Clocks and Alarms Online',
+    type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Online Alarm Clock'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Online Alarm Clock — Loud Alarm & Snooze | Clocks & Alarms',
+    description: 'Set a free online alarm clock with loud sounds, custom labels, and snooze. Reliable browser alarms that wake you up on time on any desktop, tablet, or phone.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

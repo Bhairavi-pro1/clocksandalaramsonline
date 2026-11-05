@@ -143,10 +143,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shared-alarm"
+                  href="/shared-timer"
                   className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 font-medium whitespace-nowrap"
                 >
-                  <Share2 className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Shared Alarm
+                  <Share2 className="w-3.5 h-3.5 flex-shrink-0 text-primary" /> Shared Timer
                 </Link>
               </li>
               <li>

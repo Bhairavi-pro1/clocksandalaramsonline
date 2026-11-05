@@ -8,16 +8,33 @@ import { Metadata } from 'next'
 import ToolSEO from '@/components/seo/ToolSEO'
 
 export const metadata: Metadata = {
-  title: 'Global Meeting Planner — Cross-Timezone Time Finder & Scheduler',
+  title: {
+    absolute: 'Meeting Planner — Cross Timezone Scheduler | Clocks & Alarms'
+  },
   description: 'Find the best meeting time across multiple global time zones. Compare working hours with visual color-coded heatmaps to schedule seamless international calls.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/meeting-planner/',
   },
   openGraph: {
-    title: 'Global Meeting Planner — Cross-Timezone Time Finder & Scheduler',
+    title: 'Meeting Planner — Cross Timezone Scheduler | Clocks & Alarms',
     description: 'Find the best meeting time across multiple global time zones. Compare working hours with visual color-coded heatmaps to schedule seamless international calls.',
-    type: 'website',
     url: 'https://clocksandalarmsonline.com/meeting-planner/',
+    siteName: 'Clocks and Alarms Online',
+    type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Meeting Planner'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Meeting Planner — Cross Timezone Scheduler | Clocks & Alarms',
+    description: 'Find the best meeting time across multiple global time zones. Compare working hours with visual color-coded heatmaps to schedule seamless international calls.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

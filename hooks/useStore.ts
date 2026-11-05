@@ -39,8 +39,6 @@ interface AppState {
   // Ringing states
   activeAlarmId: string | null
   setRingingAlarmId: (id: string | null) => void
-  ringingSharedAlarm: any | null
-  setRingingSharedAlarm: (alarm: any | null) => void
 
   // Preferences
   is24Hour: boolean
@@ -119,8 +117,6 @@ export const useStore = create<AppState>()(
 
       activeAlarmId: null,
       setRingingAlarmId: (id) => set(() => ({ activeAlarmId: id })),
-      ringingSharedAlarm: null,
-      setRingingSharedAlarm: (alarm) => set(() => ({ ringingSharedAlarm: alarm })),
 
       is24Hour: false,
       toggleTimeFormat: () => set((state) => ({ is24Hour: !state.is24Hour })),

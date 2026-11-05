@@ -66,6 +66,10 @@ export default function ToolSEO({
   faqs
 }: ToolSEOProps) {
   const troubleData = parseTroubleshooting(troubleshooting)
+  const headingWords = introHeading.trim().split(/\s+/)
+  const mainWords = headingWords.length > 2 ? headingWords.slice(0, -2).join(' ') : introHeading
+  const highlightWords = headingWords.length > 2 ? headingWords.slice(-2).join(' ') : ''
+
   return (
     <div className="max-w-6xl mx-auto pb-12 sm:pb-24 space-y-16 sm:space-y-32">
       
@@ -75,8 +79,12 @@ export default function ToolSEO({
           {introTag}
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-display text-slate-900 dark:text-white tracking-tight leading-tight">
-          {introHeading.split(' ').map((word, i, arr) => 
-            i > arr.length - 3 ? <span key={i} className="text-primary/80">{word} </span> : <span key={i}>{word} </span>
+          {mainWords}
+          {highlightWords && (
+            <>
+              {' '}
+              <span className="text-primary/80">{highlightWords}</span>
+            </>
           )}
         </h2>
         <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-muted leading-relaxed max-w-4xl mx-auto font-medium opacity-90 whitespace-pre-line text-left">

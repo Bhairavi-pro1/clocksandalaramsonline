@@ -12,20 +12,22 @@ import { cn } from '@/lib/utils';
 import { getCountrySlug } from '@/lib/countryResolver';
 
 export const metadata: Metadata = {
-  title: 'Holiday Countdowns — Live Global Holiday Countdown Clocks',
+  title: {
+    absolute: 'Holiday Countdowns — Live Event Timers | Clocks & Alarms'
+  },
   description: 'Track live countdown clocks for major national holidays, bank holidays, and cultural festivals worldwide. Accurate to the millisecond with full-screen displays.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/countdown/',
   },
   openGraph: {
-    title: 'Global Holiday Countdowns — Clocks and Alarms Online',
+    title: 'Holiday Countdowns — Live Event Timers | Clocks & Alarms',
     description: 'Track live countdown clocks for major national holidays, bank holidays, and cultural festivals worldwide. Accurate to the millisecond with full-screen displays.',
     url: 'https://clocksandalarmsonline.com/countdown/',
     siteName: 'Clocks and Alarms Online',
     type: 'website',
     images: [
       {
-        url: '/icon.png',
+        url: 'https://clocksandalarmsonline.com/icon.png',
         width: 512,
         height: 512,
         alt: 'Holiday Countdowns - Clocks and Alarms Online'
@@ -34,9 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'Global Holiday Countdowns — Clocks and Alarms Online',
+    title: 'Holiday Countdowns — Live Event Timers | Clocks & Alarms',
     description: 'Track live countdown clocks for major national holidays, bank holidays, and cultural festivals worldwide. Accurate to the millisecond with full-screen displays.',
-    images: ['/icon.png'],
+    images: ['https://clocksandalarmsonline.com/icon.png'],
   }
 };
 

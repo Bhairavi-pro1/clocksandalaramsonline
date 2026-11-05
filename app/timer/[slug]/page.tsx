@@ -88,7 +88,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      url: `https://clocksandalarmsonline.com/timer/${slug}/`
+      url: `https://clocksandalarmsonline.com/timer/${slug}/`,
+      siteName: 'Clocks and Alarms Online',
+      images: [
+        {
+          url: 'https://clocksandalarmsonline.com/icon.png',
+          width: 512,
+          height: 512,
+          alt: `${title} - Clocks and Alarms Online`
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+      images: ['https://clocksandalarmsonline.com/icon.png']
     }
   }
 }

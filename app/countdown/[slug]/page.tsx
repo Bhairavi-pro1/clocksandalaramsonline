@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
       images: [
         {
-          url: '/icon.png',
+          url: 'https://clocksandalarmsonline.com/icon.png',
           width: 512,
           height: 512,
           alt: `${name} Holiday Countdowns - Clocks and Alarms Online`
@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary',
       title: `Holiday Countdowns in ${name}`,
       description: desc,
-      images: ['/icon.png'],
+      images: ['https://clocksandalarmsonline.com/icon.png'],
     }
   };
 }

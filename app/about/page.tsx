@@ -4,16 +4,33 @@ import AdBanner from '@/components/ui/AdBanner'
 import TeamSection from '@/components/ui/TeamSection'
 
 export const metadata: Metadata = {
-  title: 'About Us — Precision Timekeeping Technology & Team',
+  title: {
+    absolute: 'About Us — Precision Timekeeping | Clocks & Alarms'
+  },
   description: 'Learn about Clocks and Alarms Online. Discover our mission to provide free, millisecond-accurate, zero-drift timekeeping tools, alarms, and timers globally.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/about/',
   },
   openGraph: {
-    title: 'About Us — Precision Timekeeping Technology & Team',
+    title: 'About Us — Precision Timekeeping | Clocks & Alarms',
     description: 'Learn about Clocks and Alarms Online. Discover our mission to provide free, millisecond-accurate, zero-drift timekeeping tools, alarms, and timers globally.',
-    type: 'website',
     url: 'https://clocksandalarmsonline.com/about/',
+    siteName: 'Clocks and Alarms Online',
+    type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'About Us - Clocks and Alarms Online'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'About Us — Precision Timekeeping | Clocks & Alarms',
+    description: 'Learn about Clocks and Alarms Online. Discover our mission to provide free, millisecond-accurate, zero-drift timekeeping tools, alarms, and timers globally.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

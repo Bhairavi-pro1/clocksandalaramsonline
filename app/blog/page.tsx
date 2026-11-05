@@ -8,18 +8,37 @@ import AdBanner from '@/components/ui/AdBanner'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Timekeeping Blog & Productivity Insights',
+  title: {
+    absolute: 'Timekeeping Blog & Productivity Guides | Clocks & Alarms'
+  },
   description:
     'Explore expert guides and articles on time management, productivity techniques, clock technology, and the history of precision timekeeping around the world.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/blog/',
   },
   openGraph: {
-    title: 'Timekeeping Blog & Productivity Insights',
+    title: 'Timekeeping Blog & Productivity Guides | Clocks & Alarms',
     description:
       'Explore expert guides and articles on time management, productivity techniques, clock technology, and the history of precision timekeeping around the world.',
+    url: 'https://clocksandalarmsonline.com/blog/',
+    siteName: 'Clocks and Alarms Online',
     type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Timekeeping Blog - Clocks and Alarms Online'
+      }
+    ]
   },
+  twitter: {
+    card: 'summary',
+    title: 'Timekeeping Blog & Productivity Guides | Clocks & Alarms',
+    description:
+      'Explore expert guides and articles on time management, productivity techniques, clock technology, and the history of precision timekeeping around the world.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
+  }
 }
 
 const categoryLabels: Record<string, string> = {

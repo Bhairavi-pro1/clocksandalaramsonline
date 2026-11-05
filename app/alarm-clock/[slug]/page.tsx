@@ -55,9 +55,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: 'website',
       url: `https://clocksandalarmsonline.com/alarm-clock/${slug}/`,
+      siteName: 'Clocks and Alarms Online',
       images: [
         {
-          url: '/icon.png',
+          url: 'https://clocksandalarmsonline.com/icon.png',
           width: 512,
           height: 512,
           alt: `${title} - Clocks and Alarms Online`
@@ -68,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary',
       title,
       description,
-      images: ['/icon.png'],
+      images: ['https://clocksandalarmsonline.com/icon.png'],
     }
   }
 }

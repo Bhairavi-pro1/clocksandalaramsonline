@@ -33,10 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: city.title,
       description: city.description,
       url: `https://clocksandalarmsonline.com/world-clock/${city.slug}/`,
+      siteName: 'Clocks and Alarms Online',
       type: 'website',
       images: [
         {
-          url: '/icon.png',
+          url: 'https://clocksandalarmsonline.com/icon.png',
           width: 512,
           height: 512,
           alt: `${city.name} World Clock - Clocks and Alarms Online`
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary',
       title: city.title,
       description: city.description,
-      images: ['/icon.png'],
+      images: ['https://clocksandalarmsonline.com/icon.png'],
     }
   }
 }

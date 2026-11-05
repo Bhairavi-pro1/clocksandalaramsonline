@@ -99,14 +99,14 @@ const tools = [
     ctaText: 'Plan World Meeting'
   },
   {
-    title: 'Shared Alarm',
-    description: 'Create, schedule, and broadcast custom synchronized alarms across multiple remote devices simultaneously. Great for morning standups, study cohorts, or multiplayer time coordination.',
+    title: 'Shared Timer',
+    description: 'Create, schedule, and broadcast synchronized countdown timers across multiple remote devices simultaneously. Great for sprint standups, hackathons, classrooms, and focus blocks.',
     icon: Users,
-    href: '/shared-alarm',
+    href: '/shared-timer',
     color: 'from-pink-500/20 to-rose-500/20',
     iconColor: 'text-pink-400',
     badge: 'New',
-    ctaText: 'Create Shared Alarm'
+    ctaText: 'Create Shared Timer'
   },
   {
     title: 'Egg Timer',
@@ -560,7 +560,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             <Link href="/timer" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Countdown Timer</Link>
             <Link href="/dst-tracker" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">DST Tracker</Link>
             <Link href="/meeting-planner" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Meeting Planner</Link>
-            <Link href="/shared-alarm" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Shared Alarm</Link>
+            <Link href="/shared-timer" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Shared Timer</Link>
             <Link href="/egg-timer" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Egg Timer</Link>
             <Link href="/countdown" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 text-xs font-bold uppercase tracking-wider text-white hover:text-primary transition-all">Holiday Countdown</Link>
           </div>

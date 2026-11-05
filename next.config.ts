@@ -63,6 +63,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/shared-alarm/:path*',
+        destination: '/shared-timer/:path*',
+        permanent: true,
+      },
+      {
         source: '/tools/:path*',
         destination: '/:path*',
         permanent: true,

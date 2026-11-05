@@ -22,9 +22,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     setRingingAlarmId,
     countdowns,
     updateCountdown,
-    removeCountdown,
-    ringingSharedAlarm,
-    setRingingSharedAlarm
+    removeCountdown
   } = useStore()
 
   const ringingTimer = countdowns.find(c => c.isRinging)
@@ -94,14 +92,6 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         }}
         label={ringingTimer?.label || 'Timer Finished!'}
         type="timer"
-      />
-
-      <AlarmTriggerModal
-        isOpen={!!ringingSharedAlarm}
-        onClose={() => setRingingSharedAlarm(null)}
-        label={ringingSharedAlarm?.title || 'Shared Alarm Ringing!'}
-        type="alarm"
-        timeText={ringingSharedAlarm ? new Date(ringingSharedAlarm.alarmDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
       />
 
       <BookmarkModal />

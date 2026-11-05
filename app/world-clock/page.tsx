@@ -5,15 +5,33 @@ import { HelpCircle, Search, Globe, Maximize2, Save, GraduationCap, Briefcase, D
 import AdBanner from '@/components/ui/AdBanner'
 import ToolSEO from '@/components/seo/ToolSEO'
 export const metadata: Metadata = {
-  title: 'World Clock — Current Local Time in Any City Worldwide',
+  title: {
+    absolute: 'World Clock — Current Local Time in Cities | Clocks & Alarms'
+  },
   description: 'Track current local time across thousands of cities worldwide. Check time zone differences, daylight saving adjustments, and live weather with atomic accuracy.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/world-clock/',
   },
   openGraph: {
-    title: 'World Clock — Current Local Time in Any City Worldwide',
+    title: 'World Clock — Current Local Time in Cities | Clocks & Alarms',
     description: 'Track current local time across thousands of cities worldwide. Check time zone differences, daylight saving adjustments, and live weather with atomic accuracy.',
+    url: 'https://clocksandalarmsonline.com/world-clock/',
+    siteName: 'Clocks and Alarms Online',
     type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'World Clock'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'World Clock — Current Local Time in Cities | Clocks & Alarms',
+    description: 'Track current local time across thousands of cities worldwide. Check time zone differences, daylight saving adjustments, and live weather with atomic accuracy.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 

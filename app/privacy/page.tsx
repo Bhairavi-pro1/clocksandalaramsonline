@@ -2,16 +2,33 @@ import type { Metadata } from 'next'
 import { ShieldCheck, Info, Mail, Cookie } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — User Data Protection & Privacy Standards',
+  title: {
+    absolute: 'Privacy Policy — Clocks and Alarms Online'
+  },
   description: 'Read the Clocks and Alarms Online Privacy Policy. We respect your data with zero registration, no personal tracking, and secure local client-side storage.',
   alternates: {
     canonical: 'https://clocksandalarmsonline.com/privacy/',
   },
   openGraph: {
-    title: 'Privacy Policy — User Data Protection & Privacy Standards',
+    title: 'Privacy Policy — Clocks and Alarms Online',
     description: 'Read the Clocks and Alarms Online Privacy Policy. We respect your data with zero registration, no personal tracking, and secure local client-side storage.',
-    type: 'website',
     url: 'https://clocksandalarmsonline.com/privacy/',
+    siteName: 'Clocks and Alarms Online',
+    type: 'website',
+    images: [
+      {
+        url: 'https://clocksandalarmsonline.com/icon.png',
+        width: 512,
+        height: 512,
+        alt: 'Privacy Policy - Clocks and Alarms Online'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Privacy Policy — Clocks and Alarms Online',
+    description: 'Read the Clocks and Alarms Online Privacy Policy. We respect your data with zero registration, no personal tracking, and secure local client-side storage.',
+    images: ['https://clocksandalarmsonline.com/icon.png']
   }
 }
 
