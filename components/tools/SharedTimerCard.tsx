@@ -25,6 +25,16 @@ function formatDuration(seconds: number): string {
   return `${s}s`
 }
 
+function formatRunningTime(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600)
+  const m = Math.floor((totalSeconds % 3600) / 60)
+  const s = totalSeconds % 60
+  if (h > 0) {
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  }
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+
 export default function SharedTimerCard({ timer, onDeleted }: SharedTimerCardProps) {
   const [copied, setCopied] = useState(false)
   const [, setTick] = useState(0)
@@ -124,20 +134,46 @@ export default function SharedTimerCard({ timer, onDeleted }: SharedTimerCardPro
           {getStatusBadge()}
         </div>
 
-        {timer.description && (
-          <p className="text-xs text-slate-600 dark:text-muted/80 line-clamp-2 mb-3 font-medium">
-            {timer.description}
-          </p>
-        )}
+        {/* Middle area: Description & Duration on left, Live Countdown in free space on right */}
+        <div className="flex items-end justify-between gap-3 mb-5">
+          <div className="space-y-2 min-w-0 flex-1">
+            {timer.description && (
+              <p className="text-xs text-slate-600 dark:text-muted/80 line-clamp-2 font-medium">
+                {timer.description}
+              </p>
+            )}
 
-        <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-muted mb-5 font-semibold">
-          <div className="flex items-center gap-1.5">
-            <Clock size={13} className="text-primary" />
-            <span>{formatDuration(timer.durationSeconds)}</span>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-muted font-semibold">
+              <Clock size={13} className="text-primary flex-shrink-0" />
+              <span>{formatDuration(timer.durationSeconds)}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="capitalize">{timer.sound} tone</span>
-          </div>
+
+          {/* Display time in this room unless finished alone */}
+          {!timerState.isDone && timerState.displayStatus !== 'completed' && timerState.displayStatus !== 'expired' && (
+            <div className="flex flex-col items-end justify-center flex-shrink-0 pl-2">
+              <span className="font-mono text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums leading-none">
+                {formatRunningTime(
+                  timerState.displayStatus === 'waiting'
+                    ? timer.durationSeconds
+                    : timerState.secondsLeft
+                )}
+              </span>
+              {timerState.displayStatus === 'running' ? (
+                <span className="text-[9px] sm:text-[10px] uppercase font-black tracking-wider text-emerald-600 dark:text-emerald-400 mt-1">
+                  Remaining
+                </span>
+              ) : timerState.displayStatus === 'paused' ? (
+                <span className="text-[9px] sm:text-[10px] uppercase font-black tracking-wider text-amber-600 dark:text-amber-400 mt-1">
+                  Paused
+                </span>
+              ) : (
+                <span className="text-[9px] sm:text-[10px] uppercase font-black tracking-wider text-primary mt-1">
+                  Ready
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
