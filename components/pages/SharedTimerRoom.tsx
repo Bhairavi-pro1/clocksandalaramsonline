@@ -68,7 +68,10 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
   const [autoDeleteTimeLeft, setAutoDeleteTimeLeft] = useState<number | null>(null)
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const webAudioCtxRef = useRef<AudioContext | null>(null)
+  const beepIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const audioTriggeredRef = useRef(false)
+  const enteredWhenAlreadyDoneRef = useRef<boolean | null>(null)
   const previousSecondsLeftRef = useRef<number | null>(null)
   const sessionId = useRef<string>('')
 
@@ -84,7 +87,54 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     if (saved) setJoinName(saved)
   }, [])
 
-  // 2. Subscribe to Firestore Real-Time Timer & Participants
+  // 2. Pre-unlock AudioContext & HTML5 Audio on any user gesture in the room
+  useEffect(() => {
+    const unlockAudio = () => {
+      try {
+        if (!audioRef.current) {
+          const soundFile = SOUNDS[timer?.sound || 'vibe'] || SOUNDS.vibe
+          const audio = new Audio(soundFile)
+          audio.preload = 'auto'
+          audio.volume = 0
+          audio.play().then(() => {
+            audio.pause()
+            audio.currentTime = 0
+            audio.volume = 0.9
+          }).catch(() => {})
+          audioRef.current = audio
+        }
+
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
+        if (AudioCtx && !webAudioCtxRef.current) {
+          const ctx = new AudioCtx()
+          if (ctx.state === 'suspended') {
+            ctx.resume().catch(() => {})
+          }
+          webAudioCtxRef.current = ctx
+        }
+      } catch (e) {}
+    }
+
+    window.addEventListener('click', unlockAudio, { once: true })
+    window.addEventListener('touchstart', unlockAudio, { once: true })
+    window.addEventListener('keydown', unlockAudio, { once: true })
+    return () => {
+      window.removeEventListener('click', unlockAudio)
+      window.removeEventListener('touchstart', unlockAudio)
+      window.removeEventListener('keydown', unlockAudio)
+    }
+  }, [timer?.sound])
+
+  // Track if user entered when room was ALREADY finished
+  useEffect(() => {
+    if (!timer) return
+    if (enteredWhenAlreadyDoneRef.current === null) {
+      const initial = calculateTimerState(timer)
+      enteredWhenAlreadyDoneRef.current = initial.isDone || initial.displayStatus === 'completed' || initial.displayStatus === 'expired'
+    }
+  }, [timer])
+
+  // 3. Subscribe to Firestore Real-Time Timer & Participants
   useEffect(() => {
     if (!roomId) return
     setLoading(true)
@@ -127,16 +177,18 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     }
   }, [roomId])
 
-  // 3. High-Precision Local Countdown Loop (Zero Firestore reads during countdown!)
+  // 4. High-Precision Local Countdown Loop (Zero Firestore reads during countdown!)
   useEffect(() => {
     if (!timer) return
 
-    const storageKey = `shared_timer_rung_${timer.id}`
+    // Run-specific key ensures each new timer run gets its own ring lifecycle
+    const currentRunId = timer.startedAt ? `${timer.id}_${timer.startedAt}` : timer.id
+    const storageKey = `shared_timer_rung_${currentRunId}`
     const alreadyRung = typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === 'true'
 
-    // If entering a room that is ALREADY completed, or has already rung: do NOT ring again!
+    // If entering a room that was ALREADY completed prior to page load, suppress ringing
     const initialState = calculateTimerState(timer)
-    if (initialState.isDone || initialState.displayStatus === 'completed' || alreadyRung) {
+    if (alreadyRung || (enteredWhenAlreadyDoneRef.current && initialState.isDone)) {
       audioTriggeredRef.current = true
     }
 
@@ -161,16 +213,20 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
       }
 
       // Handle Completion Sound Trigger:
-      // ONLY trigger if the user was actively present while timer was running (> 0 seconds),
-      // and it just reached 0, AND it hasn't rung yet!
-      const hasRung = audioTriggeredRef.current || (typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === 'true')
-      const wasActivelyRunningInRoom = previousSecondsLeftRef.current !== null && previousSecondsLeftRef.current > 0
+      // Rings if timer is completed, hasn't rung for this run yet, and user did not enter after it was already finished
+      const hasRungForThisRun = audioTriggeredRef.current || (typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === 'true')
+      const shouldRing = state.isDone && 
+                         state.displayStatus === 'completed' && 
+                         !hasRungForThisRun && 
+                         !enteredWhenAlreadyDoneRef.current && 
+                         timer.status !== 'waiting'
 
-      if (state.isDone && state.displayStatus === 'completed' && wasActivelyRunningInRoom && !hasRung) {
+      if (shouldRing) {
         audioTriggeredRef.current = true
         if (typeof window !== 'undefined') {
           sessionStorage.setItem(storageKey, 'true')
         }
+        setIsPlayingAudio(true)
         if (!isMuted) {
           playAlertSound(timer.sound)
         }
@@ -180,13 +236,10 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
         }
       }
 
-      // Remember current secondsLeft for the next tick
-      previousSecondsLeftRef.current = state.secondsLeft
-
-      // Reset trigger if reset back to waiting
+      // Reset trigger if reset back to waiting for a new countdown
       if (timer.status === 'waiting') {
         audioTriggeredRef.current = false
-        previousSecondsLeftRef.current = null
+        enteredWhenAlreadyDoneRef.current = false
         if (typeof window !== 'undefined') {
           sessionStorage.removeItem(storageKey)
         }
@@ -199,24 +252,66 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     return () => clearInterval(interval)
   }, [timer, isMuted, isHost])
 
-  // 4. Sound Controls
+  // 5. Sound & Web Audio Controls
+  const playWebAudioBeep = () => {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
+      if (!AudioCtx) return
+      if (!webAudioCtxRef.current) {
+        webAudioCtxRef.current = new AudioCtx()
+      }
+      const ctx = webAudioCtxRef.current
+      if (ctx.state === 'suspended') {
+        ctx.resume().catch(() => {})
+      }
+
+      const ringPulse = () => {
+        try {
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.type = 'sine'
+          osc.frequency.setValueAtTime(880, ctx.currentTime)
+          osc.frequency.setValueAtTime(1174.66, ctx.currentTime + 0.15)
+          gain.gain.setValueAtTime(0.3, ctx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35)
+          osc.connect(gain)
+          gain.connect(ctx.destination)
+          osc.start()
+          osc.stop(ctx.currentTime + 0.36)
+        } catch {}
+      }
+
+      ringPulse()
+      if (beepIntervalRef.current) clearInterval(beepIntervalRef.current)
+      beepIntervalRef.current = setInterval(ringPulse, 800)
+    } catch {}
+  }
+
   const playAlertSound = (soundKey: string) => {
     try {
       const soundFile = SOUNDS[soundKey] || SOUNDS.vibe
-      if (audioRef.current) {
-        audioRef.current.pause()
+      setIsPlayingAudio(true)
+
+      let audio = audioRef.current
+      if (!audio) {
+        audio = new Audio(soundFile)
+        audioRef.current = audio
       }
-      const audio = new Audio(soundFile)
+      audio.src = soundFile
       audio.loop = true
-      audio.volume = 0.85
-      audio.play().then(() => {
-        setIsPlayingAudio(true)
-      }).catch((e) => {
-        console.warn('Playback error:', e)
-      })
-      audioRef.current = audio
+      audio.volume = 0.9
+      audio.currentTime = 0
+
+      const playPromise = audio.play()
+      if (playPromise !== undefined) {
+        playPromise.catch((e) => {
+          console.warn('HTML5 Audio playback blocked, activating Web Audio fallback:', e)
+          playWebAudioBeep()
+        })
+      }
     } catch (e) {
-      console.warn('Audio play failed:', e)
+      console.warn('Audio play failed, activating Web Audio fallback:', e)
+      playWebAudioBeep()
     }
   }
 
@@ -224,6 +319,10 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     if (audioRef.current) {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
+    }
+    if (beepIntervalRef.current) {
+      clearInterval(beepIntervalRef.current)
+      beepIntervalRef.current = null
     }
     setIsPlayingAudio(false)
   }

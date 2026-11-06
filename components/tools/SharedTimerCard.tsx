@@ -1,7 +1,10 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Clock, Play, Pause, CheckCircle2, Copy, Check, Trash2, ArrowRight, Users, ShieldAlert } from 'lucide-react'
-import { SharedTimer, deleteSharedTimer, isHostOfTimer, calculateTimerState } from '@/lib/sharedTimerLogic'
+import { 
+  SharedTimer, deleteSharedTimer, isHostOfTimer, 
+  calculateTimerState, markSharedTimerCompleted, checkAndPruneExpiredTimer 
+} from '@/lib/sharedTimerLogic'
 import Link from 'next/link'
 
 interface SharedTimerCardProps {
@@ -24,7 +27,32 @@ function formatDuration(seconds: number): string {
 
 export default function SharedTimerCard({ timer, onDeleted }: SharedTimerCardProps) {
   const [copied, setCopied] = useState(false)
+  const [, setTick] = useState(0)
   const isHost = isHostOfTimer(timer.id, timer.hostToken)
+
+  // 1-second tick loop so status badges & countdowns update live on the dashboard
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTick(t => t + 1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const timerState = calculateTimerState(timer)
+
+  // Auto-mark completed in Firestore once endsAt is reached
+  useEffect(() => {
+    if (timerState.isDone && timer.status === 'running') {
+      markSharedTimerCompleted(timer.id).catch(() => {})
+    }
+    if (timerState.displayStatus === 'expired') {
+      checkAndPruneExpiredTimer(timer).then((pruned) => {
+        if (pruned && onDeleted) {
+          onDeleted(timer.id)
+        }
+      }).catch(() => {})
+    }
+  }, [timerState.isDone, timerState.displayStatus, timer, onDeleted])
 
   const handleCopy = (e: React.MouseEvent) => {
     e.preventDefault()

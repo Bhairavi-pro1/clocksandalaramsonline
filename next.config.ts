@@ -54,6 +54,14 @@ const nextConfig: NextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
           },
+          {
+            key: 'Link',
+            value: '<https://clocksandalarmsonline.com/llms.txt>; rel="alternate"; type="text/markdown", <https://clocksandalarmsonline.com/.well-known/mcp/server-card.json>; rel="service-desc"; type="application/json"',
+          },
+          {
+            key: 'Content-Signal',
+            value: 'search=yes, ai-train=no',
+          },
         ],
       },
     ];

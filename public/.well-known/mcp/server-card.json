@@ -1,0 +1,90 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/server-card.json",
+  "name": "clocks-and-alarms-online",
+  "version": "1.0.0",
+  "description": "High-precision web timekeeping, world clock, meeting planner, and synchronized countdown timer tools.",
+  "url": "https://clocksandalarmsonline.com",
+  "homepage": "https://clocksandalarmsonline.com",
+  "endpoint": "https://clocksandalarmsonline.com/api/mcp",
+  "transport": "sse",
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    },
+    "resources": {
+      "subscribe": false,
+      "listChanged": false
+    },
+    "prompts": {
+      "listChanged": false
+    }
+  },
+  "tools": [
+    {
+      "name": "get_world_time",
+      "description": "Get high-precision current local time, UTC offset, and Daylight Saving Time (DST) status for any timezone or city worldwide.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "description": "IANA timezone identifier (e.g., America/New_York, Europe/London, Asia/Kolkata) or city name."
+          }
+        },
+        "required": ["timezone"]
+      }
+    },
+    {
+      "name": "convert_timezone",
+      "description": "Convert a given date and time from a source timezone to a target timezone with exact offset calculations.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dateTime": {
+            "type": "string",
+            "description": "ISO 8601 formatted date-time string (e.g., 2026-11-06T12:00:00Z)"
+          },
+          "sourceTimezone": {
+            "type": "string",
+            "description": "Source IANA timezone identifier"
+          },
+          "targetTimezone": {
+            "type": "string",
+            "description": "Target IANA timezone identifier"
+          }
+        },
+        "required": ["dateTime", "sourceTimezone", "targetTimezone"]
+      }
+    },
+    {
+      "name": "calculate_meeting_overlap",
+      "description": "Find overlapping working hours and schedule convenient meeting windows across multiple timezones.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "timezones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of participant IANA timezones"
+          },
+          "workingHoursStart": {
+            "type": "number",
+            "description": "Standard business day start hour (0-23, default: 9)"
+          },
+          "workingHoursEnd": {
+            "type": "number",
+            "description": "Standard business day end hour (0-23, default: 17)"
+          }
+        },
+        "required": ["timezones"]
+      }
+    }
+  ],
+  "contact": {
+    "email": "bhairavi.co@gmail.com",
+    "url": "https://clocksandalarmsonline.com/contact"
+  }
+}
+

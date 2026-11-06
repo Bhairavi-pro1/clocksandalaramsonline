@@ -6,7 +6,8 @@ import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { 
   SharedTimer, getMyCreatedTimers, getMyJoinedTimers, 
-  removeLocalTimerReference, checkAndPruneExpiredTimer 
+  removeLocalTimerReference, checkAndPruneExpiredTimer,
+  subscribeToSharedTimer
 } from '@/lib/sharedTimerLogic'
 import SharedTimerCard from '@/components/tools/SharedTimerCard'
 import CreateSharedTimerModal from '@/components/tools/CreateSharedTimerModal'
@@ -20,51 +21,70 @@ export default function SharedTimerDashboard() {
   const [joinCode, setJoinCode] = useState('')
   const [joinError, setJoinError] = useState('')
 
-  // Load created and joined timers from localStorage and Firestore
-  const loadTimers = useCallback(async () => {
+  // Real-time synchronization of created and joined timers via Firestore onSnapshot
+  const loadTimers = useCallback(() => {
     setIsLoading(true)
-    try {
-      const createdIds = getMyCreatedTimers()
-      const joinedIds = getMyJoinedTimers()
+    const createdIds = getMyCreatedTimers()
+    const joinedIds = getMyJoinedTimers()
+    const allIds = Array.from(new Set([...createdIds, ...joinedIds]))
 
-      const fetchTimer = async (id: string): Promise<SharedTimer | null> => {
-        try {
-          const snap = await getDoc(doc(db, 'sharedTimers', id))
-          if (!snap.exists()) {
-            removeLocalTimerReference(id)
-            return null
-          }
-          const timer = snap.data() as SharedTimer
-          
-          // Check if expired > 5 mins
-          const pruned = await checkAndPruneExpiredTimer(timer)
+    if (allIds.length === 0) {
+      setCreatedTimers([])
+      setJoinedTimers([])
+      setIsLoading(false)
+      return () => {}
+    }
+
+    const timersMap = new Map<string, SharedTimer>()
+    const unsubs: (() => void)[] = []
+    let pendingCount = allIds.length
+
+    const updateLists = () => {
+      const created = createdIds.map(id => timersMap.get(id)).filter(Boolean) as SharedTimer[]
+      const joined = joinedIds.filter(id => !createdIds.includes(id)).map(id => timersMap.get(id)).filter(Boolean) as SharedTimer[]
+      setCreatedTimers(created)
+      setJoinedTimers(joined)
+    }
+
+    allIds.forEach((id) => {
+      const unsub = subscribeToSharedTimer(id, async (remoteTimer) => {
+        if (!remoteTimer) {
+          removeLocalTimerReference(id)
+          timersMap.delete(id)
+        } else {
+          const pruned = await checkAndPruneExpiredTimer(remoteTimer)
           if (pruned) {
             removeLocalTimerReference(id)
-            return null
+            timersMap.delete(id)
+          } else {
+            timersMap.set(id, remoteTimer)
           }
-
-          return timer
-        } catch {
-          return null
         }
-      }
 
-      const [loadedCreated, loadedJoined] = await Promise.all([
-        Promise.all(createdIds.map(fetchTimer)),
-        Promise.all(joinedIds.filter(id => !createdIds.includes(id)).map(fetchTimer))
-      ])
+        updateLists()
+        pendingCount--
+        if (pendingCount <= 0) {
+          setIsLoading(false)
+        }
+      }, () => {
+        pendingCount--
+        if (pendingCount <= 0) {
+          setIsLoading(false)
+        }
+      })
+      unsubs.push(unsub)
+    })
 
-      setCreatedTimers(loadedCreated.filter(Boolean) as SharedTimer[])
-      setJoinedTimers(loadedJoined.filter(Boolean) as SharedTimer[])
-    } catch (err) {
-      console.error('Failed to load shared timers:', err)
-    } finally {
-      setIsLoading(false)
+    return () => {
+      unsubs.forEach(unsub => unsub())
     }
   }, [])
 
   useEffect(() => {
-    loadTimers()
+    const unsub = loadTimers()
+    return () => {
+      if (typeof unsub === 'function') unsub()
+    }
   }, [loadTimers])
 
   const handleJoinWithCode = (e: React.FormEvent) => {
@@ -226,16 +246,6 @@ export default function SharedTimerDashboard() {
           <h4 className="text-sm font-black text-slate-900 dark:text-white">Timezone Agnostic</h4>
           <p className="text-xs text-slate-600 dark:text-muted leading-relaxed">
             Countdown target anchors to standardized server timestamps. Everyone finishes at the exact same instant regardless of local clock settings.
-          </p>
-        </div>
-
-        <div className="p-5 rounded-3xl bg-white dark:bg-card border border-slate-200/80 dark:border-white/5 space-y-2 shadow-sm">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base">
-            ⚡
-          </div>
-          <h4 className="text-sm font-black text-slate-900 dark:text-white">Zero Firestore Quota Drain</h4>
-          <p className="text-xs text-slate-600 dark:text-muted leading-relaxed">
-            Countdown ticks 100% locally on each browser via high-speed animation frames. Firestore is only contacted on state changes.
           </p>
         </div>
 

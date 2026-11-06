@@ -3,6 +3,7 @@ import { Inter, Plus_Jakarta_Sans, Orbitron } from 'next/font/google'
 import './globals.css'
 import LayoutWrapper from '@/components/ui/LayoutWrapper'
 import Script from 'next/script'
+import WebMCPProvider from '@/components/services/WebMCPProvider'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -101,6 +102,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="alternate" type="text/markdown" href="https://clocksandalarmsonline.com/llms.txt" />
+        <link rel="service-desc" type="application/json" href="https://clocksandalarmsonline.com/.well-known/mcp/server-card.json" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -136,6 +139,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen selection:bg-primary/30">
+        <WebMCPProvider />
         <LayoutWrapper>
           {children}
         </LayoutWrapper>

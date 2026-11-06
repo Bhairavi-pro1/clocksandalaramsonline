@@ -1,0 +1,73 @@
+# Content Signals for AI & Search Crawlers
+Content-Signal: search=yes, ai-train=no
+
+User-agent: *
+Allow: /
+Disallow: /studio
+
+User-agent: Googlebot
+Allow: /
+Disallow: /studio
+
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /studio
+
+User-agent: Bingbot
+Allow: /
+Disallow: /studio
+
+User-agent: GPTBot
+Allow: /
+Disallow: /studio
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /studio
+
+User-agent: CopilotBot
+Allow: /
+Disallow: /studio
+
+User-agent: Applebot
+Allow: /
+Disallow: /studio
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /studio
+
+User-agent: Slurp
+Allow: /
+Disallow: /studio
+
+User-agent: Yandex
+Allow: /
+Disallow: /studio
+
+User-agent: facebookexternalhit
+Allow: /
+Disallow: /studio
+
+User-agent: Twitterbot
+Allow: /
+Disallow: /studio
+
+User-agent: LinkedInBot
+Allow: /
+Disallow: /studio
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /studio
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /studio
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /studio
+
+Sitemap: https://clocksandalarmsonline.com/sitemap.xml
+
