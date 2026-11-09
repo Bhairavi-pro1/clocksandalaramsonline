@@ -5,6 +5,7 @@ import {
   SharedTimer, deleteSharedTimer, isHostOfTimer, 
   calculateTimerState, markSharedTimerCompleted, checkAndPruneExpiredTimer 
 } from '@/lib/sharedTimerLogic'
+import { unlockAndPreloadSharedTimerAudio } from '@/lib/sharedTimerAudio'
 import Link from 'next/link'
 
 interface SharedTimerCardProps {
@@ -201,6 +202,7 @@ export default function SharedTimerCard({ timer, onDeleted }: SharedTimerCardPro
 
         <Link
           href={`/shared-timer/?room=${timer.id}`}
+          onClick={() => unlockAndPreloadSharedTimerAudio(timer.sound)}
           className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs sm:text-sm font-black transition-all hover:scale-105 shadow-md shadow-primary/20"
         >
           <span>Enter Room</span>

@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { X, Play, Clock, Volume2, Square, ChevronDown } from 'lucide-react'
 import { createSharedTimer } from '@/lib/sharedTimerLogic'
+import { unlockAndPreloadSharedTimerAudio } from '@/lib/sharedTimerAudio'
 import { useRouter } from 'next/navigation'
 
 interface CreateSharedTimerModalProps {
@@ -118,6 +119,7 @@ export default function CreateSharedTimerModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     handleStopPreview()
+    unlockAndPreloadSharedTimerAudio(sound)
     
     const totalSeconds = (parseInt(hours) || 0) * 3600 + (parseInt(minutes) || 0) * 60 + (parseInt(seconds) || 0)
     if (totalSeconds <= 0) return

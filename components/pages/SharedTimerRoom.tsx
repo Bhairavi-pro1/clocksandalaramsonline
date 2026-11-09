@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useRef, useTransition } from 'react'
+import { useEffect, useState, useRef, useCallback, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -17,6 +17,16 @@ import {
 } from '@/lib/sharedTimerLogic'
 import { cn } from '@/lib/utils'
 import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
+import {
+  unlockAndPreloadSharedTimerAudio,
+  startAudioKeepAlive,
+  stopAudioKeepAlive,
+  playSharedTimerAlarm,
+  stopSharedTimerAlarm,
+  sendSharedTimerNotification,
+  startTitleAlert,
+  stopTitleAlert
+} from '@/lib/sharedTimerAudio'
 
 interface SharedTimerRoomProps {
   roomId: string
@@ -68,18 +78,23 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
   const [autoDeleteTimeLeft, setAutoDeleteTimeLeft] = useState<number | null>(null)
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const webAudioCtxRef = useRef<AudioContext | null>(null)
-  const beepIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const titleIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const originalTitleRef = useRef<string>('')
-  const audioTriggeredRef = useRef(false)
   const enteredWhenAlreadyDoneRef = useRef<boolean | null>(null)
-  const previousSecondsLeftRef = useRef<number | null>(null)
   const sessionId = useRef<string>('')
 
-  // Determine host status
-  const hostToken = timer ? getHostToken(timer.id) : null
+  // Up-to-date mutable refs so background Web Worker callback never becomes stale
+  const timerRef = useRef<SharedTimer | null>(timer)
+  timerRef.current = timer
+
   const isHost = Boolean(timer && isHostOfTimer(timer.id, timer.hostToken))
+  const isHostRef = useRef<boolean>(isHost)
+  isHostRef.current = isHost
+
+  const isMutedRef = useRef<boolean>(isMuted)
+  isMutedRef.current = isMuted
+
+  const hostToken = timer ? getHostToken(timer.id) : null
 
   // 1. Initial Setup & Session Init
   useEffect(() => {
@@ -90,75 +105,27 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     originalTitleRef.current = document.title
   }, [])
 
-  // 2. Pre-unlock AudioContext, HTML5 Audio & Desktop Notifications on user gesture
-  const unlockAudio = () => {
-    try {
-      const soundFile = SOUNDS[timer?.sound || 'vibe'] || SOUNDS.vibe
-
-      // Pre-warm HTML5 audio element
-      if (!audioRef.current) {
-        const audio = new Audio(soundFile)
-        audio.preload = 'auto'
-        audio.volume = 0
-        audio.play().then(() => {
-          audio.pause()
-          audio.currentTime = 0
-          audio.volume = 0.95
-        }).catch(() => {})
-        audioRef.current = audio
-      } else {
-        audioRef.current.src = soundFile
-        audioRef.current.volume = 0
-        audioRef.current.play().then(() => {
-          audioRef.current?.pause()
-          if (audioRef.current) {
-            audioRef.current.currentTime = 0
-            audioRef.current.volume = 0.95
-          }
-        }).catch(() => {})
-      }
-
-      // Pre-warm and keep-alive Web Audio API AudioContext
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
-      if (AudioCtx) {
-        if (!webAudioCtxRef.current) {
-          webAudioCtxRef.current = new AudioCtx()
-        }
-        const ctx = webAudioCtxRef.current
-        if (ctx.state === 'suspended') {
-          ctx.resume().catch(() => {})
-        }
-        // Emit a sub-audible 0.0001 gain pulse to keep audio device buffer active in background
-        try {
-          const osc = ctx.createOscillator()
-          const gain = ctx.createGain()
-          gain.gain.setValueAtTime(0.0001, ctx.currentTime)
-          osc.connect(gain)
-          gain.connect(ctx.destination)
-          osc.start()
-          osc.stop(ctx.currentTime + 0.05)
-        } catch {}
-      }
-
-      // Request native desktop notification permission for alerts across other applications
-      if ('Notification' in window && Notification.permission === 'default') {
-        Notification.requestPermission().catch(() => {})
-      }
-    } catch (e) {}
-  }
+  // 2. Audio Pre-warming & Notification Permission on First Interaction
+  const unlockAudioAndNotify = useCallback(() => {
+    unlockAndPreloadSharedTimerAudio(timerRef.current?.sound || 'vibe')
+  }, [])
 
   useEffect(() => {
-    const handleGesture = () => unlockAudio()
+    window.addEventListener('click', unlockAudioAndNotify, { once: true })
+    window.addEventListener('keydown', unlockAudioAndNotify, { once: true })
+    window.addEventListener('touchstart', unlockAudioAndNotify, { once: true })
 
-    window.addEventListener('click', handleGesture, { once: true })
-    window.addEventListener('touchstart', handleGesture, { once: true })
-    window.addEventListener('keydown', handleGesture, { once: true })
-    window.addEventListener('pointerdown', handleGesture, { once: true })
     return () => {
-      window.removeEventListener('click', handleGesture)
-      window.removeEventListener('touchstart', handleGesture)
-      window.removeEventListener('keydown', handleGesture)
-      window.removeEventListener('pointerdown', handleGesture)
+      window.removeEventListener('click', unlockAudioAndNotify)
+      window.removeEventListener('keydown', unlockAudioAndNotify)
+      window.removeEventListener('touchstart', unlockAudioAndNotify)
+    }
+  }, [unlockAudioAndNotify])
+
+  // Automatically preload and buffer the room's chosen audio file into RAM
+  useEffect(() => {
+    if (timer?.sound) {
+      unlockAndPreloadSharedTimerAudio(timer.sound)
     }
   }, [timer?.sound])
 
@@ -171,7 +138,160 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     }
   }, [timer])
 
-  // 3. Subscribe to Firestore Real-Time Timer & Participants
+  // 3. Play / Stop Ringing Audio via Web Audio API & HTML5 Audio
+  useEffect(() => {
+    if (isPlayingAudio && !isMuted) {
+      playSharedTimerAlarm(timer?.sound || 'vibe')
+      startTitleAlert(timer?.title || 'Shared Timer')
+    } else {
+      stopSharedTimerAlarm()
+      stopTitleAlert()
+    }
+  }, [isPlayingAudio, isMuted, timer?.sound, timer?.title])
+
+  // Cleanup ringing audio when unmounting
+  useEffect(() => {
+    return () => {
+      stopSharedTimerAlarm()
+      stopTitleAlert()
+    }
+  }, [])
+
+  // 4. Core Expiration Check Callback
+  const checkExpiration = useCallback(() => {
+    const currentTimer = timerRef.current
+    if (!currentTimer) return
+
+    const nowMs = Date.now()
+    const state = calculateTimerState(currentTimer)
+
+    setDisplaySeconds(state.secondsLeft)
+    setProgress(state.progress)
+    setDisplayStatus(state.displayStatus)
+
+    // Calculate auto-deletion time left if timer ended
+    if (currentTimer.endsAt) {
+      const fiveMinMs = 5 * 60 * 1000
+      const deleteAt = currentTimer.endsAt + fiveMinMs
+      const msUntilDelete = deleteAt - nowMs
+      if (msUntilDelete <= 0) {
+        checkAndPruneExpiredTimer(currentTimer).catch(() => {})
+        setDisplayStatus('expired')
+      } else {
+        setAutoDeleteTimeLeft(Math.max(0, Math.ceil(msUntilDelete / 1000)))
+      }
+    }
+
+    // Check if active countdown timer is running
+    const isRunning = currentTimer.status === 'running' && currentTimer.endsAt !== null
+    if (isRunning && currentTimer.endsAt) {
+      startAudioKeepAlive()
+      const remaining = Math.max(0, Math.ceil((currentTimer.endsAt - nowMs) / 1000))
+
+      if (remaining <= 0) {
+        const currentRunId = `${currentTimer.id}_${currentTimer.startedAt}`
+        const storageKey = `shared_timer_rung_${currentRunId}`
+        const alreadyRung = typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === 'true'
+
+        if (!alreadyRung && !enteredWhenAlreadyDoneRef.current) {
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem(storageKey, 'true')
+          }
+          if (!isMutedRef.current) {
+            playSharedTimerAlarm(currentTimer.sound)
+          }
+          setIsPlayingAudio(true)
+
+          sendSharedTimerNotification(
+            '⌛ Time Up!',
+            `"${currentTimer.title || 'Shared Timer'}" has finished.`,
+            currentTimer.id
+          )
+          startTitleAlert(currentTimer.title || 'Shared Timer')
+
+          if (isHostRef.current && currentTimer.status !== 'completed') {
+            markSharedTimerCompleted(currentTimer.id).catch(() => {})
+          }
+        }
+      }
+    } else {
+      stopAudioKeepAlive()
+    }
+
+    if (currentTimer.status === 'waiting') {
+      setIsPlayingAudio(false)
+      stopSharedTimerAlarm()
+      stopTitleAlert()
+      enteredWhenAlreadyDoneRef.current = false
+      if (typeof window !== 'undefined') {
+        const currentRunId = currentTimer.startedAt ? `${currentTimer.id}_${currentTimer.startedAt}` : currentTimer.id
+        sessionStorage.removeItem(`shared_timer_rung_${currentRunId}`)
+        sessionStorage.removeItem(`shared_timer_rung_${currentTimer.id}`)
+      }
+    }
+  }, [])
+
+  // 5. Central Background-Resistant Tick Engine (Web Worker + Interval Fallback)
+  // (Identical to persistent Web Worker in BackgroundTimeService — never terminated during countdown!)
+  useEffect(() => {
+    let worker: Worker | null = null
+    let fallbackInterval: NodeJS.Timeout | null = null
+
+    try {
+      const blob = new Blob([`
+        let timer = null;
+        self.onmessage = function(e) {
+          if (e.data === 'START') {
+            if (!timer) {
+              timer = setInterval(function() {
+                self.postMessage('TICK');
+              }, 1000);
+            }
+          } else if (e.data === 'STOP') {
+            if (timer) {
+              clearInterval(timer);
+              timer = null;
+            }
+          }
+        };
+      `], { type: 'application/javascript' })
+
+      const workerUrl = URL.createObjectURL(blob)
+      worker = new Worker(workerUrl)
+      worker.onmessage = (e) => {
+        if (e.data === 'TICK') {
+          checkExpiration()
+        }
+      }
+      worker.postMessage('START')
+    } catch {
+      fallbackInterval = setInterval(checkExpiration, 1000)
+    }
+
+    return () => {
+      if (worker) {
+        worker.postMessage('STOP')
+        worker.terminate()
+      }
+      if (fallbackInterval) {
+        clearInterval(fallbackInterval)
+      }
+    }
+  }, [checkExpiration])
+
+  // 6. Tab Visibility Resynchronization (Catches up immediately upon returning to tab)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkExpiration()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [checkExpiration])
+
+  // 7. Subscribe to Firestore Real-Time Timer & Participants
   useEffect(() => {
     if (!roomId) return
     setLoading(true)
@@ -214,300 +334,42 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     }
   }, [roomId])
 
-  // 4. Background-Resistant Countdown Loop (Web Worker + Fallback Interval)
-  // Web Workers run in background OS threads that are immune to browser tab throttling / minimizing!
-  useEffect(() => {
-    if (!timer) return
-
-    // Run-specific key ensures each new timer run gets its own ring lifecycle
-    const currentRunId = timer.startedAt ? `${timer.id}_${timer.startedAt}` : timer.id
-    const storageKey = `shared_timer_rung_${currentRunId}`
-    const alreadyRung = typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === 'true'
-
-    // If entering a room that was ALREADY completed prior to page load, suppress ringing
-    const initialState = calculateTimerState(timer)
-    if (alreadyRung || (enteredWhenAlreadyDoneRef.current && initialState.isDone)) {
-      audioTriggeredRef.current = true
-    }
-
-    const tick = () => {
-      const state = calculateTimerState(timer)
-      setDisplaySeconds(state.secondsLeft)
-      setProgress(state.progress)
-      setDisplayStatus(state.displayStatus)
-
-      // Calculate auto-deletion time left if timer ended
-      if (timer.endsAt) {
-        const fiveMinMs = 5 * 60 * 1000
-        const deleteAt = timer.endsAt + fiveMinMs
-        const msUntilDelete = deleteAt - Date.now()
-        if (msUntilDelete <= 0) {
-          // Trigger cleanup in background
-          checkAndPruneExpiredTimer(timer).catch(() => {})
-          setDisplayStatus('expired')
-        } else {
-          setAutoDeleteTimeLeft(Math.max(0, Math.ceil(msUntilDelete / 1000)))
-        }
-      }
-
-      // Handle Completion Sound Trigger:
-      // Rings if timer is completed, hasn't rung for this run yet, and user did not enter after it was already finished
-      const hasRungForThisRun = audioTriggeredRef.current || (typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === 'true')
-      const shouldRing = state.isDone && 
-                         state.displayStatus === 'completed' && 
-                         !hasRungForThisRun && 
-                         !enteredWhenAlreadyDoneRef.current && 
-                         timer.status !== 'waiting'
-
-      if (shouldRing) {
-        audioTriggeredRef.current = true
-        if (typeof window !== 'undefined') {
-          sessionStorage.setItem(storageKey, 'true')
-        }
-        setIsPlayingAudio(true)
-
-        // Flash browser tab title so Windows taskbar highlights
-        startTitleFlashing(timer.title || 'Shared Timer')
-
-        // Send native Windows / macOS notification over other desktop applications
-        sendDesktopNotification(
-          '⏰ Time Up! Shared Timer Finished',
-          `"${timer.title || 'Shared Timer'}" has reached 00:00.`
-        )
-
-        if (!isMuted) {
-          playAlertSound(timer.sound)
-        }
-        // If host, update status to 'completed' in Firestore
-        if (isHost && timer.status !== 'completed') {
-          markSharedTimerCompleted(timer.id).catch(() => {})
-        }
-      }
-
-      // Reset trigger if reset back to waiting for a new countdown
-      if (timer.status === 'waiting') {
-        audioTriggeredRef.current = false
-        enteredWhenAlreadyDoneRef.current = false
-        if (typeof window !== 'undefined') {
-          sessionStorage.removeItem(storageKey)
-        }
-        stopAlertSound()
-      }
-    }
-
-    // Immediate initial tick
-    tick()
-
-    // Central Web Worker Tick Engine (immune to background throttling when minimized)
-    let worker: Worker | null = null
-    let fallbackInterval: NodeJS.Timeout | null = null
-
-    try {
-      const workerBlob = new Blob([`
-        let timer = null;
-        self.onmessage = function(e) {
-          if (e.data === 'START') {
-            if (!timer) {
-              timer = setInterval(function() {
-                self.postMessage('TICK');
-              }, 250);
-            }
-          } else if (e.data === 'STOP') {
-            if (timer) {
-              clearInterval(timer);
-              timer = null;
-            }
-          }
-        };
-      `], { type: 'application/javascript' })
-
-      const workerUrl = URL.createObjectURL(workerBlob)
-      worker = new Worker(workerUrl)
-      worker.onmessage = (e) => {
-        if (e.data === 'TICK') {
-          tick()
-        }
-      }
-      worker.postMessage('START')
-    } catch {
-      fallbackInterval = setInterval(tick, 250)
-    }
-
-    // Catch up immediately if user switches back to the tab
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        tick()
-      }
-    }
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-
-    return () => {
-      if (worker) {
-        worker.postMessage('STOP')
-        worker.terminate()
-      }
-      if (fallbackInterval) {
-        clearInterval(fallbackInterval)
-      }
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
-  }, [timer, isMuted, isHost])
-
-  // Native Desktop Notification that displays across any other application
-  const sendDesktopNotification = (title: string, body: string) => {
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      if (Notification.permission === 'granted') {
-        try {
-          const notification = new Notification(title, {
-            body,
-            icon: '/icon.png',
-            tag: `shared-timer-${roomId}`,
-            requireInteraction: true, // Remains on screen in Windows notification center
-          })
-          notification.onclick = () => {
-            window.focus()
-            notification.close()
-          }
-        } catch (e) {
-          console.warn('Desktop notification error:', e)
-        }
-      }
-    }
-  }
-
-  // Flashing Browser Tab Title for Visual Taskbar Alert
-  const startTitleFlashing = (timerTitle: string) => {
-    if (typeof document === 'undefined') return
-    if (!originalTitleRef.current) {
-      originalTitleRef.current = document.title
-    }
-    let toggle = false
-    if (titleIntervalRef.current) clearInterval(titleIntervalRef.current)
-    titleIntervalRef.current = setInterval(() => {
-      document.title = toggle
-        ? `🔔 00:00 TIME'S UP! — ${timerTitle}`
-        : `⚠️ FINISHED! — ${timerTitle}`
-      toggle = !toggle
-    }, 900)
-  }
-
-  const stopTitleFlashing = () => {
-    if (titleIntervalRef.current) {
-      clearInterval(titleIntervalRef.current)
-      titleIntervalRef.current = null
-    }
-    if (originalTitleRef.current && typeof document !== 'undefined') {
-      document.title = originalTitleRef.current
-    }
-  }
-
-  // 5. Sound & Web Audio Controls
-  const playWebAudioBeep = () => {
-    try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
-      if (!AudioCtx) return
-      if (!webAudioCtxRef.current) {
-        webAudioCtxRef.current = new AudioCtx()
-      }
-      const ctx = webAudioCtxRef.current
-      if (ctx.state === 'suspended') {
-        ctx.resume().catch(() => {})
-      }
-
-      const ringPulse = () => {
-        try {
-          const osc = ctx.createOscillator()
-          const gain = ctx.createGain()
-          osc.type = 'sine'
-          osc.frequency.setValueAtTime(880, ctx.currentTime)
-          osc.frequency.setValueAtTime(1174.66, ctx.currentTime + 0.15)
-          gain.gain.setValueAtTime(0.35, ctx.currentTime)
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.38)
-          osc.connect(gain)
-          gain.connect(ctx.destination)
-          osc.start()
-          osc.stop(ctx.currentTime + 0.39)
-        } catch {}
-      }
-
-      ringPulse()
-      if (beepIntervalRef.current) clearInterval(beepIntervalRef.current)
-      beepIntervalRef.current = setInterval(ringPulse, 800)
-    } catch {}
-  }
-
-  const playAlertSound = (soundKey: string) => {
-    try {
-      const soundFile = SOUNDS[soundKey] || SOUNDS.vibe
-      setIsPlayingAudio(true)
-
-      // 1. Play Web Audio chime immediately (works continuously on background audio thread)
-      playWebAudioBeep()
-
-      // 2. Play HTML5 Audio element loop
-      let audio = audioRef.current
-      if (!audio) {
-        audio = new Audio(soundFile)
-        audioRef.current = audio
-      }
-      audio.src = soundFile
-      audio.loop = true
-      audio.volume = 0.95
-      audio.currentTime = 0
-
-      const playPromise = audio.play()
-      if (playPromise !== undefined) {
-        playPromise.catch((e) => {
-          console.warn('HTML5 Audio playback blocked in background, Web Audio beep active:', e)
-        })
-      }
-    } catch (e) {
-      console.warn('Audio play failed, activating Web Audio fallback:', e)
-      playWebAudioBeep()
-    }
-  }
-
   const stopAlertSound = () => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current.currentTime = 0
-    }
-    if (beepIntervalRef.current) {
-      clearInterval(beepIntervalRef.current)
-      beepIntervalRef.current = null
-    }
-    stopTitleFlashing()
     setIsPlayingAudio(false)
+    stopSharedTimerAlarm()
+    stopTitleAlert()
   }
 
-  // 6. Host Actions
+  // 8. Host Actions
   const handleStart = async () => {
     if (!timer || !hostToken) return
-    unlockAudio()
+    unlockAudioAndNotify()
+    startAudioKeepAlive()
     await startSharedTimer(timer.id, hostToken)
   }
 
   const handlePause = async () => {
     if (!timer || !hostToken) return
+    stopAudioKeepAlive()
     await pauseSharedTimer(timer.id, hostToken, displaySeconds)
   }
 
   const handleResume = async () => {
     if (!timer || !hostToken) return
-    unlockAudio()
+    unlockAudioAndNotify()
+    startAudioKeepAlive()
     await resumeSharedTimer(timer.id, hostToken)
   }
 
   const handleReset = async () => {
     if (!timer || !hostToken) return
     stopAlertSound()
+    stopAudioKeepAlive()
     if (typeof window !== 'undefined') {
       const currentRunId = timer.startedAt ? `${timer.id}_${timer.startedAt}` : timer.id
       sessionStorage.removeItem(`shared_timer_rung_${currentRunId}`)
       sessionStorage.removeItem(`shared_timer_rung_${timer.id}`)
     }
-    audioTriggeredRef.current = false
-    previousSecondsLeftRef.current = null
     await resetSharedTimer(timer.id, hostToken)
   }
 
@@ -523,7 +385,7 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
   const handleJoinSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!timer) return
-    unlockAudio()
+    unlockAudioAndNotify()
     const name = joinName.trim() || 'Guest'
     await joinSharedTimer(timer.id, name)
     setShowJoinModal(false)

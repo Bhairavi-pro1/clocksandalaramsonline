@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus, Users, ArrowRight, Sparkles, Clock, Shield, RefreshCw } from 'lucide-react'
 import { db } from '@/lib/firebase'
@@ -7,10 +7,21 @@ import { doc, getDoc } from 'firebase/firestore'
 import { 
   SharedTimer, getMyCreatedTimers, getMyJoinedTimers, 
   removeLocalTimerReference, checkAndPruneExpiredTimer,
-  subscribeToSharedTimer
+  subscribeToSharedTimer, markSharedTimerCompleted, isHostOfTimer
 } from '@/lib/sharedTimerLogic'
+import {
+  unlockAndPreloadSharedTimerAudio,
+  startAudioKeepAlive,
+  stopAudioKeepAlive,
+  playSharedTimerAlarm,
+  stopSharedTimerAlarm,
+  sendSharedTimerNotification,
+  startTitleAlert,
+  stopTitleAlert
+} from '@/lib/sharedTimerAudio'
 import SharedTimerCard from '@/components/tools/SharedTimerCard'
 import CreateSharedTimerModal from '@/components/tools/CreateSharedTimerModal'
+import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
 
 export default function SharedTimerDashboard() {
   const router = useRouter()
@@ -20,6 +31,28 @@ export default function SharedTimerDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [joinCode, setJoinCode] = useState('')
   const [joinError, setJoinError] = useState('')
+  const [ringingTimerInfo, setRingingTimerInfo] = useState<{ id: string; title: string } | null>(null)
+
+  // Mutable ref so background Web Worker callback always accesses freshest timer data
+  const allTimersRef = useRef<SharedTimer[]>([])
+  allTimersRef.current = [...createdTimers, ...joinedTimers]
+
+  // 1. Audio Pre-warming & Notification Permission on First Interaction
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const unlockOnFirstTouch = () => {
+      unlockAndPreloadSharedTimerAudio('vibe')
+    }
+    window.addEventListener('click', unlockOnFirstTouch, { once: true })
+    window.addEventListener('keydown', unlockOnFirstTouch, { once: true })
+    window.addEventListener('touchstart', unlockOnFirstTouch, { once: true })
+
+    return () => {
+      window.removeEventListener('click', unlockOnFirstTouch)
+      window.removeEventListener('keydown', unlockOnFirstTouch)
+      window.removeEventListener('touchstart', unlockOnFirstTouch)
+    }
+  }, [])
 
   // Real-time synchronization of created and joined timers via Firestore onSnapshot
   const loadTimers = useCallback(() => {
@@ -86,6 +119,122 @@ export default function SharedTimerDashboard() {
       if (typeof unsub === 'function') unsub()
     }
   }, [loadTimers])
+
+  // 2. Central Background Expiration Engine for Dashboard
+  const checkDashboardTimers = useCallback(() => {
+    const timers = allTimersRef.current
+    if (!timers || timers.length === 0) {
+      stopAudioKeepAlive()
+      return
+    }
+
+    const nowMs = Date.now()
+    let hasRunningTimer = false
+
+    timers.forEach((t) => {
+      if (t.status === 'running' && t.endsAt) {
+        hasRunningTimer = true
+        const remaining = Math.max(0, Math.ceil((t.endsAt - nowMs) / 1000))
+
+        if (remaining <= 0) {
+          const runId = `${t.id}_${t.startedAt || 0}`
+          const storageKey = `shared_timer_rung_${runId}`
+          const alreadyRung = typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === 'true'
+
+          if (!alreadyRung) {
+            if (typeof window !== 'undefined') {
+              sessionStorage.setItem(storageKey, 'true')
+            }
+
+            playSharedTimerAlarm(t.sound)
+            setRingingTimerInfo({ id: t.id, title: t.title || 'Shared Timer' })
+            sendSharedTimerNotification(
+              '⌛ Time Up!',
+              `"${t.title || 'Shared Timer'}" has finished.`,
+              t.id
+            )
+            startTitleAlert(t.title || 'Shared Timer')
+
+            if (isHostOfTimer(t.id, t.hostToken)) {
+              markSharedTimerCompleted(t.id).catch(() => {})
+            }
+          }
+        }
+      }
+    })
+
+    if (hasRunningTimer) {
+      startAudioKeepAlive()
+    } else {
+      stopAudioKeepAlive()
+    }
+  }, [])
+
+  // Web Worker for unthrottled background checking on the dashboard
+  useEffect(() => {
+    let worker: Worker | null = null
+    let fallbackInterval: NodeJS.Timeout | null = null
+
+    try {
+      const blob = new Blob([`
+        let timer = null;
+        self.onmessage = function(e) {
+          if (e.data === 'START') {
+            if (!timer) {
+              timer = setInterval(function() {
+                self.postMessage('TICK');
+              }, 1000);
+            }
+          } else if (e.data === 'STOP') {
+            if (timer) {
+              clearInterval(timer);
+              timer = null;
+            }
+          }
+        };
+      `], { type: 'application/javascript' })
+
+      const workerUrl = URL.createObjectURL(blob)
+      worker = new Worker(workerUrl)
+      worker.onmessage = (e) => {
+        if (e.data === 'TICK') {
+          checkDashboardTimers()
+        }
+      }
+      worker.postMessage('START')
+    } catch {
+      fallbackInterval = setInterval(checkDashboardTimers, 1000)
+    }
+
+    return () => {
+      if (worker) {
+        worker.postMessage('STOP')
+        worker.terminate()
+      }
+      if (fallbackInterval) {
+        clearInterval(fallbackInterval)
+      }
+    }
+  }, [checkDashboardTimers])
+
+  // Tab Visibility Resynchronization
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkDashboardTimers()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [checkDashboardTimers])
+
+  // Cleanup ringing audio when dashboard unmounts
+  useEffect(() => {
+    return () => {
+      stopSharedTimerAlarm()
+      stopTitleAlert()
+    }
+  }, [])
 
   const handleJoinWithCode = (e: React.FormEvent) => {
     e.preventDefault()
@@ -274,6 +423,18 @@ export default function SharedTimerDashboard() {
       <CreateSharedTimerModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      {/* Alarm Ringing Modal */}
+      <AlarmTriggerModal
+        isOpen={!!ringingTimerInfo}
+        onClose={() => {
+          stopSharedTimerAlarm()
+          stopTitleAlert()
+          setRingingTimerInfo(null)
+        }}
+        label={ringingTimerInfo?.title || 'Shared Timer Finished!'}
+        type="timer"
       />
     </div>
   )
