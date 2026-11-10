@@ -51,9 +51,9 @@ export default function SharedTimerCard({ timer, onDeleted }: SharedTimerCardPro
 
   const timerState = calculateTimerState(timer)
 
-  // Auto-mark completed in Firestore once endsAt is reached
+  // Auto-mark completed in Firestore once endsAt is reached (Host only)
   useEffect(() => {
-    if (timerState.isDone && timer.status === 'running') {
+    if (timerState.isDone && timer.status === 'running' && isHost) {
       markSharedTimerCompleted(timer.id).catch(() => {})
     }
     if (timerState.displayStatus === 'expired') {
@@ -63,7 +63,7 @@ export default function SharedTimerCard({ timer, onDeleted }: SharedTimerCardPro
         }
       }).catch(() => {})
     }
-  }, [timerState.isDone, timerState.displayStatus, timer, onDeleted])
+  }, [timerState.isDone, timerState.displayStatus, timer, onDeleted, isHost])
 
   const handleCopy = (e: React.MouseEvent) => {
     e.preventDefault()

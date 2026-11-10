@@ -122,12 +122,70 @@ export function generateRoomId(): string {
 }
 
 // ---------------------------------------------------------
+// Global Server Time Synchronization (NTP-style)
+// ---------------------------------------------------------
+
+let serverTimeOffset: number = 0;
+let isSyncingTime: boolean = false;
+let lastSyncTime: number = 0;
+
+/**
+ * Synchronizes client clock with authoritative server time via /api/time.
+ * Computes round-trip latency and compensates for client device manual clock drift.
+ */
+export async function syncServerTime(): Promise<number> {
+  if (typeof window === 'undefined') return 0;
+  if (isSyncingTime) return serverTimeOffset;
+
+  const now = Date.now();
+  // Don't re-sync if synced within last 30 seconds
+  if (lastSyncTime > 0 && now - lastSyncTime < 30000) {
+    return serverTimeOffset;
+  }
+
+  isSyncingTime = true;
+  try {
+    const t0 = Date.now();
+    const res = await fetch('/api/time', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Time sync response status ${res.status}`);
+    const data = await res.json();
+    const t1 = Date.now();
+
+    const roundTrip = Math.max(0, (t1 - t0) / 2);
+    // Calculated offset: trueServerTime = clientTime + serverTimeOffset
+    serverTimeOffset = (data.serverTime + roundTrip) - t1;
+    lastSyncTime = Date.now();
+  } catch (err) {
+    console.warn('Server time synchronization fallback:', err);
+  } finally {
+    isSyncingTime = false;
+  }
+
+  return serverTimeOffset;
+}
+
+/**
+ * Returns current timestamp (epoch ms) corrected for client device clock drift.
+ */
+export function getSynchronizedNow(): number {
+  return Date.now() + serverTimeOffset;
+}
+
+// Auto-trigger time sync on client initialization
+if (typeof window !== 'undefined') {
+  syncServerTime();
+  window.addEventListener('focus', () => {
+    syncServerTime();
+  });
+}
+
+// ---------------------------------------------------------
 // Time Calculation & Synchronization
 // ---------------------------------------------------------
 
 export function calculateTimerState(
   timer: SharedTimer, 
-  serverOffset: number = 0
+  customOffset?: number
 ): {
   secondsLeft: number;
   progress: number; // 0 to 1
@@ -165,8 +223,8 @@ export function calculateTimerState(
     };
   }
 
-  // Running state: calculate against synchronized server now
-  const now = Date.now() + serverOffset;
+  // Running state: calculate against synchronized server time
+  const now = customOffset !== undefined ? Date.now() + customOffset : getSynchronizedNow();
   const diffMs = timer.endsAt - now;
   const secondsLeft = Math.max(0, Math.ceil(diffMs / 1000));
   const elapsed = total - secondsLeft;
@@ -356,7 +414,7 @@ export async function startSharedTimer(
       return false;
     }
 
-    const now = Date.now();
+    const now = getSynchronizedNow();
     const endsAt = now + (data.durationSeconds * 1000);
     const expireAt = new Date(endsAt + (5 * 60 * 1000)).toISOString();
 
@@ -394,7 +452,7 @@ export async function pauseSharedTimer(
 
     await updateDoc(timerDocRef, {
       status: 'paused',
-      pausedAt: Date.now(),
+      pausedAt: getSynchronizedNow(),
       remainingWhenPaused: Math.max(0, secondsLeft)
     });
 
@@ -421,7 +479,7 @@ export async function resumeSharedTimer(
     if (data.hostToken !== hostToken) return false;
 
     const remaining = data.remainingWhenPaused ?? data.durationSeconds;
-    const now = Date.now();
+    const now = getSynchronizedNow();
     const newEndsAt = now + (remaining * 1000);
     const expireAt = new Date(newEndsAt + (5 * 60 * 1000)).toISOString();
 
@@ -483,7 +541,7 @@ export async function markSharedTimerCompleted(timerId: string): Promise<void> {
     const data = snap.data() as SharedTimer;
 
     if (data.status !== 'completed') {
-      const now = Date.now();
+      const now = getSynchronizedNow();
       const expireAt = new Date(now + (5 * 60 * 1000)).toISOString();
       await updateDoc(timerDocRef, {
         status: 'completed',
@@ -496,11 +554,26 @@ export async function markSharedTimerCompleted(timerId: string): Promise<void> {
 }
 
 /**
- * Deletes the shared timer and all participant subdocuments to free Firestore storage
+ * Deletes the shared timer and all participant subdocuments to free Firestore storage.
+ * Authorized for host or system maintenance.
  */
-export async function deleteSharedTimer(timerId: string): Promise<boolean> {
+export async function deleteSharedTimer(timerId: string, hostToken?: string): Promise<boolean> {
   try {
     const timerDocRef = doc(db, 'sharedTimers', timerId);
+
+    // If host token check is possible, ensure token authenticity
+    const token = hostToken || getHostToken(timerId);
+    if (token) {
+      const snap = await getDoc(timerDocRef);
+      if (snap.exists()) {
+        const data = snap.data() as SharedTimer;
+        if (data.hostToken && data.hostToken !== token) {
+          console.warn(`Unauthorized attempt to delete shared timer ${timerId}`);
+          removeLocalTimerReference(timerId);
+          return false;
+        }
+      }
+    }
 
     // 1. Delete all participants in subcollection
     const participantsColl = collection(db, 'sharedTimers', timerId, 'participants');
@@ -522,17 +595,32 @@ export async function deleteSharedTimer(timerId: string): Promise<boolean> {
 }
 
 /**
- * Checks if a timer has exceeded 5 minutes post-completion and deletes it if expired
+ * Checks if a timer has exceeded 5 minutes post-completion and prunes it.
+ * 
+ * CRITICAL CLOCK-DRIFT & GUEST PROTECTION:
+ * 1. Uses getSynchronizedNow() (NTP server time) so device clock drift NEVER causes false expiration.
+ * 2. Only the verified HOST can delete the Firestore document for everyone.
+ * 3. Non-hosts (guests) ONLY remove the timer from their own local storage!
  */
 export async function checkAndPruneExpiredTimer(timer: SharedTimer): Promise<boolean> {
   if (!timer.endsAt) return false;
-  const fiveMinutesMs = 5 * 60 * 1000;
-  const isPastFiveMinutes = Date.now() > (timer.endsAt + fiveMinutesMs);
 
-  if (isPastFiveMinutes) {
-    await deleteSharedTimer(timer.id);
-    return true; // was pruned
+  const now = getSynchronizedNow();
+  const fiveMinutesMs = 5 * 60 * 1000;
+  const isPastFiveMinutes = now > (timer.endsAt + fiveMinutesMs);
+
+  if (!isPastFiveMinutes) return false;
+
+  const isHost = isHostOfTimer(timer.id, timer.hostToken);
+
+  if (isHost) {
+    // Only verified host can permanently delete the Firestore document
+    await deleteSharedTimer(timer.id, timer.hostToken);
+    return true;
+  } else {
+    // Non-hosts (guests) ONLY remove the room reference from their local device storage!
+    removeLocalTimerReference(timer.id);
+    return false;
   }
-  return false;
 }
 

@@ -13,12 +13,14 @@ import {
   pauseSharedTimer, resumeSharedTimer, resetSharedTimer, 
   deleteSharedTimer, calculateTimerState, checkAndPruneExpiredTimer,
   markSharedTimerCompleted,
-  isHostOfTimer, getHostToken, getSessionId, getSavedUserName
+  isHostOfTimer, getHostToken, getSessionId, getSavedUserName,
+  getSynchronizedNow, syncServerTime
 } from '@/lib/sharedTimerLogic'
 import { cn } from '@/lib/utils'
 import AlarmTriggerModal from '@/components/ui/AlarmTriggerModal'
 import {
   unlockAndPreloadSharedTimerAudio,
+  preloadAllSharedTimerSounds,
   startAudioKeepAlive,
   stopAudioKeepAlive,
   playSharedTimerAlarm,
@@ -103,11 +105,13 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     const saved = getSavedUserName()
     if (saved) setJoinName(saved)
     originalTitleRef.current = document.title
+    syncServerTime()
   }, [])
 
   // 2. Audio Pre-warming & Notification Permission on First Interaction
   const unlockAudioAndNotify = useCallback(() => {
     unlockAndPreloadSharedTimerAudio(timerRef.current?.sound || 'vibe')
+    preloadAllSharedTimerSounds()
   }, [])
 
   useEffect(() => {
@@ -162,7 +166,7 @@ export default function SharedTimerRoom({ roomId }: SharedTimerRoomProps) {
     const currentTimer = timerRef.current
     if (!currentTimer) return
 
-    const nowMs = Date.now()
+    const nowMs = getSynchronizedNow()
     const state = calculateTimerState(currentTimer)
 
     setDisplaySeconds(state.secondsLeft)

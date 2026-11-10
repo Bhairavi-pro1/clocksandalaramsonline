@@ -7,10 +7,12 @@ import { doc, getDoc } from 'firebase/firestore'
 import { 
   SharedTimer, getMyCreatedTimers, getMyJoinedTimers, 
   removeLocalTimerReference, checkAndPruneExpiredTimer,
-  subscribeToSharedTimer, markSharedTimerCompleted, isHostOfTimer
+  subscribeToSharedTimer, markSharedTimerCompleted, isHostOfTimer,
+  getSynchronizedNow, syncServerTime
 } from '@/lib/sharedTimerLogic'
 import {
   unlockAndPreloadSharedTimerAudio,
+  preloadAllSharedTimerSounds,
   startAudioKeepAlive,
   stopAudioKeepAlive,
   playSharedTimerAlarm,
@@ -42,6 +44,7 @@ export default function SharedTimerDashboard() {
     if (typeof window === 'undefined') return
     const unlockOnFirstTouch = () => {
       unlockAndPreloadSharedTimerAudio('vibe')
+      preloadAllSharedTimerSounds()
     }
     window.addEventListener('click', unlockOnFirstTouch, { once: true })
     window.addEventListener('keydown', unlockOnFirstTouch, { once: true })
@@ -53,6 +56,20 @@ export default function SharedTimerDashboard() {
       window.removeEventListener('touchstart', unlockOnFirstTouch)
     }
   }, [])
+
+  // 1b. Synchronize server time to protect against client device clock tampering
+  useEffect(() => {
+    syncServerTime()
+  }, [])
+
+  // 1c. Preload audio buffers for all rooms present on the dashboard
+  useEffect(() => {
+    allTimersRef.current.forEach((t) => {
+      if (t.sound) {
+        unlockAndPreloadSharedTimerAudio(t.sound)
+      }
+    })
+  }, [createdTimers, joinedTimers])
 
   // Real-time synchronization of created and joined timers via Firestore onSnapshot
   const loadTimers = useCallback(() => {
@@ -128,7 +145,7 @@ export default function SharedTimerDashboard() {
       return
     }
 
-    const nowMs = Date.now()
+    const nowMs = getSynchronizedNow()
     let hasRunningTimer = false
 
     timers.forEach((t) => {

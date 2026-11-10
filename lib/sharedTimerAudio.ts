@@ -24,6 +24,42 @@ let titleInterval: NodeJS.Timeout | null = null
 let originalTitle: string = ''
 
 /**
+ * Pre-fetches and decodes ALL available shared timer sound presets into RAM.
+ * Ensures that no matter which sound is assigned to a room, the audio buffer
+ * is instantly ready for background playback without asynchronous fetch rejection.
+ */
+export function preloadAllSharedTimerSounds() {
+  if (typeof window === 'undefined') return
+  try {
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+    if (!audioCtx && AudioContextClass) {
+      audioCtx = new AudioContextClass()
+    }
+  } catch {}
+
+  if (!audioCtx) return
+
+  Object.entries(SHARED_TIMER_SOUNDS).forEach(([key, url]) => {
+    if (!bufferCache.has(key)) {
+      fetch(url)
+        .then((res) => res.arrayBuffer())
+        .then((arrayBuffer) => audioCtx!.decodeAudioData(arrayBuffer))
+        .then((decoded) => {
+          bufferCache.set(key, decoded)
+        })
+        .catch(() => {})
+    }
+  })
+}
+
+/**
+ * Checks whether audio context has been successfully unlocked by user gesture.
+ */
+export function isAudioUnlocked(): boolean {
+  return !!audioCtx && audioCtx.state === 'running'
+}
+
+/**
  * Initialize and unlock Web Audio API Context and HTML5 Audio element on user gesture.
  * Pre-fetches and decodes the requested sound into memory so it can ring instantly in the background.
  */
@@ -51,10 +87,14 @@ export function unlockAndPreloadSharedTimerAudio(soundKey: string = 'vibe') {
       .then((arrayBuffer) => audioCtx!.decodeAudioData(arrayBuffer))
       .then((decoded) => {
         bufferCache.set(soundKey, decoded)
+        // Once primary sound is loaded, preload the rest
+        preloadAllSharedTimerSounds()
       })
       .catch((e) => {
         console.warn(`Failed to preload audio buffer for ${soundKey}:`, e)
       })
+  } else {
+    preloadAllSharedTimerSounds()
   }
 
   // 3. Pre-warm HTML5 Audio fallback element
