@@ -10,6 +10,7 @@ import ToolSEO from '@/components/seo/ToolSEO'
 import AdBanner from '@/components/ui/AdBanner'
 
 export const dynamicParams = true
+export const revalidate = 86400 // Cache dynamically resolved cities on Netlify CDN for 24 hours
 
 interface Props {
   params: Promise<{ slug: string }>

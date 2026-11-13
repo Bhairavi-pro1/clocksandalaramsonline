@@ -69,5 +69,13 @@ User-agent: PerplexityBot
 Allow: /
 Disallow: /studio
 
+User-agent: AhrefsBot
+Allow: /
+Disallow: /studio
+
+User-agent: SemrushBot
+Allow: /
+Disallow: /studio
+
 Sitemap: https://clocksandalarmsonline.com/sitemap.xml
 

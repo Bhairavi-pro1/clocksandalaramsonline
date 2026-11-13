@@ -44,6 +44,8 @@ const iconMap: Record<string, any> = {
   Eye,
 }
 
+export const revalidate = 86400
+
 interface Props {
   params: Promise<{ slug: string }>
 }

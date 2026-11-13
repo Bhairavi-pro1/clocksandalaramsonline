@@ -11,6 +11,8 @@ import ToolSEO from '@/components/seo/ToolSEO';
 import { cn } from '@/lib/utils';
 import { getCountryBySlugOrCode, getCountrySlug } from '@/lib/countryResolver';
 
+export const revalidate = 86400; // Cache on Netlify Edge CDN for 24 hours (ISR)
+
 interface Props {
   params: Promise<{ slug: string }>;
 }

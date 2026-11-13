@@ -12,6 +12,8 @@ import { HelpCircle, Calendar, Clock, Maximize2, Info, Briefcase, Users, Sparkle
 import ToolSEO from '@/components/seo/ToolSEO';
 import { cn } from '@/lib/utils';
 
+export const revalidate = 86400; // Cache on Netlify Edge CDN for 24 hours (ISR)
+
 interface Props {
   params: Promise<{ slug: string; holiday: string }>;
 }
